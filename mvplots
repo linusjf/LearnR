@@ -1,0 +1,3 @@
+#!/bin/bash
+mv ./*.pdf ~/storage/downloads/Rplots
+
