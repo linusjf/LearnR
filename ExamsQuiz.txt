@@ -1,4 +1,4 @@
-MIDTERM FINAL   AVG_QUIZ
+MIDTERM FINAL AVG_QUIZ
 2       3.3     4
 3.3     2       3.7
 4       4.3     4
