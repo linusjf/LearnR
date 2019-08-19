@@ -1,3 +1,4 @@
+#!/usr/bin/env Rscript
 # counts the number of odd integers in x
 oddcount <- function(x) {
     k <- 0  # assign 0 to k 
