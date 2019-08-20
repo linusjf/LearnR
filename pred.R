@@ -42,3 +42,22 @@ predc <- function(x, k) {
     return(mean(abs(pred - x[(k + 1):n])))
 }
 
+rains <- abs(round(rnorm(mean=0,sd=.33,500)))
+
+procstart <- proc.time()
+a <- preda(rains,3)
+print(a)
+procend <- proc.time() - procstart
+procend
+
+procstart <- proc.time()
+b <- preda(rains,3)
+print(b)
+procend <- proc.time() - procstart
+procend
+
+procstart <- proc.time()
+c <- preda(rains,3)
+print(c)
+procend <- proc.time() - procstart
+procend
