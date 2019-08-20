@@ -61,3 +61,39 @@ c <- preda(rains,3)
 print(c)
 procend <- proc.time() - procstart
 procend
+
+procstart <- proc.time()
+a <- preda(rains,4)
+print(a)
+procend <- proc.time() - procstart
+procend
+
+procstart <- proc.time()
+b <- preda(rains,4)
+print(b)
+procend <- proc.time() - procstart
+procend
+
+procstart <- proc.time()
+c <- preda(rains,4)
+print(c)
+procend <- proc.time() - procstart
+procend
+
+procstart <- proc.time()
+a <- preda(rains,5)
+print(a)
+procend <- proc.time() - procstart
+procend
+
+procstart <- proc.time()
+b <- preda(rains,5)
+print(b)
+procend <- proc.time() - procstart
+procend
+
+procstart <- proc.time()
+c <- preda(rains,5)
+print(c)
+procend <- proc.time() - procstart
+procend
