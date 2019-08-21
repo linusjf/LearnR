@@ -1,3 +1,4 @@
+#!/usr/bin/env Rscript
 
 #adds random noise to img, 
 #at the range rows, cols of img;
