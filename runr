@@ -1,0 +1,12 @@
+#!/bin/bash
+usage()
+{
+  echo "Usage: $0 dir"
+  echo "file - R script"
+  exit 1
+}
+if [ "$#" -ne 1 ] || ! [ -f "$1" ]; 
+then
+  usage
+fi
+R CMD BATCH --slave $1

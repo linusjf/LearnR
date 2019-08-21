@@ -2,4 +2,5 @@
 .Rhistory
 .Renviron
 *.Rout
+*.pdf
 data/**
