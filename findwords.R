@@ -31,8 +31,3 @@ freqwl <- function(wrdlst) {
   return(wrdlst[order(freqs)])
 }
 
-wrdlist <- findwords("testconcorda.txt")
-sorted <- alphawl(wrdlist)
-print(sorted)
-frqwl <- freqwl(wrdlist)
-print(frqwl)
