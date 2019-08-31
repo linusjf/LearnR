@@ -10,4 +10,29 @@ findwords <- function(tf) {
   } 
   return( wl) 
 }
-findwords("testconcorda.txt")
+
+# sorts wrdlst, 
+# the output of findwords()
+# alphabetically by word 
+alphawl <- function( wrdlst) { 
+  nms <- names(wrdlst) 
+  # the words 
+  sn <- sort(nms) 
+  # same words in alpha order 
+  return (wrdlst[sn]) 
+  # return rearranged version 
+}
+
+# orders the output of findwords() 
+# by word frequency 
+freqwl <- function(wrdlst) { 
+  freqs <- sapply(wrdlst, length) 
+  # get word frequencies 
+  return(wrdlst[order(freqs)])
+}
+
+wrdlist <- findwords("testconcorda.txt")
+sorted <- alphawl(wrdlist)
+print(sorted)
+frqwl <- freqwl(wrdlist)
+print(frqwl)
