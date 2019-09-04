@@ -1,4 +1,4 @@
-
+#!/usr/bin/env Rscript
 aba <- read.csv("abalone.data", header = T)
 abamf <- aba[ aba$Sex != "I",] 
 # exclude infants from the analysis 
