@@ -1,3 +1,4 @@
 #!/bin/bash
+mkdir -p ~/storage/downloads/Rplots
 mv ./*.pdf ~/storage/downloads/Rplots
 
