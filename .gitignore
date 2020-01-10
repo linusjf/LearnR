@@ -3,4 +3,5 @@
 .Renviron
 *.Rout
 *.pdf
-data/**
+*.png
+**/data/**
