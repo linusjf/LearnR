@@ -7,26 +7,34 @@ y <- c(9,7,3,2)
 year <- 1990:1993
 names <- c("payal", "shraddha", "kritika", "itida")
 # Accessing the 1st and last elements of y --
-y[1]
-y[length(y)]
+print(y[1])
+print(y[length(y)])
 
 # To make a list "person" --
 person <- list(name="payal", x=2, y=9, year=1990)
-person
+print(person)
 # Accessing things inside a list --
-person$name
-person$x
+print(person$name)
+print(person$x)
 
 # To make a matrix, pasting together the columns "year" "x" and "y"
 # The verb cbind() stands for "column bind"
-cbind(year, x, y)
+print(cbind(year, x, y))
+print(cbind(year, x, y,names))
 
 # To make a "data frame", which is a list of vectors of the same length --
 D <- data.frame(names, year, x, y)
-nrow(D)
+print(D)
+print(nrow(D))
 # Accessing one of these vectors
-D$names
+print(D$names)
 # Accessing the last element of this vector
-D$names[nrow(D)]
+print(D$names[nrow(D)])
 # Or equally,
-D$names[length(D$names)]
+print(D$names[length(D$names)])
+F <- factor(D$year)
+print(F)
+print(as.numeric(F))
+print(levels(F)[F])
+print(factor(D$x))
+print(factor(D$y))
