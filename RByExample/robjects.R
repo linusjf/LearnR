@@ -2,6 +2,8 @@
 # Goals: A first look at R objects - vectors, lists, matrices, data frames.
 
 # To make vectors "x" "y" "year" and "names"
+main <- function() {
+
 x <- c(2,3,7,9)
 y <- c(9,7,3,2)
 year <- 1990:1993
@@ -38,3 +40,7 @@ print(as.numeric(F))
 print(levels(F)[F])
 print(factor(D$x))
 print(factor(D$y))
+}
+
+if (!interactive())
+  main()
