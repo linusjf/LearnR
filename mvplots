@@ -1,4 +1,5 @@
 #!/bin/bash
 mkdir -p ~/storage/downloads/Rplots
-mv ./*.pdf ~/storage/downloads/Rplots
+mv ./**/*.pdf ~/storage/downloads/Rplots
+mv ./**/*.png ~/storage/downloads/Rplots
 
