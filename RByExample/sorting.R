@@ -17,7 +17,11 @@ print(D[indexes,])
 
 # Print out sorted dataset, sorted in reverse by y
 print(D[rev(order(D$y)),])
+return (0)
 }
 
-if(!interactive()) 
-    main()
+# if(!interactive()) 
+  #  main()
+
+if (identical (environment (), globalenv ()))
+  quit (status=main())

@@ -42,5 +42,5 @@ print(factor(D$x))
 print(factor(D$y))
 }
 
-if (!interactive())
-  main()
+if (identical (environment (), globalenv ()))
+  quit (status=main())
