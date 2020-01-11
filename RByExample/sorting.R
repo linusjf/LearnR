@@ -18,7 +18,9 @@ indexes <- order(-D$x)
 print(D[indexes,])
 
 # Print out sorted dataset, sorted in reverse by y
+print(D[order(D$y),])
 print(D[order(-D$y),])
+print(D[order(D$y),])
 print(D[rev(order(D$y)),])
 return (0)
 }
