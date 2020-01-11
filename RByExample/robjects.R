@@ -2,7 +2,7 @@
 # Goals: A first look at R objects - vectors, lists, matrices, data frames.
 
 # To make vectors "x" "y" "year" and "names"
-main <- function() {
+main <- function(argv) {
 
 x <- c(2,3,7,9)
 y <- c(9,7,3,2)
@@ -40,7 +40,8 @@ print(as.numeric(F))
 print(levels(F)[F])
 print(factor(D$x))
 print(factor(D$y))
+return (0)
 }
 
 if (identical (environment (), globalenv ()))
-  quit (status=main())
+  quit (status = main(commandArgs(trailingOnly = TRUE)))

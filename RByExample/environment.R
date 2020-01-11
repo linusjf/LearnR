@@ -11,8 +11,9 @@ f <- function(f_x){
    print(ls())
 }
 
-main <- function() {
+main <- function(argv) {
   print("Inside main")
+  print(argv)
   print(environment())
   f(10)
   return (0)
@@ -20,4 +21,4 @@ main <- function() {
 
 print(environment())
 if (identical (environment (), globalenv ()))
-  quit (status=main())
+  quit (status = main(commandArgs(trailingOnly = TRUE)))
