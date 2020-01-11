@@ -25,4 +25,4 @@ mtrush2@grey[84:163, 135:177] <- 1
 plot(mtrush2)
 mtrush3 <- blurpart(mtrush1, 84:163, 135:177, 0.65)
 plot(mtrush3)
-dev.off()
+graphics.off()
