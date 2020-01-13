@@ -37,19 +37,29 @@ main = function(argv) {
     mean1[i] = mean(r[,i])
 
   # Alternatively, just say:
+  print(rep(1/N,N))
   mean2 = rep(1/N, N) %*% r               
   # Pretty!
 
   # The two answers are the same --
-  all.equal(mean1,mean2[,])
+  print(all.equal(mean1,mean2[,]))
+  print(all.equal(mean1,rowMeans(t(r))))
   #
   # As an aside, I should say that you can do this directly by using
   # the rowMeans() function. But the above is more about pedagogy rather
   # than showing you how to get rowmeans.
 
+  print("Displaying row sums")
+  print(rowSums(r))
+  
+  print("Displaying row means")
+  print(rowMeans(r))
+
+  # You can display col sums and col means as well.
+  # Too many columns, so not displaying it here.
 
   cat("\n\nEXAMPLE 3: Nelson-Siegel yield curve\n")
-  # Write this asif you're dealing with scalars --
+  # Write this as if you're dealing with scalars --
   # Nelson Siegel function
   nsz <- function(b0, b1, b2, tau, t) {
     tmp = t/tau
@@ -61,9 +71,8 @@ main = function(argv) {
 
   # The bad way:
   z <- numeric(length(timepoints))
-  for (i in 1:length(timepoints)) {
+  for (i in 1:length(timepoints)) 
     z[i] <- nsz(14.084,-3.4107,0.0015,1.8832,timepoints[i])
-  }
   print(z)
 
   # The R way --
@@ -74,14 +83,30 @@ main = function(argv) {
   # You know the bad way - sum over all cashflows, NPVing each.
   # Now look at the R way.
   C = rep(100, 6)
-  nsz(14.084,-3.4107,0.0015,1.8832,timepoints)        # Print interest rates
-  C/((1.05)^timepoints)                               # Print cashflows discounted @ 5%
-  C/((1 + (0.01*nsz(14.084,-3.4107,0.0015,1.8832,timepoints))^timepoints)) # Using NS instead of 5%
+  # Print interest rates
+  intrates = nsz(14.084,-3.4107,0.0015,1.8832,timepoints)       
+  print("Interest rates...")
+  print(intrates)
+  # Print cashflows discounted @ 5%
+  discounted = C/((1.05)^timepoints)
+  print("Discounted cfs at 5%...")
+  print(discounted)
+  # Using NS instead of 5%
+  cfs <- C/((1 + (0.01*nsz(14.084,-3.4107,0.0015,1.8832,timepoints))^timepoints)) 
+  print("Cashflows at Nelson-Siegel rates...")
+  print(cfs)
+
+  print("Net Present Value...")
   # NPV in two different ways --
-  C %*% (1 + (0.01*nsz(14.084,-3.4107,0.0015,1.8832,timepoints)))^-timepoints
-  sum(C * (1 + (0.01*nsz(14.084,-3.4107,0.0015,1.8832,timepoints)))^-timepoints)
+  npv1 <- C %*% (1 + (0.01*nsz(14.084,-3.4107,0.0015,1.8832,timepoints)))^-timepoints
+  print(npv1)
+  npv2 <- sum(C * (1 + (0.01*nsz(14.084,-3.4107,0.0015,1.8832,timepoints)))^-timepoints)
+  print(npv2)
+  print(all.equal(npv1[1,1],npv2))
   # You can drop back to a flat yield curve at 5% easily --
-  sum(C * 1.05^-timepoints)
+  npvflatsum <- sum(C * 1.05^-timepoints)
+  print("Net Present Value at flat 5% rate...")
+  print(npvflatsum)
 
   # Make a function for NPV --
   npv <- function(C, timepoints, r) {
@@ -94,6 +119,7 @@ main = function(argv) {
   npv(C, timepoints, nsz(14.084,-3.4107,0.0015,1.8832,timepoints))
   # Wow!
 
+  cat("\n\nEXAMPLE 4: Testing performance--\n")
   # ---------------------------------------------------------------------------
   # Elegant vector notation is amazingly fast (in addition to being beautiful)
   N <- 1e5
@@ -106,18 +132,20 @@ main = function(argv) {
       if (x[i] < 0) 
         tmp <- c(tmp, y[i])
     }
-    return tmp
+    return (tmp)
   }
 
   method2 <- function(x,y) {
-    y[x < 0]
+    return (y[x < 0])
   }
 
   s1 <- system.time(ans1 <- method1(x,y))
   s2 <- system.time(ans2 <- method2(x,y))
+  print(s1)
+  print(s2)
   all.equal(ans1,ans2)
   print(s1/s2)          
-  # On my machine it's 2000x faster
+  # On my phone it's 5000x faster
   return (0)
 }
 
