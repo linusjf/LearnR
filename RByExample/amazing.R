@@ -64,7 +64,27 @@ main = function(argv) {
   nsz <- function(b0, b1, b2, tau, t) {
     tmp = t/tau
     tmp2 = exp(-tmp)
-    return(b0 + ((b1+b2)*(1-tmp2)/(tmp)) - (b2*tmp2))
+    #return(b0 + ((b1+b2)*(1-tmp2)/(tmp)) - (b2*tmp2))
+    return(beta0(b0,b1,b2,tau,t) + 
+           beta1(b0,b1,b2,tau,t)
+         + beta2(b0,b1,b2,tau,t)
+         )
+  }
+  
+  beta0 <- function(b0, b1, b2, tau, t) {
+    return(b0)
+  }
+  
+  beta1 <- function(b0, b1, b2, tau, t) {
+    tmp = t/tau
+    tmp2 = exp(-tmp)
+    return(b1*(1-tmp2)/(tmp))
+  }
+  
+  beta2 <- function(b0, b1, b2, tau, t) {
+    tmp = t/tau
+    tmp2 = exp(-tmp)
+    return((b2*(1-tmp2)/tmp) - (b2*tmp2))
   }
 
   timepoints <- c(0.01,1:5)
@@ -118,6 +138,10 @@ main = function(argv) {
   # at timepoints timepoints when the zero curve is a Nelson-Siegel curve --
   npv(C, timepoints, nsz(14.084,-3.4107,0.0015,1.8832,timepoints))
   # Wow!
+  pdf("cashflows.pdf")
+  plot(timepoints,cfs,xlab="Time",ylab="Cash flows")
+  lines(timepoints,cfs)
+  graphics.off()
 
   cat("\n\nEXAMPLE 4: Testing performance--\n")
   # ---------------------------------------------------------------------------

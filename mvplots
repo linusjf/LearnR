@@ -1,5 +1,4 @@
 #!/bin/bash
 mkdir -p ~/storage/downloads/Rplots
-mv ./**/*.pdf ~/storage/downloads/Rplots
-mv ./**/*.png ~/storage/downloads/Rplots
-
+find . -name "*.pdf" | parallel -I% --max-args 1 mv % ~/storage/downloads/Rplots
+find . -name "*.png" | parallel -I% --max-args 1 mv % ~/storage/downloads/Rplots
