@@ -237,9 +237,9 @@ main = function(argv) {
   print(s2)
   all.equal(ans1,ans2)
   print(s1/s2)       
+  # On my phone it's 5000x faster
   if (l1 == l2)
     cat("\nNo zeroes generated\n\n")
-  # On my phone it's 5000x faster
   return (0)
 }
 
