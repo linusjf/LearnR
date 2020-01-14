@@ -62,9 +62,6 @@ main = function(argv) {
   cat("\n\nEXAMPLE 3: Nelson-Siegel yield curve\n")
   # Write this as if you're dealing with scalars --
   # Nelson Siegel function
-  beta <- "\\U03B2"
-  beta <- stri_unescape_unicode(gsub("\\U","\\u",beta, fixed=TRUE))
-  print(beta)
   nsz <- function(b0, b1, b2, tau, t) {
     tmp = t/tau
     tmp2 = exp(-tmp)
@@ -106,7 +103,6 @@ main = function(argv) {
   cat("\n\nEXAMPLE 3: Making the NPV of a bond--\n")
   # You know the bad way - sum over all cashflows, NPVing each.
   # Now look at the R way.
-  pdf("amazing.pdf",onefile=TRUE)
   C = rep(100, 6)
   # Print interest rates
   intrates = nsz(14.084,-3.4107,0.0015,1.8832,timepoints)       
@@ -118,23 +114,10 @@ main = function(argv) {
   print(beta2s)
   print("Interest rates...")
   print(intrates)
-  plot(timepoints,intrates,xlab="Time",ylab="Interest rates (N/S)")
-  lines(timepoints,intrates)
-  plot(timepoints,beta0s,xlab="Time",
-       ylab=expression(paste(beta,"0 component (N/S)"))) 
-  lines(timepoints,beta0s)
-  plot(timepoints,beta1s,xlab="Time",
-       ylab=expression(paste(beta,"1 component (N/S)")))
-  lines(timepoints,beta1s)
-  plot(timepoints,beta2s,xlab="Time",
-       ylab=expression(paste(beta,"2 component (N/S)")))  
-  lines(timepoints,beta2s)
   # Print cashflows discounted @ 5%
   discounted = C/((1.05)^timepoints)
   print("Discounted cfs at 5%...")
   print(discounted)
-  plot(timepoints,discounted,xlab="Time",ylab="Cash flows discounted at 5%")
-  lines(timepoints,discounted)
   # Using NS instead of 5%
   cfs <- C/((1 + (0.01*nsz(14.084,-3.4107,0.0015,1.8832,timepoints))^timepoints)) 
   print("Cashflows at Nelson-Siegel rates...")
@@ -163,6 +146,23 @@ main = function(argv) {
   npv(C, timepoints, nsz(14.084,-3.4107,0.0015,1.8832,timepoints))
   
   # Wow!
+  cat("\n\nPlotting graphs to amazing.pdf--\n")
+  beta <- "\\U03B2"
+  beta <- stri_unescape_unicode(gsub("\\U","\\u",beta, fixed=TRUE))
+  pdf("amazing.pdf",onefile=TRUE)
+  plot(timepoints,intrates,xlab="Time",ylab="Interest rates (N/S)")
+  lines(timepoints,intrates)
+  plot(timepoints,beta0s,xlab="Time",
+       ylab=expression(paste(beta,"0 component (N/S)"))) 
+  lines(timepoints,beta0s)
+  plot(timepoints,beta1s,xlab="Time",
+       ylab=expression(paste(beta,"1 component (N/S)")))
+  lines(timepoints,beta1s)
+  plot(timepoints,beta2s,xlab="Time",
+       ylab=expression(paste(beta,"2 component (N/S)")))  
+  lines(timepoints,beta2s)
+  plot(timepoints,discounted,xlab="Time",ylab="Cash flows discounted at 5%")
+  lines(timepoints,discounted)
   plot(timepoints,cfs,xlab="Time",ylab="Cash flows")
   lines(timepoints,cfs)
   graphics.off()
