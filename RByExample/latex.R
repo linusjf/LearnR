@@ -2,6 +2,7 @@
 library(xtable)
 # Goal: To make latex tabular out of an R matrix
 
+main <- function(argv) {
 # Setup a nice R object:
 m <- matrix(rnorm(8), nrow=2)
 rownames(m) <- c("Age", "Weight")
@@ -43,3 +44,8 @@ data <- rbind(
 colnames(data) <- c("a","b")
 rownames(data) <- c("x","y","z","a")
 xtable(data)
+return (0)
+}
+
+if (identical (environment (), globalenv ()))
+  quit (status = main(commandArgs(trailingOnly = TRUE)))

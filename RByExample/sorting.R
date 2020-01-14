@@ -8,6 +8,7 @@
 # The order() function makes an integer vector which is a correct
 # ordering for the purpose of sorting.
 main <- function(argv) {
+
 D <- data.frame(x=c(1,2,3,1), y=c(7,19,2,2))
 print(D)
 
