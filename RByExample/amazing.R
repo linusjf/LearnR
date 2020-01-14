@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+library(stringi)
 
 # Goal: The amazing R vector notation.
 
@@ -61,6 +62,9 @@ main = function(argv) {
   cat("\n\nEXAMPLE 3: Nelson-Siegel yield curve\n")
   # Write this as if you're dealing with scalars --
   # Nelson Siegel function
+  beta <- "\\U03B2"
+  beta <- stri_unescape_unicode(gsub("\\U","\\u",beta, fixed=TRUE))
+  print(beta)
   nsz <- function(b0, b1, b2, tau, t) {
     tmp = t/tau
     tmp2 = exp(-tmp)
@@ -106,10 +110,25 @@ main = function(argv) {
   C = rep(100, 6)
   # Print interest rates
   intrates = nsz(14.084,-3.4107,0.0015,1.8832,timepoints)       
+  beta0s = rep(14.084,6) 
+  print(beta0s)
+  beta1s = beta1(14.084,-3.4107,0.0015,1.8832,timepoints)       
+  print(beta1s)
+  beta2s = beta2(14.084,-3.4107,0.0015,1.8832,timepoints)       
+  print(beta2s)
   print("Interest rates...")
   print(intrates)
   plot(timepoints,intrates,xlab="Time",ylab="Interest rates (N/S)")
   lines(timepoints,intrates)
+  plot(timepoints,beta0s,xlab="Time",
+       ylab=expression(paste(beta,"0 component (N/S)"))) 
+  lines(timepoints,beta0s)
+  plot(timepoints,beta1s,xlab="Time",
+       ylab=expression(paste(beta,"1 component (N/S)")))
+  lines(timepoints,beta1s)
+  plot(timepoints,beta2s,xlab="Time",
+       ylab=expression(paste(beta,"2 component (N/S)")))  
+  lines(timepoints,beta2s)
   # Print cashflows discounted @ 5%
   discounted = C/((1.05)^timepoints)
   print("Discounted cfs at 5%...")
