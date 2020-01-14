@@ -177,22 +177,68 @@ main = function(argv) {
   method1 <- function(x,y) {
     tmp <- NULL
     for (i in 1:N) {
-      if (x[i] < 0) 
+      if (x[i] <= 0) 
         tmp <- c(tmp, y[i])
     }
     return (tmp)
   }
 
   method2 <- function(x,y) {
+    return (y[x <= 0])
+  }
+  
+  method1lt <- function(x,y) {
+    tmp <- NULL
+    for (i in 1:N) {
+      if (x[i] < 0) 
+        tmp <- c(tmp, y[i])
+    }
+    return (tmp)
+  }
+
+  method2lt <- function(x,y) {
     return (y[x < 0])
   }
 
   s1 <- system.time(ans1 <- method1(x,y))
   s2 <- system.time(ans2 <- method2(x,y))
+  l1 <- length(ans1)
   print(s1)
   print(s2)
   all.equal(ans1,ans2)
   print(s1/s2)          
+  
+  s1 <- system.time(ans1 <- method1lt(x,y))
+  s2 <- system.time(ans2 <- method2lt(x,y))
+  l2 <- length(ans1)
+  print(s1)
+  print(s2)
+  all.equal(ans1,ans2)
+  print(s1/s2)          
+  if (l1 == l2)
+    cat("\nNo zeroes generated\n\n")
+  
+  N <- 1e5
+  x <- rnorm(N)
+  y <- rnorm(N)
+  
+  s1 <- system.time(ans1 <- method1(x,y))
+  s2 <- system.time(ans2 <- method2(x,y))
+  l1 <- length(ans1)
+  print(s1)
+  print(s2)
+  all.equal(ans1,ans2)
+  print(s1/s2)          
+  
+  s1 <- system.time(ans1 <- method1lt(x,y))
+  s2 <- system.time(ans2 <- method2lt(x,y))
+  l2 <- length(ans1)
+  print(s1)
+  print(s2)
+  all.equal(ans1,ans2)
+  print(s1/s2)       
+  if (l1 == l2)
+    cat("\nNo zeroes generated\n\n")
   # On my phone it's 5000x faster
   return (0)
 }
