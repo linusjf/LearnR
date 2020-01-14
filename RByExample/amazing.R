@@ -102,15 +102,20 @@ main = function(argv) {
   cat("\n\nEXAMPLE 3: Making the NPV of a bond--\n")
   # You know the bad way - sum over all cashflows, NPVing each.
   # Now look at the R way.
+  pdf("amazing.pdf",onefile=TRUE)
   C = rep(100, 6)
   # Print interest rates
   intrates = nsz(14.084,-3.4107,0.0015,1.8832,timepoints)       
   print("Interest rates...")
   print(intrates)
+  plot(timepoints,intrates,xlab="Time",ylab="Interest rates (N/S)")
+  lines(timepoints,intrates)
   # Print cashflows discounted @ 5%
   discounted = C/((1.05)^timepoints)
   print("Discounted cfs at 5%...")
   print(discounted)
+  plot(timepoints,discounted,xlab="Time",ylab="Cash flows discounted at 5%")
+  lines(timepoints,discounted)
   # Using NS instead of 5%
   cfs <- C/((1 + (0.01*nsz(14.084,-3.4107,0.0015,1.8832,timepoints))^timepoints)) 
   print("Cashflows at Nelson-Siegel rates...")
@@ -137,8 +142,8 @@ main = function(argv) {
   # Bottom line: Here's how you make the NPV of a bond with cashflows C
   # at timepoints timepoints when the zero curve is a Nelson-Siegel curve --
   npv(C, timepoints, nsz(14.084,-3.4107,0.0015,1.8832,timepoints))
+  
   # Wow!
-  pdf("cashflows.pdf")
   plot(timepoints,cfs,xlab="Time",ylab="Cash flows")
   lines(timepoints,cfs)
   graphics.off()
