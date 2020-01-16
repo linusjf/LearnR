@@ -35,16 +35,15 @@ main <- function(argv) {
 
 
   cat("\n\nEXAMPLE 2: Compute the mean of every row of a matrix --\n")
-  # Here's another example.
-  # It isn't really about R; it's about thinking in matrix
+  # Here's another example.  It isn't really about R;
+  # it's about thinking in matrix
   # notation. But still.  Let me setup a matrix --
   n <- 4
   m <- 100
   r <- matrix(runif(n * m), n, m)
 
-  # So I face a nxm matrix [r11 r12 ... r1n]
-  # [r21 r22 ... r2n] [r32 r32 ... r3n] My
-  # goal: each column needs to be reduced to a mean.
+  # So I face a nxm matrix [r11 r12 ... r1n] [r21 r22 ... r2n] [r32 r32 ... r3n]
+  # My goal: each column needs to be reduced to a mean.
 
   # method 1 uses loops:
   mean1 <- numeric(m)
@@ -58,10 +57,9 @@ main <- function(argv) {
   # The two answers are the same --
   print(all.equal(mean1, mean2[, ]))
   print(all.equal(mean1, rowMeans(t(r))))
-  # As an aside, I should say that you can do this directly by
-  # using the rowMeans() function. But the above is more
-  # about pedagogy rather than
-  # showing you how to get rowmeans.
+  # As an aside, I should say that you can do this directly by using the
+  # rowMeans() function. But the above is more about pedagogy rather
+  # than showing you how to get rowmeans.
 
   print("Displaying row sums")
   print(rowSums(r))
@@ -87,10 +85,7 @@ main <- function(argv) {
   # The bad way:
   z <- numeric(length(timepoints))
   for (i in seq_len(length(timepoints))) {
-    z[i] <- nsz(
-      14.084, -3.4107, 0.0015, 1.8832,
-      timepoints[i]
-    )
+    z[i] <- nsz(14.084, -3.4107, 0.0015, 1.8832, timepoints[i])
   }
   print(z)
 
@@ -118,44 +113,24 @@ main <- function(argv) {
   print("Discounted cfs at 5%...")
   print(discounted)
   # Using NS instead of 5%
-  cfs <- c /
-    ((1 +
-      (0.01 *
-        nsz(
-          14.084,
-          -3.4107,
-          0.0015,
-          1.8832,
-          timepoints
-        ))
-      ^timepoints))
+  cfs <- c / ((1 + (0.01 * nsz(
+    14.084, -3.4107, 0.0015, 1.8832,
+    timepoints
+  ))^timepoints))
   print("Cashflows at Nelson-Siegel rates...")
   print(cfs)
 
   print("Net Present Value...")
   # NPV in two different ways --
-  npv1 <- c %*%
-    (1 +
-      (0.01 *
-        nsz(
-          14.084,
-          -3.4107,
-          0.0015,
-          1.8832,
-          timepoints
-        )))^-timepoints
+  npv1 <- c %*% (1 + (0.01 * nsz(
+    14.084, -3.4107, 0.0015, 1.8832,
+    timepoints
+  )))^-timepoints
   print(npv1)
-  npv2 <-
-    sum(c *
-      (1 +
-        (0.01 *
-          nsz(
-            14.084,
-            -3.4107,
-            0.0015,
-            1.8832,
-            timepoints
-          )))^-timepoints)
+  npv2 <- sum(c * (1 + (0.01 * nsz(
+    14.084, -3.4107, 0.0015, 1.8832,
+    timepoints
+  )))^-timepoints)
   print(npv2)
   print(all.equal(npv1[1, 1], npv2))
   # You can drop back to a flat yield curve at 5% easily --
@@ -171,17 +146,7 @@ main <- function(argv) {
 
   # Bottom line: Here's how you make the NPV of a bond with cashflows C at
   # timepoints timepoints when the zero curve is a Nelson-Siegel curve --
-  npv(
-    c,
-    timepoints,
-    nsz(
-      14.084,
-      -3.4107,
-      0.0015,
-      1.8832,
-      timepoints
-    )
-  )
+  npv(c, timepoints, nsz(14.084, -3.4107, 0.0015, 1.8832, timepoints))
 
   # Wow!
   cat("\n\nPlotting graphs to amazing.pdf--\n")
@@ -190,32 +155,20 @@ main <- function(argv) {
   pdf("amazing.pdf", onefile = TRUE)
   plot(timepoints, intrates, xlab = "Time", ylab = "Interest rates (N/S)")
   lines(timepoints, intrates)
-  plot(timepoints, beta0s,
-    xlab = "Time",
-    ylab = expression(paste(beta, "0 component (N/S)"))
-  )
+  plot(timepoints, beta0s, xlab = "Time", ylab = expression(paste(beta, "0
+                                                                  component
+                                                                  (N/S)")))
   lines(timepoints, beta0s)
-  plot(timepoints,
-    beta1s,
-    xlab = "Time",
-    ylab = expression(
-      paste(
-        beta, "1 component (N/S)"
-      )
-    )
-  )
+  plot(timepoints, beta1s, xlab = "Time", ylab = expression(paste(beta, "1
+                                                                  component
+                                                                  (N/S)")))
   lines(timepoints, beta1s)
-  plot(timepoints, beta2s,
-    xlab = "Time",
-    ylab = expression(
-      paste(beta, "2 component (N/S)")
-    )
-  )
+  plot(timepoints, beta2s, xlab = "Time", ylab = expression(paste(beta, "2
+                                                                  component
+                                                                  (N/S)")))
   lines(timepoints, beta2s)
-  plot(timepoints, discounted,
-    xlab = "Time",
-    ylab = "Cash flows discounted at 5%"
-  )
+  plot(timepoints, discounted, xlab = "Time", ylab = "Cash flows discounted at
+       5%")
   lines(timepoints, discounted)
   plot(timepoints, cfs, xlab = "Time", ylab = "Cash flows")
   lines(timepoints, cfs)

@@ -1,7 +1,6 @@
 #!/usr/bin/env Rscript
 findwords <- function(tf) {
-  # read in the words from the file,
-  # into a vector of mode character
+  # read in the words from the file, into a vector of mode character
   txt <- scan(tf, "")
   words <- split(seq_len(length(txt)), txt)
   return(words)

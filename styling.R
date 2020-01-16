@@ -10,16 +10,10 @@ main <- function(argv) {
     }
     cat(folder, "\n")
     res <- as.data.frame(styler::style_dir(folder, recursive = TRUE))
-    exit_code <- exit_code + nrow(subset(
-      res,
-      changed == TRUE
-    ))
+    exit_code <- exit_code + nrow(subset(res, changed == TRUE))
   }
   res <- as.data.frame(styler::style_dir(path = ".", recursive = FALSE))
-  exit_code <- exit_code + nrow(subset(
-    res,
-    changed == TRUE
-  ))
+  exit_code <- exit_code + nrow(subset(res, changed == TRUE))
   return(exit_code)
 }
 

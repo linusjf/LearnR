@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-./styling.R && (./linter.R | tee linter.out)
+./styling.R | tee styler.out && 
+  (./linter.R | tee linter.out)
 exit "$?"

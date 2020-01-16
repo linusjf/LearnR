@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 # Goal: To do sorting.  The approach here needs to be explained. If `i' is a
-# vector of integers, then the data
-# frame d[i,] picks up rows from d based on the
-# values found in `i'.  The order() function makes an integer vector which is a
+# vector of integers, then the data frame d[i,] picks up rows from d based on
+# the values found in `i'.
+# The order() function makes an integer vector which is a
 # correct ordering for the purpose of sorting.
 main <- function(argv) {
   d <- data.frame(x = c(1, 2, 3, 1), y = c(7, 19, 2, 2))
