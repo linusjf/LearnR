@@ -4,7 +4,7 @@ library(styler)
 
 main <- function(argv) {
   for (folder in list.dirs(path = ".", recursive = FALSE)) {
-    if (folder == "./.git")
+    if (folder == "./.git") 
       next
     print(folder)
     print(lintr::lint_dir(folder))
