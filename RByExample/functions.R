@@ -3,11 +3,11 @@
 
 main <- function(argv) {
   # FIRST LEARN ABOUT LISTS --
-  X <- list(height = 5.4, weight = 54)
+  x <- list(height = 5.4, weight = 54)
   print("Use default printing ---")
-  print(X)
+  print(x)
   print("Accessing individual elements ---")
-  cat("Your height is ", X$height, " and your weight is ", X$weight, "\n")
+  cat("Your height is ", x$height, " and your weight is ", x$weight, "\n")
 
   # FUNCTIONS ---
   square <- function(x) {
@@ -28,9 +28,9 @@ main <- function(argv) {
     return(parcel)
   }
 
-  X <- powers(3)
+  x <- powers(3)
   print("Showing powers of 3 --")
-  print(X)
+  print(x)
 
   # WRITING THIS COMPACTLY (4 lines instead of 7)
 
@@ -50,5 +50,5 @@ main <- function(argv) {
   return(0)
 }
 
-
-if (identical(environment(), globalenv())) quit(status = main(commandArgs(trailingOnly = TRUE)))
+if (identical(environment(), globalenv()))
+  quit(status = main(commandArgs(trailingOnly = TRUE)))

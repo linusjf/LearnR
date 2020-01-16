@@ -1,5 +1,5 @@
-# returns the minimum value of d[ i, j], i != j, and the row/ col attainings that
-# minimum, for square symmetric matrix d; no special policy on ties
+# returns the minimum value of d[ i, j], i != j, and the row/ col attainings
+# that minimum, for square symmetric matrix d; no special policy on ties
 mind <- function(d) {
   n <- nrow(d)
   # add a column to identify row number for apply()

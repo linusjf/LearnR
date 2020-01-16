@@ -52,4 +52,5 @@ main <- function(argv) {
   print(y)
 }
 
-if (identical(environment(), globalenv())) quit(status = main(commandArgs(trailingOnly = TRUE)))
+if (identical(environment(), globalenv()))
+  quit(status = main(commandArgs(trailingOnly = TRUE)))

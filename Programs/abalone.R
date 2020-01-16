@@ -12,8 +12,11 @@ plot(abam$Length, abam$Diameter, xlab = "Length", ylab = "Diameter", xlim = c(
   0.8
 ), ylim = c(0, 0.7))
 par(new = TRUE)
-plot(abaf$Length, abaf$Diameter, pch = "x", xlab = "Length", ylab = "Diameter", xlim = c(
-  0,
-  0.8
-), ylim = c(0, 0.7))
+plot(abaf$Length, abaf$Diameter,
+  pch = "x", xlab = "Length",
+  ylab = "Diameter", xlim = c(
+    0,
+    0.8
+  ), ylim = c(0, 0.7)
+)
 graphics.off()

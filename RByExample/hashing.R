@@ -29,7 +29,7 @@ main <- function(argv) {
   print(m)
   # Or even better --
   print("xtable(m)")
-  print(xtable(m))
+  print(xtable::xtable(m))
 
   # Now address symbolically
   print("m[,\"Africa\"]")
@@ -50,32 +50,32 @@ main <- function(argv) {
   }
 
   # This works for data frames also --
-  print("D <- data.frame(m)")
-  D <- data.frame(m)
-  print("D")
-  print(D)
+  print("d <- data.frame(m)")
+  d <- data.frame(m)
+  print("d")
+  print(d)
   # Look closely at what happened --
-  print("str(D)")
-  str(D)
-  # The colours are the rownames(D).
+  print("str(d)")
+  str(d)
+  # The colours are the rownames(d).
 
   # Operations --
-  print("D$Africa")
-  print(D$Africa)
-  print("D[,\"Africa\"]")
-  print(D[, "Africa"])
-  print("D[\"yellow\",]")
-  print(D["yellow", ])
+  print("d$Africa")
+  print(d$Africa)
+  print("d[,\"Africa\"]")
+  print(d[, "Africa"])
+  print("d[\"yellow\",]")
+  print(d["yellow", ])
   # or
-  print("subset(D, rownames(D)==\"yellow\"")
-  print(subset(D, rownames(D) == "yellow"))
+  print("subset(d, rownames(d)==\"yellow\"")
+  print(subset(d, rownames(d) == "yellow"))
 
-  print("colnames(D) <- c(\"Antarctica\",\"America\")")
-  print(colnames(D) <- c("Antarctica", "America"))
-  print("D")
-  print(D)
-  print("D$America")
-  print(D$America)
+  print("colnames(d) <- c(\"Antarctica\",\"America\")")
+  print(colnames(d) <- c("Antarctica", "America"))
+  print("d")
+  print(d)
+  print("d$America")
+  print(d$America)
 }
 
 if (identical(environment(), globalenv())) {

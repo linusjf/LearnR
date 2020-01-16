@@ -24,22 +24,23 @@ main <- function(argv) {
   print(cbind(year, x, y, names))
 
   # To make a 'data frame', which is a list of vectors of the same length --
-  D <- data.frame(names, year, x, y)
-  print(D)
-  print(nrow(D))
+  d <- data.frame(names, year, x, y)
+  print(d)
+  print(nrow(d))
   # Accessing one of these vectors
-  print(D$names)
+  print(d$names)
   # Accessing the last element of this vector
-  print(D$names[nrow(D)])
+  print(d$names[nrow(d)])
   # Or equally,
-  print(D$names[length(D$names)])
-  F <- factor(D$year)
-  print(F)
-  print(as.numeric(F))
-  print(levels(F)[F])
-  print(factor(D$x))
-  print(factor(D$y))
+  print(d$names[length(d$names)])
+  f <- factor(d$year)
+  print(f)
+  print(as.numeric(f))
+  print(levels(f)[f])
+  print(factor(d$x))
+  print(factor(d$y))
   return(0)
 }
 
-if (identical(environment(), globalenv())) quit(status = main(commandArgs(trailingOnly = TRUE)))
+if (identical(environment(), globalenv()))
+  quit(status = main(commandArgs(trailingOnly = TRUE)))
