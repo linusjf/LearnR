@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-brary(xtable)
+library(xtable)
 # Goal: Associative arrays (as in awk) or hashes (as in perl).  Or, more
 # generally, adventures in R addressing.
 
