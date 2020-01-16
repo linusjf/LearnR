@@ -6,7 +6,7 @@ main <- function(argv) {
   for (folder in list.dirs(path = ".", recursive = FALSE)) {
     if (folder == "./.git") 
       next
-    print(folder)
+    cat(folder, "\n")
     violations <- lint_dir(folder)
     exit_code <- exit_code + length(violations)
     print(violations)

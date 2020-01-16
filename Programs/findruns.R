@@ -11,7 +11,9 @@ findruns <- function(x, k) {
   }
   if (count > 0) {
     runs <- runs[1:count]
-  } else runs <- NULL
+  } else {
+    runs <- NULL
+  }
   return(runs)
 }
 
@@ -22,4 +24,3 @@ b <- findruns(y, 3)
 print(b)
 c <- findruns(y, 6)
 print(c)
-

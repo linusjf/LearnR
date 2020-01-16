@@ -22,4 +22,3 @@ freqwl <- function(wrdlst) {
   # get word frequencies
   return(wrdlst[order(freqs)])
 }
-
