@@ -2,22 +2,22 @@
 library(stringi)
 
 # Goal: The amazing R vector notation.
-  
+
 beta0 <- function(b0, b1, b2, tau, t) {
-    return(b0)
-  }
+  return(b0)
+}
 
 beta1 <- function(b0, b1, b2, tau, t) {
-    tmp <- t / tau
-    tmp2 <- exp(-tmp)
-    return(b1 * (1 - tmp2) / (tmp))
-  }
+  tmp <- t / tau
+  tmp2 <- exp(-tmp)
+  return(b1 * (1 - tmp2) / (tmp))
+}
 
 beta2 <- function(b0, b1, b2, tau, t) {
-    tmp <- t / tau
-    tmp2 <- exp(-tmp)
-    return((b2 * (1 - tmp2) / tmp) - (b2 * tmp2))
-  }
+  tmp <- t / tau
+  tmp2 <- exp(-tmp)
+  return((b2 * (1 - tmp2) / tmp) - (b2 * tmp2))
+}
 
 main <- function(argv) {
   cat("EXAMPLE 1: sin(x) for a vector --\n")

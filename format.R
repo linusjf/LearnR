@@ -4,10 +4,10 @@ library(formatR)
 main <- function(argv) {
   print(sessionInfo())
   options(formatR.indent = 2)
-  path = dir(path = ".", pattern = "^[a-z].+[.]R$")
-  tidy_file(list.files(path = ".", pattern = "^[a-z].*[.]R$"))
-  path = dir(path = ".", pattern = "^[A-Z].+$")
-  tidy_dir(path, recursive = TRUE)
+  path <- dir(path = ".", pattern = "^[a-z].+[.]R$")
+  formatR::tidy_file(list.files(path = ".", pattern = "^[a-z].*[.]R$"))
+  path <- dir(path = ".", pattern = "^[A-Z].+$")
+  formatR::tidy_dir(path, recursive = TRUE)
   return(0)
 }
 
