@@ -75,7 +75,6 @@ main <- function(argv) {
   print(D$America)
 }
 
-if (
-entical(environment(), globalenv())) {
+if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
 }
