@@ -3,6 +3,7 @@ library(formatR)
 
 main <- function(argv) {
     print(sessionInfo())
+    options("formatR.indent=2")
     path = dir(path = ".", pattern = "^[a-z].+[.]R$")
     tidy_file(list.files(path = ".", pattern = "^[a-z].*[.]R$"))
     path = dir(path = ".", pattern = "^[A-Z].+$")
