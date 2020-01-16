@@ -21,7 +21,7 @@ main <- function(argv) {
   # This works for matrices too:
   m <- matrix(runif(10), nrow = 5)
   print("rownames(m) <- c(\"violet\",\"indigo\",
-    \"blue\",\"green\",\"yellow\")")
+  \"blue\",\"green\",\"yellow\")")
   rownames(m) <- c("violet", "indigo", "blue", "green", "yellow")
   print("colnames(m) <- c(\"Asia\",\"Africa\")")
   colnames(m) <- c("Asia", "Africa")
@@ -75,6 +75,7 @@ main <- function(argv) {
   print(D$America)
 }
 
-if (identical(environment(), globalenv())) {
+if (
+entical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
 }
