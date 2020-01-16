@@ -3,8 +3,7 @@ library(lintr)
 library(styler)
 
 main <- function(argv) {
-
+    
 }
 
-if (identical (environment (), globalenv ()))
-  quit (status = main(commandArgs(trailingOnly = TRUE)))
+if (identical(environment(), globalenv())) quit(status = main(commandArgs(trailingOnly = TRUE)))

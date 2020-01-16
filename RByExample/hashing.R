@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
-library(xtable)
+
+brary(xtable)
 # Goal: Associative arrays (as in awk) or hashes (as in perl).  Or, more
 # generally, adventures in R addressing.
 
@@ -30,7 +31,7 @@ main <- function(argv) {
     print("xtable(m)")
     print(xtable(m))
     
-    # Now address symbolically --
+    # Now address symbolically
     print("m[,\"Africa\"]")
     print(m[, "Africa"])
     print("m[\"indigo\",]")
@@ -74,4 +75,6 @@ main <- function(argv) {
     print(D$America)
 }
 
-if (identical(environment(), globalenv())) quit(status = main(commandArgs(trailingOnly = TRUE)))
+if (identical(environment(), globalenv())) {
+    quit(status = main(commandArgs(trailingOnly = TRUE)))
+}
