@@ -3,7 +3,6 @@
 
 # To make vectors 'x' 'y' 'year' and 'names'
 main <- function(argv) {
-  
   x <- c(2, 3, 7, 9)
   y <- c(9, 7, 3, 2)
   year <- 1990:1993
@@ -11,19 +10,19 @@ main <- function(argv) {
   # Accessing the 1st and last elements of y --
   print(y[1])
   print(y[length(y)])
-  
+
   # To make a list 'person' --
   person <- list(name = "payal", x = 2, y = 9, year = 1990)
   print(person)
   # Accessing things inside a list --
   print(person$name)
   print(person$x)
-  
+
   # To make a matrix, pasting together the columns 'year' 'x' and 'y' The verb
   # cbind() stands for 'column bind'
   print(cbind(year, x, y))
   print(cbind(year, x, y, names))
-  
+
   # To make a 'data frame', which is a list of vectors of the same length --
   D <- data.frame(names, year, x, y)
   print(D)

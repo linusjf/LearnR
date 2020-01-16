@@ -2,7 +2,7 @@
 # Goal: To show amazing R indexing notation, and the use of is.na()
 
 # An example vector to play with.
-main = function(argv) {
+main <- function(argv) {
   x <- c(2, 7, 9, 2, NA, 5)
   cat("This is the starting vector x:\n")
   print(x)

@@ -18,7 +18,7 @@ main <- function(argv) {
   print(e1)
   print(e2)
   print(cbind(e1, e2))
-  
+
   # Now how do we reconstruct a time-series that tries to utilise both?  Do use the
   # more liquid exchange here.
   combined <- e1
