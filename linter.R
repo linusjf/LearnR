@@ -1,15 +1,17 @@
 #!/usr/bin/env Rscript
 library(lintr)
-library(styler)
 
 main <- function(argv) {
+  exit_code <- 0
   for (folder in list.dirs(path = ".", recursive = FALSE)) {
     if (folder == "./.git") 
       next
     print(folder)
-    print(lintr::lint_dir(folder))
+    violations <- lint_dir(folder)
+    exit_code <- exit_code + length(violations)
+    print(violations)
   }
-  return(0)
+  return(exit_code)
 }
 
 if (identical(environment(), globalenv())) {
