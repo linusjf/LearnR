@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
 
+main <- function(argv) {
 aba <- read.csv("abalone.data", header = T, as.is = T)
 grps <- list()
 for (gen in c("M", "F")) grps[[gen]] <- which(aba == gen)
@@ -20,3 +21,8 @@ plot(abaf$Length, abaf$Diameter,
   ), ylim = c(0, 0.7)
 )
 graphics.off()
+}
+
+if (identical(environment(), globalenv())) {
+  quit(status = main(commandArgs(trailingOnly = TRUE)))
+}
