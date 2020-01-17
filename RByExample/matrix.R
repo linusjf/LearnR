@@ -74,12 +74,13 @@ main <- function(argv) {
   r <- 100 * diff(log(p))
 
   # Historical expected returns --
-
   cat("Historical expected returns:\n")
   print(colMeans(r))
+
   # Historical correlation matrix --
   cat("Historical correlation:\n")
   print(cor(r))
+
   # Historical covariance matrix --
   s <- cov(r)
   cat("Historical covariance:\n")
@@ -95,6 +96,7 @@ main <- function(argv) {
   # The portfolio optimisation function in tseries -- This uses the historical
   # facts from r
   optimised <- tseries::portfolio.optim(r)
+
   # Weights
   cat("Weights of optimised portfolio:\n")
   cat(optimised$pw, "\n")
