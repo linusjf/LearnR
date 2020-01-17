@@ -8,7 +8,7 @@ main <- function(argv) {
       next
     }
     cat(folder, "\n")
-    violations <- lint_dir(folder)
+    violations <- lint_dir(folder, parse_settings = TRUE)
     exit_code <- exit_code + length(violations)
     print(violations)
   }
