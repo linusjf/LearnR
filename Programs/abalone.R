@@ -21,6 +21,7 @@ plot(abaf$Length, abaf$Diameter,
   ), ylim = c(0, 0.7)
 )
 graphics.off()
+return(0)
 }
 
 if (identical(environment(), globalenv())) {

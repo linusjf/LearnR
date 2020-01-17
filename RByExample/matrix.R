@@ -94,7 +94,7 @@ cat(t(w) %*% s %*% w, "\n")
 
 # The portfolio optimisation function in tseries -- This uses the historical
 # facts from r
-optimised <- portfolio.optim(r)
+optimised <- tseries::portfolio.optim(r)
 # Weights
 cat("Weights of optimised portfolio:\n")
 cat(optimised$pw, "\n")
@@ -104,6 +104,23 @@ cat(optimised$pm, "\n")
 # Standard deviation of optimised port.
 cat("Standard deviation of optimised portfolio:\n")
 cat(optimised$ps, "\n")
+
+# The portfolio optimisation function in tseries -- This uses the historical
+# facts from r
+cat("For optimised portfolio with min 10% and max 50%\n")
+optimised <- tseries::portfolio.optim(r,
+                reslow = c(0.1, 0.1, 0.1, 0.1),
+                reshigh = c(0.5, 0.5, 0.5, 0.5))
+# Weights
+cat("Weights of optimised portfolio:\n")
+cat(optimised$pw, "\n")
+# Expected return using these weights
+cat("Expected return of optimised portfolio:\n")
+cat(optimised$pm, "\n")
+# Standard deviation of optimised port.
+cat("Standard deviation of optimised portfolio:\n")
+cat(optimised$ps, "\n")
+return(0)
 }
 
 if (identical(environment(), globalenv())) {
