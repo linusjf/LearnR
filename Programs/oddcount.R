@@ -14,6 +14,7 @@ oddcount <- function(x) {
 main <- function(argv) {
   print(oddcount(c(1, 3, 5)))
   print(oddcount(c(1, 2, 3, 7, 9)))
+  return(0)
 }
 
 if (identical(environment(), globalenv())) {
