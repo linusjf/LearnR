@@ -1,3 +1,4 @@
+#!/usr/bin/env Rscript
 # findud() converts vector v to 1s, 0s, \ representing an element 2 increasing
 # or not, relative to the previous one; output length is 1 3 less than input 4
 
@@ -11,8 +12,15 @@ udcorr <- function(x, y) {
   return(mean(ud[[1]] == ud[[2]]))
 }
 
-x <- round(rnorm(mean = 10, sd = 5, 50))
-y <- round(rnorm(mean = 9, sd = 6, 50))
-ud <- udcorr(x, y)
+main <- function(argv) {
+  x <- round(rnorm(mean = 10, sd = 5, 50))
+  y <- round(rnorm(mean = 9, sd = 6, 50))
+  ud <- udcorr(x, y)
 
-print(ud)
+  print(ud)
+  return(0)
+}
+
+if (identical(environment(), globalenv())) {
+  quit(status = main(commandArgs(trailingOnly = TRUE)))
+}

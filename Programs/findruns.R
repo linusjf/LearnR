@@ -17,10 +17,17 @@ findruns <- function(x, k) {
   return(runs)
 }
 
-y <- c(1, 0, 0, 1, 1, 1, 0, 1, 1)
-a <- findruns(y, 2)
-print(a)
-b <- findruns(y, 3)
-print(b)
-c <- findruns(y, 6)
-print(c)
+main <- function(argv) {
+  y <- c(1, 0, 0, 1, 1, 1, 0, 1, 1)
+  a <- findruns(y, 2)
+  print(a)
+  b <- findruns(y, 3)
+  print(b)
+  c <- findruns(y, 6)
+  print(c)
+  return(0)
+}
+
+if (identical(environment(), globalenv())) {
+  quit(status = main(commandArgs(trailingOnly = TRUE)))
+}
