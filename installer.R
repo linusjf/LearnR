@@ -196,6 +196,9 @@ main <- function(argv) {
   if (!require(readr)) {
     install.packages("readr", .libPaths()[1])
   }
+  if (!require(dplyr)) {
+    install.packages("dplyr", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     print(warnings())
   }
