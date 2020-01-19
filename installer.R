@@ -193,7 +193,9 @@ main <- function(argv) {
   install_tools()
   install_programs()
   install_rbyexample()
-  # install_msdrs()
+  if (!require(readr)) {
+    install.packages("readr", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     print(warnings())
   }
