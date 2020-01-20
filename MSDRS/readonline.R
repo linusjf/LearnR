@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
-library(readr)
-library(dplyr)
+suppressMessages(library(readr))
+suppressMessages(library(dplyr))
+library(ggplot2)
 
 knots_to_mph <- function(knots) {
   mph <- 1.152 * knots
@@ -58,6 +59,18 @@ main <- function(argv) {
       worst_pressure = min(min_pressure)
     ))
 
+  print(ext_tracks %>%
+    group_by(storm_name, year) %>%
+    head())
+
+  print(ext_tracks %>%
+    group_by(storm_name, year) %>%
+    summarize(
+      n_obs = n(),
+      worst_wind = max(max_wind),
+      worst_pressure = min(min_pressure)
+    ))
+
   zika_file <- paste0(
     "https://raw.githubusercontent.com/cdcepi/zika/master/",
     "Brazil/COES_Microcephaly/data/COES_Microcephaly-2016-06-25.csv"
@@ -66,6 +79,12 @@ main <- function(argv) {
 
   print(zika_brazil %>%
     select(location, value, unit))
+
+  ext_tracks %>%
+    group_by(storm_name) %>%
+    summarize(worst_wind = max(max_wind)) %>%
+    ggplot2::ggplot(aes(x = worst_wind)) + geom_histogram(bins = 30)
+  ggplot2::ggsave("ext_tracks.pdf")
   return(0)
 }
 
