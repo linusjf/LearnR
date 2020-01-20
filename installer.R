@@ -199,6 +199,12 @@ main <- function(argv) {
   if (!require(dplyr)) {
     install.packages("dplyr", .libPaths()[1])
   }
+  if (!require(httr)) {
+    install.packages("httr", .libPaths()[1])
+  }
+  if (!require(magrittr)) {
+    install.packages("magrittr", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     summary(warnings())
   }
