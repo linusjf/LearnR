@@ -126,7 +126,7 @@ main <- function(argv) {
 
   cat("For optimised portfolio with riskfree rate 4%\n")
   optimised <- tseries::portfolio.optim(r,
-  riskless = TRUE, rf = 0.04
+    riskless = TRUE, rf = 0.04
   )
   # Weights
   cat("Weights of optimised portfolio:\n")

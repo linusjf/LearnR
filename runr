@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 usage()
 {
-  echo "Usage: $0 file"
-  echo "file - R script"
-  exit 1
+    echo "Usage: $0 file"
+    echo "file - R script"
+    exit 1
 }
-if [ "$#" -ne 1 ] || ! [ -f "$1" ]; 
+if [ "$#" -ne 1 ] || ! [ -f "$1" ];
 then
-  usage
+    usage
 fi
 R CMD BATCH --slave "$1"

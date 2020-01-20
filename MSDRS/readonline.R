@@ -59,26 +59,26 @@ main <- function(argv) {
 }
 
 wind <- function() {
-print(ext_tracks %>%
-  group_by(storm_name, year) %>%
-  summarize(worst_wind = max(max_wind)) %>%
-  filter(worst_wind >= 160))
+  print(ext_tracks %>%
+    group_by(storm_name, year) %>%
+    summarize(worst_wind = max(max_wind)) %>%
+    filter(worst_wind >= 160))
 }
 
 andrewcat5 <- function() {
-print(ext_tracks %>%
-  select(storm_name, month, day, hour, latitude, longitude, max_wind) %>%
-  filter(storm_name == "ANDREW" & max_wind >= 137))
+  print(ext_tracks %>%
+    select(storm_name, month, day, hour, latitude, longitude, max_wind) %>%
+    filter(storm_name == "ANDREW" & max_wind >= 137))
 }
 
 headings <- function() {
-print(ext_tracks %>%
-  select(storm_name, hour, max_wind) %>%
-  head(9))
-print(ext_tracks %>%
-  select(storm_name, hour, max_wind) %>%
-  filter(hour == "00") %>%
-  head(3))
+  print(ext_tracks %>%
+    select(storm_name, hour, max_wind) %>%
+    head(9))
+  print(ext_tracks %>%
+    select(storm_name, hour, max_wind) %>%
+    filter(hour == "00") %>%
+    head(3))
 }
 
 sampling <- function() {

@@ -3,11 +3,11 @@
 USAGE="Usage: $0 dir1 dir2 dir3 ... dirN"
 
 if [ "$#" == "0" ]; then
-	echo "$USAGE"
-	exit 1
+    echo "$USAGE"
+    exit 1
 fi
 
 echo "$@"
-./style.R "$@" | tee styler.out && 
-  (./lint.R "$@" | tee linter.out)
+./style.R "$@" | tee styler.out &&
+(./lint.R "$@" | tee linter.out)
 exit "$?"
