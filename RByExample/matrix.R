@@ -123,6 +123,20 @@ main <- function(argv) {
   # Standard deviation of optimised port.
   cat("Standard deviation of optimised portfolio:\n")
   cat(optimised$ps, "\n")
+
+  cat("For optimised portfolio with riskfree rate 4%\n")
+  optimised <- tseries::portfolio.optim(r,
+  riskless = TRUE, rf = 0.04
+  )
+  # Weights
+  cat("Weights of optimised portfolio:\n")
+  cat(optimised$pw, "\n")
+  # Expected return using these weights
+  cat("Expected return of optimised portfolio:\n")
+  cat(optimised$pm, "\n")
+  # Standard deviation of optimised port.
+  cat("Standard deviation of optimised portfolio:\n")
+  cat(optimised$ps, "\n")
   return(0)
 }
 
