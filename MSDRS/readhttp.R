@@ -4,7 +4,6 @@ library(httr)
 library(magrittr)
 library(readr)
 
-# nolint start
 main <- function(argv) {
   meso_url <- "https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py/"
   denver <- httr::GET(url = meso_url,
@@ -21,10 +20,9 @@ main <- function(argv) {
     httr::content() %>%
     readr::read_csv(skip = 5, na = "M")
 
-  print(denver %>% dplyr::slice(1:3))
+  print(dplyr::slice(denver, 1:3))
   return(0)
 }
-# nolint end
 
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
