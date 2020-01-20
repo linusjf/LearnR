@@ -205,6 +205,9 @@ main <- function(argv) {
   if (!require(magrittr)) {
     install.packages("magrittr", .libPaths()[1])
   }
+  if (!require(ggplot2)) {
+    install.packages("ggplot2", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     summary(warnings())
   }

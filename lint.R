@@ -4,7 +4,7 @@ library(lintr)
 main <- function(argv) {
   print(sessionInfo())
   exit_code <- 0
-  for (folder in list.dirs(path = ".", recursive = FALSE)) {
+  for (folder in argv) {
     if (folder == "./.git") {
       next
     }

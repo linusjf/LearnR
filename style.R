@@ -1,17 +1,16 @@
 #!/usr/bin/env Rscript
-library(lintr)
+library(styler)
 
 main <- function(argv) {
   print(sessionInfo())
   exit_code <- 0
-  for (folder in list.dirs(path = ".", recursive = FALSE)) {
+  for (folder in argv) {
     if (folder == "./.git") {
       next
     }
     cat(folder, "\n")
-    violations <- lintr::lint_dir(folder, parse_settings = TRUE)
-    exit_code <- exit_code + length(violations)
-    print(violations)
+    res <- as.data.frame(styler::style_dir(folder, recursive = FALSE))
+    exit_code <- exit_code + nrow(subset(res, res$changed == TRUE))
   }
   return(exit_code)
 }
