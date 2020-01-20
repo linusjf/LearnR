@@ -35,16 +35,25 @@ main <- function(argv) {
   )
 
   # Read the file in from its url
-  ext_tracks <- read_fwf(ext_tracks_file,
+  ext_tracks <- readr::read_fwf(ext_tracks_file,
     fwf_widths(ext_tracks_widths, ext_tracks_colnames),
     na = "-99"
   )
   ext_tracks[1:3, 1:9]
 
-print(ext_tracks %>%
-  filter(storm_name == "KATRINA") %>%
-  select(month, day, hour, max_wind, min_pressure, rad_max_wind) %>%
-  sample_n(4))
+  print(ext_tracks %>%
+    filter(storm_name == "KATRINA") %>%
+    select(month, day, hour, max_wind, min_pressure, rad_max_wind) %>%
+    sample_n(4))
+
+  zika_file <- paste0(
+    "https://raw.githubusercontent.com/cdcepi/zika/master/",
+    "Brazil/COES_Microcephaly/data/COES_Microcephaly-2016-06-25.csv"
+  )
+  zika_brazil <- readr::read_csv(zika_file)
+
+  print(zika_brazil %>%
+    select(location, value, unit))
   return(0)
 }
 

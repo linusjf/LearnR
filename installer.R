@@ -200,7 +200,7 @@ main <- function(argv) {
     install.packages("dplyr", .libPaths()[1])
   }
   if (!is.null(warnings())) {
-    print(warnings())
+    summary(warnings())
   }
   return(0)
 }
