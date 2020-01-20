@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+./styleall.R | tee styler.out && 
+  (./lintall.R | tee linter.out)
+exit "$?"
