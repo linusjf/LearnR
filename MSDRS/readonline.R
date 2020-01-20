@@ -2,6 +2,11 @@
 library(readr)
 library(dplyr)
 
+knots_to_mph <- function(knots) {
+  mph <- 1.152 * knots
+  return(mph)
+}
+
 main <- function(argv) {
   ext_tracks_file <- paste0(
     "http://rammb.cira.colostate.edu/research/",
@@ -45,6 +50,13 @@ main <- function(argv) {
     filter(storm_name == "KATRINA") %>%
     select(month, day, hour, max_wind, min_pressure, rad_max_wind) %>%
     sample_n(4))
+
+  print(ext_tracks %>%
+    summarize(
+      n_obs = n(),
+      worst_wind = knots_to_mph(max(max_wind)),
+      worst_pressure = min(min_pressure)
+    ))
 
   zika_file <- paste0(
     "https://raw.githubusercontent.com/cdcepi/zika/master/",
