@@ -124,13 +124,15 @@ main <- function(argv) {
   cat("Standard deviation of optimised portfolio:\n")
   cat(optimised$ps, "\n")
 
-  cat("For optimised portfolio with riskfree rate 4%\n")
+  cat("For optimised portfolio with riskfree rate 2%\n")
   optimised <- tseries::portfolio.optim(r,
-    riskless = TRUE, rf = 0.04
+    riskless = TRUE, rf = 0.02
   )
   # Weights
   cat("Weights of optimised portfolio:\n")
   cat(optimised$pw, "\n")
+  cat("Weight of risk-free security:\n")
+  cat(1 - sum(optimised$pw), "\n")
   # Expected return using these weights
   cat("Expected return of optimised portfolio:\n")
   cat(optimised$pm, "\n")
