@@ -208,6 +208,9 @@ main <- function(argv) {
   if (!require(ggplot2)) {
     install.packages("ggplot2", .libPaths()[1])
   }
+  if (!require(faraway)) {
+    install.packages("faraway", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     summary(warnings())
   }
