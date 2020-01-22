@@ -211,6 +211,9 @@ main <- function(argv) {
   if (!require(faraway)) {
     install.packages("faraway", .libPaths()[1])
   }
+  if (!require(tidyr)) {
+    install.packages("tidyr", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     summary(warnings())
   }
