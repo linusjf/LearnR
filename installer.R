@@ -214,6 +214,9 @@ main <- function(argv) {
   if (!require(tidyr)) {
     install.packages("tidyr", .libPaths()[1])
   }
+  if (!require(knitr)) {
+    install.packages("knitr", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     summary(warnings())
   }
