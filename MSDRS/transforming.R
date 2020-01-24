@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
 suppressMessages(library(dplyr))
+library(ggplot2)
 suppressMessages(library(lubridate))
 library(readr)
 library(tidyr)
@@ -43,6 +44,24 @@ main <- function(argv) {
 
   print(head(andrew_tracks, 3))
   print(class(andrew_tracks$datetime))
+
+  andrew_tracks %>%
+    gather(measure, value, -datetime) %>%
+    ggplot(aes(x = datetime, y = value)) +
+    geom_point() + geom_line() +
+    facet_wrap(~measure, ncol = 1, scales = "free_y")
+  ggplot2::ggsave("andrew_tracks.pdf")
+
+  print(andrew_tracks %>%
+    select(datetime) %>%
+    mutate(
+      year = year(datetime),
+      month = months(datetime),
+      weekday = weekdays(datetime),
+      yday = yday(datetime),
+      hour = hour(datetime)
+    ) %>%
+    slice(1:3))
   return(0)
 }
 
