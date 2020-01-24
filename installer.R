@@ -220,6 +220,9 @@ main <- function(argv) {
   if (!require(lubridate)) {
     install.packages("lubridate", .libPaths()[1])
   }
+  if (!require(gridExtra)) {
+    install.packages("gridExtra", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     summary(warnings())
   }
