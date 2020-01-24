@@ -9,6 +9,14 @@ main <- function(argv) {
       next
     }
     cat(folder, "\n")
+    if (folder == ".") {
+      for (file in list.files(pattern = "\\.[Rr]$")) {
+        violations <- lintr::lint(file)
+        exit_code <- exit_code + length(violations)
+        print(violations)
+      }
+      next
+    }
     violations <- lintr::lint_dir(folder, parse_settings = TRUE)
     exit_code <- exit_code + length(violations)
     print(violations)
