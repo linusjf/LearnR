@@ -217,6 +217,9 @@ main <- function(argv) {
   if (!require(knitr)) {
     install.packages("knitr", .libPaths()[1])
   }
+  if (!require(lubridate)) {
+    install.packages("lubridate", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     summary(warnings())
   }
