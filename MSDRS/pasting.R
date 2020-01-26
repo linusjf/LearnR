@@ -11,6 +11,9 @@ main <- function(argv) {
   print(paste("It was the", two_cities, "of times."))
   print(paste(shapes, collapse = " "))
   print(nchar("Supercalifragilisticexpialidocious"))
+  cases <- c("CAPS", "low", "Title")
+  print(tolower(cases))
+  print(toupper(cases))
   return(0)
 }
 
