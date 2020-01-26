@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 suppressMessages(library(dplyr))
 library(ggplot2)
+suppressMessages(library(gridExtra))
 suppressMessages(library(lubridate))
 library(readr)
 library(tidyr)
@@ -62,6 +63,46 @@ main <- function(argv) {
       hour = hour(datetime)
     ) %>%
     slice(1:3))
+
+  check_tracks <- ext_tracks %>%
+    select(month, day, hour, year, max_wind) %>%
+    unite(datetime, year, month, day, hour) %>%
+    mutate(
+      datetime = ymd_h(datetime),
+      weekday = weekdays(datetime),
+      weekday = factor(weekday,
+        levels = c(
+          "Sunday", "Monday",
+          "Tuesday", "Wednesday",
+          "Thursday", "Friday",
+          "Saturday"
+        )
+      ),
+      month = months(datetime),
+      month = factor(month, levels = c(
+        "April", "May", "June",
+        "July", "August", "September",
+        "October", "November",
+        "December", "January"
+      ))
+    )
+
+  check_weekdays <- check_tracks %>%
+    group_by(weekday) %>%
+    summarize(ave_max_wind = mean(max_wind)) %>%
+    rename(grouping = weekday)
+
+  check_months <- check_tracks %>%
+    group_by(month) %>%
+    summarize(ave_max_wind = mean(max_wind)) %>%
+    rename(grouping = month)
+
+  a <- ggplot(check_weekdays, aes(x = grouping, y = ave_max_wind)) +
+    geom_bar(stat = "identity") + xlab("")
+  b <- ggplot2::`%+%`(a, check_months)
+  gridExtra::grid.arrange(a, b, ncol = 1)
+  c <- gridExtra::arrangeGrob(grobs = list(a, b), ncol = 1)
+  ggplot2::ggsave("grid.pdf", c)
   return(0)
 }
 
