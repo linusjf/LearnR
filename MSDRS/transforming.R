@@ -128,8 +128,25 @@ main <- function(argv) {
         size = 2
       )
     ggplot2::ggsave("miamimap.pdf")
-  } else {
-    cat("package ggmap not found.\n")
+  }
+  andrew_tracks <- andrew_tracks %>%
+    mutate(
+      datetime = with_tz(datetime, tzone = "America/New_York"),
+      date = format(datetime, "%b %d")
+    )
+  print(andrew_tracks)
+  if (library(ggmap, logical.return = TRUE)) {
+    ggmap(miami) +
+      geom_path(
+        data = andrew_tracks, aes(x = -longitude, y = latitude),
+        color = "gray", size = 1.1
+      ) +
+      geom_point(
+        data = andrew_tracks,
+        aes(x = -longitude, y = latitude, color = date),
+        size = 2
+      )
+    ggplot2::ggsave("miamimap2.pdf")
   }
   return(0)
 }
