@@ -103,6 +103,34 @@ main <- function(argv) {
   gridExtra::grid.arrange(a, b, ncol = 1)
   c <- gridExtra::arrangeGrob(grobs = list(a, b), ncol = 1)
   ggplot2::ggsave("grid.pdf", c)
+
+
+  andrew_tracks <- ext_tracks %>%
+    filter(storm_name == "ANDREW") %>%
+    slice(23:47) %>%
+    select(year, month, day, hour, latitude, longitude) %>%
+    unite(datetime, year, month, day, hour) %>%
+    mutate(
+      datetime = ymd_h(datetime),
+      date = format(datetime, "%b %d")
+    )
+  print(andrew_tracks)
+  if (library(ggmap, logical.return = TRUE)) {
+    miami <- ggmap::get_map("miami", zoom = 5)
+    ggmap(miami) +
+      geom_path(
+        data = andrew_tracks, aes(x = -longitude, y = latitude),
+        color = "gray", size = 1.1
+      ) +
+      geom_point(
+        data = andrew_tracks,
+        aes(x = -longitude, y = latitude, color = date),
+        size = 2
+      )
+    ggplot2::ggsave("miamimap.pdf")
+  } else {
+    cat("package ggmap not found.\n")
+  }
   return(0)
 }
 

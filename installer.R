@@ -182,6 +182,9 @@ install_msdrs <- function() {
   if (!require(viridis)) {
     install.packages("viridis", .libPaths()[1])
   }
+  if (!require(OpenStreetMap)) {
+    install.packages("OpenStreetMap", .libPaths()[1])
+  }
 }
 # nolint end
 
@@ -222,6 +225,9 @@ main <- function(argv) {
   }
   if (!require(gridExtra)) {
     install.packages("gridExtra", .libPaths()[1])
+  }
+  if (!require(ggmap)) {
+    install.packages("ggmap", .libPaths()[1])
   }
   if (!is.null(warnings())) {
     summary(warnings())
