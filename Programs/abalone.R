@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 main <- function(argv) {
-  aba <- read.csv("abalone.data", header = T, as.is = T)
+  aba <- read.csv("./abalone.data", header = T, as.is = T)
   grps <- list()
   for (gen in c("M", "F")) grps[[gen]] <- which(aba == gen)
   abam <- aba[grps$M, ]

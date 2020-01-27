@@ -229,6 +229,9 @@ main <- function(argv) {
   if (!require(ggmap)) {
     install.packages("ggmap", .libPaths()[1])
   }
+  if (!require(stringr)) {
+    install.packages("stringr", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     summary(warnings())
   }
