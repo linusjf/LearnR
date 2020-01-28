@@ -21,6 +21,7 @@ main <- function(argv) {
   print(pryr::object_size(integer(1000)))
   print(pryr::object_size(numeric(1000)))
   print(str(.Machine))
+  print(gc())
   return(0)
 }
 
