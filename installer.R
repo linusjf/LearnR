@@ -40,6 +40,12 @@ install_rbyexample <- function() {
   if (!require(Hmisc)) {
     install.packages("Hmisc", .libPaths()[1])
   }
+  if (!require(foreign)) {
+    install.packages("foreign", .libPaths()[1])
+  }
+  if (!require(StatDataML)) {
+    install.packages("StatDataML", .libPaths()[1])
+  }
 }
 
 # nolint start
