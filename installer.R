@@ -235,6 +235,9 @@ main <- function(argv) {
   if (!require(pryr)) {
     install.packages("pryr", .libPaths()[1])
   }
+  if (!require(data.table)) {
+    install.packages("data.table", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     summary(warnings())
   }
