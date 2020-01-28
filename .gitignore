@@ -10,3 +10,4 @@
 *.dta
 *.sdml
 **/demo.csv
+*.gz
