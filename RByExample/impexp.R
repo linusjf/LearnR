@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # Goal: All manner of import and export of datasets.
-library(foreign)
-library(StatDataML)
+suppressMessages(library(foreign))
+suppressMessages(library(StatDataML))
 
 main <- function(argv) {
   # Invent a dataset --
@@ -18,27 +18,36 @@ main <- function(argv) {
 
   # To a spreadsheet through a CSV file --
   write.table(a,
-              file = "demo.csv",
-              sep = ",",
-              col.names = NA,
-              qmethod = "double")
+    file = "demo.csv",
+    sep = ",",
+    col.names = NA,
+    qmethod = "double"
+  )
   b <- read.table("demo.csv",
-                  header = TRUE,
-                  sep = ",",
-                  row.names = 1)
+    header = TRUE,
+    sep = ",",
+    row.names = 1
+  )
+  cat("Printing csv\n")
+  print(b)
 
   # To R as a binary file --
   save(a, file = "demo.rda")
   load("demo.rda")
+  cat("Printing rda\n")
+  print(a)
 
   # To the Open XML standard for transport for statistical data --
   StatDataML::writeSDML(a, "demo.sdml")
   b <- StatDataML::readSDML("demo.sdml")
+  cat("Printing sdml\n")
+  print(b)
 
   # To Stata --
   foreign::write.dta(a, "demo.dta")
   b <- foreign::read.dta("demo.dta")
-
+  cat("Printing dta\n")
+  print(b)
   # foreign::write.foreign() also has a pathway to SAS and SPSS.
   return(0)
 }

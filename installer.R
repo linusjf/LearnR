@@ -46,6 +46,9 @@ install_rbyexample <- function() {
   if (!require(StatDataML)) {
     install.packages("StatDataML", .libPaths()[1])
   }
+  if (!require(zoo)) {
+    install.packages("zoo", .libPaths()[1])
+  }
 }
 
 # nolint start
