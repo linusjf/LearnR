@@ -2,6 +2,12 @@
 # Goal: Special cases in reading files
 
 main <- function(argv) {
+  b <- data.frame(x1 = runif(100000), x2 = runif(100000), x3 = runif(100000))
+
+  # Write out ascii file:
+  write.table(b, file = "./foo.csv", sep = ",", col.names = NA)
+  system("gzip -fk foo.csv")
+  system("rm foo.csv.bz2; tar -cjf foo.csv.bz2 foo.csv")
   # Reading in a .bz2 file --
   cat("Printing head of bz2 file:\n")
   print(head(read.table("./foo.csv.bz2",
