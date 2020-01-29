@@ -195,7 +195,6 @@ install_msdrs <- function() {
     install.packages("OpenStreetMap", .libPaths()[1])
   }
 }
-# nolint end
 
 main <- function(argv) {
   print(sessionInfo())
@@ -247,11 +246,15 @@ main <- function(argv) {
   if (!require(data.table)) {
     install.packages("data.table", .libPaths()[1])
   }
+  if (!require(purrr)) {
+    install.packages("purrr", .libPaths()[1])
+  }
   if (!is.null(warnings())) {
     summary(warnings())
   }
   return(0)
 }
+# nolint end
 
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
