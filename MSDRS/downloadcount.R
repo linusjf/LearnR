@@ -20,14 +20,32 @@ check_for_logfile <- function(date) {
 
 ## pkgname: package name (character)
 ## date: YYYY-MM-DD format (character)
+## 'pkgname' can now be a character vector of names
 num_download <- function(pkgname, date = "2016-07-20") {
   check_pkg_deps()
+
+  ## Check arguments
+  if (!is.character(pkgname)) {
+    stop("'pkgname' should be character")
+  }
+  if (!is.character(date)) {
+    stop("'date' should be character")
+  }
+  if (length(date) != 1) {
+    stop("'date' should be length 1")
+  }
+
   dest <- check_for_logfile(date)
-  count <- read_csv(dest, col_types = "ccicccccci", progress = FALSE) %>%
-    filter(package == pkgname) %>%
-    nrow()
-  return(count)
+  count_vector <- read_csv(dest,
+    col_types = "ccicccccci", progress =
+      FALSE
+  ) %>%
+    filter(package %in% pkgname) %>%
+    group_by(package) %>%
+    summarize(n = n())
+  return(count_vector)
 }
+
 
 check_pkg_deps <- function() {
   if (!require(readr)) {
@@ -43,6 +61,11 @@ main <- function(argv) {
   print(num_download("filehash", "2016-07-20"))
   print(num_download("Rcpp", "2016-07-19"))
   print(num_download("Rcpp"))
+  print(num_download(c(
+    "filehash",
+    "weathermetrics"
+  )))
+  print(num_download("filehash", c("2016-07-20", "2016-0-21")))
   return(0)
 }
 
