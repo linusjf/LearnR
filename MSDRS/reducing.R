@@ -15,27 +15,35 @@ main <- function(argv) {
     reduce(`*`))
 
   paste2 <- function(x, y, sep = ".") paste(x, y, sep = sep)
-  letters[1:4] %>%
-    reduce(paste2)
-  letters[1:4] %>%
-    reduce2(c("-", ".", "-"), paste2)
+  print(letters[1:4] %>%
+    reduce(paste2))
+  print(letters[1:4] %>%
+    reduce2(c("-", ".", "-"), paste2))
 
   samples <- purrr::rerun(2, sample(10, 5))
   print(samples)
-  purrr::reduce(samples, union)
-  purrr::reduce(samples, intersect)
+  print(purrr::reduce(samples, union))
+  print(purrr::reduce(samples, intersect))
 
   x <- list(c(0, 1), c(2, 3), c(4, 5))
-  x %>%
-    reduce(c)
-  x %>%
-    reduce_right(c)
+  print(x %>%
+    reduce(c))
+  print(x %>%
+    reduce(c, .dir = "backward"))
   # Equivalent to:
-  x %>%
+  print(x %>%
     rev() %>%
-    reduce(c)
+    reduce(c))
   # }
-
+  reduce(letters[1:4],
+    .dir = "backward",
+    function(x, y) {
+      message("x is ", x)
+      message("y is ", y)
+      message("")
+      paste0(x, y)
+    }
+  )
   return(0)
 }
 
