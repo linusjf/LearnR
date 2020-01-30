@@ -13,6 +13,12 @@ main <- function(argv) {
     exit_code <- exit_code + length(violations)
     print(violations)
   }
+  # process root folder . as well
+  for (file in list.files(pattern = "\\.[Rr]$")) {
+        violations <- lintr::lint(file)
+        exit_code <- exit_code + length(violations)
+        print(violations)
+  }
   return(exit_code)
 }
 
