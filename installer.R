@@ -51,6 +51,18 @@ install_rbyexample <- function() {
   }
 }
 
+install_efficientr <- function() {
+  if (!require(microbenchmark)) {
+    install.packages("microbenchmark", .libPaths()[1])
+  }
+  if (!require(profvis)) {
+    install.packages("profvis", .libPaths()[1])
+  }
+  if (!require(ggplot2)) {
+    install.packages("ggplot2", .libPaths()[1])
+  }
+}
+
 # nolint start
 install_msdrs <- function() {
   if (!require(bookdown)) {
@@ -249,6 +261,10 @@ main <- function(argv) {
   if (!require(purrr)) {
     install.packages("purrr", .libPaths()[1])
   }
+  if (!require(microbenchmark)) {
+    install.packages("microbenchmark", .libPaths()[1])
+  }
+  install_efficientr()
   if (!is.null(warnings())) {
     summary(warnings())
   }
