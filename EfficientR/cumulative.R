@@ -28,6 +28,15 @@ main <- function(argv) {
     cs_apply(x),
     cumsum(x)
   ))
+  x <- 1:50000
+  print(microbenchmark(
+    cs_for(x),
+    cs_apply(x),
+    cumsum(x),
+    times = 1,
+    unit = "s"
+  ))
+
   return(0)
 }
 
