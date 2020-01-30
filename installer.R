@@ -61,6 +61,12 @@ install_efficientr <- function() {
   if (!require(ggplot2)) {
     install.packages("ggplot2", .libPaths()[1])
   }
+  if (!require(rnoaa)) {
+    install.packages("rnoaa", .libPaths()[1])
+  }
+  if (!require(raster)) {
+    install.packages("raster", .libPaths()[1])
+  }
 }
 
 # nolint start
