@@ -70,6 +70,9 @@ install_efficientr <- function() {
   if (!require(benchmarkme)) {
     install.packages("benchmarkme", .libPaths()[1])
   }
+  if (!require(assertive.reflection)) {
+    install.packages("assertive.reflection", .libPaths()[1])
+  }
 }
 
 # nolint start
