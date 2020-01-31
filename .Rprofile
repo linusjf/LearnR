@@ -1,5 +1,5 @@
 # A fun welcome message
-message("Hi Linus, welcome to R")
+message(paste("Hi ", Sys.info()["user"], ", Welcome to R"))
 # Customise the R prompt that prefixes every command
 # (use " " for a blank prompt)
 options(prompt = "> ")
