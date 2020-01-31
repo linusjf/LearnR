@@ -67,6 +67,9 @@ install_efficientr <- function() {
   if (!require(raster)) {
     install.packages("raster", .libPaths()[1])
   }
+  if (!require(benchmarkme)) {
+    install.packages("benchmarkme", .libPaths()[1])
+  }
 }
 
 # nolint start
