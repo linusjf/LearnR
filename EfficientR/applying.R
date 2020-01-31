@@ -3,7 +3,7 @@
 main <- function(argv) {
   # Note: uses 2+ GB RAM and several seconds or more depending on hardware
   # 1: Create large dataset
-  x <- as.data.frame(matrix(rnorm(1e7), nrow = 1e5))
+  x <- as.data.frame(matrix(rnorm(1e7), nrow = 1e6))
   # 2: Find the median of each column using a single core
   r1 <- lapply(x, median)
   print(r1)
