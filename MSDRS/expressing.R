@@ -89,6 +89,7 @@ first_arg <- function(...) {
 }
 
 x <- 10
+a_variable_name <- NULL
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
 }
