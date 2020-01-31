@@ -10,7 +10,10 @@ main <- function(argv) {
     }
     cat(folder, "\n")
     if (folder == ".") {
-      for (file in list.files(pattern = "\\.[Rr]$")) {
+      for (file in list.files(
+                              pattern = "\\.[Rr]{1}(profile)?$",
+                              all.files = TRUE)) {
+        cat(file, "\n")
         violations <- lintr::lint(file)
         exit_code <- exit_code + length(violations)
         print(violations)

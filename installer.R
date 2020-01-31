@@ -73,6 +73,9 @@ install_efficientr <- function() {
   if (!require(assertive.reflection)) {
     install.packages("assertive.reflection", .libPaths()[1])
   }
+  if (!require(fortunes)) {
+    install.packages("fortunes", .libPaths()[1])
+  }
 }
 
 # nolint start
