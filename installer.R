@@ -76,6 +76,12 @@ install_efficientr <- function() {
   if (!require(fortunes)) {
     install.packages("fortunes", .libPaths()[1])
   }
+  if (!require(compiler)) {
+    install.packages("compiler", .libPaths()[1])
+  }
+  if (!require(memoise)) {
+    install.packages("memoise", .libPaths()[1])
+  }
 }
 
 # nolint start
