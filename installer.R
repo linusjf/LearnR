@@ -277,6 +277,7 @@ main <- function(argv) {
     install.packages("microbenchmark", .libPaths()[1])
   }
   install_efficientr()
+  update.packages()
   if (!is.null(warnings())) {
     summary(warnings())
   }
