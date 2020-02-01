@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+library(microbenchmark)
 
 beera <- function(expr) {
   tryCatch(expr,
@@ -14,6 +15,18 @@ beera <- function(expr) {
   )
 }
 
+is_even_check <- function(n) {
+  return(is.numeric(n) && n %% 2 == 0)
+}
+
+is_even_error <- function(n) {
+  tryCatch(n %% 2 == 0,
+    error = function(e) {
+      FALSE
+    }
+  )
+}
+
 main <- function(args) {
   print(beera({
     2 + 2
@@ -24,6 +37,18 @@ main <- function(args) {
   print(beera({
     as.numeric(c(1, "two", 3))
   }))
+  print(microbenchmark(sapply(
+    letters,
+    is_even_check
+  ),
+  units = "ns"
+  ))
+  print(microbenchmark(sapply(
+    letters,
+    is_even_error
+  ),
+  units = "ns"
+  ))
   return(0)
 }
 
