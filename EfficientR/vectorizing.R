@@ -20,7 +20,7 @@ method2 <- function(n) {
 method3 <- function(n) seq_len(n)
 
 main <- function(argv) {
-  n <- 1e+5
+  n <- 1e+4
   print(microbenchmark(
     times = 100, unit = "s",
     method1(n), method2(n), method3(n)
