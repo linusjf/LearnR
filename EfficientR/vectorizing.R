@@ -20,10 +20,11 @@ method2 <- function(n) {
 method3 <- function(n) seq_len(n)
 
 log_sum_for_loop <- function(x) {
-log_sum <- 0
-for (i in seq_along(x))
-  log_sum <- log_sum + log(x[i])
-return(log_sum)
+  log_sum <- 0
+  for (i in seq_along(x)) {
+    log_sum <- log_sum + log(x[i])
+  }
+  return(log_sum)
 }
 
 log_sum <- function(x) sum(log(x))
