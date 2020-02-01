@@ -19,11 +19,25 @@ method2 <- function(n) {
 
 method3 <- function(n) seq_len(n)
 
+log_sum_for_loop <- function(x) {
+log_sum <- 0
+for (i in seq_along(x))
+  log_sum <- log_sum + log(x[i])
+return(log_sum)
+}
+
+log_sum <- function(x) sum(log(x))
+
 main <- function(argv) {
   n <- 1e+4
   print(microbenchmark(
     times = 100, unit = "s",
     method1(n), method2(n), method3(n)
+  ))
+  x <- runif(n)
+  print(microbenchmark(
+    times = 100, unit = "s",
+    log_sum_for_loop(x), log_sum(x)
   ))
   return(0)
 }
