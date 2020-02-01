@@ -14,8 +14,10 @@ main <- function(argv) {
     print(violations)
   }
   # process root folder . as well
-  for (file in list.files(pattern = "\\.[Rr]{1}(profile)?$",
-                          all.files = TRUE)) {
+  for (file in list.files(
+    pattern = "\\.[Rr]{1}(profile)?$",
+    all.files = TRUE
+  )) {
     cat(file, "\n")
     violations <- lintr::lint(file)
     exit_code <- exit_code + length(violations)

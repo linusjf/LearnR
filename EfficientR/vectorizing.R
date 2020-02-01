@@ -34,14 +34,16 @@ monte_carlo <- function(n) {
   for (i in seq_len(n)) {
     u1 <- runif(1)
     u2 <- runif(1)
-    if (u1 ^ 2 > u2)
+    if (u1^2 > u2) {
       hits <- hits + 1
+    }
   }
   return(hits / n)
 }
 
-monte_carlo_vec <- function(n)
-  sum(runif(n) ^ 2 > runif(n)) / n
+monte_carlo_vec <- function(n) {
+  sum(runif(n)^2 > runif(n)) / n
+}
 
 main <- function(argv) {
   n <- 1e+4
