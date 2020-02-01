@@ -29,6 +29,20 @@ log_sum_for_loop <- function(x) {
 
 log_sum <- function(x) sum(log(x))
 
+monte_carlo <- function(n) {
+  hits <- 0
+  for (i in seq_len(n)) {
+    u1 <- runif(1)
+    u2 <- runif(1)
+    if (u1 ^ 2 > u2)
+      hits <- hits + 1
+  }
+  return(hits / n)
+}
+
+monte_carlo_vec <- function(n)
+  sum(runif(n) ^ 2 > runif(n)) / n
+
 main <- function(argv) {
   n <- 1e+4
   print(microbenchmark(
@@ -40,6 +54,14 @@ main <- function(argv) {
     times = 100, unit = "s",
     log_sum_for_loop(x), log_sum(x)
   ))
+  x <- numeric()
+  print(microbenchmark(
+    times = 100, unit = "s",
+    log_sum_for_loop(x), log_sum(x)
+  ))
+  n <- 5e+5
+  print(system.time(monte_carlo(n)))
+  print(system.time(monte_carlo_vec(n)))
   return(0)
 }
 
