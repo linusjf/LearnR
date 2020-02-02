@@ -4,10 +4,8 @@ library(lintr)
 main <- function(argv) {
   print(sessionInfo())
   exit_code <- 0
+  argv <- argv[argv != "./.git"]
   for (folder in argv) {
-    if (folder == "./.git") {
-      next
-    }
     cat(folder, "\n")
     if (folder == ".") {
       for (file in list.files(
