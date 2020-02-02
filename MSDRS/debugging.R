@@ -11,5 +11,5 @@ error_if_n_is_greater_than_zero <- function(n) {
         return(n)
 }
 # nolint end
-
+trace(check_n_value)
 error_if_n_is_greater_than_zero(5)
