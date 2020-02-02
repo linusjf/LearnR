@@ -4,10 +4,9 @@ library(styler)
 main <- function(argv) {
   print(sessionInfo())
   exit_code <- 0
-  for (folder in list.dirs(path = ".", recursive = FALSE)) {
-    if (folder == "./.git") {
-      next
-    }
+  folders <- list.dirs(path = ".", recursive = FALSE)
+  folders <- folders[folders != "./.git"]
+  for (folder in folders) {
     cat(folder, "\n")
     res <- as.data.frame(styler::style_dir(folder, recursive = TRUE))
     exit_code <- exit_code + nrow(subset(res, res$changed == TRUE))

@@ -5,7 +5,8 @@ main <- function(argv) {
   print(sessionInfo())
   exit_code <- 0
   for (folder in argv) {
-    if (folder == "./.git") {
+    if (folder == "./.git" ||
+        folder == ".git") {
       next
     }
     cat(folder, "\n")
