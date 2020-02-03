@@ -1,6 +1,9 @@
 #!/usr/bin/env Rscript
 library(microbenchmark)
+library(ggplot2)
 suppressMessages(library(dplyr))
+suppressMessages(library(dlnm))
+data("chicagoNMMAPS")
 
 # Function that uses a loop
 find_records_1 <- function(datafr, threshold) {
@@ -40,6 +43,16 @@ print(test_1)
 test_2 <- find_records_2(example_data, 27)
 print(test_2)
 print(all.equal(test_1, test_2))
+record_temp_perf <- microbenchmark(find_records_1(example_data, 27),
+                                   find_records_2(example_data, 27))
+print(record_temp_perf)
+record_temp_perf_2 <- microbenchmark(find_records_1(chicagoNMMAPS, 27),
+                                     find_records_2(chicagoNMMAPS, 27))
+print(record_temp_perf_2)
+autoplot(record_temp_perf)
+ggplot2::ggsave("firstperftest.pdf")
+autoplot(record_temp_perf_2)
+ggplot2::ggsave("secondperftest.pdf")
 return(0)
 }
 
