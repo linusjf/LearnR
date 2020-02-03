@@ -1,14 +1,11 @@
 #!/usr/bin/env Rscript
 library(lintr)
 
-main <- function(argv) {
-  print(sessionInfo())
+process_folder <- function(folder) {
   exit_code <- 0
-  for (folder in argv) {
-    if (folder == ".git" ||
-    folder == "./.git") {
-      next
-    }
+  if (folder == ".git" ||
+      folder == "./.git")
+    return(exit_code)
     cat(folder, "\n")
     if (folder == ".") {
       for (file in list.files(
@@ -20,13 +17,18 @@ main <- function(argv) {
         exit_code <- exit_code + length(violations)
         print(violations)
       }
-      next
+      return(exit_code)
     }
     violations <- lintr::lint_dir(folder, parse_settings = TRUE)
     exit_code <- exit_code + length(violations)
     print(violations)
-  }
-  return(exit_code)
+    return(exit_code)
+}
+
+main <- function(argv) {
+  print(sessionInfo())
+  ret_codes <- lapply(argv, process_folder)
+  return(sum(unlist(ret_codes)))
 }
 
 if (identical(environment(), globalenv())) {
