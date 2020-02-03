@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
 library(lintr)
+library(parallel)
 
 process_folder <- function(folder) {
   violations <- as.list(c())
@@ -22,7 +23,7 @@ process_folder <- function(folder) {
 
 main <- function(argv) {
   print(sessionInfo())
-  violations_list <- lapply(argv, process_folder)
+  violations_list <- parallel::mclapply(argv, process_folder)
   violations <- do.call(c, violations_list)
   if (length(violations) > 0)
     print(violations)

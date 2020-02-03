@@ -10,6 +10,9 @@ install_tools <- function() {
   if (!require(formatR)) {
     install.packages("formatR", .libPaths()[1])
   }
+  if (!require(parallel)) {
+    install.packages("parallel", .libPaths()[1])
+  }
 }
 
 install_programs <- function() {
