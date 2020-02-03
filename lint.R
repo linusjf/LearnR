@@ -2,10 +2,10 @@
 library(lintr)
 
 process_folder <- function(folder) {
-  exit_code <- 0
+  violations <- as.list(c())
   if (folder == ".git" ||
       folder == "./.git")
-    return(exit_code)
+    return(violations)
     cat(folder, "\n")
     if (folder == ".") {
       for (file in list.files(
@@ -13,22 +13,20 @@ process_folder <- function(folder) {
         all.files = TRUE
       )) {
         cat(file, "\n")
-        violations <- lintr::lint(file)
-        exit_code <- exit_code + length(violations)
-        print(violations)
+        violations <- append(violations, lintr::lint(file))
       }
-      return(exit_code)
+      return(violations)
     }
-    violations <- lintr::lint_dir(folder, parse_settings = TRUE)
-    exit_code <- exit_code + length(violations)
-    print(violations)
-    return(exit_code)
+    return(lintr::lint_dir(folder, parse_settings = TRUE))
 }
 
 main <- function(argv) {
   print(sessionInfo())
-  ret_codes <- lapply(argv, process_folder)
-  return(sum(unlist(ret_codes)))
+  violations_list <- lapply(argv, process_folder)
+  violations <- do.call(c, violations_list)
+  if (length(violations) > 0)
+    print(violations)
+  return(sum(unlist(violations)))
 }
 
 if (identical(environment(), globalenv())) {
