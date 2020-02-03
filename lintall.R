@@ -3,8 +3,8 @@ library(lintr)
 library(parallel)
 
 process_folder <- function(folder) {
-    cat(folder, "\n")
-    return(lintr::lint_dir(folder, parse_settings = TRUE))
+  cat(folder, "\n")
+  return(lintr::lint_dir(folder, parse_settings = TRUE))
 }
 
 main <- function(argv) {
@@ -22,8 +22,9 @@ main <- function(argv) {
     cat(file, "\n")
     violations <- append(violations, lintr::lint(file))
   }
-  if (length(violations) > 0)
+  if (length(violations) > 0) {
     print(violations)
+  }
   return(sum(unlist(violations)))
 }
 

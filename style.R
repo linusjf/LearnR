@@ -1,19 +1,23 @@
 #!/usr/bin/env Rscript
 library(styler)
+library(parallel)
+
+process_folder <- function(folder) {
+  exit_code <- 0
+
+  if (folder == "./.git" ||
+    folder == ".git") {
+    return(exit_code)
+  }
+  cat(folder, "\n")
+  res <- as.data.frame(styler::style_dir(folder, recursive = FALSE))
+  return(nrow(subset(res, res$changed == TRUE)))
+}
 
 main <- function(argv) {
   print(sessionInfo())
-  exit_code <- 0
-  for (folder in argv) {
-    if (folder == "./.git" ||
-        folder == ".git") {
-      next
-    }
-    cat(folder, "\n")
-    res <- as.data.frame(styler::style_dir(folder, recursive = FALSE))
-    exit_code <- exit_code + nrow(subset(res, res$changed == TRUE))
-  }
-  return(exit_code)
+  exit_codes <- parallel::mclapply(argv, process_folder)
+  return(sum(unlist(exit_codes)))
 }
 
 if (identical(environment(), globalenv())) {
