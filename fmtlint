@@ -11,6 +11,6 @@ declare -i exit_code=0
 echo "$@"
 ./style.R "$@" | tee styler.out
 exit_code="$?"+"$exit_code"
-(./lint.R "$@" | tee linter.out)
+./lint.R "$@" | tee linter.out
 exit_code="$?"+"$exit_code"
 exit "$exit_code"
