@@ -212,6 +212,9 @@ install_msdrs <- function() {
   if (!require(testthat)) {
     install.packages("testthat", .libPaths()[1])
   }
+  if (!require(tibble)) {
+    install.packages("tibble", .libPaths()[1])
+  }
   if (!require(tidyr)) {
     install.packages("tidyr", .libPaths()[1])
   }
@@ -287,6 +290,9 @@ main <- function(argv) {
   }
   if (!require(microbenchmark)) {
     install.packages("microbenchmark", .libPaths()[1])
+  }
+  if (!require(tibble)) {
+    install.packages("tibble", .libPaths()[1])
   }
   install_efficientr()
   update.packages()
