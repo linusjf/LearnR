@@ -7,7 +7,10 @@ if [ "$#" == "0" ]; then
     exit 1
 fi
 
+declare -i exit_code=0
 echo "$@"
-./style.R "$@" | tee styler.out &&
+./style.R "$@" | tee styler.out
+exit_code="$?"+"$exit_code"
 (./lint.R "$@" | tee linter.out)
-exit "$?"
+exit_code="$?"+"$exit_code"
+exit "$exit_code"

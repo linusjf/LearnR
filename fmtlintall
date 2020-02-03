@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
-./styleall.R | tee styler.out &&
-(./lintall.R | tee linter.out)
-exit "$?"
+declare -i exit_code=0
+./styleall.R | tee styler.out 
+exit_code="$?"+"$exit_code"
+./lintall.R | tee linter.out
+exit_code="$?"+"$exit_code"
+exit "$exit_code"

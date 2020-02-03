@@ -25,7 +25,7 @@ main <- function(argv) {
   if (length(violations) > 0) {
     print(violations)
   }
-  return(sum(unlist(violations)))
+  return(length(violations))
 }
 
 if (identical(environment(), globalenv())) {
