@@ -12,9 +12,8 @@ main <- function(argv) {
   print(sessionInfo())
   folders <- list.dirs(path = ".", recursive = FALSE)
   folders <- folders[folders != "./.git"]
+  folders <- append(folders, ".")
   exit_codes <- parallel::mclapply(folders, process_folder)
-  res <- as.data.frame(styler::style_dir(path = ".", recursive = FALSE))
-  exit_codes <- append(exit_codes, nrow(subset(res, res$changed == TRUE)))
   return(sum(unlist(exit_codes)))
 }
 
