@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 
 main <- function(argv) {
-print(names(methods:::.BasicFunsList))
-return(0)
+  print(names(methods:::.BasicFunsList))
+  return(0)
 }
 
 if (identical(environment(), globalenv())) {
