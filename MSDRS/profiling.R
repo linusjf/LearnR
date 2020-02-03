@@ -16,7 +16,7 @@ f <- function() {
 
 main <- function(argv) {
 
-profile_data <- profvis::profvis(f(), prof_output = "prof_data")
+profile_data <- profvis::profvis(f(), prof_output = "prof_data.out")
 print(profile_data)
 tmp <- tempfile()
 print(tmp)
