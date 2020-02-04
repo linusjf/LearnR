@@ -3,8 +3,9 @@
 ## x a numeric vector of x coordinates
 ## y a numeric vector of y coordinates
 make_poly <- function(x, y) {
-  if (length(x) != length(y))
+  if (length(x) != length(y)) {
     stop("'x' and 'y' should be the same length")
+  }
   ## Create the "polygon" object
   object <- list(xcoord = x, ycoord = y)
   ## Set the class name
@@ -15,16 +16,20 @@ make_poly <- function(x, y) {
 ## Print method for polygon objects
 ## x an object of class "polygon"
 print.polygon <- function(x, ...) {
-  cat("a polygon with", length(x$xcoord),
-      "vertices\n")
+  cat(
+    "a polygon with", length(x$xcoord),
+    "vertices\n"
+  )
   invisible(x)
 }
 
 ## Summary method for polygon objects
 ## object an object of class "polygon"
 summary.polygon <- function(object, ...) {
-  object <- list(rng.x = range(object$xcoord),
-                 rng.y = range(object$ycoord))
+  object <- list(
+    rng.x = range(object$xcoord),
+    rng.y = range(object$ycoord)
+  )
   class(object) <- "summary_polygon"
   return(object)
 }
@@ -38,8 +43,8 @@ print.summary_polygon <- function(x, ...) {
 }
 
 main <- function(argv) {
-## Construct a new "polygon" object
-x <- make_poly(1:4, c(1, 5, 2, 1))
+  ## Construct a new "polygon" object
+  x <- make_poly(1:4, c(1, 5, 2, 1))
   print(x)
   out <- summary(x)
   print(class(out))

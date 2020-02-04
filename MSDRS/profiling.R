@@ -15,16 +15,15 @@ f <- function() {
 }
 
 main <- function(argv) {
-
-profile_data <- profvis::profvis(f(), prof_output = "prof_data.out")
-print(profile_data)
-tmp <- tempfile()
-print(tmp)
-Rprof(tmp, interval = 0.1)
-f()
-Rprof(NULL)
-writeLines(readLines(tmp))
-return(0)
+  profile_data <- profvis::profvis(f(), prof_output = "prof_data.out")
+  print(profile_data)
+  tmp <- tempfile()
+  print(tmp)
+  Rprof(tmp, interval = 0.1)
+  f()
+  Rprof(NULL)
+  writeLines(readLines(tmp))
+  return(0)
 }
 
 datafr <- chicagoNMMAPS
