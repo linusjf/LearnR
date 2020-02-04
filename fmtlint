@@ -10,7 +10,7 @@ fi
 declare -i exit_code=0
 echo "$@"
 ./style.R "$@" | tee styler.out
-exit_code="$?"+"$exit_code"
+exit_code="${PIPESTATUS[0]}"+"$exit_code"
 ./lint.R "$@" | tee linter.out
-exit_code="$?"+"$exit_code"
+exit_code="${PIPESTATUS[0]}"+"$exit_code"
 exit "$exit_code"

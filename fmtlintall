@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 declare -i exit_code=0
 ./styleall.R | tee styler.out 
-exit_code="$?"+"$exit_code"
+exit_code="${PIPESTATUS[0]}"+"$exit_code"
 ./lintall.R | tee linter.out
-exit_code="$?"+"$exit_code"
+exit_code="${PIPESTATUS[0]}"+"$exit_code"
 exit "$exit_code"
