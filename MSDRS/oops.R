@@ -31,7 +31,34 @@ print(is_square("square"))
 print(is_square(c(1, 1, 1, 1)))
 print(square_4)
 print(attr(square_4, "class"))
+print(square_4)
+print(triangle_3)
+print(shape_s3(c(10, 10, 20, 20, 15)))
+print(shape_s3(c(2, 3, 4, 5)))
+print(head(methods(print, 10)))
+print(class(square_4))
+class(square_4) <- c("shape_S3", "square")
+print(class(square_4))
+print(inherits(square_4, "square"))
 return(0)
+}
+
+print.shape_S3 <- function(x) {
+  if (length(x$side_lengths) == 3) {
+    print(paste("A triangle with side lengths of", x$side_lengths[1],
+          ",", x$side_lengths[2], "and", x$side_lengths[3]))
+  } else if (length(x$side_lengths) == 4) {
+    if (is_square(x)) {
+      print(paste("A square with length size", x$side_lengths[1]))
+    } else {
+      print(paste("A quadrilateral with side lengths of", x$side_lengths[1],
+                  ",",
+            x$side_lengths[2], ",", x$side_lengths[3], "and",
+            x$side_lengths[4]))
+    }
+  } else {
+    print(paste("A shape with", length(x$side_lengths), "sides."))
+  }
 }
 
 is_square.default <- function(x) {
