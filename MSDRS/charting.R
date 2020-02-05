@@ -3,6 +3,7 @@ suppressMessages(library(dplyr))
 library(faraway)
 data("nepali")
 library(ggplot2)
+suppressMessages(library(GGally))
 
 main <- function(argv) {
   print(head(faraway::nepali))
@@ -37,15 +38,18 @@ main <- function(argv) {
     xlab("Height (cm)") + ylab("Weight (kg)")
   ggplot2::ggsave("nepalihtswtssex.pdf")
   ggplot(nepali, aes(x = 1, y = ht)) +
-  geom_boxplot() +
-  xlab("") +
-  ylab("Height (cm)")
+    geom_boxplot() +
+    xlab("") +
+    ylab("Height (cm)")
   ggplot2::ggsave("nepaliboxplot.pdf")
   ggplot(nepali, aes(x = sex, y = ht)) +
-  geom_boxplot() +
-  xlab("Sex") +
-  ylab("Height (cm)")
+    geom_boxplot() +
+    xlab("Sex") +
+    ylab("Height (cm)")
   ggplot2::ggsave("nepaliboxplotsex.pdf")
+  pairs <- GGally::ggpairs(nepali %>%
+    select(sex, wt, ht, age))
+  ggplot2::ggsave(plot = pairs, filename = "ggpairs.pdf")
   return(0)
 }
 
