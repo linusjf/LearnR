@@ -13,4 +13,5 @@ echo "$@"
 exit_code="${PIPESTATUS[0]}"+"$exit_code"
 ./lint.R "$@" | tee linter.out
 exit_code="${PIPESTATUS[0]}"+"$exit_code"
+echo "The maintainer of this repo is looking for a job..."
 exit "$exit_code"
