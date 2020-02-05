@@ -7,24 +7,45 @@ library(ggplot2)
 main <- function(argv) {
   print(head(faraway::nepali))
   nepali <- nepali %>%
-  select(id, sex, wt, ht, age) %>%
-  mutate(id = factor(id),
-         sex = factor(sex, levels = c(1, 2),
-                      labels = c("Male", "Female"))) %>%
-  distinct(id, .keep_all = TRUE)
+    select(id, sex, wt, ht, age) %>%
+    mutate(
+      id = factor(id),
+      sex = factor(sex,
+        levels = c(1, 2),
+        labels = c("Male", "Female")
+      )
+    ) %>%
+    distinct(id, .keep_all = TRUE)
   print(head(nepali))
   ggplot(nepali, aes(x = ht)) +
-  geom_histogram(fill = "lightblue",
-                 color = "black") +
-  ggtitle("Height of children") +
-  xlab("Height (cm)") +
-  xlim(c(0, 120))
+    geom_histogram(
+      fill = "lightblue",
+      color = "black"
+    ) +
+    ggtitle("Height of children") +
+    xlab("Height (cm)") +
+    xlim(c(0, 120))
   ggplot2::ggsave("nepalihts.pdf")
   ggplot(nepali, aes(x = ht, y = wt)) +
-  geom_point(color = "blue", size = 0.5) +
-  ggtitle("Weight versus Height") +
-  xlab("Height (cm)") + ylab("Weight (kg)")
+    geom_point(color = "blue", size = 0.5) +
+    ggtitle("Weight versus Height") +
+    xlab("Height (cm)") + ylab("Weight (kg)")
   ggplot2::ggsave("nepalihtswts.pdf")
+  ggplot(nepali, aes(x = ht, y = wt, color = sex)) +
+    geom_point(size = 0.5) +
+    ggtitle("Weight versus Height") +
+    xlab("Height (cm)") + ylab("Weight (kg)")
+  ggplot2::ggsave("nepalihtswtssex.pdf")
+  ggplot(nepali, aes(x = 1, y = ht)) +
+  geom_boxplot() +
+  xlab("") +
+  ylab("Height (cm)")
+  ggplot2::ggsave("nepaliboxplot.pdf")
+  ggplot(nepali, aes(x = sex, y = ht)) +
+  geom_boxplot() +
+  xlab("Sex") +
+  ylab("Height (cm)")
+  ggplot2::ggsave("nepaliboxplotsex.pdf")
   return(0)
 }
 
