@@ -4,6 +4,7 @@ data("titanic_train")
 library(faraway)
 data("worldcup")
 library(ggplot2)
+suppressMessages(library(dplyr))
 
 main <- function(argv) {
 ggplot(data = titanic_train) +
@@ -16,6 +17,19 @@ ggplot(worldcup, aes(x = Time, y = Passes,
                      color = Position, size = Shots)) +
   geom_point()
 ggplot2::ggsave("wctimepassescolor.pdf")
+noteworthy_players <- worldcup %>%
+  filter(Shots == max(Shots) |
+         Passes == max(Passes)) %>%
+  mutate(point_label = paste(Team, Position, sep = ", "))
+ggplot(worldcup, aes(x = Passes,
+                     y = Shots,
+                     color = Position)) +
+geom_point() +
+geom_text(data = noteworthy_players,
+ aes(label = point_label),
+          vjust = "inward",
+          hjust = "inward")
+ggplot2::ggsave("wcpassesshotscolor.pdf")
   return(0)
 }
 
