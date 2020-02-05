@@ -30,6 +30,14 @@ geom_text(data = noteworthy_players,
           vjust = "inward",
           hjust = "inward")
 ggplot2::ggsave("wcpassesshotscolor.pdf")
+ggplot(worldcup, aes(x = Time)) +
+        geom_histogram(binwidth = 10) +
+        geom_vline(xintercept = 90 * 0:6,
+                   color = "blue", alpha = 0.5)
+ggplot2::ggsave("wcplayingtime.pdf")
+ggplot(worldcup, aes(x = Time, y = Passes)) +
+  geom_point(color = "darkgreen")
+ggplot2::ggsave("wctimepassesptscolor.pdf")
   return(0)
 }
 
