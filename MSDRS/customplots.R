@@ -22,6 +22,35 @@ main <- function(argv) {
   plots[[2]] <- ggplot(worldcup, aes(x = Time, y = Shots)) +
     geom_point() +
     theme_tufte()
+  chicago_plot <- ggplot(chic_july, aes(x = date, y = death)) +
+    xlab("Day in July 1995") +
+    ylab("All-cause deaths") +
+    ylim(0, 450)
+  plots[[3]] <- chicago_plot +
+    geom_point(color = "red") +
+    theme_get()
+  plots[[4]] <- chicago_plot +
+    geom_point(color = "red") +
+    theme_bw()
+  plots[[5]] <- chicago_plot +
+    geom_point(color = "red") +
+    theme_few()
+  plots[[6]] <- chicago_plot +
+    geom_point(color = "red") +
+    theme_tufte()
+  plots[[7]] <- chicago_plot +
+    geom_point(color = "red") +
+    theme_fivethirtyeight()
+  plots[[8]] <- chicago_plot +
+    geom_point(color = "red") +
+    theme_solarized()
+  plots[[9]] <- chicago_plot +
+    geom_area(fill = "black") +
+    theme_excel()
+  plots[[10]] <- chicago_plot +
+    geom_line() +
+    theme_tufte()
+
   pdf("customplots.pdf")
   invisible(lapply(plots, print))
   graphics.off()
