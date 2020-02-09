@@ -119,6 +119,45 @@ main <- function(argv) {
   plots[[17]] <- ggplot(worldcup, aes(x = Time, y = Shots)) +
     geom_point(alpha = 0.25) +
     facet_wrap(~Team, ncol = 6)
+  nepali <- nepali %>%
+  mutate(
+         sex = factor(sex,
+                      levels = c(1, 2),
+                      labels = c("Male", "Female")))
+  plots[[18]] <- ggplot(nepali, aes(ht, wt)) +
+        geom_point() +
+        facet_grid(. ~ sex)
+  nepali <- nepali %>%
+  mutate(
+         sex = factor(sex,
+                      levels = c("Female", "Male")))
+  plots[[19]] <- ggplot(nepali, aes(ht, wt)) +
+        geom_point() +
+        facet_grid(. ~ sex)
+
+## Left plot
+ worldcup_mean_times <- worldcup %>%
+  group_by(Team) %>%
+  summarize(mean_time = mean(Time))
+  plots[[20]] <- ggplot(worldcup_mean_times,
+         aes(x = mean_time, y = Team)) +
+  geom_point() +
+  theme_few() +
+  xlab("Mean time per player (minutes)") + ylab("")
+
+## Right plot
+worldcup_mean_times <- worldcup %>%
+  group_by(Team) %>%
+  summarize(mean_time = mean(Time)) %>%
+  arrange(mean_time) %>%  # re-order and re-set
+  mutate(Team = factor(Team, levels = Team))
+  # factor levels before plotting
+  plots[[21]] <- ggplot(worldcup_mean_times,
+         aes(x = mean_time, y = Team)) +
+  geom_point() +
+  theme_few() +
+  xlab("Mean time per player (minutes)") +
+  ylab("")
   pdf("customplots.pdf")
   invisible(lapply(plots, print))
   graphics.off()
