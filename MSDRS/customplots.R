@@ -52,30 +52,73 @@ main <- function(argv) {
     geom_line() +
     theme_tufte()
 
-# Create a messier example version of the data
-wc_example_data <- worldcup %>%
-  dplyr::rename(Pos = Position) %>%
-  mutate(Pos = fct_recode(Pos,
-                          "DC" = "Defender",
-                          "FW" = "Forward",
-                          "GK" = "Goalkeeper",
-                          "MF" = "Midfielder"))
-  plots[[11]] <- ggplot(wc_example_data,
-                        aes(x = Pos)) +
-  geom_bar()
+  # Create a messier example version of the data
+  wc_example_data <- worldcup %>%
+    dplyr::rename(Pos = Position) %>%
+    mutate(Pos = fct_recode(Pos,
+      "DC" = "Defender",
+      "FW" = "Forward",
+      "GK" = "Goalkeeper",
+      "MF" = "Midfielder"
+    ))
+  plots[[11]] <- ggplot(
+    wc_example_data,
+    aes(x = Pos)
+  ) +
+    geom_bar()
 
-wc_example_data <- wc_example_data %>%
-  mutate(Pos = fct_recode(Pos,
-                          "Defender" = "DC",
-                          "Forward" = "FW",
-                          "Goalkeeper" = "GK",
-                          "Midfielder" = "MF"))
- plots[[12]] <- ggplot(wc_example_data, aes(x = Pos)) +
-  geom_bar(fill = "lightgray") +
-  xlab("") +
-  ylab("Number of players") +
-  coord_flip() +
-  theme_tufte()
+  wc_example_data <- wc_example_data %>%
+    mutate(Pos = fct_recode(Pos,
+      "Defender" = "DC",
+      "Forward" = "FW",
+      "Goalkeeper" = "GK",
+      "Midfielder" = "MF"
+    ))
+  plots[[12]] <- ggplot(wc_example_data, aes(x = Pos)) +
+    geom_bar(fill = "lightgray") +
+    xlab("") +
+    ylab("Number of players") +
+    coord_flip() +
+    theme_tufte()
+  worldcup_forwards <-
+    filter(
+      worldcup,
+      Position == "Forward"
+    )
+  plots[[13]] <-
+    ggplot(
+      worldcup_forwards,
+      aes(
+        x = Passes,
+        y = Shots
+      )
+    ) +
+    geom_point(size = 1.5) +
+    theme_few() +
+    geom_smooth()
+  plots[[14]] <-
+    ggplot(
+      worldcup_forwards,
+      aes(
+        x = Passes,
+        y = Shots
+      )
+    ) +
+    geom_point(size = 1.5) +
+    theme_few() +
+    geom_smooth(method = "lm")
+
+  plots[[15]] <- ggplot(worldcup, aes(x = Time, y = Shots)) +
+    geom_point() +
+    facet_grid(. ~ Position)
+  worldcup_finalists <- worldcup %>%
+    filter(Team %in% c("Spain", "Netherlands"))
+  plots[[16]] <- ggplot(worldcup_finalists, aes(x = Time, y = Shots)) +
+    geom_point() +
+    facet_grid(Team ~ Position)
+  plots[[17]] <- ggplot(worldcup, aes(x = Time, y = Shots)) +
+    geom_point(alpha = 0.25) +
+    facet_wrap(~Team, ncol = 6)
   pdf("customplots.pdf")
   invisible(lapply(plots, print))
   graphics.off()
