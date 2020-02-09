@@ -8,6 +8,7 @@ data(nepali)
 data(worldcup)
 suppressMessages(library(dlnm))
 data(chicagoNMMAPS)
+library(forcats)
 
 main <- function(argv) {
   chic <- dlnm::chicagoNMMAPS
@@ -51,6 +52,30 @@ main <- function(argv) {
     geom_line() +
     theme_tufte()
 
+# Create a messier example version of the data
+wc_example_data <- worldcup %>%
+  dplyr::rename(Pos = Position) %>%
+  mutate(Pos = fct_recode(Pos,
+                          "DC" = "Defender",
+                          "FW" = "Forward",
+                          "GK" = "Goalkeeper",
+                          "MF" = "Midfielder"))
+  plots[[11]] <- ggplot(wc_example_data,
+                        aes(x = Pos)) +
+  geom_bar()
+
+wc_example_data <- wc_example_data %>%
+  mutate(Pos = fct_recode(Pos,
+                          "Defender" = "DC",
+                          "Forward" = "FW",
+                          "Goalkeeper" = "GK",
+                          "Midfielder" = "MF"))
+ plots[[12]] <- ggplot(wc_example_data, aes(x = Pos)) +
+  geom_bar(fill = "lightgray") +
+  xlab("") +
+  ylab("Number of players") +
+  coord_flip() +
+  theme_tufte()
   pdf("customplots.pdf")
   invisible(lapply(plots, print))
   graphics.off()

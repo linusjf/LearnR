@@ -303,6 +303,9 @@ main <- function(argv) {
   if (!require(ggthemes)) {
     install.packages("ggthemes", .libPaths()[1])
   }
+  if (!require(forcats)) {
+    install.packages("forcats", .libPaths()[1])
+  }
   install_efficientr()
   update.packages()
   if (!is.null(warnings())) {
