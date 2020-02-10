@@ -166,6 +166,23 @@ main <- function(argv) {
     theme_few() +
     xlab("Mean time per player (minutes)") +
     ylab("")
+  noteworthy_players <- worldcup %>%
+    filter(Shots == max(Shots) | Passes == max(Passes)) %>%
+    mutate(point_label = paste0(Team, Position, sep = ", "))
+  plots[[22]] <- ggplot(worldcup, aes(x = Passes, y = Shots)) +
+    geom_point(alpha = 0.5) +
+    geom_text(
+      data = noteworthy_players, aes(label = point_label),
+      vjust = "inward", hjust = "inward", color = "blue"
+    ) +
+    theme_few()
+  plots[[23]] <- worldcup %>%
+    ggplot(aes(x = Time, y = Shots, color = Position)) +
+    geom_point()
+  plots[[24]] <- worldcup %>%
+    ggplot(aes(x = Time, y = Shots)) +
+    geom_point() +
+    facet_grid(. ~ Position)
   pdf("customplots.pdf")
   invisible(lapply(plots, print))
   graphics.off()
