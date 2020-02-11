@@ -11,6 +11,7 @@ library(ggthemes)
 library(grid)
 suppressMessages(library(gridExtra))
 library(RColorBrewer)
+suppressMessages(library(viridis))
 
 main <- function(argv) {
   chic <- dlnm::chicagoNMMAPS
@@ -296,6 +297,37 @@ main <- function(argv) {
                          "red",
                          "darkgreen",
                          "darkgray"))
+  newplots[[2]] <- worldcup %>%
+  ggplot(aes(x = Time, y = Shots, color = Passes)) +
+  geom_point(size = 0.9) +
+  facet_wrap(~ Position) +
+  scale_color_viridis()
+newplots[[3]] <- worldcup %>%
+  ggplot(aes(x = Time, y = Shots, color = Position)) +
+  geom_point(alpha = 0.7) +
+  scale_color_viridis(discrete = TRUE)
+worldcup_ex <- worldcup %>%
+  ggplot(aes(x = Time, y = Shots, color = Passes)) +
+  geom_point(size = 0.9)
+
+magma_plot <- worldcup_ex +
+  scale_color_viridis(option = "A") +
+  ggtitle("magma")
+inferno_plot <- worldcup_ex +
+  scale_color_viridis(option = "B") +
+  ggtitle("inferno")
+plasma_plot <- worldcup_ex +
+  scale_color_viridis(option = "C") +
+  ggtitle("plasma")
+viridis_plot <- worldcup_ex +
+  scale_color_viridis(option = "D") +
+  ggtitle("viridis")
+grob_viridis <-
+  grid.arrange(magma_plot,
+             inferno_plot,
+             plasma_plot,
+             viridis_plot,
+             ncol = 2)
   pdf("customplots.pdf")
   invisible(lapply(plots, print))
   RColorBrewer::display.brewer.pal(name = "PuBuGn", n = 8)
@@ -304,6 +336,8 @@ main <- function(argv) {
   grid::grid.newpage()
   grid::grid.draw(grob)
   invisible(lapply(newplots, print))
+  grid::grid.newpage()
+  grid::grid.draw(grob_viridis)
   graphics.off()
   return(0)
 }
