@@ -30,6 +30,15 @@ install_programs <- function() {
   }
 }
 
+install_rgraphics <- function() {
+  if (!require(RGraphics)) {
+    install.packages("RGraphics", .libPaths()[1])
+  }
+  if (!require(R.devices)) {
+    install.packages("R.devices", .libPaths()[1])
+  }
+}
+
 install_rbyexample <- function() {
   if (!require(stringi)) {
     install.packages("stringi", .libPaths()[1])
@@ -182,6 +191,9 @@ install_msdrs <- function() {
   if (!require(purrr)) {
     install.packages("purrr", .libPaths()[1])
   }
+  if (!require(R.devices)) {
+    install.packages("R.devices", .libPaths()[1])
+  }
   if (!require(rappdirs)) {
     install.packages("rappdirs", .libPaths()[1])
   }
@@ -243,6 +255,7 @@ main <- function(argv) {
   install_tools()
   install_programs()
   install_rbyexample()
+  install_rgraphics()
   if (!require(readr)) {
     install.packages("readr", .libPaths()[1])
   }
@@ -308,6 +321,9 @@ main <- function(argv) {
   }
   if (!require(grid)) {
     install.packages("grid", .libPaths()[1])
+  }
+  if (!require(R.devices)) {
+    install.packages("R.devices", .libPaths()[1])
   }
   install_efficientr()
   update.packages()

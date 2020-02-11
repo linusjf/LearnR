@@ -11,6 +11,7 @@ library(ggthemes)
 library(grid)
 suppressMessages(library(gridExtra))
 library(RColorBrewer)
+library(R.devices)
 suppressMessages(library(viridis))
 
 main <- function(argv) {
@@ -334,13 +335,13 @@ main <- function(argv) {
       viridis_plot,
       ncol = 2
     )
-  pdf("customplots.pdf")
+  pdf(file = "customplots.pdf")
   invisible(lapply(plots, print))
   RColorBrewer::display.brewer.pal(name = "PuBuGn", n = 8)
   RColorBrewer::display.brewer.pal(name = "Set1", n = 8)
   RColorBrewer::display.brewer.pal(name = "PRGn", n = 8)
   grid::grid.newpage()
-  grid::grid.draw(grob)
+  suppressGraphics(grid::grid.draw(grob, recording = FALSE))
   invisible(lapply(newplots, print))
   grid::grid.newpage()
   grid::grid.draw(grob_viridis)
