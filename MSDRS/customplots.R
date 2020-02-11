@@ -183,6 +183,63 @@ main <- function(argv) {
     ggplot(aes(x = Time, y = Shots)) +
     geom_point() +
     facet_grid(. ~ Position)
+  plots[[25]] <- worldcup %>%
+    dplyr::select(Team, Time) %>%
+    dplyr::group_by(Team) %>%
+    dplyr::mutate(
+      ave_time = mean(Time),
+      min_time = min(Time),
+      max_time = max(Time)
+    ) %>%
+    dplyr::arrange(ave_time) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(Team = factor(Team, levels = unique(Team))) %>%
+    ggplot(aes(x = Time, y = Team)) +
+    geom_segment(aes(x = min_time, xend = max_time, yend = Team),
+      alpha = 0.5, color = "gray"
+    ) +
+    geom_point(alpha = 0.5) +
+    geom_point(aes(x = ave_time), size = 2, color = "red", alpha = 0.5) +
+    theme_minimal() +
+    ylab("")
+  plots[[26]] <-
+    ggplot(
+      worldcup,
+      aes(
+        x = Time, y = Passes,
+        color = Position,
+        size = Shots
+      )
+    ) +
+    geom_point(alpha = 0.5)
+  plots[[27]] <-
+    ggplot(
+      worldcup,
+      aes(
+        x = Time,
+        y = Passes,
+        color = Position,
+        size = Shots
+      )
+    ) +
+    geom_point(alpha = 0.5) +
+    scale_x_continuous(
+      name = "Time played (minutes)",
+      breaks = 90 * c(2, 4, 6),
+      minor_breaks = 90 * c(1, 3, 5)
+    )
+  plots[[27]] <-
+    ggplot(worldcup, aes(x = Time, y = Passes, color = Position, size = Shots)) +
+    geom_point(alpha = 0.5) +
+    scale_x_continuous(
+      name = "Time played (minutes)",
+      breaks = 90 * c(2, 4, 6),
+      minor_breaks = 90 * c(1, 3, 5)
+    ) +
+    scale_size_continuous(
+      name = "Shots on goal",
+      breaks = c(0, 10, 20)
+    )
   pdf("customplots.pdf")
   invisible(lapply(plots, print))
   graphics.off()
