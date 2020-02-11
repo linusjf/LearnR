@@ -286,12 +286,24 @@ main <- function(argv) {
     ggtitle("Accent")
   grob <-
     gridExtra::grid.arrange(a, b, c, d, ncol = 2)
+  newplots <- list()
+  newplots[[1]] <- ggplot(worldcup, aes(x = Time, y = Passes,
+                     color = Position, size = Shots)) +
+  geom_point(alpha = 0.5) +
+  scale_color_manual(
+                     values =
+                       c("blue",
+                         "red",
+                         "darkgreen",
+                         "darkgray"))
   pdf("customplots.pdf")
   invisible(lapply(plots, print))
+  RColorBrewer::display.brewer.pal(name = "PuBuGn", n = 8)
   RColorBrewer::display.brewer.pal(name = "Set1", n = 8)
   RColorBrewer::display.brewer.pal(name = "PRGn", n = 8)
-  RColorBrewer::display.brewer.pal(name = "PuBuGn", n = 8)
+  grid::grid.newpage()
   grid::grid.draw(grob)
+  invisible(lapply(newplots, print))
   graphics.off()
   return(0)
 }
