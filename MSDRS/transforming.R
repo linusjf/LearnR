@@ -49,7 +49,8 @@ main <- function(argv) {
   andrew_tracks %>%
     gather(measure, value, -datetime) %>%
     ggplot(aes(x = datetime, y = value)) +
-    geom_point() + geom_line() +
+    geom_point() +
+    geom_line() +
     facet_wrap(~measure, ncol = 1, scales = "free_y")
   ggplot2::ggsave("andrew_tracks.pdf")
 
@@ -98,7 +99,8 @@ main <- function(argv) {
     rename(grouping = month)
 
   a <- ggplot(check_weekdays, aes(x = grouping, y = ave_max_wind)) +
-    geom_bar(stat = "identity") + xlab("")
+    geom_bar(stat = "identity") +
+    xlab("")
   b <- ggplot2::`%+%`(a, check_months)
   gridExtra::grid.arrange(a, b, ncol = 1)
   c <- gridExtra::arrangeGrob(grobs = list(a, b), ncol = 1)

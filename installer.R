@@ -306,6 +306,9 @@ main <- function(argv) {
   if (!require(forcats)) {
     install.packages("forcats", .libPaths()[1])
   }
+  if (!require(grid)) {
+    install.packages("grid", .libPaths()[1])
+  }
   install_efficientr()
   update.packages()
   if (!is.null(warnings())) {

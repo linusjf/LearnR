@@ -30,12 +30,14 @@ main <- function(argv) {
   ggplot(nepali, aes(x = ht, y = wt)) +
     geom_point(color = "blue", size = 0.5) +
     ggtitle("Weight versus Height") +
-    xlab("Height (cm)") + ylab("Weight (kg)")
+    xlab("Height (cm)") +
+    ylab("Weight (kg)")
   ggplot2::ggsave("nepalihtswts.pdf")
   ggplot(nepali, aes(x = ht, y = wt, color = sex)) +
     geom_point(size = 0.5) +
     ggtitle("Weight versus Height") +
-    xlab("Height (cm)") + ylab("Weight (kg)")
+    xlab("Height (cm)") +
+    ylab("Weight (kg)")
   ggplot2::ggsave("nepalihtswtssex.pdf")
   ggplot(nepali, aes(x = 1, y = ht)) +
     geom_boxplot() +

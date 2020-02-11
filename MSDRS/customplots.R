@@ -1,14 +1,16 @@
 #!/usr/bin/env Rscript
+suppressMessages(library(dlnm))
+data(chicagoNMMAPS)
 suppressMessages(library(dplyr))
-library(ggplot2)
-suppressMessages(library(gridExtra))
-library(ggthemes)
 library(faraway)
 data(nepali)
 data(worldcup)
-suppressMessages(library(dlnm))
-data(chicagoNMMAPS)
 library(forcats)
+library(ggplot2)
+library(ggthemes)
+library(grid)
+suppressMessages(library(gridExtra))
+library(RColorBrewer)
 
 main <- function(argv) {
   chic <- dlnm::chicagoNMMAPS
@@ -149,7 +151,8 @@ main <- function(argv) {
   ) +
     geom_point() +
     theme_few() +
-    xlab("Mean time per player (minutes)") + ylab("")
+    xlab("Mean time per player (minutes)") +
+    ylab("")
 
   ## Right plot
   worldcup_mean_times <- worldcup %>%
@@ -229,7 +232,15 @@ main <- function(argv) {
       minor_breaks = 90 * c(1, 3, 5)
     )
   plots[[27]] <-
-    ggplot(worldcup, aes(x = Time, y = Passes, color = Position, size = Shots)) +
+    ggplot(
+      worldcup,
+      aes(
+        x = Time,
+        y = Passes,
+        color = Position,
+        size = Shots
+      )
+    ) +
     geom_point(alpha = 0.5) +
     scale_x_continuous(
       name = "Time played (minutes)",
@@ -240,8 +251,47 @@ main <- function(argv) {
       name = "Shots on goal",
       breaks = c(0, 10, 20)
     )
+  plots[[28]] <-
+    ggplot(chic_july, aes(x = date, y = death)) +
+    geom_line() +
+    scale_x_date(
+      name = "Date in July 1995",
+      date_labels = "%m-%d"
+    )
+  plots[[29]] <-
+    ggplot(chic_july, aes(x = date, y = death)) +
+    geom_line() +
+    scale_x_date(
+      name = "Date in July 1995",
+      date_labels = "%b-%d"
+    ) +
+    scale_y_log10(breaks = c(1:4 * 100))
+  wc_example <- ggplot(worldcup, aes(
+    x = Time, y = Passes,
+    color = Position, size = Shots
+  )) +
+    geom_point(alpha = 0.5)
+  a <- wc_example +
+    scale_color_brewer(palette = "Set1") +
+    ggtitle("Set1")
+  b <- wc_example +
+    scale_color_brewer(palette = "Dark2") +
+    ggtitle("Dark2")
+  c <- wc_example +
+    scale_color_brewer(palette = "Pastel2") +
+    ggtitle("Pastel2") +
+    theme_dark()
+  d <- wc_example +
+    scale_color_brewer(palette = "Accent") +
+    ggtitle("Accent")
+  grob <-
+    gridExtra::grid.arrange(a, b, c, d, ncol = 2)
   pdf("customplots.pdf")
   invisible(lapply(plots, print))
+  RColorBrewer::display.brewer.pal(name = "Set1", n = 8)
+  RColorBrewer::display.brewer.pal(name = "PRGn", n = 8)
+  RColorBrewer::display.brewer.pal(name = "PuBuGn", n = 8)
+  grid::grid.draw(grob)
   graphics.off()
   return(0)
 }

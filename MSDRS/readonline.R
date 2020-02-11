@@ -161,7 +161,8 @@ graphit <- function() {
   ext_tracks %>%
     group_by(storm_name) %>%
     summarize(worst_wind = max(max_wind)) %>%
-    ggplot2::ggplot(aes(x = worst_wind)) + geom_histogram(bins = 30)
+    ggplot2::ggplot(aes(x = worst_wind)) +
+    geom_histogram(bins = 30)
   ggplot2::ggsave("ext_tracks.pdf")
 }
 
