@@ -9,6 +9,7 @@ main <- function(argv) {
     150, 600,
     "Pressure (mm Hg)\nversus\nTemperature (Celsius)"
   )
+  print(dev.cur())
   graphics.off()
   return(0)
 }

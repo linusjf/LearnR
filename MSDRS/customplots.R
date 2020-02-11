@@ -11,7 +11,6 @@ library(ggthemes)
 library(grid)
 suppressMessages(library(gridExtra))
 library(RColorBrewer)
-library(R.devices)
 suppressMessages(library(viridis))
 
 main <- function(argv) {
@@ -286,8 +285,6 @@ main <- function(argv) {
   d <- wc_example +
     scale_color_brewer(palette = "Accent") +
     ggtitle("Accent")
-  grob <-
-    gridExtra::grid.arrange(a, b, c, d, ncol = 2)
   newplots <- list()
   newplots[[1]] <- ggplot(worldcup, aes(
     x = Time, y = Passes,
@@ -328,21 +325,23 @@ main <- function(argv) {
   viridis_plot <- worldcup_ex +
     scale_color_viridis(option = "D") +
     ggtitle("viridis")
-  grob_viridis <-
-    grid.arrange(magma_plot,
-      inferno_plot,
-      plasma_plot,
-      viridis_plot,
-      ncol = 2
-    )
   pdf(file = "customplots.pdf")
   invisible(lapply(plots, print))
   RColorBrewer::display.brewer.pal(name = "PuBuGn", n = 8)
   RColorBrewer::display.brewer.pal(name = "Set1", n = 8)
   RColorBrewer::display.brewer.pal(name = "PRGn", n = 8)
+  grob <-
+    gridExtra::arrangeGrob(a, b, c, d, ncol = 2)
   grid::grid.newpage()
-  suppressGraphics(grid::grid.draw(grob, recording = FALSE))
+  grid::grid.draw(grob, recording = FALSE)
   invisible(lapply(newplots, print))
+  grob_viridis <-
+    arrangeGrob(magma_plot,
+      inferno_plot,
+      plasma_plot,
+      viridis_plot,
+      ncol = 2
+    )
   grid::grid.newpage()
   grid::grid.draw(grob_viridis)
   graphics.off()
