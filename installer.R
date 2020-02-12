@@ -46,6 +46,9 @@ install_rgraphics <- function() {
   if (!require(grid)) {
     install.packages("grid", .libPaths()[1])
   }
+  if (!require(lattice)) {
+    install.packages("lattice", .libPaths()[1])
+  }
 }
 
 install_rbyexample <- function() {
