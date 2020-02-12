@@ -49,6 +49,9 @@ install_rgraphics <- function() {
   if (!require(lattice)) {
     install.packages("lattice", .libPaths()[1])
   }
+  if (!require(ggplot2)) {
+    install.packages("ggplot2", .libPaths()[1])
+  }
 }
 
 install_rbyexample <- function() {
