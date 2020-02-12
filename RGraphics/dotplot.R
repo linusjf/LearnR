@@ -9,6 +9,9 @@ suppressMessages(library(lattice))
 
 main <- function(argv) {
   print(head(lattice::barley))
+  print(levels(lattice::barley$variety))
+  print(levels(lattice::barley$year))
+  print(levels(lattice::barley$site))
   lattice::trellis.device(pdf, file = "dotplot.pdf")
   trellis.par.set(list(
     fontsize = list(text = 6),
