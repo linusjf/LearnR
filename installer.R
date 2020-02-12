@@ -37,6 +37,15 @@ install_rgraphics <- function() {
   if (!require(R.devices)) {
     install.packages("R.devices", .libPaths()[1])
   }
+  if (!require(colorspace)) {
+    install.packages("colorspace", .libPaths()[1])
+  }
+  if (!require(grImport)) {
+    install.packages("grImport", .libPaths()[1])
+  }
+  if (!require(grid)) {
+    install.packages("grid", .libPaths()[1])
+  }
 }
 
 install_rbyexample <- function() {
