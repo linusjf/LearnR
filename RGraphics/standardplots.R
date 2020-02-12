@@ -81,6 +81,8 @@ main <- function(argv) {
 
   # Boxplot
   # Modified example(boxplot) - itself from suggestion by Roger Bivand
+  print(head(subset(ToothGrowth, ToothGrowth$supp == "VC")))
+  print(levels(ToothGrowth$supp))
   boxplot(len ~ dose,
     data = ToothGrowth,
     boxwex = 0.25, at = 1:3 - 0.2,
@@ -89,6 +91,7 @@ main <- function(argv) {
     ylab = "tooth length", ylim = c(0, 35)
   )
   mtext("Vitamin C dose (mg)", side = 1, line = 2.5, cex = 0.8)
+  print(head(subset(ToothGrowth, ToothGrowth$supp == "OJ")))
   boxplot(len ~ dose,
     data = ToothGrowth, add = TRUE,
     boxwex = 0.25, at = 1:3 + 0.2,
