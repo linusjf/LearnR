@@ -8,7 +8,7 @@ main <- function(argv) {
   # Source: http://www.globaltiger.org/population.htm
   year <- c(1993, 1996, 1998, 2001)
   # nolint start
-  #minpop <- c(20, 50, 50, 115)
+  # minpop <- c(20, 50, 50, 115)
   # nolint end
   maxpop <- c(50, 240, 240, 150)
 
@@ -18,14 +18,18 @@ main <- function(argv) {
 
   source(system.file("extra", "grayify.R", package = "RGraphics"))
 
+  # nolint start
   pushViewport(
     plotViewport(c(3, 2, 2, 1)),
-    viewport(xscale = c(1991, 2003),
-             yscale = c(0, 250))
+    viewport(
+      xscale = c(1991, 2003),
+      yscale = c(0, 250)
+    )
   )
   grid::grid.rect()
   # tiger backdrop in gray
   grImport::grid.picture(tiger, x = 0.45, FUN = grayify, min = .8)
+  # nolint end
   grid::grid.xaxis(at = year, gp = grid::gpar(cex = 0.7))
   grid::grid.yaxis(gp = grid::gpar(cex = 0.7))
   # black bars
@@ -57,11 +61,11 @@ main <- function(argv) {
     just = "bottom", gp = grid::gpar(fill = NA)
   )
   grid::grid.text(
-                      "Estimated Population (max.) of Bengal Tigers\n(in
+    "Estimated Population (max.) of Bengal Tigers\n(in
                       Bhutan)",
     y =
       unit(1, "npc") +
-      unit(1, "lines")
+        unit(1, "lines")
   )
   grid::popViewport(2)
   return(0)
