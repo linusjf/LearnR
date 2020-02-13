@@ -31,7 +31,12 @@ install_programs <- function() {
 }
 
 install_coronavirus <- function() {
+  if (!require(nCov2019)) {
   remotes::install_github("GuangchuangYu/nCov2019")
+  }
+  if (!require(maps)) {
+    install.packages("maps", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {
