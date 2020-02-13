@@ -30,6 +30,10 @@ install_programs <- function() {
   }
 }
 
+install_coronavirus <- function() {
+  remotes::install_github("GuangchuangYu/nCov2019")
+}
+
 install_rgraphics <- function() {
   if (!require(RGraphics)) {
     install.packages("RGraphics", .libPaths()[1])
@@ -270,7 +274,8 @@ main <- function(argv) {
   install_tools()
   install_programs()
   install_rbyexample()
-  install_rgraphics()
+ install_coronavirus()
+ install_rgraphics()
   if (!require(readr)) {
     install.packages("readr", .libPaths()[1])
   }
