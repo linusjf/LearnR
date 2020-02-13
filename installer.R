@@ -43,6 +43,12 @@ install_coronavirus <- function() {
   if (!require(mapproj)) {
     install.packages("mapproj", .libPaths()[1])
   }
+  if (!require(partykit)) {
+    install.packages("partykit", .libPaths()[1])
+  }
+  if (!require(ipred)) {
+    install.packages("ipred", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {

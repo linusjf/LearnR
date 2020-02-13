@@ -13,9 +13,10 @@ main <- function(argv) {
   maps::map("state", proj = "albers", par = c(30, 40))
   maps::map("state", par = c(20, 50)) # another Albers projection
   maps::map(
-            "world",
-            proj = "gnomonic",
-            orient = c(0, -100, 0))
+    "world",
+    proj = "gnomonic",
+    orient = c(0, -100, 0)
+  )
   # example of orient
   # see map.grid for more examples
   # tests of projections added RSB 091101
