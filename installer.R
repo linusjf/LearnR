@@ -40,6 +40,9 @@ install_coronavirus <- function() {
   if (!require(mapdata)) {
     install.packages("mapdata", .libPaths()[1])
   }
+  if (!require(mapproj)) {
+    install.packages("mapproj", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {
