@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+suppressMessages(library(callr))
 suppressMessages(library(grid))
 suppressMessages(library(partykit))
 suppressMessages(library(ipred))
