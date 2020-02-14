@@ -153,7 +153,7 @@ main <- function(argv) {
 
 # Function to draw a cell in a text column
 draw_label_col <- function(col, j) {
-  for (i in seq_len(col$rows)) {
+  for (i in seq_len(length(col$rows))) {
     grid::pushViewport(
       grid::viewport(
         layout.pos.row = col$rows[i],
@@ -234,8 +234,7 @@ draw_data_col <- function(col, j) {
   grid::grid.xaxis(gp = grid::gpar(cex = 0.6))
   grid::grid.text("or", y = grid::unit(-2, "lines"))
   grid::popViewport()
-  print(col$rows)
-  for (i in seq_len(col$rows)) {
+  for (i in seq_len(length(col$rows))) {
     grid::pushViewport(grid::viewport(
       layout.pos.row = col$rows[i], layout.pos.col = j,
       xscale = col$range
@@ -251,5 +250,4 @@ draw_data_col <- function(col, j) {
 
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
-  print(traceback())
 }
