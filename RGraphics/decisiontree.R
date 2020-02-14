@@ -9,6 +9,7 @@ main <- function(argv) {
   # CLASSIFICATION
   # fitting
   glau <- TH.data::GlaucomaM
+  print(head(glau))
   levels(glau$Class) <- c("glau", "norm")
   fm_class <- partykit::ctree(Class ~ ., data = glau)
 
@@ -16,6 +17,7 @@ main <- function(argv) {
   grid::pushViewport(grid::viewport(gp = grid::gpar(cex = 0.6)))
   plot(fm_class, new = FALSE, terminal.panel = partykit::myNode)
   grid::popViewport()
+  print(fm_class$terms)
   return(0)
 }
 
