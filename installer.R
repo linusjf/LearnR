@@ -73,6 +73,11 @@ install_rgraphics <- function() {
   if (!require(ggplot2)) {
     install.packages("ggplot2", .libPaths()[1])
   }
+  if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+}
+  if (!require(graph)) 
+  BiocManager::install(c("graph"))
 }
 
 install_rbyexample <- function() {
