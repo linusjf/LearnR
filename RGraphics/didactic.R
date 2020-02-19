@@ -147,8 +147,10 @@ main <- function(argv) {
   # create X1X3 gray region and plot boundary
   obsphi <- pi / 24
   crit <- pi / 2 - obsphi
-  theta1sa <- c(seq(-crit, crit / 2, length = 200), seq(crit / 2, crit, length =
-                                                        500))
+  theta1sa <- c(seq(-crit, crit / 2, length = 200), seq(crit / 2, crit,
+    length =
+      500
+  ))
   theta2sa <- asin(cos(crit) / cos(theta1sa))
   theta1sb <- seq(crit, crit / 2, length = 500)
   theta2sb <- pi - asin(cos(crit) / cos(theta1sb))
