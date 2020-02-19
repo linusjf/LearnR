@@ -32,7 +32,7 @@ install_programs <- function() {
 
 install_coronavirus <- function() {
   if (!require(nCov2019)) {
-  remotes::install_github("GuangchuangYu/nCov2019")
+    remotes::install_github("GuangchuangYu/nCov2019")
   }
   if (!require(maps)) {
     install.packages("maps", .libPaths()[1])
@@ -75,9 +75,13 @@ install_rgraphics <- function() {
   }
   if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
-}
-  if (!require(graph)) 
-  BiocManager::install(c("graph"))
+  }
+  if (!require(graph)) {
+    BiocManager::install(c("graph"))
+  }
+  if (!require(pixmap)) {
+    install.packages("pixmap")
+  }
 }
 
 install_rbyexample <- function() {
@@ -296,8 +300,8 @@ main <- function(argv) {
   install_tools()
   install_programs()
   install_rbyexample()
- install_coronavirus()
- install_rgraphics()
+  install_coronavirus()
+  install_rgraphics()
   if (!require(readr)) {
     install.packages("readr", .libPaths()[1])
   }
