@@ -4,3 +4,4 @@
 [Cook's distance](https://www.statisticshowto.datasciencecentral.com/cooks-distance/)
 [Understanding Diagnostic Plots](https://data.library.virginia.edu/diagnostic-plots/)
 [Regression diagnostic plots](http://www.contrib.andrew.cmu.edu/~achoulde/94842/homework/regression_diagnostics.html)
+[Understanding Regression Results](https://statisticsbyjim.com/regression/interpret-coefficients-p-values-regression/)
