@@ -15,6 +15,12 @@ install_tools <- function() {
   }
 }
 
+install_rbloggers <- function() {
+  if (!require(corrplot)) {
+    install.packages("corrplot", .libPaths()[1])
+  }
+}
+
 install_programs <- function() {
   if (!require(stargazer)) {
     install.packages("stargazer", .libPaths()[1])
@@ -302,6 +308,7 @@ main <- function(argv) {
   install_rbyexample()
   install_coronavirus()
   install_rgraphics()
+  install_rbloggers()
   if (!require(readr)) {
     install.packages("readr", .libPaths()[1])
   }

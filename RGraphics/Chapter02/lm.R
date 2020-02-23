@@ -17,7 +17,12 @@ main <- function(argv) {
     main = "LifeCycleSavings data"
   )
   print(summary(lm_sr))
+  cat("Printing residuals\n")
   print(resid(lm_sr))
+  print(summary(resid(lm_sr)))
+  cat("Printing cooks distances\n")
+  print(cooks.distance(lm_sr))
+  print(summary(cooks.distance(lm_sr)))
   print("Model given level of significance = 0.05")
   par(mfrow = c(3, 2), cex = 0.6, mar = c(4, 4, 4, 2), mex = 0.8)
   plot(lm_sr <- lm(sr ~ pop15 + ddpi, data = LifeCycleSavings),
