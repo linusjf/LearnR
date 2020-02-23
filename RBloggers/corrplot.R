@@ -8,7 +8,7 @@ cor_mtest <- function(mat, method) {
   mat <- as.matrix(mat)
   n <- ncol(mat)
   p_mat <- matrix(NA, n, n)
-  diag(p_mat) <- 0
+  diag(p_mat) <- 1
   for (i in 1:(n - 1)) {
     for (j in (i + 1):n) {
       tmp <- corrplot::cor.test(mat[, i], mat[, j], method = method)
@@ -21,56 +21,56 @@ cor_mtest <- function(mat, method) {
   return(p_mat)
 }
 
-corrplot2 <- function(data,
-                      method = "pearson",
-                      sig_level = 0.05,
-                      order = "original",
-                      diag = FALSE,
-                      type = "upper",
-                      tl_srt = 90,
-                      number_font = 1,
-                      number_cex = 1,
-                      mar = c(0, 0, 0, 0)) {
-  data <- data[complete.cases(data), ]
-  mat <- cor(data, method = method)
-  p_mat <- corrplot::cor.mtest(data, method = method)
+corrplot2 <- function(data_,
+                      method_ = "pearson",
+                      sig_level_ = 0.05,
+                      order_ = "original",
+                      diag_ = FALSE,
+                      type_ = "upper",
+                      tl_srt_ = 90,
+                      number_font_ = 1,
+                      number_cex_ = 1,
+                      mar_ = c(0, 0, 0, 0)) {
+  data <- data_[complete.cases(data_), ]
+  mat <- cor(data, method = method_)
+  p_mat <- corrplot::cor.mtest(data, method = method_)
   col <- colorRampPalette(c(
     "#BB4444", "#EE9988", "#FFFFFF", "#77AADD",
     "#4477AA"
   ))
   corrplot(mat,
-    method = "color", col = col(200), number.font = number_font,
-    mar = mar, number.cex = number_cex,
-    type = type, order = order,
+    method = "color", col = col(200), number.font = number_font_,
+    mar = mar_, number.cex = number_cex_,
+    type = type_, order = order_,
     addCoef.col = "black",
     # add correlation coefficient
-    tl.col = "black", tl.srt = tl_srt,
+    tl.col = "black", tl.srt = tl_srt_,
     # rotation of text labels
     # combine with significance level
-    p.mat = p_mat, sig.level = sig_level, insig = "blank",
+    p.mat = p_mat, sig.level = sig_level_, insig = "blank",
     # hide correlation coefficiens on the diagonal
-    diag = diag
+    diag = diag_
   )
 }
 
 main <- function(argv) {
   corrplot2(
-    data = mtcars,
-    method = "pearson",
-    sig_level = 0.05,
-    order = "original",
-    diag = FALSE,
-    type = "upper",
-    tl_srt = 75
+    data_ = mtcars,
+    method_ = "pearson",
+    sig_level_ = 0.05,
+    order_  = "original",
+    diag_ = FALSE,
+    type_ = "upper",
+    tl_srt_ = 75
   )
   corrplot2(
-    data = mtcars,
-    method = "pearson",
-    sig_level = 0.01,
-    order = "original",
-    diag = FALSE,
-    type = "upper",
-    tl_srt = 75
+    data_ = mtcars,
+    method_ = "pearson",
+    sig_level_ = 0.01,
+    order_  = "original",
+    diag_ = FALSE,
+    type_ = "upper",
+    tl_srt_ = 75
   )
   return(0)
 }
