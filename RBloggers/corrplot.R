@@ -1,6 +1,8 @@
 #!/usr/bin/env Rscript
+# nolint start
 # https://www.r-bloggers.com/correlogram-in-r-how-to-highlight-the-most-correlated-variables-in-a-dataset/
-library(corrplot)
+# nolint end
+suppressMessages(library(corrplot))
 
 cor_mtest <- function(mat, method) {
   mat <- as.matrix(mat)
@@ -40,8 +42,10 @@ corrplot2 <- function(data,
     method = "color", col = col(200), number.font = number_font,
     mar = mar, number.cex = number_cex,
     type = type, order = order,
-    addCoef.col = "black", # add correlation coefficient
-    tl.col = "black", tl.srt = tl_srt, # rotation of text labels
+    addCoef.col = "black",
+    # add correlation coefficient
+    tl.col = "black", tl.srt = tl_srt,
+    # rotation of text labels
     # combine with significance level
     p.mat = p_mat, sig.level = sig_level, insig = "blank",
     # hide correlation coefficiens on the diagonal

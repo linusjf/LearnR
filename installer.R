@@ -300,9 +300,7 @@ install_msdrs <- function() {
 
 main <- function(argv) {
   print(sessionInfo())
-  r <- getOption("repos")
-  r["CRAN"] <- "http://cran.us.r-project.org"
-  options(repos = r)
+  update.packages()
   install_tools()
   install_programs()
   install_rbyexample()
@@ -379,7 +377,6 @@ main <- function(argv) {
     install.packages("R.devices", .libPaths()[1])
   }
   install_efficientr()
-  update.packages()
   if (!is.null(warnings())) {
     summary(warnings())
   }
