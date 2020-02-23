@@ -15,3 +15,5 @@
 [Residual Diagnostics](https://cran.r-project.org/web/packages/olsrr/vignettes/residual_diagnostics.html)
 
 [Measures of Influence](https://cran.r-project.org/web/packages/olsrr/vignettes/influence_measures.html)
+
+[How To Test For Normality in R](https://datasharkie.com/how-to-test-for-normality-in-r/)
