@@ -75,6 +75,15 @@ main <- function(argv) {
     type_ = "upper",
     tl_srt_ = 75
   )
+  corrplot2(
+    data_ = mtcars,
+    method_ = "pearson",
+    sig_level_ = 0.005,
+    order_  = "original",
+    diag_ = FALSE,
+    type_ = "upper",
+    tl_srt_ = 75
+  )
   return(0)
 }
 
