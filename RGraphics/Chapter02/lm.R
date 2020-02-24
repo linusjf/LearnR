@@ -3,7 +3,7 @@ library(grid)
 
 main <- function(argv) {
   print(head(LifeCycleSavings))
-  print(LifeCycleSavings[c("Libya", "Zambia"),])
+  print(LifeCycleSavings[c("Libya", "Zambia"), ])
   print(summary(LifeCycleSavings))
   par(mfrow = c(3, 2), cex = 0.6, mar = c(4, 4, 4, 2), mex = 0.8)
   plot(lm_sr <- lm(sr ~ pop15 + pop75 + dpi + ddpi, data = LifeCycleSavings),
@@ -18,29 +18,17 @@ main <- function(argv) {
   )
   print(summary(lm_sr))
   cat("Printing residuals\n")
-  print(resid(lm_sr))
+  cat(paste(names(resid(lm_sr)), resid(lm_sr)), sep = "\n")
   print(summary(resid(lm_sr)))
   cat("Printing cooks distances\n")
-  print(cooks.distance(lm_sr))
+  cat(paste(names(cooks.distance(lm_sr)), cooks.distance(lm_sr)), sep = "\n")
   print(summary(cooks.distance(lm_sr)))
-  print("Model given level of significance = 0.05")
-  par(mfrow = c(3, 2), cex = 0.6, mar = c(4, 4, 4, 2), mex = 0.8)
-  plot(lm_sr <- lm(sr ~ pop15 + ddpi, data = LifeCycleSavings),
-    id.n = 1, cex.caption = 0.8, which = 1:6,
-    panel = function(...) {
-      panel.smooth(..., col.smooth = "gray")
-    }
-  )
-  print(summary(lm_sr))
-  print("Model given level of significance = 0.01")
-  par(mfrow = c(3, 2), cex = 0.6, mar = c(4, 4, 4, 2), mex = 0.8)
-  plot(lm_sr <- lm(sr ~ pop15, data = LifeCycleSavings),
-    id.n = 1, cex.caption = 0.8, which = 1:6,
-    panel = function(...) {
-      panel.smooth(..., col.smooth = "gray")
-    }
-  )
-  print(summary(lm_sr))
+  cat("Printing fitted values\n")
+  cat(paste(names(fitted(lm_sr)), fitted(lm_sr)),  sep = "\n")
+  par(mfrow = c(1, 1), cex = 1, mar = c(4, 4, 4, 2), mex = 1)
+  plot(predict(lm_sr), LifeCycleSavings$sr,
+      xlab = "predicted", ylab = "actual")
+ abline(a = 0, b = 1)
   return(0)
 }
 
