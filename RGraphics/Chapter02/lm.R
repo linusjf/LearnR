@@ -24,11 +24,12 @@ main <- function(argv) {
   cat(paste(names(cooks.distance(lm_sr)), cooks.distance(lm_sr)), sep = "\n")
   print(summary(cooks.distance(lm_sr)))
   cat("Printing fitted values\n")
-  cat(paste(names(fitted(lm_sr)), fitted(lm_sr)),  sep = "\n")
+  cat(paste(names(fitted(lm_sr)), fitted(lm_sr)), sep = "\n")
   par(mfrow = c(1, 1), cex = 1, mar = c(4, 4, 4, 2), mex = 1)
   plot(predict(lm_sr), LifeCycleSavings$sr,
-      xlab = "predicted", ylab = "actual")
- abline(a = 0, b = 1)
+    xlab = "predicted", ylab = "actual"
+  )
+  abline(a = 0, b = 1)
   return(0)
 }
 
