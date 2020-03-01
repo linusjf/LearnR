@@ -91,6 +91,9 @@ install_rgraphics <- function() {
   if (!require(sjstats)) {
     install.packages("sjstats")
   }
+  if (!require(qpcR)) {
+    install.packages("qpcR")
+  }
 }
 
 install_rbyexample <- function() {

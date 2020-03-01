@@ -29,8 +29,18 @@ main <- function(argv) {
   abline(h = 0, col = "blue")
   plot(age_regression)
   weight_regression <- lm(BP ~ Weight, data = data)
+  coefs <- coefficients(weight_regression)
   print(summary(weight_regression))
-  plot(data$Weight, data$BP, main = "Regression plot",
+  main_label <-
+    paste0("Regression plot\nBP = ",
+           coefs["(Intercept)"],
+           " + ",
+           coefs["Weight"],
+           " Weight\n",
+    "S = ", sigma(weight_regression),
+    "\nR-sq = ", summary(weight_regression)$r.squared,
+    " R-sq(adj) = ", summary(weight_regression)$adj.r.squared)
+  plot(data$Weight, data$BP, main = main_label,
      xlab = "Weight", ylab = "Blood pressure",
      pch = 19, frame = FALSE)
   abline(weight_regression, col = "blue")
@@ -39,8 +49,18 @@ main <- function(argv) {
   abline(h = 0, col = "blue")
   plot(weight_regression)
   duration_regression <- lm(BP ~ Dur, data = data)
+  coefs <- coefficients(duration_regression)
   print(summary(duration_regression))
-  plot(data$Dur, data$BP, main = "Regression plot",
+  main_label <-
+    paste0("Regression plot\nBP = ",
+           coefs["(Intercept)"],
+           " + ",
+           coefs["Dur"],
+           " Dur\n",
+    "S = ", sigma(duration_regression),
+    "\nR-sq = ", summary(duration_regression)$r.squared,
+    " R-sq(adj) = ", summary(duration_regression)$adj.r.squared)
+  plot(data$Dur, data$BP, main = main_label,
      xlab = "Duration", ylab = "Blood pressure",
      pch = 19, frame = FALSE)
   abline(duration_regression, col = "blue")

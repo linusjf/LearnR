@@ -17,3 +17,5 @@
 [Measures of Influence](https://cran.r-project.org/web/packages/olsrr/vignettes/influence_measures.html)
 
 [How To Test For Normality in R](https://datasharkie.com/how-to-test-for-normality-in-r/)
+
+[How to Interpret Adjusted R-Squared and Predicted R-Squared in Regression Analysis](https://statisticsbyjim.com/regression/interpret-adjusted-r-squared-predicted-r-squared-regression/)
