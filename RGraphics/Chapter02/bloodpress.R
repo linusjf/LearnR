@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 
 main <- function(argv) {
+  par(mar = c(6, 4, 6, 2), mex = 0.8)
   data <- read.table("bloodpress.txt",
     sep = "\t",
     header = TRUE
@@ -8,8 +9,18 @@ main <- function(argv) {
   print(head(data))
   print(summary(data))
   age_regression <- lm(BP ~ Age, data = data)
-  print(summary(age_regression))
-  plot(data$Age, data$BP, main = "Regression plot",
+  coefs <- coefficients(age_regression)
+  print(anova(age_regression))
+  main_label <-
+    paste0("Regression plot\nBP = ",
+           coefs["(Intercept)"],
+           " + ",
+           coefs["Age"],
+           " Age\n",
+    "S = ", sigma(age_regression),
+    "\nR-sq = ", summary(age_regression)$r.squared,
+    " R-sq(adj) = ", summary(age_regression)$adj.r.squared)
+  plot(data$Age, data$BP, main = main_label,
      xlab = "Age", ylab = "Blood pressure",
      pch = 19, frame = FALSE)
   abline(age_regression, col = "blue")

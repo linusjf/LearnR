@@ -88,6 +88,9 @@ install_rgraphics <- function() {
   if (!require(pixmap)) {
     install.packages("pixmap")
   }
+  if (!require(sjstats)) {
+    install.packages("sjstats")
+  }
 }
 
 install_rbyexample <- function() {
