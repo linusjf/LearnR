@@ -57,6 +57,12 @@ install_coronavirus <- function() {
   }
 }
 
+install_stats462 <- function() {
+  if (!require(skimr)) {
+    install.packages("skimr", .libPaths()[1])
+  }
+}
+
 install_rgraphics <- function() {
   if (!require(RGraphics)) {
     install.packages("RGraphics", .libPaths()[1])
@@ -87,12 +93,6 @@ install_rgraphics <- function() {
   }
   if (!require(pixmap)) {
     install.packages("pixmap")
-  }
-  if (!require(sjstats)) {
-    install.packages("sjstats")
-  }
-  if (!require(qpcR)) {
-    install.packages("qpcR")
   }
 }
 
@@ -305,6 +305,7 @@ install_msdrs <- function() {
 }
 
 main <- function(argv) {
+  print(Sys.info())
   print(sessionInfo())
   update.packages()
   install_tools()
@@ -313,6 +314,7 @@ main <- function(argv) {
   install_coronavirus()
   install_rgraphics()
   install_rbloggers()
+  install_stats462()
   if (!require(readr)) {
     install.packages("readr", .libPaths()[1])
   }
