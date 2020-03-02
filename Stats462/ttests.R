@@ -55,7 +55,7 @@ plot_upper_tail_test <- function(los_stat, statistic, df) {
     xaxt = "n"
   )
   ticks <- c(0, los_stat, statistic)
-  labels <- formatC(ticks, format = "f", digits = 2)
+  labels <- formatC(ticks, format = "f", digits = 8)
   labels[2] <- paste0(
     labels[2],
     "\ncritical value"
@@ -108,7 +108,7 @@ plot_twosided_tail_test <- function(los_stat, statistic, df) {
     xaxt = "n"
   )
   ticks <- c(0, los_stat, statistic)
-  labels <- formatC(ticks, format = "f", digits = 2)
+  labels <- formatC(ticks, format = "f", digits = 8)
   labels[2] <- paste0(
     labels[2],
     "\ncritical value"
