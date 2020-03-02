@@ -18,11 +18,11 @@ main <- function(argv) {
   print(paste("p value: ", p_value))
   los_stat <- qt(0.05, df, lower = FALSE)
   print(statistic)
-  plot_ttest(los_stat, statistic, df)
+  plot_upper_tail_test(los_stat, statistic, df)
   return(0)
 }
 
-plot_ttest <- function(los_stat, statistic, df) {
+plot_upper_tail_test <- function(los_stat, statistic, df) {
   t_values <- seq(-4, 4, .1)
   par(mar = c(10, 4, 6, 2), mex = 0.8)
   plot(
