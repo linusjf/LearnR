@@ -92,8 +92,6 @@ plot_upper_tail_test <- function(los_stat, statistic, df) {
 }
 
 plot_twosided_tail_test <- function(los_stat, statistic, df) {
-  print(los_stat)
-  print(statistic)
   t_values <- seq(-4, 4, .1)
   par(
     mar = c(10, 4, 6, 2), cex = 0.7,
