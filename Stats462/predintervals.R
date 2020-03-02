@@ -10,7 +10,10 @@ main <- function(argv) {
   data$ones <- 1
   reg <- lm(Price ~ ones + 0, data)
   print(reg)
-  print(predict(reg, interval = "prediction"))
+  new_data <- data.frame(
+  ones = c(1)
+)
+  print(predict(reg, newdata = new_data, interval = "prediction"))
   return(0)
 }
 
