@@ -43,8 +43,8 @@ main <- function(argv) {
   y <- dnorm(x)
   polygon(c(-1, x, 1), c(0, y, 0), col = "gray50")
   qqnorm(data, pch = 1, frame = FALSE)
-qqline(data, col = "steelblue", lwd = 2)
-print(pnorm(380, mean = 280, sd = 50, lower.tail = FALSE));
+  qqline(data, col = "steelblue", lwd = 2)
+  print(pnorm(380, mean = 280, sd = 50, lower.tail = FALSE))
   return(0)
 }
 
