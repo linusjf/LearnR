@@ -8,18 +8,20 @@ main <- function(argv) {
   print(head(data))
   print(skimr::skim(data))
   data <- data[["Price"]]
+  upper_tail_test(data)
+  return(0)
+}
+
+upper_tail_test <- function(data) {
   test_value <- t.test(data,
     mu = 255, conf.level = 0.95,
     alternative = "greater"
   )
+  print(test_value)
   df <- test_value$parameter
   statistic <- test_value$statistic
-  p_value <- test_value$p.value
-  print(paste("p value: ", p_value))
   los_stat <- qt(0.05, df, lower = FALSE)
-  print(statistic)
   plot_upper_tail_test(los_stat, statistic, df)
-  return(0)
 }
 
 plot_upper_tail_test <- function(los_stat, statistic, df) {
