@@ -19,15 +19,30 @@ main <- function(argv) {
   lines(density(data),
     lwd = 2
   )
-x <- seq(-4, 4, length = 100)
-hx <- dnorm(x)
+  x <- seq(-4, 4, length = 100)
+  hx <- dnorm(x)
 
-plot(x, hx, type = "l", lty = 2, xlab = "x value",
-  ylab = "Density", main = "Normal Distribution")
-x <- seq(0, 4, length = 50)
-y <- dnorm(x)
-polygon(c(0, x, 4), c(0, y, 0), col = "gray")
-return(0)
+  plot(x, hx,
+    type = "l", lty = 2, xlab = "x value",
+    ylab = "Density", main = "Normal Distribution"
+  )
+  x <- seq(0, 4, length = 50)
+  y <- dnorm(x)
+  polygon(c(0, x, 4), c(0, y, 0), col = "gray")
+
+  x <- seq(-4, 4, length = 200)
+  y <- dnorm(x)
+  plot(x, y, lty = 2, type = "l", lwd = 2)
+  x <- seq(-3, 3, length = 200)
+  y <- dnorm(x)
+  polygon(c(-3, x, 3), c(0, y, 0), col = "gray")
+  x <- seq(-2, 2, length = 200)
+  y <- dnorm(x)
+  polygon(c(-2, x, 2), c(0, y, 0), col = "gray25")
+  x <- seq(-1, 1, length = 200)
+  y <- dnorm(x)
+  polygon(c(-1, x, 1), c(0, y, 0), col = "gray50")
+  return(0)
 }
 
 if (identical(environment(), globalenv())) {
