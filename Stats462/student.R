@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
 library(skimr)
+library(Metrics)
+library(dvmisc)
 
 main <- function(argv) {
   data <- read.table("student_height_weight.txt",
@@ -8,12 +10,16 @@ main <- function(argv) {
   print(head(data))
   print(skimr::skim(data))
   reg <- lm(wt ~ ht, data = data)
-  print(reg)
+  print(summary(reg))
   new_data <- data.frame(
     ht = c(66, 67, 68, 69, 70, 71)
   )
   values <- predict(reg, newdata = new_data)
   print(diff(values))
+  predicted <- predict(reg)
+  actuals <- data$wt
+  print(Metrics::rmse(actuals, predicted))
+  print(sqrt(dvmisc::get_mse(reg, var.estimate = FALSE)))
   plot_student(data, reg)
   return(0)
 }

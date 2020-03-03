@@ -64,6 +64,12 @@ install_stats462 <- function() {
   if (!require(shape)) {
     install.packages("shape", .libPaths()[1])
   }
+  if (!require(Metrics)) {
+    install.packages("Metrics", .libPaths()[1])
+  }
+  if (!require(dvmisc)) {
+    install.packages("dvmisc", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {
