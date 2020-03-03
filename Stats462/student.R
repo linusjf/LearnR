@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 library(skimr)
 library(Metrics)
-library(dvmisc)
+suppressMessages(library(dvmisc))
 
 main <- function(argv) {
   data <- read.table("student_height_weight.txt",
@@ -32,7 +32,8 @@ main <- function(argv) {
   print(paste("Squared Sum of Errors: ", SSE))
   print(c(SSR / SST, summary(reg)$r.squared))
   # nolint end
- 
+
+  print(cor(data$ht,data$wt))
   plot_student(data, reg)
   return(0)
 }
