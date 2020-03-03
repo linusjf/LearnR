@@ -11,8 +11,8 @@ main <- function(argv) {
   reg <- lm(Price ~ ones + 0, data)
   print(reg)
   new_data <- data.frame(
-  ones = c(1)
-)
+    ones = c(1)
+  )
   print(predict(reg, newdata = new_data, interval = "prediction"))
   return(0)
 }

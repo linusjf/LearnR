@@ -61,6 +61,9 @@ install_stats462 <- function() {
   if (!require(skimr)) {
     install.packages("skimr", .libPaths()[1])
   }
+  if (!require(shape)) {
+    install.packages("shape", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {
