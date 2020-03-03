@@ -20,6 +20,19 @@ main <- function(argv) {
   actuals <- data$wt
   print(Metrics::rmse(actuals, predicted))
   print(sqrt(dvmisc::get_mse(reg, var.estimate = FALSE)))
+
+  # Another way to compute R^2
+
+  # nolint start
+  SST <- sum((data$wt - mean(data$wt))^2)
+  print(paste("Total Sum of Squares: ", SST))
+  SSR <- sum((predicted - mean(data$wt))^2)
+  print(paste("Squared Sum of Residuals: ", SSR))
+  SSE <- sum(resid(reg)^2)
+  print(paste("Squared Sum of Errors: ", SSE))
+  print(c(SSR / SST, summary(reg)$r.squared))
+  # nolint end
+ 
   plot_student(data, reg)
   return(0)
 }
