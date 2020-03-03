@@ -54,7 +54,7 @@ plot_heightgpa <- function(data, reg) {
     angle = 30, code = 2, col = "black", lwd = 4
   )
   coefs <- reg$coefficients
-  text(x1, y1 + 0.1 , paste(
+  text(x1, y1 + 0.1, paste(
     coefs["(Intercept)"],
     "\n",
     coefs["height"], "height"

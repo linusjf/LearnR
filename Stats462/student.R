@@ -33,7 +33,7 @@ main <- function(argv) {
   print(c(SSR / SST, summary(reg)$r.squared))
   # nolint end
 
-  print(cor(data$ht,data$wt))
+  print(cor(data$ht, data$wt))
   plot_student(data, reg)
   return(0)
 }
