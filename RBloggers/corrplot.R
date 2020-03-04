@@ -61,7 +61,7 @@ main <- function(argv) {
     data_ = mtcars,
     method_ = "pearson",
     sig_level_ = 0.05,
-    order_  = "original",
+    order_ = "original",
     diag_ = FALSE,
     type_ = "upper",
     tl_srt_ = 75
@@ -70,7 +70,7 @@ main <- function(argv) {
     data_ = mtcars,
     method_ = "pearson",
     sig_level_ = 0.01,
-    order_  = "original",
+    order_ = "original",
     diag_ = FALSE,
     type_ = "upper",
     tl_srt_ = 75
