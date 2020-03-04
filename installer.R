@@ -13,6 +13,9 @@ install_tools <- function() {
   if (!require(parallel)) {
     install.packages("parallel", .libPaths()[1])
   }
+  if (!require(rex)) {
+    install.packages("rex", .libPaths()[1])
+  }
 }
 
 install_rbloggers <- function() {
