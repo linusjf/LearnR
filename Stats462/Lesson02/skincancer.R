@@ -9,6 +9,8 @@ main <- function(argv) {
   print(skimr::skim(data))
   reg <- lm(Mort ~ Lat, data = data)
   print(reg)
+  print(summary(reg))
+  print(confint(reg))
   plot_skin_cancer(data, reg)
   return(0)
 }
