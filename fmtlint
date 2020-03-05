@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-USAGE="Usage: $0 dir1 dir2 dir3 ... dirN"
+USAGE="Usage: $0 {-r} dir1 {-r} dir2 {-r} dir3 ... {-r} dirN"
 
 if [ "$#" == "0" ]; then
     echo "$USAGE"
@@ -8,10 +8,37 @@ if [ "$#" == "0" ]; then
 fi
 
 declare -i exit_code=0
-echo "$@"
-./style.R "$@" | tee styler.out
+declare -a dirs
+
+while getopts ":r:" opt; do
+  case "$opt" in
+    r)
+      if [[ -d "$OPTARG" ]]; then
+        dirs+="$OPTARG"
+      else
+        echo "$OPTARG is not a directory"
+        exit 1
+      fi
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+if [[ ${#dirs[@]} == 0 ]]; then
+  dirs="$@"
+fi
+
+echo "$dirs"
+./style.R "$dirs" | tee styler.out
 exit_code="${PIPESTATUS[0]}"+"$exit_code"
-./lint.R "$@" | tee linter.out
+./lint.R "$dirs" | tee linter.out
 exit_code="${PIPESTATUS[0]}"+"$exit_code"
 echo "The maintainer of this repo is looking for a job..."
 exit "$exit_code"
