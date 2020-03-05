@@ -16,6 +16,7 @@ process_folder <- function(folder) {
 
 main <- function(argv) {
   print(sessionInfo())
+  print(argv)
   exit_codes <- parallel::mclapply(argv, process_folder)
   return(sum(unlist(exit_codes)))
 }

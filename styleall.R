@@ -12,8 +12,11 @@ main <- function(argv) {
   print(sessionInfo())
   folders <- list.dirs(path = ".", recursive = TRUE)
   folders <- folders[
-                     grep("^.*[.]git.*$",
-                           folders, invert = TRUE)]
+    grep("^.*[.]git.*$",
+      folders,
+      invert = TRUE
+    )
+  ]
   print(folders)
   exit_codes <- parallel::mclapply(folders, process_folder)
   return(sum(unlist(exit_codes)))

@@ -33,12 +33,20 @@ done
 
 if [[ ${#dirs[@]} == 0 ]]; then
   dirs="$@"
+else
+  declare -a expanded
+  for i in "${!dirs[@]}"; do 
+    readarray -t a \
+      < <(find "${dirs[$i]}" -type d -not -wholename "**/.git/**" -not -name ".git")
+    expanded+="${a[@]}"
+  done
+  dirs="${expanded[@]}"
 fi
 
-echo "$dirs"
-./style.R "$dirs" | tee styler.out
+echo "${dirs[@]}"
+./style.R ${dirs[@]} | tee styler.out
 exit_code="${PIPESTATUS[0]}"+"$exit_code"
-./lint.R "$dirs" | tee linter.out
+./lint.R ${dirs[@]} | tee linter.out
 exit_code="${PIPESTATUS[0]}"+"$exit_code"
 echo "The maintainer of this repo is looking for a job..."
 exit "$exit_code"
