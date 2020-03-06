@@ -37,7 +37,18 @@ while getopts ":r:" opt; do
 done
 
 if [[ ${#dirs[@]} == 0 ]]; then
-  dirs="$@"
+  IFS=' ' read -ra dirs <<< "$@"
+  declare -i errcount=0
+  for i in "${!dirs[@]}"; do 
+    if [[ ! -d ${dirs[$i]} ]]; then
+      echo "${dirs[$i]}"
+      echo "${dirs[$i]} is not a directory"
+      let "errcount++"
+    fi
+  done
+  if [[ errcount > 0 ]]; then
+    usage
+  fi
 else
   declare -a expanded
   for i in "${!dirs[@]}"; do 
