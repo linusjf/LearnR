@@ -2,7 +2,7 @@
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("skincancer.txt",
+  data <- read.table("../Data/skincancer.txt",
     header = TRUE
   )
   print(head(data))

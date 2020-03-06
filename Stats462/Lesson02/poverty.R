@@ -4,7 +4,7 @@ library(Metrics)
 suppressMessages(library(dvmisc))
 
 main <- function(argv) {
-  data <- read.table("poverty.txt",
+  data <- read.table("../Data/poverty.txt",
     header = TRUE
   )
   print(head(data))

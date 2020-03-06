@@ -2,7 +2,7 @@
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("leadcord.txt",
+  data <- read.table("../Data/leadcord.txt",
     header = TRUE
   )
   print(head(data))

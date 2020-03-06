@@ -2,7 +2,7 @@
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("fev_dat.txt",
+  data <- read.table("../Data/fev_dat.txt",
     header = TRUE
   )
   print(head(data))

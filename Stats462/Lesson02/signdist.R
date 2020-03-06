@@ -4,7 +4,7 @@ library(Metrics)
 suppressMessages(library(dvmisc))
 
 main <- function(argv) {
-  data <- read.table("signdist.txt",
+  data <- read.table("../Data/signdist.txt",
     header = TRUE
   )
   print(head(data))

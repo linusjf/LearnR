@@ -2,7 +2,7 @@
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("houseprice.txt",
+  data <- read.table("../Data/houseprice.txt",
     header = TRUE
   )
   print(head(data))
