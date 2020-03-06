@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
 library(skimr)
+library(lawstat)
 
 main <- function(argv) {
   data <- read.table("../Data/fev_dat.txt",
@@ -10,6 +11,10 @@ main <- function(argv) {
   reg <- lm(FEV ~ age, data = data)
   print(reg)
   print(summary(reg))
+  print(levene.test(data[["FEV"]],
+            data[["age"]],
+            location = "median",
+            correction.method = "zero.correction"))
   plot_fev(data, reg)
   return(0)
 }

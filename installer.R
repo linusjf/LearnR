@@ -73,6 +73,9 @@ install_stats462 <- function() {
   if (!require(dvmisc)) {
     install.packages("dvmisc", .libPaths()[1])
   }
+  if (!require(lawstat)) {
+    install.packages("lawstat", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {
