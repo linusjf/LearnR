@@ -46,7 +46,7 @@ if [[ ${#dirs[@]} == 0 ]]; then
       let "errcount++"
     fi
   done
-  if [[ errcount > 0 ]]; then
+  if (( errcount > 0 )); then
     usage
   fi
 else
