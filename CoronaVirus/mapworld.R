@@ -36,7 +36,7 @@ main <- function(argv) {
         eval(parse(text = yday))
     ), stroke = F, alpha = 0.7) +
     scale_size_continuous(
-      name = "Cases", trans = "log", range = c(1, 7), breaks = mybreaks,
+      name = "Cases", trans = "sqrt", range = c(1, 7), breaks = mybreaks,
       labels = c(
         "1-19", "20-99", "100-999", "1,000-49,999",
         "50,000+"
@@ -45,7 +45,7 @@ main <- function(argv) {
     # scale_alpha_continuous(name="Cases", trans="log", range=c(0.1,
     # 0.9),breaks=mybreaks) +
     scale_color_viridis_c(
-      option = "inferno", name = "Cases", trans = "log",
+      option = "inferno", name = "Cases", trans = "sqrt",
       breaks = mybreaks, labels = c(
         "1-19", "20-99",
         "100-999",
