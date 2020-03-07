@@ -111,6 +111,7 @@ plot_accounts_new2 <- function(data, reg) {
     paste0("Rsq(adj) - ", format(summ$adj.r.squared, digits = 4))
   )
   legend("bottomright", legends)
+  abline(h = mean(data$New), col = "black", lty = "dashed")
 }
 
 plot_accounts <- function(data, reg) {
@@ -136,6 +137,7 @@ plot_accounts <- function(data, reg) {
     paste0("Rsq(adj) - ", format(summ$adj.r.squared, digits = 4))
   )
   legend("bottomright", legends)
+  abline(h = mean(data$New), col = "black", lty = "dashed")
 }
 
 if (identical(environment(), globalenv())) {

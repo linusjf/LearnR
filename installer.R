@@ -381,6 +381,9 @@ main <- function(argv) {
   if (!require(tibble)) {
     install.packages("tibble", .libPaths()[1])
   }
+  if (!require(tidyverse)) {
+    install.packages("tidyverse", .libPaths()[1])
+  }
   if (!require(titanic)) {
     install.packages("titanic", .libPaths()[1])
   }
