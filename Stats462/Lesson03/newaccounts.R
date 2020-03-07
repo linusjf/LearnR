@@ -7,17 +7,28 @@ main <- function(argv) {
   )
   print(head(data))
   print(skimr::skim(data))
+
+  process_new(data)
+
+  process_new1(data)
+
+  return(0)
+}
+
+process_new <- function(data) {
+
   reg <- lm(New ~ Size, data = data)
   outer <- lm(New ~ factor(Size), data = data)
   print(reg)
   print(summary(reg))
   print(confint(reg))
+  print("")
+  print("†*****************Lack of Fit Anslysis*************†")
+  print("")
   anova_single <- anova(reg, outer)
   print(anova_single)
-  print(str(anova_single))
   anova_comb <- anova(lm(New ~ Size + factor(Size), data = data))
   print(anova_comb)
-  print(str(anova_comb))
 
   # nolint start
   predicted <- predict(reg)
@@ -28,22 +39,32 @@ main <- function(argv) {
   print(paste("Squared Sum of Residuals: ", SSR))
   SSE <- sum(resid(reg)^2)
   print(paste("Squared Sum of Errors: ", SSE))
-  print(c(SSR / SST, summary(reg)$r.squared))
+  SSE <- anova_single[1, 2]
+  print(paste("Squared Sum of Errors: ", SSE))
+  SSPE <- anova_single[2, 2]
+  print(paste("Pure Error Sum of Squares: ", SSPE))
+  SSLF <- anova_single[2, 4]
+  print(paste("Lack of Fit Sum of Squares: ", SSLF))
+  print("SSLF / SSE :")
+  print(SSLF / SSE)
   # nolint end
 
   plot_accounts(data, reg)
+}
 
+process_new1 <- function(data) {
   reg <- lm(New2 ~ Size, data = data)
   outer <- lm(New2 ~ factor(Size), data = data)
   print(reg)
   print(summary(reg))
   print(confint(reg))
+  print("")
+  print("†*****************Lack of Fit Anslysis*************†")
+  print("")
   anova_single <- anova(reg, outer)
   print(anova_single)
-  print(str(anova_single))
   anova_comb <- anova(lm(New2 ~ Size + factor(Size), data = data))
   print(anova_comb)
-  print(str(anova_comb))
 
   # nolint start
   predicted <- predict(reg)
@@ -54,11 +75,17 @@ main <- function(argv) {
   print(paste("Squared Sum of Residuals: ", SSR))
   SSE <- sum(resid(reg)^2)
   print(paste("Squared Sum of Errors: ", SSE))
-  print(c(SSR / SST, summary(reg)$r.squared))
+  SSE <- anova_single[1, 2]
+  print(paste("Squared Sum of Errors: ", SSE))
+  SSPE <- anova_single[2, 2]
+  print(paste("Pure Error Sum of Squares: ", SSPE))
+  SSLF <- anova_single[2, 4]
+  print(paste("Lack of Fit Sum of Squares: ", SSLF))
+  print("SSLF / SSE :")
+  print(SSLF / SSE)
   # nolint end
 
   plot_accounts_new2(data, reg)
-  return(0)
 }
 
 plot_accounts_new2 <- function(data, reg) {
