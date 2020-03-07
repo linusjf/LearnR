@@ -12,16 +12,51 @@ main <- function(argv) {
   print(reg)
   print(summary(reg))
   print(confint(reg))
-  print(anova(reg, outer))
-  print(anova(lm(New ~ Size + factor(Size), data = data)))
+  anova_single <- anova(reg, outer)
+  print(anova_single)
+  print(str(anova_single))
+  anova_comb <- anova(lm(New ~ Size + factor(Size), data = data))
+  print(anova_comb)
+  print(str(anova_comb))
+
+  # nolint start
+  predicted <- predict(reg)
+  actuals <- data$New
+  SST <- sum((data$New - mean(data$New))^2)
+  print(paste("Total Sum of Squares: ", SST))
+  SSR <- sum((predicted - mean(data$New))^2)
+  print(paste("Squared Sum of Residuals: ", SSR))
+  SSE <- sum(resid(reg)^2)
+  print(paste("Squared Sum of Errors: ", SSE))
+  print(c(SSR / SST, summary(reg)$r.squared))
+  # nolint end
+
   plot_accounts(data, reg)
+
   reg <- lm(New2 ~ Size, data = data)
   outer <- lm(New2 ~ factor(Size), data = data)
   print(reg)
   print(summary(reg))
   print(confint(reg))
-  print(anova(reg, outer))
-  print(anova(lm(New2 ~ Size + factor(Size), data = data)))
+  anova_single <- anova(reg, outer)
+  print(anova_single)
+  print(str(anova_single))
+  anova_comb <- anova(lm(New2 ~ Size + factor(Size), data = data))
+  print(anova_comb)
+  print(str(anova_comb))
+
+  # nolint start
+  predicted <- predict(reg)
+  actuals <- data$New2
+  SST <- sum((data$New2 - mean(data$New2))^2)
+  print(paste("Total Sum of Squares: ", SST))
+  SSR <- sum((predicted - mean(data$New2))^2)
+  print(paste("Squared Sum of Residuals: ", SSR))
+  SSE <- sum(resid(reg)^2)
+  print(paste("Squared Sum of Errors: ", SSE))
+  print(c(SSR / SST, summary(reg)$r.squared))
+  # nolint end
+
   plot_accounts_new2(data, reg)
   return(0)
 }
