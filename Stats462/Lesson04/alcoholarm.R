@@ -20,6 +20,7 @@ process_alcoholarm <- function(data) {
   print(confint(reg))
   plot_alcoholarm(data, reg)
   plot_fitted(reg)
+  plot_predictor(data, reg)
 }
 
 plot_fitted <- function(reg) {
@@ -30,6 +31,18 @@ plot_fitted <- function(reg) {
   plot(predicted, residuals,
     main = main_label,
     xlab = "Fitted value", ylab = "Residuals",
+    pch = 19, frame = TRUE
+  )
+  abline(h = mean(residuals), col = "black", lty = "dashed")
+}
+
+plot_predictor <- function(data, reg) {
+  par(mar = c(4, 4, 4, 1))
+  residuals <- resid(reg)
+  main_label <- "Predictor versus residuals"
+  plot(data$alcohol, residuals,
+    main = main_label,
+    xlab = "Alcohol", ylab = "Residuals",
     pch = 19, frame = TRUE
   )
   abline(h = mean(residuals), col = "black", lty = "dashed")
