@@ -30,9 +30,8 @@ plot_fitted <- function(reg) {
   plot(predicted, residuals,
     main = main_label,
     xlab = "Fitted value", ylab = "Residuals",
-    pch = 19, frame = FALSE
+    pch = 19, frame = TRUE
   )
-  box(which = "plot", lty = "solid")
   abline(h = mean(residuals), col = "black", lty = "dashed")
 }
 
@@ -52,10 +51,9 @@ plot_alcoholarm <- function(data, reg) {
   plot(data$alcohol, data$strength,
     main = main_label,
     xlab = "Alcohol", ylab = "Strength",
-    pch = 19, frame = FALSE
+    pch = 19, frame = TRUE
   )
   abline(reg, col = "blue")
-  box(which = "plot", lty = "solid")
   summ <- summary(reg)
   legends <- c(
     paste0("S - ", format(summ$sigma, digits = 4)),
