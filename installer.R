@@ -76,6 +76,9 @@ install_stats462 <- function() {
   if (!require(lawstat)) {
     install.packages("lawstat", .libPaths()[1])
   }
+  if (!require(RCurl)) {
+    install.packages("RCurl", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {
