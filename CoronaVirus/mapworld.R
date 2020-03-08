@@ -2,27 +2,67 @@
 
 suppressMessages(library(tidyverse))
 suppressMessages(library(ggplot2))
+suppressMessages(library(httr))
 suppressMessages(library(readr))
 suppressMessages(library(maps))
 suppressMessages(library(viridis))
+suppressMessages(library(RCurl))
+library(rjson)
+
+
+download_csv <- function() {
+  destination <- "confirmed.csv"
+  # assume current directory
+  repo <- "https://api.github.com/repos/CSSEGISandData/COVID-19/"
+  # nolint start
+  path <- "csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
+  # nolint end
+  myopts <- curlOptions(
+    useragent = "LearnR",
+    ssl.verifypeer = FALSE
+  )
+
+  url <-
+    getURL(
+      paste0(
+        repo,
+"commits?path=",
+        path
+      ),
+      useragent = "LearnR", ssl.verifypeer = FALSE
+    )
+  d <- fromJSON(url
+  )[[1]]
+  git_date <- as.POSIXct(d$commit$author$date)
+  must_download <- !file.exists(destination) ||
+    file.info(destination)$mtime > git_date
+  if (must_download) {
+    url <- d$url
+    commit <- rjson::fromJSON(RCurl::getURL(url, .opts = myopts))
+    files <- unlist(lapply(commit$files, "[[", "filename"))
+    rawfile <- commit$files[[which(files == path)]]$raw_url
+    download.file(rawfile, destination, quiet = TRUE)
+    Sys.setFileTime(destination, git_date)
+    print("File was downloaded")
+  }
+}
 
 main <- function(argv) {
-  # nolint start
   ## get the COVID-19 data
-  datafileurl <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv"
-  # nolint end
-  download.file(datafileurl, "confirmed.csv")
+  download_csv()
   datacov <- readr::read_csv("confirmed.csv",
-  skip_empty_rows = TRUE)
+    skip_empty_rows = TRUE
+  )
   yday <- Sys.Date() - 1
   yday <- format(yday, "%m/%d/%y")
   yday <- gsub("^0", "", yday)
   ydaystring <- gsub("/0", "/", yday)
   yday <- paste0("`", ydaystring, "`")
-  print(yday)
- datacov[datacov == 0] <- NA
- datacov <- tidyr::drop_na(datacov, all_of(ydaystring))
- print(nrow(datacov))
+  datacov[datacov == 0] <- NA
+  datacov <- tidyr::drop_na(
+    datacov,
+    tidyselect::all_of(ydaystring)
+  )
   ## get the world map
   world <- ggplot2::map_data("world")
 
@@ -67,8 +107,8 @@ main <- function(argv) {
       panel.background = element_rect(fill = "#ffffff", color = NA),
       legend.background = element_rect(fill = "#ffffff", color = NA)
     )
-    ggplot2::ggsave("mapworld.pdf")
-    return(0)
+  ggplot2::ggsave("mapworld.pdf")
+  return(0)
 }
 
 if (identical(environment(), globalenv())) {
