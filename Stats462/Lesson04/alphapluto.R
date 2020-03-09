@@ -28,6 +28,10 @@ process_alphapluto <- function(data) {
   plot_fitted(reg)
   plot_predictor(data, reg)
   hist(resid(reg))
+  plot(reg, which = c(2),
+       caption = list("Normal Q-Q"),
+       main = "Q-Q plot",
+       qqline = TRUE)
 }
 
 plot_fitted <- function(reg) {

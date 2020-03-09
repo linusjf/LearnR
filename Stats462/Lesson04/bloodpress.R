@@ -26,6 +26,11 @@ process_duration <- function(data) {
   plot_duration(data, reg)
   plot_durationfitted(reg)
   plot_durationpredictor(data, reg)
+  hist(resid(reg))
+  plot(reg, which = c(2),
+       caption = list("Normal Q-Q"),
+       main = "Q-Q plot",
+       qqline = TRUE)
 }
 
 process_weight <- function(data) {
@@ -36,6 +41,11 @@ process_weight <- function(data) {
   plot_weight(data, reg)
   plot_weightfitted(reg)
   plot_weightpredictor(data, reg)
+  hist(resid(reg))
+  plot(reg, which = c(2),
+       caption = list("Normal Q-Q"),
+       main = "Q-Q plot",
+       qqline = TRUE)
 }
 
 process_age_weight <- function(data) {
@@ -56,6 +66,10 @@ process_age <- function(data) {
   plot_agepredictor(data, reg)
   plot_weight_vs_residuals(data, reg)
   hist(resid(reg))
+  plot(reg, which = c(2),
+       caption = list("Normal Q-Q"),
+       main = "Q-Q plot",
+       qqline = TRUE)
 }
 
 plot_duration_vs_residuals <- function(data, reg) {
