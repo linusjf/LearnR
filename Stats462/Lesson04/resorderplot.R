@@ -27,6 +27,7 @@ plot_order <- function() {
     main = "Good: No Trend", cex.main = 0.95,
     xaxt = "n", yaxt = "n"
   )
+  lines(tmp$residuals)
 
   tmp <- lm(height ~ age, data = Loblolly)
   plot(tmp$residuals,
@@ -35,6 +36,7 @@ plot_order <- function() {
     main = "Questionable: General Trend", cex.main = 0.95,
     xaxt = "n", yaxt = "n"
   )
+  lines(tmp$residuals)
 
   tmp <- lm(hp ~ qsec, data = mtcars)
   plot(tmp$residuals,
@@ -43,6 +45,7 @@ plot_order <- function() {
     main = "Questionable: Interesting Patterns", cex.main = 0.95,
     xaxt = "n", yaxt = "n"
   )
+  lines(tmp$residuals)
 
   tmp <- lm(hp ~ drat, data = mtcars[order(mtcars$cyl), ])
   plot(tmp$residuals,
@@ -51,6 +54,7 @@ plot_order <- function() {
     main = "Bad: Obvious Trend", cex.main = 0.95,
     xaxt = "n", yaxt = "n"
   )
+  lines(tmp$residuals)
 }
 
 par_old <- par(mfrow = c(2, 2), mar = c(2, 2, 1, 1),
