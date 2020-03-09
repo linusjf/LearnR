@@ -23,6 +23,7 @@ process_alcoholtobacco <- function(data) {
   plot_predictor(data, reg)
   plot_stdresid(reg)
   plot_stdresid_predictor(data, reg)
+  hist(resid(reg))
   residuals <- resid(reg)
   std_residuals <- residuals / sd(residuals)
   indexes <- unname(which(std_residuals <= 2 & std_residuals >= -2))
@@ -36,6 +37,7 @@ process_alcoholtobacco <- function(data) {
   plot_predictor(data, reg)
   plot_stdresid(reg)
   plot_stdresid_predictor(data, reg)
+  hist(resid(reg))
 }
 
 plot_stdresid_predictor <- function(data, reg) {

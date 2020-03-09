@@ -55,6 +55,7 @@ process_age <- function(data) {
   plot_agefitted(reg)
   plot_agepredictor(data, reg)
   plot_weight_vs_residuals(data, reg)
+  hist(resid(reg))
 }
 
 plot_duration_vs_residuals <- function(data, reg) {

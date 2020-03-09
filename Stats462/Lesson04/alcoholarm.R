@@ -21,6 +21,7 @@ process_alcoholarm <- function(data) {
   plot_alcoholarm(data, reg)
   plot_fitted(reg)
   plot_predictor(data, reg)
+  hist(resid(reg))
 }
 
 plot_fitted <- function(reg) {

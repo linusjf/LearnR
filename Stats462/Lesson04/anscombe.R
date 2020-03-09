@@ -36,6 +36,7 @@ process_anscombe <- function(data) {
   plot_predictor(data, reg)
   plot_stdresid(reg)
   plot_stdresid_predictor(data, reg)
+  hist(resid(reg))
 }
 
 plot_stdresid_predictor <- function(data, reg) {

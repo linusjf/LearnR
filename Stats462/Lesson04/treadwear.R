@@ -21,6 +21,7 @@ process_treadwear <- function(data) {
   plot_treadwear(data, reg)
   plot_fitted(reg)
   plot_predictor(data, reg)
+  hist(resid(reg))
 }
 
 plot_fitted <- function(reg) {

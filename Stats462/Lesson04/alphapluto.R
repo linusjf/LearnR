@@ -27,6 +27,7 @@ process_alphapluto <- function(data) {
   plot_alphapluto(data, reg)
   plot_fitted(reg)
   plot_predictor(data, reg)
+  hist(resid(reg))
 }
 
 plot_fitted <- function(reg) {
