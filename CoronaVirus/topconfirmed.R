@@ -1,11 +1,11 @@
-#!/usr/bin/env Rscipt
+#!/usr/bin/env Rscript
 
 library(coronavirus)
-library(dplyr)
+## get the COVID-19 data
+data(coronavirus)
+suppressMessages(library(dplyr))
 
 main <- function(argv) {
-## get the COVID-19 data
-data(coronavirus::coronavirus)
 # Get top confirmed cases by state
 data <- coronavirus %>%
 filter(type == "confirmed") %>%
