@@ -20,9 +20,10 @@ process_alphapluto <- function(data) {
   print(summary(reg))
   print(confint(reg))
   print(levene.test(data[["alpha"]],
-            data[["pluto"]],
-            location = "median",
-            correction.method = "zero.correction"))
+    data[["pluto"]],
+    location = "median",
+    correction.method = "zero.correction"
+  ))
   plot_alphapluto(data, reg)
   plot_fitted(reg)
   plot_predictor(data, reg)

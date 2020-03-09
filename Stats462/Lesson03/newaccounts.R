@@ -16,7 +16,6 @@ main <- function(argv) {
 }
 
 process_new <- function(data) {
-
   reg <- lm(New ~ Size, data = data)
   outer <- lm(New ~ factor(Size), data = data)
   print(reg)

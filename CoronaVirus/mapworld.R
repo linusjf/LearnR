@@ -26,13 +26,12 @@ download_csv <- function() {
     getURL(
       paste0(
         repo,
-"commits?path=",
+        "commits?path=",
         path
       ),
       useragent = "LearnR", ssl.verifypeer = FALSE
     )
-  d <- fromJSON(url
-  )[[1]]
+  d <- fromJSON(url)[[1]]
   git_date <- as.POSIXct(d$commit$author$date)
   must_download <- !file.exists(destination) ||
     file.info(destination)$mtime > git_date

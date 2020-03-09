@@ -77,7 +77,8 @@ plot_duration_vs_residuals <- function(data, reg) {
     paste0("Rsq(adj) - ", format(summ$adj.r.squared, digits = 4)),
     paste0("p-value - "),
     format(summ$coefficients["data$Dur", "Pr(>|t|)"],
-           digits = 2, nsmall = 2, scientific = TRUE)
+      digits = 2, nsmall = 2, scientific = TRUE
+    )
   )
   legend("topleft", legends)
 }
@@ -102,7 +103,8 @@ plot_weight_vs_residuals <- function(data, reg) {
     paste0("Rsq(adj) - ", format(summ$adj.r.squared, digits = 4)),
     paste0("p-value - "),
     format(summ$coefficients["data$Weight", "Pr(>|t|)"],
-           digits = 2, nsmall = 2, scientific = TRUE)
+      digits = 2, nsmall = 2, scientific = TRUE
+    )
   )
   legend("bottomright", legends)
 }

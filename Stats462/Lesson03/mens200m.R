@@ -20,7 +20,7 @@ plot_mens200m <- function(data, reg) {
   coefs <- reg$coefficients
   main_label <- paste(
     "Year versus Men's 200 m timings\n",
-                      coefs["(Intercept)"],
+    coefs["(Intercept)"],
     coefs["Year"], "Year"
   )
   plot(data$Year, data$Men200m,

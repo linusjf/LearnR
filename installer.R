@@ -58,6 +58,9 @@ install_coronavirus <- function() {
   if (!require(ipred)) {
     install.packages("ipred", .libPaths()[1])
   }
+  if (!require(coronavirus)) {
+    install.packages("coronavirus", .libPaths()[1])
+  }
 }
 
 install_stats462 <- function() {

@@ -12,9 +12,10 @@ main <- function(argv) {
   print(reg)
   print(summary(reg))
   print(levene.test(data[["FEV"]],
-            data[["age"]],
-            location = "median",
-            correction.method = "zero.correction"))
+    data[["age"]],
+    location = "median",
+    correction.method = "zero.correction"
+  ))
   plot_fev(data, reg)
   return(0)
 }
@@ -22,9 +23,9 @@ main <- function(argv) {
 plot_fev <- function(data, reg) {
   par(mar = c(4, 7, 4, 1))
   plot(data$age, data$FEV,
-  main = "Age versus Forced Exhalation Volume",
+    main = "Age versus Forced Exhalation Volume",
     xlab = "Age",
-  ylab = "Forced Exhalation Volume (FEV)",
+    ylab = "Forced Exhalation Volume (FEV)",
     pch = 19, frame = FALSE
   )
   abline(reg, col = "blue")
