@@ -45,6 +45,33 @@ process_age <- function(data) {
   plot_age(data, reg)
   plot_agefitted(reg)
   plot_agepredictor(data, reg)
+  plot_weight_vs_residuals(data, reg)
+}
+
+plot_weight_vs_residuals <- function(data, reg) {
+  par(mar = c(4, 4, 4, 1))
+  residuals <- resid(reg)
+  main_label <- "Weight versus Age residuals"
+  plot(data$Weight, residuals,
+    main = main_label,
+    xlab = "Weight", ylab = "Age Residuals",
+    pch = 19, frame = TRUE
+  )
+  abline(h = mean(residuals), col = "black", lty = "dashed")
+  res_reg <- lm(residuals ~ data$Weight)
+  abline(res_reg, col = "blue")
+  summ <- summary(res_reg)
+  print(summ)
+  print(str(summ$coefficients))
+  legends <- c(
+    paste0("S - ", format(summ$sigma, digits = 4)),
+    paste0("Rsq - ", format(summ$r.squared, digits = 4)),
+    paste0("Rsq(adj) - ", format(summ$adj.r.squared, digits = 4)),
+    paste0("p-value - "),
+    format(summ$coefficients["data$Weight", "Pr(>|t|)"],
+           digits = 2, nsmall = 2, scientific = TRUE)
+  )
+  legend("bottomright", legends)
 }
 
 plot_agefitted <- function(reg) {
