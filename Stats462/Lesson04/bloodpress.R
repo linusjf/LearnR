@@ -15,6 +15,7 @@ process_bloodpress <- function(data) {
   process_age(data)
   process_weight(data)
   process_duration(data)
+  process_age_weight(data)
 }
 
 process_duration <- function(data) {
@@ -37,6 +38,14 @@ process_weight <- function(data) {
   plot_weightpredictor(data, reg)
 }
 
+process_age_weight <- function(data) {
+  reg <- lm(BP ~ Age + Weight, data = data)
+  print(reg)
+  print(summary(reg))
+  print(confint(reg))
+  plot_duration_vs_residuals(data, reg)
+}
+
 process_age <- function(data) {
   reg <- lm(BP ~ Age, data = data)
   print(reg)
@@ -46,6 +55,31 @@ process_age <- function(data) {
   plot_agefitted(reg)
   plot_agepredictor(data, reg)
   plot_weight_vs_residuals(data, reg)
+}
+
+plot_duration_vs_residuals <- function(data, reg) {
+  par(mar = c(4, 4, 4, 1))
+  residuals <- resid(reg)
+  main_label <- "Duration versus Age+Weight residuals"
+  plot(data$Dur, residuals,
+    main = main_label,
+    xlab = "Dur", ylab = "Age+Weight Residuals",
+    pch = 19, frame = TRUE
+  )
+  abline(h = mean(residuals), col = "black", lty = "dashed")
+  res_reg <- lm(residuals ~ data$Dur)
+  abline(res_reg, col = "blue")
+  summ <- summary(res_reg)
+  print(summ)
+  legends <- c(
+    paste0("S - ", format(summ$sigma, digits = 4)),
+    paste0("Rsq - ", format(summ$r.squared, digits = 4)),
+    paste0("Rsq(adj) - ", format(summ$adj.r.squared, digits = 4)),
+    paste0("p-value - "),
+    format(summ$coefficients["data$Dur", "Pr(>|t|)"],
+           digits = 2, nsmall = 2, scientific = TRUE)
+  )
+  legend("topleft", legends)
 }
 
 plot_weight_vs_residuals <- function(data, reg) {
@@ -62,7 +96,6 @@ plot_weight_vs_residuals <- function(data, reg) {
   abline(res_reg, col = "blue")
   summ <- summary(res_reg)
   print(summ)
-  print(str(summ$coefficients))
   legends <- c(
     paste0("S - ", format(summ$sigma, digits = 4)),
     paste0("Rsq - ", format(summ$r.squared, digits = 4)),
