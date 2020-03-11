@@ -1,12 +1,12 @@
 #!/usr/bin/env Rscript
 
-library(magrittr)
+suppressMessages(library(magrittr))
 suppressMessages(library(lubridate))
-library(tidyverse)
+suppressMessages(library(tidyverse))
 suppressMessages(library(gridExtra))
 suppressMessages(library(kableExtra))
 suppressMessages(library(RCurl))
-library(rjson)
+suppressMessages(library(rjson))
 
 
 download_csv <- function(filename) {
@@ -46,6 +46,30 @@ download_csv <- function(filename) {
   }
 }
 
+## data cleaning and transformation
+clean_data <- function(data) {
+## remove some columns
+data %<>%
+  select(-c(Province.State, Lat, Long)) %>%
+  rename(country = Country.Region)
+## convert from wide to long format
+data %<>%
+  gather(key = date,
+         value = count,
+         -country)
+## convert from character to date
+data %<>%
+  mutate(date = date %>%
+         substr(2, 8) %>%
+         mdy())
+## aggregate by country
+data %<>%
+  group_by(country, date) %>%
+  summarise(count = sum(count)) %>%
+  as.data.frame()
+return(data)
+}
+
 main <- function(argv) {
   # source data files
   filenames <- c(
@@ -53,7 +77,7 @@ main <- function(argv) {
     "time_series_19-covid-Deaths.csv",
     "time_series_19-covid-Recovered.csv"
   )
-  bin <- lapply(filenames, download_csv)
+  lapply(filenames, download_csv)
   ## load data into R
   data_confirmed <- read.csv(filenames[1])
   data_deaths <- read.csv(filenames[2])
@@ -62,12 +86,51 @@ main <- function(argv) {
   print(dim(data_confirmed))
   print(dim(data_deaths))
   print(dim(data_recovered))
-  print_sample_data(data_confirmed, "Confirmed")
+  if (FALSE) {
+    print_sample_data(data_confirmed, "Confirmed")
+    print_sample_data(data_deaths, "Deaths")
+    print_sample_data(data_recovered, "Recovered")
+  }
+  dates <- dates(data_confirmed)
+  print(date_range(dates))
+  print(latest_date(dates))
+
+  ## clean the three datasets
+  data_confirmed %<>%
+    clean_data() %>%
+    rename(confirmed = count)
+  data_deaths %<>%
+    clean_data() %>%
+    rename(deaths = count)
+  data_recovered %<>%
+    clean_data() %>%
+    rename(recovered = count)
+  ## merge above 3 datasets into one, by country and date
+  data <- data_confirmed %>%
+    merge(data_deaths) %>%
+    merge(data_recovered)
+  print(data)
   return(0)
 }
 
+latest_date <- function(dates) {
+  return(max(dates))
+}
+
+dates <- function(data) {
+  cols   <- ncol(data)
+  ## get dates from column names
+  dates <- names(data)[5:cols] %>%
+    substr(2, 8) %>%
+    mdy()
+  return(dates)
+}
+
+date_range <- function(dates) {
+ return(range(dates))
+}
+
 print_sample_data <- function(data, name) {
-  tryCatch({
   data[, 1:10] %>%
     sample_n(10) %>%
     kable("latex",
@@ -85,9 +148,6 @@ print_sample_data <- function(data, name) {
     save_kable(file = paste0(name,
                              ".pdf"),
     keep_tex = TRUE)
-}, error = function(error_condition) {
-    return(0)
-  })
 }
 
 if (identical(environment(), globalenv())) {
