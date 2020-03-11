@@ -61,6 +61,24 @@ install_coronavirus <- function() {
   if (!require(coronavirus)) {
     install.packages("coronavirus", .libPaths()[1])
   }
+  if (!require(magrittr)) {
+    install.packages("magrittr", .libPaths()[1])
+  }
+  if (!require(lubridate)) {
+    install.packages("lubridate", .libPaths()[1])
+  }
+  if (!require(tidyverse)) {
+    install.packages("tidyverse", .libPaths()[1])
+  }
+  if (!require(gridExtra)) {
+    install.packages("gridExtra", .libPaths()[1])
+  }
+  if (!require(kableExtra)) {
+    install.packages("kableExtra", .libPaths()[1])
+  }
+  if (!require(magick)) {
+    install.packages("magick", .libPaths()[1])
+  }
 }
 
 install_stats462 <- function() {
