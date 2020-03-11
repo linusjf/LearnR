@@ -110,6 +110,19 @@ main <- function(argv) {
     merge(data_deaths) %>%
     merge(data_recovered)
   print(data)
+  ## counts for the whole world
+data_world <- data %>%
+  group_by(date) %>%
+summarise(country = "World",
+confirmed = sum(confirmed),
+deaths = sum(deaths),
+recovered = sum(recovered))
+data %<>%
+  rbind(data_world)
+## remaining confirmed cases
+data %<>%
+  mutate(remaining_confirmed = confirmed - deaths - recovered)
+print(tail(data))
   return(0)
 }
 
