@@ -56,7 +56,7 @@ data %<>%
 data %<>%
   gather(key = date,
          value = count,
-         -country)
+         -country, na.rm = TRUE)
 ## convert from character to date
 data %<>%
   mutate(date = date %>%
@@ -109,7 +109,6 @@ main <- function(argv) {
   data <- data_confirmed %>%
     merge(data_deaths) %>%
     merge(data_recovered)
-  print(data)
   ## counts for the whole world
 data_world <- data %>%
   group_by(date) %>%
@@ -121,11 +120,58 @@ data %<>%
   rbind(data_world)
 ## remaining confirmed cases
 data %<>%
-  mutate(remaining_confirmed = confirmed - deaths - recovered)
-print(tail(data))
+  mutate(remaining.confirmed = confirmed - deaths - recovered)
+write.csv(data, "summarised.csv")
+data %<>% add_rates()
+write.csv(data, "rates.csv")
   return(0)
 }
 
+add_rates <- function(data) {
+
+## sort by country and date
+data %<>%
+  arrange(country, date)
+## daily increases of deaths and cured cases
+## set NA to the increases on day1
+day1 <- min(data$date)
+data %<>%
+  mutate(confirmed.inc =
+         ifelse(date == day1,
+                NA,
+                confirmed - lag(confirmed,
+                                n = 1)),
+deaths.inc =
+  ifelse(date == day1,
+         NA,
+         deaths - lag(deaths, n = 1)),
+recovered.inc =
+  ifelse(date == day1,
+         NA,
+         recovered - lag(
+                         recovered,
+                         n = 1)))
+## death rate based on total deaths and cured cases
+data %<>%
+  mutate(rate.upper =
+         (100 * deaths /
+          (deaths + recovered)) %>%
+         round(1))
+## lower bound: death rate based on total confirmed cases
+data %<>%
+  mutate(rate.lower =
+         (100 * deaths /
+          confirmed) %>%
+         round(1))
+## death rate based on the number of death/cured on every single day
+data %<>%
+  mutate(rate.daily =
+         (100 * deaths.inc /
+          (deaths.inc +
+           recovered.inc)) %>%
+                 round(1))
+return(data)
+}
 latest_date <- function(dates) {
   return(max(dates))
 }
