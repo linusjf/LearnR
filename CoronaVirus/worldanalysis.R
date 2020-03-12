@@ -211,6 +211,7 @@ main <- function(argv) {
     filter(country == "World")
   plot_current_confirmed(data)
   plot_deaths_recovered(data)
+  plot_death_rates(data)
   return(0)
 }
 
@@ -228,21 +229,30 @@ plot_deaths_recovered <- function(data) {
     xlab("Date") +
     ylab("Count") +
     labs(title = "Recovered Cases")
-  plot3 <- ggplot(data =
-                  subset(data,
-                         !is.na(
-                                data$deaths.inc)),
-                  aes(x = date, y = deaths.inc)) +
+  plot3 <- ggplot(
+    data =
+      subset(
+        data,
+        !is.na(
+          data$deaths.inc
+        )
+      ),
+    aes(x = date, y = deaths.inc)
+  ) +
     geom_point() +
     geom_smooth() +
     xlab("Date") +
     ylab("Count") +
     labs(title = "Increase in Deaths")
   plot4 <-
-    ggplot(data =
-           subset(data,
-                  !is.na(data$recovered.inc)),
-           aes(x = date, y = recovered.inc)) +
+    ggplot(
+      data =
+        subset(
+          data,
+          !is.na(data$recovered.inc)
+        ),
+      aes(x = date, y = recovered.inc)
+    ) +
     geom_point() +
     geom_smooth() +
     xlab("Date") +
@@ -251,6 +261,32 @@ plot_deaths_recovered <- function(data) {
   ## show four plots together, with 2 plots in each row
   grob <- gridExtra::arrangeGrob(plot1, plot2, plot3, plot4, nrow = 2)
   ggplot2::ggsave("deathsrecovered.pdf", grob)
+}
+
+plot_death_rates <- function(data) {
+n <- nrow(data)
+  ## three death rates
+  plot1 <- ggplot(data, aes(x = date)) +
+    geom_line(aes(y = rate.upper, colour = "Upper bound")) +
+    geom_line(aes(y = rate.lower, colour = "Lower bound")) +
+    geom_line(aes(y = rate.daily, colour = "Daily")) +
+    xlab("Date") +
+    ylab("Death Rate (%)") +
+    labs(title = "Overall") +
+    theme(legend.position = "bottom", legend.title = element_blank()) +
+    ylim(0, 90)
+  ## focusing on last 2 weeks
+  plot2 <- ggplot(data[n - (14:0), ], aes(x = date)) +
+    geom_line(aes(y = rate.upper, colour = "Upper bound")) +
+    geom_line(aes(y = rate.lower, colour = "Lower bound")) +
+    geom_line(aes(y = rate.daily, colour = "Daily")) +
+    xlab("Date") +
+    ylab("Death Rate (%)") +
+    labs(title = "Last two weeks") +
+    theme(legend.position = "bottom", legend.title = element_blank()) +
+    ylim(0, 10)
+  grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2)
+  ggplot2::ggsave("deathrates.pdf", grob)
 }
 
 plot_current_confirmed <- function(data) {
