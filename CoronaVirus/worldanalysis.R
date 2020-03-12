@@ -207,11 +207,89 @@ main <- function(argv) {
   ready_data <- ready_plot_data(data)
   plot_top10_confirmed(ready_data)
   plot_world_cases(data, ready_data)
+  data %<>%
+    filter(country == "World")
+  plot_current_confirmed(data)
+  plot_deaths_recovered(data)
   return(0)
 }
 
-add_rates <- function(data) {
+plot_deaths_recovered <- function(data) {
+  ## a scatter plot with a smoothed line and vertical x-axis labels
+  plot1 <- ggplot(data, aes(x = date, y = deaths)) +
+    geom_point() +
+    geom_smooth() +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Deaths")
+  plot2 <- ggplot(data, aes(x = date, y = recovered)) +
+    geom_point() +
+    geom_smooth() +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Recovered Cases")
+  plot3 <- ggplot(data =
+                  subset(data,
+                         !is.na(
+                                data$deaths.inc)),
+                  aes(x = date, y = deaths.inc)) +
+    geom_point() +
+    geom_smooth() +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Increase in Deaths")
+  plot4 <-
+    ggplot(data =
+           subset(data,
+                  !is.na(data$recovered.inc)),
+           aes(x = date, y = recovered.inc)) +
+    geom_point() +
+    geom_smooth() +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Increase in Recovered Cases")
+  ## show four plots together, with 2 plots in each row
+  grob <- gridExtra::arrangeGrob(plot1, plot2, plot3, plot4, nrow = 2)
+  ggplot2::ggsave("deathsrecovered.pdf", grob)
+}
 
+plot_current_confirmed <- function(data) {
+  ## current confirmed and its increase
+
+  plot1 <- ggplot(
+    data =
+      subset(
+        data,
+        !is.na(data$remaining.confirmed)
+      ),
+    aes(
+      x = date,
+      y = remaining.confirmed
+    )
+  ) +
+    geom_point() +
+    geom_smooth() +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Current Confirmed Cases")
+  plot2 <- ggplot(
+    data =
+      subset(
+        data,
+        !is.na(data$confirmed.inc)
+      ),
+    aes(x = date, y = confirmed.inc)
+  ) +
+    geom_point() +
+    geom_smooth() +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Increase in Current Confirmed")
+  grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2)
+  ggplot2::ggsave("currconfirmed.pdf", grob)
+}
+
+add_rates <- function(data) {
   ## sort by country and date
   data %<>%
     arrange(country, date)
