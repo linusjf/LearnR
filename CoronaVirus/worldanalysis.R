@@ -72,15 +72,19 @@ clean_data <- function(data) {
   return(data)
 }
 
-plot_world_cases <- function(data, top_countries) {
+plot_world_cases <- function(data, ready_data) {
+  top_countries <- ready_data$top.countries
+  max_date <- ready_data$max.date
   ## convert from wide to long format, for purpose of drawing a area plot
   data_long <- data %>%
-    select(c(country,
-             date,
-             confirmed,
-             remaining.confirmed,
-             recovered,
-             deaths)) %>%
+    select(c(
+      country,
+      date,
+      confirmed,
+      remaining.confirmed,
+      recovered,
+      deaths
+    )) %>%
     gather(
       key = type,
       value = count,
@@ -111,6 +115,36 @@ plot_world_cases <- function(data, top_countries) {
     theme(legend.title = element_blank()) +
     facet_wrap(~type, ncol = 2, scales = "free_y")
   ggplot2::ggsave("worldcases.pdf")
+  ## excluding Mainland China
+  df %>%
+    filter(!(country %in% c("World", "Mainland China", "China"))) %>%
+    ggplot(aes(x = date, y = count, fill = country)) +
+    geom_area() +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Cases around the World (excl. China)") +
+    theme(legend.title = element_blank()) +
+    facet_wrap(~type, ncol = 2, scales = "free_y")
+  ggplot2::ggsave("worldcasesexclchina.pdf")
+  ## if India in not in top 10, add it in and remove 'Others'
+  if (!("India" %in% top_countries)) {
+    top_countries %<>% setdiff("Others") %>%
+      c("India")
+    df <- data_long %>% filter(country %in% top_countries) %<>%
+      mutate(country = country %>% factor(levels = c(top_countries)))
+  }
+  ## cases by country
+  df %>%
+    filter(type != "confirmed") %>%
+    ggplot(aes(x = date, y = count, fill = type)) +
+    geom_area(alpha = 0.5) +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = paste0("COVID-19 Cases by Country (", max_date, ")")) +
+    scale_fill_manual(values = c("red", "green", "black")) +
+    theme(legend.title = element_blank(), legend.position = "bottom") +
+    facet_wrap(~country, ncol = 3, scales = "free_y")
+  ggplot2::ggsave("worldcasesinclindia.pdf")
 }
 
 main <- function(argv) {
@@ -170,7 +204,9 @@ main <- function(argv) {
   data %<>%
     add_rates()
   write.csv(data, "rates.csv")
-  plot_top10_confirmed(data)
+  ready_data <- ready_plot_data(data)
+  plot_top10_confirmed(ready_data)
+  plot_world_cases(data, ready_data)
   return(0)
 }
 
@@ -233,7 +269,7 @@ add_rates <- function(data) {
   return(data)
 }
 
-plot_top10_confirmed <- function(data) {
+ready_plot_data <- function(data) {
   max_date <- max(data$date)
   print(max_date)
   ## ranking by confirmed cases
@@ -251,6 +287,22 @@ plot_top10_confirmed <- function(data) {
   top_countries %<>%
     setdiff("Others") %>%
     c("Others")
+  print(top_countries)
+  ready_data <- list(
+    max.date = max_date,
+    data.latest = data_latest,
+    top.countries = top_countries
+  )
+  return(ready_data)
+}
+
+plot_top10_confirmed <- function(ready_data) {
+  max_date <- ready_data$max.date
+  print(max_date)
+  ## ranking by confirmed cases
+  data_latest <- ready_data$data.latest
+  ## top 10 countries: 12 incl. 'World' and 'Others'
+  top_countries <- ready_data$top.countries
   print(top_countries)
 
   ## put all others in a single group of 'Others'
@@ -298,7 +350,6 @@ plot_top10_confirmed <- function(data) {
     )) +
     scale_fill_discrete(name = "Country", labels = df$txt)
   ggplot2::ggsave("top10confirmed.pdf")
-  plot_world_cases(data, top_countries)
 }
 
 latest_date <- function(dates) {
