@@ -72,6 +72,47 @@ clean_data <- function(data) {
   return(data)
 }
 
+plot_world_cases <- function(data, top_countries) {
+  ## convert from wide to long format, for purpose of drawing a area plot
+  data_long <- data %>%
+    select(c(country,
+             date,
+             confirmed,
+             remaining.confirmed,
+             recovered,
+             deaths)) %>%
+    gather(
+      key = type,
+      value = count,
+      -c(country, date)
+    )
+  ## set factor levels to show them in a desirable order
+  data_long %<>%
+    mutate(
+      type =
+        factor(
+          type,
+          c(
+            "confirmed",
+            "remaining.confirmed", "recovered", "deaths"
+          )
+        )
+    )
+  ## cases by type
+  df <- data_long %>% filter(country %in% top_countries) %<>%
+    mutate(country = country %>% factor(levels = c(top_countries)))
+  df %>%
+    filter(country != "World") %>%
+    ggplot(aes(x = date, y = count, fill = country)) +
+    geom_area() +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Cases around the World") +
+    theme(legend.title = element_blank()) +
+    facet_wrap(~type, ncol = 2, scales = "free_y")
+  ggplot2::ggsave("worldcases.pdf")
+}
+
 main <- function(argv) {
   # source data files
   filenames <- c(
@@ -257,6 +298,7 @@ plot_top10_confirmed <- function(data) {
     )) +
     scale_fill_discrete(name = "Country", labels = df$txt)
   ggplot2::ggsave("top10confirmed.pdf")
+  plot_world_cases(data, top_countries)
 }
 
 latest_date <- function(dates) {
