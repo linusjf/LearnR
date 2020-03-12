@@ -211,19 +211,21 @@ main <- function(argv) {
   plots[["confirmed"]] <- plot_current_confirmed(data)
   plots[["deaths"]] <- plot_deaths_recovered(data)
   plots[["rates"]] <- plot_death_rates(data)
+  print(plots[["top10"]], newpage = FALSE)
+  plots[["top10"]] <- NULL
   invisible(lapply(plots, print_chart))
   return(0)
 }
 
 print_chart <- function(plot) {
-  if (is.null(plot))
+  if (is.null(plot)) {
     return
+  }
   if ("grob" %in% class(plot)) {
-    print("new page ")
     grid::grid.newpage()
-    grid::grid.draw(plot)
+    grid::grid.draw(plot, recording = FALSE)
   } else {
-    print(plot)
+      print(plot)
   }
 }
 
@@ -231,13 +233,19 @@ plot_deaths_recovered <- function(data) {
   ## a scatter plot with a smoothed line and vertical x-axis labels
   plot1 <- ggplot(data, aes(x = date, y = deaths)) +
     geom_point() +
-    geom_smooth() +
+    geom_smooth(
+      method = "loess",
+      formula = y ~ x
+    ) +
     xlab("Date") +
     ylab("Count") +
     labs(title = "Deaths")
   plot2 <- ggplot(data, aes(x = date, y = recovered)) +
     geom_point() +
-    geom_smooth() +
+    geom_smooth(
+      formula = y ~ x,
+      method = "loess"
+    ) +
     xlab("Date") +
     ylab("Count") +
     labs(title = "Recovered Cases")
@@ -252,7 +260,7 @@ plot_deaths_recovered <- function(data) {
     aes(x = date, y = deaths.inc)
   ) +
     geom_point() +
-    geom_smooth() +
+    geom_smooth(formula = y ~ x, method = "loess") +
     xlab("Date") +
     ylab("Count") +
     labs(title = "Increase in Deaths")
@@ -266,7 +274,7 @@ plot_deaths_recovered <- function(data) {
       aes(x = date, y = recovered.inc)
     ) +
     geom_point() +
-    geom_smooth() +
+    geom_smooth(formula = y ~ x, method = "loess") +
     xlab("Date") +
     ylab("Count") +
     labs(title = "Increase in Recovered Cases")
@@ -316,7 +324,7 @@ plot_current_confirmed <- function(data) {
     )
   ) +
     geom_point() +
-    geom_smooth() +
+    geom_smooth(formula = y ~ x, method = "loess") +
     xlab("Date") +
     ylab("Count") +
     labs(title = "Current Confirmed Cases")
@@ -329,7 +337,7 @@ plot_current_confirmed <- function(data) {
     aes(x = date, y = confirmed.inc)
   ) +
     geom_point() +
-    geom_smooth() +
+    geom_smooth(formula = y ~ x, method = "loess") +
     xlab("Date") +
     ylab("Count") +
     labs(title = "Increase in Current Confirmed")
