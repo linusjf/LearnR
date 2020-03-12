@@ -105,7 +105,7 @@ plot_world_cases <- function(data, ready_data) {
   ## cases by type
   df <- data_long %>% filter(country %in% top_countries) %<>%
     mutate(country = country %>% factor(levels = c(top_countries)))
-  df %>%
+  plot1 <- df %>%
     filter(country != "World") %>%
     ggplot(aes(x = date, y = count, fill = country)) +
     geom_area() +
@@ -114,9 +114,8 @@ plot_world_cases <- function(data, ready_data) {
     labs(title = "Cases around the World") +
     theme(legend.title = element_blank()) +
     facet_wrap(~type, ncol = 2, scales = "free_y")
-  ggplot2::ggsave("worldcases.pdf")
   ## excluding Mainland China
-  df %>%
+  plot2 <- df %>%
     filter(!(country %in% c("World", "Mainland China", "China"))) %>%
     ggplot(aes(x = date, y = count, fill = country)) +
     geom_area() +
@@ -125,7 +124,6 @@ plot_world_cases <- function(data, ready_data) {
     labs(title = "Cases around the World (excl. China)") +
     theme(legend.title = element_blank()) +
     facet_wrap(~type, ncol = 2, scales = "free_y")
-  ggplot2::ggsave("worldcasesexclchina.pdf")
   ## if India in not in top 10, add it in and remove 'Others'
   if (!("India" %in% top_countries)) {
     top_countries %<>% setdiff("Others") %>%
@@ -134,7 +132,7 @@ plot_world_cases <- function(data, ready_data) {
       mutate(country = country %>% factor(levels = c(top_countries)))
   }
   ## cases by country
-  df %>%
+  plot3 <- df %>%
     filter(type != "confirmed") %>%
     ggplot(aes(x = date, y = count, fill = type)) +
     geom_area(alpha = 0.5) +
@@ -144,7 +142,7 @@ plot_world_cases <- function(data, ready_data) {
     scale_fill_manual(values = c("red", "green", "black")) +
     theme(legend.title = element_blank(), legend.position = "bottom") +
     facet_wrap(~country, ncol = 3, scales = "free_y")
-  ggplot2::ggsave("worldcasesinclindia.pdf")
+  return(list(plot1, plot2, plot3))
 }
 
 main <- function(argv) {
@@ -205,14 +203,28 @@ main <- function(argv) {
     add_rates()
   write.csv(data, "rates.csv")
   ready_data <- ready_plot_data(data)
-  plot_top10_confirmed(ready_data)
-  plot_world_cases(data, ready_data)
+  plots <- list()
+  plots[["top10"]] <- plot_top10_confirmed(ready_data)
+  plots[["cases"]] <- plot_world_cases(data, ready_data)
   data %<>%
     filter(country == "World")
-  plot_current_confirmed(data)
-  plot_deaths_recovered(data)
-  plot_death_rates(data)
+  plots[["confirmed"]] <- plot_current_confirmed(data)
+  plots[["deaths"]] <- plot_deaths_recovered(data)
+  plots[["rates"]] <- plot_death_rates(data)
+  invisible(lapply(plots, print_chart))
   return(0)
+}
+
+print_chart <- function(plot) {
+  if (is.null(plot))
+    return
+  if ("grob" %in% class(plot)) {
+    print("new page ")
+    grid::grid.newpage()
+    grid::grid.draw(plot)
+  } else {
+    print(plot)
+  }
 }
 
 plot_deaths_recovered <- function(data) {
@@ -260,11 +272,11 @@ plot_deaths_recovered <- function(data) {
     labs(title = "Increase in Recovered Cases")
   ## show four plots together, with 2 plots in each row
   grob <- gridExtra::arrangeGrob(plot1, plot2, plot3, plot4, nrow = 2)
-  ggplot2::ggsave("deathsrecovered.pdf", grob)
+  return(grob)
 }
 
 plot_death_rates <- function(data) {
-n <- nrow(data)
+  n <- nrow(data)
   ## three death rates
   plot1 <- ggplot(data, aes(x = date)) +
     geom_line(aes(y = rate.upper, colour = "Upper bound")) +
@@ -286,7 +298,7 @@ n <- nrow(data)
     theme(legend.position = "bottom", legend.title = element_blank()) +
     ylim(0, 10)
   grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2)
-  ggplot2::ggsave("deathrates.pdf", grob)
+  return(grob)
 }
 
 plot_current_confirmed <- function(data) {
@@ -322,7 +334,7 @@ plot_current_confirmed <- function(data) {
     ylab("Count") +
     labs(title = "Increase in Current Confirmed")
   grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2)
-  ggplot2::ggsave("currconfirmed.pdf", grob)
+  return(grob)
 }
 
 add_rates <- function(data) {
@@ -412,12 +424,10 @@ ready_plot_data <- function(data) {
 
 plot_top10_confirmed <- function(ready_data) {
   max_date <- ready_data$max.date
-  print(max_date)
   ## ranking by confirmed cases
   data_latest <- ready_data$data.latest
   ## top 10 countries: 12 incl. 'World' and 'Others'
   top_countries <- ready_data$top.countries
-  print(top_countries)
 
   ## put all others in a single group of 'Others'
   df <- data_latest %>%
@@ -453,7 +463,7 @@ plot_top10_confirmed <- function(ready_data) {
       "%)"
     ))
 
-  df %>% ggplot(aes(fill = country)) +
+  plot <- df %>% ggplot(aes(fill = country)) +
     geom_bar(aes(x = "", y = per), stat = "identity") +
     coord_polar("y", start = 0) +
     xlab("") +
@@ -463,7 +473,7 @@ plot_top10_confirmed <- function(ready_data) {
       max_date, ")"
     )) +
     scale_fill_discrete(name = "Country", labels = df$txt)
-  ggplot2::ggsave("top10confirmed.pdf")
+  return(plot)
 }
 
 latest_date <- function(dates) {
