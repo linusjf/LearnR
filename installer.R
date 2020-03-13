@@ -79,6 +79,9 @@ install_coronavirus <- function() {
   if (!require(magick)) {
     install.packages("magick", .libPaths()[1])
   }
+  if (!require(deSolve)) {
+    install.packages("deSolve", .libPaths()[1])
+  }
 }
 
 install_stats462 <- function() {
