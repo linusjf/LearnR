@@ -214,6 +214,7 @@ main <- function(argv) {
   print(plots[["top10"]], newpage = FALSE)
   plots[["top10"]] <- NULL
   invisible(lapply(plots, print_chart))
+  output_to_pdf(data)
   return(0)
 }
 
@@ -225,7 +226,7 @@ print_chart <- function(plot) {
     grid::grid.newpage()
     grid::grid.draw(plot, recording = FALSE)
   } else {
-      print(plot)
+    print(plot)
   }
 }
 
@@ -522,6 +523,35 @@ print_sample_data <- function(data, name) {
         name,
         ".pdf"
       ),
+      keep_tex = TRUE
+    )
+}
+
+output_to_pdf <- function(data) {
+  ## re-order columns
+  # deadIncr, curedIncr,
+  data %<>% select(c(
+    date, confirmed, deaths, recovered, remaining.confirmed,
+    confirmed.inc, deaths.inc, recovered.inc, rate.upper, rate.daily, rate.lower
+  ))
+  ## to make column names shorter for output purpose only
+  names(data) %<>%
+    gsub(pattern = "Count",
+         replacement = "")
+  ## output as a table
+  data %>%
+    kable("latex",
+      booktabs = T, longtable = T, caption = "Cases in the Whole World",
+      format.args = list(big.mark = ",")
+    ) %>%
+    kable_styling(
+                  font_size = 5,
+                  latex_options =
+                    c("striped",
+                      "hold_position",
+                      "repeat_header")) %>%
+    landscape() %>%
+    save_kable("report.pdf",
       keep_tex = TRUE
     )
 }
