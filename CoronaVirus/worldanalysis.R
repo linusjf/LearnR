@@ -206,16 +206,26 @@ main <- function(argv) {
   plots <- list()
   plots[["top10"]] <- plot_top10_confirmed(ready_data)
   plots[["cases"]] <- plot_world_cases(data, ready_data)
-  data %<>%
+  data_world <- 
+  data %>%
     filter(country == "World")
-  plots[["confirmed"]] <- plot_current_confirmed(data)
-  plots[["deaths"]] <- plot_deaths_recovered(data)
-  plots[["rates"]] <- plot_death_rates(data)
+  data_india <- 
+  data %>%
+    filter(country == "India") %>%
+    filter(confirmed != 0)
+  plots[["confirmed"]] <- plot_current_confirmed(data_world)
+  plots[["deaths"]] <- plot_deaths_recovered(data_world)
+  plots[["rates"]] <- plot_death_rates(data_world)
+  plots[["confirmed_india"]] <- plot_current_confirmed(data_india)
+  plots[["deaths_india"]] <- plot_deaths_recovered(data_india)
+  plots[["rates_india"]] <- plot_death_rates(data_india)
   print(plots[["top10"]], newpage = FALSE)
   plots[["top10"]] <- NULL
   invisible(lapply(plots, print_chart))
-  output_to_pdf(data)
-  write.csv(data, "world_data.csv")
+  output_to_pdf(data_world, "worldreport.pdf")
+  output_to_pdf(data_india, "indiareport.pdf")
+  write.csv(data_world, "world_data.csv")
+  write.csv(data_india, "india_data.csv")
   return(0)
 }
 
@@ -234,7 +244,15 @@ print_chart <- function(plot) {
 
 plot_deaths_recovered <- function(data) {
   ## a scatter plot with a smoothed line and vertical x-axis labels
-  plot1 <- ggplot(data, aes(x = date, y = deaths)) +
+  plot1 <- ggplot(
+    data =
+      subset(
+        data,
+        !is.na(
+          data$deaths
+        )
+      )
+, aes(x = date, y = deaths)) +
     geom_point() +
     geom_smooth(
       method = "loess",
@@ -243,7 +261,15 @@ plot_deaths_recovered <- function(data) {
     xlab("Date") +
     ylab("Count") +
     labs(title = "Deaths")
-  plot2 <- ggplot(data, aes(x = date, y = recovered)) +
+  plot2 <- ggplot(
+    data =
+      subset(
+        data,
+        !is.na(
+          data$recovered
+        )
+      )
+, aes(x = date, y = recovered)) +
     geom_point() +
     geom_smooth(
       formula = y ~ x,
@@ -287,9 +313,10 @@ plot_deaths_recovered <- function(data) {
 }
 
 plot_death_rates <- function(data) {
-  n <- nrow(data)
   ## three death rates
   data_clean <- subset(data, !is.na(data$rate.upper))
+  n <- nrow(data_clean)
+  print(n)
   plot1 <- ggplot(data_clean, aes(x = date)) +
     geom_line(aes(y = rate.upper, colour = "Upper bound")) +
     geom_line(aes(y = rate.lower, colour = "Lower bound")) +
@@ -383,7 +410,9 @@ add_rates <- function(data) {
   data %<>%
     mutate(
       rate.upper =
-        (100 * deaths /
+        ifelse(is.nan(100 * deaths /
+          (deaths + recovered)), 0, 
+               100 * deaths /
           (deaths + recovered)) %>%
           round(1)
     )
@@ -391,15 +420,20 @@ add_rates <- function(data) {
   data %<>%
     mutate(
       rate.lower =
-        (100 * deaths /
-          confirmed) %>%
+        ifelse(is.nan(100 * deaths /
+          confirmed),0,
+               100 * deaths /
+          confirmed)  %>%
           round(1)
     )
   ## death rate based on the number of death/cured on every single day
   data %<>%
     mutate(
       rate.daily =
-        (100 * deaths.inc /
+        ifelse( is.nan(100 * deaths.inc /
+          (deaths.inc +
+            recovered.inc)),0,
+               100 * deaths.inc /
           (deaths.inc +
             recovered.inc)) %>%
           round(1)
@@ -530,7 +564,7 @@ print_sample_data <- function(data, name) {
     )
 }
 
-output_to_pdf <- function(data) {
+output_to_pdf <- function(data, filename) {
   ## re-order columns
   # deadIncr, curedIncr,
   data %<>% select(c(
@@ -559,7 +593,7 @@ output_to_pdf <- function(data) {
         )
     ) %>%
     landscape() %>%
-    save_kable("report.pdf",
+    save_kable(filename,
       keep_tex = TRUE
     )
 }
