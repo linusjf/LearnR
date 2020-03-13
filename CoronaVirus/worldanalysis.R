@@ -215,18 +215,20 @@ main <- function(argv) {
   plots[["top10"]] <- NULL
   invisible(lapply(plots, print_chart))
   output_to_pdf(data)
+  write.csv(data, "world_data.csv")
   return(0)
 }
 
 print_chart <- function(plot) {
-  if (is.null(plot)) {
-    return
-  }
   if ("grob" %in% class(plot)) {
     grid::grid.newpage()
     grid::grid.draw(plot, recording = FALSE)
   } else {
-    print(plot)
+    if ("list" %in% class(plot)) {
+      lapply(plot, print)
+    } else {
+      print(plot)
+    }
   }
 }
 
@@ -287,7 +289,8 @@ plot_deaths_recovered <- function(data) {
 plot_death_rates <- function(data) {
   n <- nrow(data)
   ## three death rates
-  plot1 <- ggplot(data, aes(x = date)) +
+  data_clean <- subset(data, !is.na(data$rate.upper))
+  plot1 <- ggplot(data_clean, aes(x = date)) +
     geom_line(aes(y = rate.upper, colour = "Upper bound")) +
     geom_line(aes(y = rate.lower, colour = "Lower bound")) +
     geom_line(aes(y = rate.daily, colour = "Daily")) +
@@ -297,7 +300,7 @@ plot_death_rates <- function(data) {
     theme(legend.position = "bottom", legend.title = element_blank()) +
     ylim(0, 90)
   ## focusing on last 2 weeks
-  plot2 <- ggplot(data[n - (14:0), ], aes(x = date)) +
+  plot2 <- ggplot(data_clean[n - (14:0), ], aes(x = date)) +
     geom_line(aes(y = rate.upper, colour = "Upper bound")) +
     geom_line(aes(y = rate.lower, colour = "Lower bound")) +
     geom_line(aes(y = rate.daily, colour = "Daily")) +
@@ -536,8 +539,10 @@ output_to_pdf <- function(data) {
   ))
   ## to make column names shorter for output purpose only
   names(data) %<>%
-    gsub(pattern = "Count",
-         replacement = "")
+    gsub(
+      pattern = "Count",
+      replacement = ""
+    )
   ## output as a table
   data %>%
     kable("latex",
@@ -545,11 +550,14 @@ output_to_pdf <- function(data) {
       format.args = list(big.mark = ",")
     ) %>%
     kable_styling(
-                  font_size = 5,
-                  latex_options =
-                    c("striped",
-                      "hold_position",
-                      "repeat_header")) %>%
+      font_size = 5,
+      latex_options =
+        c(
+          "striped",
+          "hold_position",
+          "repeat_header"
+        )
+    ) %>%
     landscape() %>%
     save_kable("report.pdf",
       keep_tex = TRUE
