@@ -11,6 +11,16 @@ main <- function(argv) {
   plot(dates, infected, log = "y")
   abline(lm(log10(infected) ~ dates))
   title("Confirmed Cases 2019-nCoV World", outer = TRUE, line = -2)
+  
+  data <- readr::read_csv("india_data.csv")
+  infected <- data$confirmed
+  dates <- data$date
+
+  par(mfrow = c(1, 2))
+  plot(dates, infected, type = "b")
+  plot(dates, infected, log = "y")
+  abline(lm(log10(infected) ~ dates))
+  title("Confirmed Cases 2019-nCoV India", outer = TRUE, line = -2)
   return(0)
 }
 
