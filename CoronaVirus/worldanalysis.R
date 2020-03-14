@@ -198,10 +198,10 @@ main <- function(argv) {
   ## remaining confirmed cases
   data %<>%
     mutate(remaining.confirmed = confirmed - deaths - recovered)
-  write.csv(data, "summarised.csv")
+  write.csv(data, "summarised.csv", row.names = FALSE)
   data %<>%
     add_rates()
-  write.csv(data, "rates.csv")
+  write.csv(data, "rates.csv", row.names = FALSE)
   ready_data <- ready_plot_data(data)
   plots <- list()
   plots[["top10"]] <- plot_top10_confirmed(ready_data)
@@ -224,8 +224,8 @@ main <- function(argv) {
   invisible(lapply(plots, print_chart))
   output_to_pdf(data_world, "worldreport.pdf")
   output_to_pdf(data_india, "indiareport.pdf")
-  write.csv(data_world, "world_data.csv")
-  write.csv(data_india, "india_data.csv")
+  write.csv(data_world, "world_data.csv", row.names = FALSE)
+  write.csv(data_india, "india_data.csv", row.names = FALSE)
   return(0)
 }
 
