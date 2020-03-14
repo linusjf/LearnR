@@ -315,10 +315,9 @@ plot_deaths_recovered <- function(data, title) {
 
 plot_death_rates <- function(data, title) {
   ## three death rates
-  data_clean <- subset(data, !is.na(data$rate.daily))
-  n <- nrow(data_clean)
+  n <- nrow(data)
   print(n)
-  plot1 <- ggplot(data_clean, aes(x = date)) +
+  plot1 <- ggplot(data, aes(x = date), na.rm = TRUE) +
     geom_line(aes(y = rate.upper, colour = "Upper bound")) +
     geom_line(aes(y = rate.lower, colour = "Lower bound")) +
     geom_line(aes(y = rate.daily, colour = "Daily")) +
@@ -326,9 +325,9 @@ plot_death_rates <- function(data, title) {
     ylab("Death Rate (%)") +
     labs(title = "Overall") +
     theme(legend.position = "bottom", legend.title = element_blank()) +
-    ylim(0, 90)
+    ylim(0, 100)
   ## focusing on last 2 weeks
-  plot2 <- ggplot(data_clean[n - (14:0), ], aes(x = date)) +
+    plot2 <- ggplot(data[n - (14:0), ], aes(x = date), na.rm = TRUE) +
     geom_line(aes(y = rate.upper, colour = "Upper bound")) +
     geom_line(aes(y = rate.lower, colour = "Lower bound")) +
     geom_line(aes(y = rate.daily, colour = "Daily")) +
@@ -336,7 +335,7 @@ plot_death_rates <- function(data, title) {
     ylab("Death Rate (%)") +
     labs(title = "Last two weeks") +
     theme(legend.position = "bottom", legend.title = element_blank()) +
-    ylim(0, 10)
+    ylim(0, 100)
   grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2,
   top = title)
   return(grob)
@@ -433,9 +432,12 @@ add_rates <- function(data) {
   data %<>%
     mutate(
       rate.daily =
-        ifelse( is.nan(100 * deaths.inc /
+        ifelse( (is.nan(100 * deaths.inc /
           (deaths.inc +
-            recovered.inc)),0,
+            recovered.inc)) |
+               is.na(100 * deaths.inc /
+          (deaths.inc +
+            recovered.inc))),0,
                100 * deaths.inc /
           (deaths.inc +
             recovered.inc)) %>%
