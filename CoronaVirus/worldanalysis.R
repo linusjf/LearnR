@@ -42,7 +42,7 @@ download_csv <- function(filename) {
     rawfile <- commit$files[[which(files == path)]]$raw_url
     download.file(rawfile, destination, quiet = TRUE)
     Sys.setFileTime(destination, git_date)
-    print("File was downloaded")
+      print(paste("File", rawfile,"was downloaded"))
   }
 }
 
