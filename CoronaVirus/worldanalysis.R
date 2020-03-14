@@ -212,7 +212,7 @@ main <- function(argv) {
   data_india <- 
   data %>%
     filter(country == "India") %>%
-    filter(confirmed == 0)
+    filter(confirmed != 0)
   plots[["confirmed"]] <- plot_current_confirmed(data_world, "World")
   plots[["deaths"]] <- plot_deaths_recovered(data_world, "World")
   plots[["rates"]] <- plot_death_rates(data_world, "World")
