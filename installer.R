@@ -82,6 +82,9 @@ install_coronavirus <- function() {
   if (!require(deSolve)) {
     install.packages("deSolve", .libPaths()[1])
   }
+  if (!require(EpiDynamics)) {
+    install.packages("EpiDynamics", .libPaths()[1])
+  }
 }
 
 install_stats462 <- function() {
