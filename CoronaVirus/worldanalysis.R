@@ -213,12 +213,12 @@ main <- function(argv) {
   data %>%
     filter(country == "India") %>%
     filter(confirmed != 0)
-  plots[["confirmed"]] <- plot_current_confirmed(data_world)
-  plots[["deaths"]] <- plot_deaths_recovered(data_world)
-  plots[["rates"]] <- plot_death_rates(data_world)
-  plots[["confirmed_india"]] <- plot_current_confirmed(data_india)
-  plots[["deaths_india"]] <- plot_deaths_recovered(data_india)
-  plots[["rates_india"]] <- plot_death_rates(data_india)
+  plots[["confirmed"]] <- plot_current_confirmed(data_world, "World")
+  plots[["deaths"]] <- plot_deaths_recovered(data_world, "World")
+  plots[["rates"]] <- plot_death_rates(data_world, "World")
+  plots[["confirmed_india"]] <- plot_current_confirmed(data_india, "India")
+  plots[["deaths_india"]] <- plot_deaths_recovered(data_india, "India")
+  plots[["rates_india"]] <- plot_death_rates(data_india, "India")
   print(plots[["top10"]], newpage = FALSE)
   plots[["top10"]] <- NULL
   invisible(lapply(plots, print_chart))
@@ -242,7 +242,7 @@ print_chart <- function(plot) {
   }
 }
 
-plot_deaths_recovered <- function(data) {
+plot_deaths_recovered <- function(data, title) {
   ## a scatter plot with a smoothed line and vertical x-axis labels
   plot1 <- ggplot(
     data =
@@ -308,11 +308,12 @@ plot_deaths_recovered <- function(data) {
     ylab("Count") +
     labs(title = "Increase in Recovered Cases")
   ## show four plots together, with 2 plots in each row
-  grob <- gridExtra::arrangeGrob(plot1, plot2, plot3, plot4, nrow = 2)
+  grob <- gridExtra::arrangeGrob(plot1, plot2, plot3, plot4, nrow = 2,
+  top = title)
   return(grob)
 }
 
-plot_death_rates <- function(data) {
+plot_death_rates <- function(data, title) {
   ## three death rates
   data_clean <- subset(data, !is.na(data$rate.daily))
   n <- nrow(data_clean)
@@ -336,11 +337,12 @@ plot_death_rates <- function(data) {
     labs(title = "Last two weeks") +
     theme(legend.position = "bottom", legend.title = element_blank()) +
     ylim(0, 10)
-  grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2)
+  grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2,
+  top = title)
   return(grob)
 }
 
-plot_current_confirmed <- function(data) {
+plot_current_confirmed <- function(data, title) {
   ## current confirmed and its increase
 
   plot1 <- ggplot(
@@ -372,7 +374,8 @@ plot_current_confirmed <- function(data) {
     xlab("Date") +
     ylab("Count") +
     labs(title = "Increase in Current Confirmed")
-  grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2)
+  grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2,
+  top = title)
   return(grob)
 }
 
