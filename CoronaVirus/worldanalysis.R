@@ -107,7 +107,7 @@ plot_world_cases <- function(data, ready_data) {
     mutate(country = country %>% factor(levels = c(top_countries)))
   plot1 <- df %>%
     filter(country != "World") %>%
-    ggplot(aes(x = date, y = count, fill = country)) +
+    ggplot(aes(x = date, y = count, fill = country), na.rm = TRUE) +
     geom_area() +
     xlab("Date") +
     ylab("Count") +
@@ -117,7 +117,7 @@ plot_world_cases <- function(data, ready_data) {
   ## excluding Mainland China
   plot2 <- df %>%
     filter(!(country %in% c("World", "Mainland China", "China"))) %>%
-    ggplot(aes(x = date, y = count, fill = country)) +
+    ggplot(aes(x = date, y = count, fill = country), na.rm = TRUE) +
     geom_area() +
     xlab("Date") +
     ylab("Count") +
@@ -134,7 +134,7 @@ plot_world_cases <- function(data, ready_data) {
   ## cases by country
   plot3 <- df %>%
     filter(type != "confirmed") %>%
-    ggplot(aes(x = date, y = count, fill = type)) +
+    ggplot(aes(x = date, y = count, fill = type), na.rm = TRUE) +
     geom_area(alpha = 0.5) +
     xlab("Date") +
     ylab("Count") +
@@ -249,7 +249,7 @@ plot_deaths_recovered <- function(data) {
       subset(
         data,
         !is.na(
-          data$deaths
+          deaths
         )
       )
 , aes(x = date, y = deaths)) +
@@ -266,7 +266,7 @@ plot_deaths_recovered <- function(data) {
       subset(
         data,
         !is.na(
-          data$recovered
+          recovered
         )
       )
 , aes(x = date, y = recovered)) +
@@ -283,7 +283,7 @@ plot_deaths_recovered <- function(data) {
       subset(
         data,
         !is.na(
-          data$deaths.inc
+          deaths.inc
         )
       ),
     aes(x = date, y = deaths.inc)
@@ -298,7 +298,7 @@ plot_deaths_recovered <- function(data) {
       data =
         subset(
           data,
-          !is.na(data$recovered.inc)
+          !is.na(recovered.inc)
         ),
       aes(x = date, y = recovered.inc)
     ) +
@@ -314,7 +314,7 @@ plot_deaths_recovered <- function(data) {
 
 plot_death_rates <- function(data) {
   ## three death rates
-  data_clean <- subset(data, !is.na(data$rate.upper))
+  data_clean <- subset(data, !is.na(data$rate.daily))
   n <- nrow(data_clean)
   print(n)
   plot1 <- ggplot(data_clean, aes(x = date)) +
@@ -580,7 +580,7 @@ output_to_pdf <- function(data, filename) {
   ## output as a table
   data %>%
     kable("latex",
-      booktabs = T, longtable = T, caption = "Cases in the Whole World",
+      booktabs = T, longtable = T, caption = paste("Cases in", filename),
       format.args = list(big.mark = ",")
     ) %>%
     kable_styling(
