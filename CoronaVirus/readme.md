@@ -16,3 +16,5 @@ It helps if you're already familiar with git and GitHub.
 The installer.R can take some time. 
 If you're inclined, you can pull out only the install_coronavirus method and run only that to save time. 
 That will install all the packages needed for the above scripts.
+
+[Installing Latex](https://www.latex-tutorial.com/installation/)
