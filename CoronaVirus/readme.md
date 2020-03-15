@@ -2,14 +2,14 @@
 
 [Corona Virus: Data analysis](https://rdatamining.wordpress.com/2020/03/10/coronavirus-data-analysis-with-r-tidyverse-and-ggplot2/)
 
-I've collated a few R scripts that track the CoronaVirus outbreak using data from the John Hopkins Hospital repository on GitHub.
+I've collated a few R scripts that analyse the CoronaVirus outbreak using data from the John Hopkins Hospital repository on GitHub.
 
 The relevant scripts are worldanalysis.R, plotgrowth.R and the SIRModels. 
 
 The SIRModel simulates the growth of the virus if unchecked. 
-It's not gospel but  a useful, rudimentary predictor.  
+It's not gospel but a useful, rudimentary predictor.  
 
-Links to the articles are above. 
+Links to the source articles are above. 
 
 You will need R and Latex (tex-live, tex-live-extras) installed on your machine and a decent internet connection.
 
@@ -19,9 +19,9 @@ Run the worldanalysis.R first;its output is input to the other scripts mentioned
 That's under the root directory, LearnR. 
 It helps if you're already familiar with git and GitHub.
 
-The installer.R can take some time. 
-If you're inclined, you can pull out the install_coronavirus method and run only that to save time. 
-That will install all the packages needed for the above scripts.)
+The installer.R takes time. 
+To save time, you can pull out the install_coronavirus method and run only that. 
+That will install all packages needed for the above scripts.)
 
 [Installing Latex](https://www.latex-tutorial.com/installation/)
 
