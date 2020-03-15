@@ -16,7 +16,7 @@ You will need R and Latex (tex-live, tex-live-extras) installed on your machine 
 Run the worldanalysis.R first;its output is input to the other scripts mentioned above.
 
 (Execute installer.R to download packages needed to run the scripts. 
-That's under the root directory LearnR. 
+That's under the root directory, LearnR. 
 It helps if you're already familiar with git and GitHub.
 
 The installer.R can take some time. 
