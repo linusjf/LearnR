@@ -1,4 +1,5 @@
 [How contagious is it?](https://blog.ephorie.de/epidemiology-how-contagious-is-novel-coronavirus-2019-ncov)
+
 [Corona Virus: Data analysis](https://rdatamining.wordpress.com/2020/03/10/coronavirus-data-analysis-with-r-tidyverse-and-ggplot2/)
 
 For those technically oriented, I've collated a few R scripts from the internet that track the CoronaVirus outbreak using data from the John Hopkins Hospital repository on GitHub. 
