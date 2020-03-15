@@ -24,9 +24,11 @@ process_realestate <- function(data) {
   plot_stdresid(reg)
   plot_stdresid_predictor(data, reg)
   hist(resid(reg))
-  plot(reg, which = c(2),
-       caption = list("Normal Q-Q"),
-       qqline = TRUE)
+  plot(reg,
+    which = c(2),
+    caption = list("Normal Q-Q"),
+    qqline = TRUE
+  )
 }
 
 plot_stdresid_predictor <- function(data, reg) {

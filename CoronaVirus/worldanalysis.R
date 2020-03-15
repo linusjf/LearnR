@@ -42,7 +42,7 @@ download_csv <- function(filename) {
     rawfile <- commit$files[[which(files == path)]]$raw_url
     download.file(rawfile, destination, quiet = TRUE)
     Sys.setFileTime(destination, git_date)
-      print(paste("File", rawfile,"was downloaded"))
+    print(paste("File", rawfile, "was downloaded"))
   }
 }
 
@@ -206,11 +206,11 @@ main <- function(argv) {
   plots <- list()
   plots[["top10"]] <- plot_top10_confirmed(ready_data)
   plots[["cases"]] <- plot_world_cases(data, ready_data)
-  data_world <- 
-  data %>%
+  data_world <-
+    data %>%
     filter(country == "World")
-  data_india <- 
-  data %>%
+  data_india <-
+    data %>%
     filter(country == "India") %>%
     filter(confirmed != 0)
   plots[["confirmed"]] <- plot_current_confirmed(data_world, "World")
@@ -251,8 +251,9 @@ plot_deaths_recovered <- function(data, title) {
         !is.na(
           deaths
         )
-      )
-, aes(x = date, y = deaths)) +
+      ),
+    aes(x = date, y = deaths)
+  ) +
     geom_point() +
     geom_smooth(
       method = "loess",
@@ -268,8 +269,9 @@ plot_deaths_recovered <- function(data, title) {
         !is.na(
           recovered
         )
-      )
-, aes(x = date, y = recovered)) +
+      ),
+    aes(x = date, y = recovered)
+  ) +
     geom_point() +
     geom_smooth(
       formula = y ~ x,
@@ -308,8 +310,10 @@ plot_deaths_recovered <- function(data, title) {
     ylab("Count") +
     labs(title = "Increase in Recovered Cases")
   ## show four plots together, with 2 plots in each row
-  grob <- gridExtra::arrangeGrob(plot1, plot2, plot3, plot4, nrow = 2,
-  top = title)
+  grob <- gridExtra::arrangeGrob(plot1, plot2, plot3, plot4,
+    nrow = 2,
+    top = title
+  )
   return(grob)
 }
 
@@ -327,7 +331,7 @@ plot_death_rates <- function(data, title) {
     theme(legend.position = "bottom", legend.title = element_blank()) +
     ylim(0, 100)
   ## focusing on last 2 weeks
-    plot2 <- ggplot(data[n - (14:0), ], aes(x = date), na.rm = TRUE) +
+  plot2 <- ggplot(data[n - (14:0), ], aes(x = date), na.rm = TRUE) +
     geom_line(aes(y = rate.upper, colour = "Upper bound")) +
     geom_line(aes(y = rate.lower, colour = "Lower bound")) +
     geom_line(aes(y = rate.daily, colour = "Daily")) +
@@ -336,8 +340,10 @@ plot_death_rates <- function(data, title) {
     labs(title = "Last two weeks") +
     theme(legend.position = "bottom", legend.title = element_blank()) +
     ylim(0, 100)
-  grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2,
-  top = title)
+  grob <- gridExtra::arrangeGrob(plot1, plot2,
+    ncol = 2,
+    top = title
+  )
   return(grob)
 }
 
@@ -373,8 +379,10 @@ plot_current_confirmed <- function(data, title) {
     xlab("Date") +
     ylab("Count") +
     labs(title = "Increase in Current Confirmed")
-  grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2,
-  top = title)
+  grob <- gridExtra::arrangeGrob(plot1, plot2,
+    ncol = 2,
+    top = title
+  )
   return(grob)
 }
 
@@ -413,9 +421,10 @@ add_rates <- function(data) {
     mutate(
       rate.upper =
         ifelse(is.nan(100 * deaths /
-          (deaths + recovered)), 0, 
-               100 * deaths /
-          (deaths + recovered)) %>%
+          (deaths + recovered)), 0,
+        100 * deaths /
+          (deaths + recovered)
+        ) %>%
           round(1)
     )
   ## lower bound: death rate based on total confirmed cases
@@ -423,24 +432,26 @@ add_rates <- function(data) {
     mutate(
       rate.lower =
         ifelse(is.nan(100 * deaths /
-          confirmed),0,
-               100 * deaths /
-          confirmed)  %>%
+          confirmed), 0,
+        100 * deaths /
+          confirmed
+        ) %>%
           round(1)
     )
   ## death rate based on the number of death/cured on every single day
   data %<>%
     mutate(
       rate.daily =
-        ifelse( (is.nan(100 * deaths.inc /
+        ifelse((is.nan(100 * deaths.inc /
           (deaths.inc +
             recovered.inc)) |
-               is.na(100 * deaths.inc /
+          is.na(100 * deaths.inc /
+            (deaths.inc +
+              recovered.inc))), 0,
+        100 * deaths.inc /
           (deaths.inc +
-            recovered.inc))),0,
-               100 * deaths.inc /
-          (deaths.inc +
-            recovered.inc)) %>%
+            recovered.inc)
+        ) %>%
           round(1)
     )
   return(data)

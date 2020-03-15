@@ -9,9 +9,11 @@ main <- function(argv) {
 
 plot_trends <- function() {
   par(par_old)
-  par(mfrow = c(2, 2),
-      mar = c(4, 4, 1, 1),
-  mgp = c(3, 1, 0), las = 0)
+  par(
+    mfrow = c(2, 2),
+    mar = c(4, 4, 1, 1),
+    mgp = c(3, 1, 0), las = 0
+  )
   basicTrendline::trendline(mtcars$disp, mtcars$mpg)
   basicTrendline::trendline(Loblolly$age, Loblolly$height)
   basicTrendline::trendline(mtcars$qsec, mtcars$hp)
@@ -19,7 +21,6 @@ plot_trends <- function() {
 }
 
 plot_order <- function() {
-
   tmp <- lm(mpg ~ disp, data = mtcars)
   plot(tmp$residuals,
     pch = 20,
@@ -57,8 +58,10 @@ plot_order <- function() {
   lines(tmp$residuals)
 }
 
-par_old <- par(mfrow = c(2, 2), mar = c(2, 2, 1, 1),
-mgp = c(1, 1, 0))
+par_old <- par(
+  mfrow = c(2, 2), mar = c(2, 2, 1, 1),
+  mgp = c(1, 1, 0)
+)
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
 }

@@ -24,9 +24,11 @@ process_anscombe <- function(data) {
   plot_stdresid(reg)
   plot_stdresid_predictor(data, reg)
   hist(resid(reg))
-  plot(reg, which = c(2),
-       caption = list("Normal Q-Q"),
-       qqline = TRUE)
+  plot(reg,
+    which = c(2),
+    caption = list("Normal Q-Q"),
+    qqline = TRUE
+  )
   residuals <- resid(reg)
   std_residuals <- residuals / sd(residuals)
   indexes <- unname(which(std_residuals <= 2 & std_residuals >= -2))
@@ -41,10 +43,12 @@ process_anscombe <- function(data) {
   plot_stdresid(reg)
   plot_stdresid_predictor(data, reg)
   hist(resid(reg))
-  plot(reg, which = c(2),
-       caption = list("Normal Q-Q"),
-       main = "Q-Q plot",
-       qqline = TRUE)
+  plot(reg,
+    which = c(2),
+    caption = list("Normal Q-Q"),
+    main = "Q-Q plot",
+    qqline = TRUE
+  )
 }
 
 plot_stdresid_predictor <- function(data, reg) {
