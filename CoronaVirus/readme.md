@@ -7,7 +7,7 @@ The SIRModel simulates the growth of the virus if unchecked.
 It is not gospel but it's a useful but rudimentary predictor.  
 The links to the articles are above. 
 You will need R, tex-live, tex-live-extras installed on your machine and a decent internet connection. 
-Run the worldanalysis.R first since it's output is required for the other two scripts.
+Run the worldanalysis.R first since its output is required for the other two scripts.
 
 Run installer.R before trying the scripts to download the packages needed to run the scripts. 
 That's under the root directory LearnR. 
@@ -18,3 +18,5 @@ If you're inclined, you can pull out only the install_coronavirus method and run
 That will install all the packages needed for the above scripts.
 
 [Installing Latex](https://www.latex-tutorial.com/installation/)
+
+[Installing R](https://www.datacamp.com/community/tutorials/installing-R-windows-mac-ubuntu)
