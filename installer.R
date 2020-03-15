@@ -86,6 +86,9 @@ install_coronavirus <- function() {
   if (!require(EpiDynamics)) {
     install.packages("EpiDynamics", .libPaths()[1])
   }
+  if (!require(EpiModel)) {
+    install.packages("EpiModel", .libPaths()[1])
+  }
 }
 # nolint end
 
