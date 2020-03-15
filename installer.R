@@ -39,6 +39,7 @@ install_programs <- function() {
   }
 }
 
+# nolint start
 install_coronavirus <- function() {
   if (!require(nCov2019)) {
     remotes::install_github("GuangchuangYu/nCov2019")
@@ -86,6 +87,7 @@ install_coronavirus <- function() {
     install.packages("EpiDynamics", .libPaths()[1])
   }
 }
+# nolint end
 
 install_stats462 <- function() {
   if (!require(skimr)) {

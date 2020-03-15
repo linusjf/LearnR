@@ -17,7 +17,6 @@ SIR <- function(time, state, parameters) {
 main <- function(argv) {
   data <- readr::read_csv("world_data.csv")
   infected <- data$confirmed
-  recovered <- data$recovered
   dates <- data$date
 
   init <- c(S = N - infected[1], I = infected[1], R = 0)
