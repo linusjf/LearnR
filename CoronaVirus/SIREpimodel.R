@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
 suppressMessages(library(EpiModel))
+library(deSolve)
+library(readr)
 
   # infection rate since Corona Virus is unknown set to 1
   # act.rate left at 1 since it cannot be easily gauged.
@@ -13,56 +15,37 @@ suppressMessages(library(EpiModel))
   # world population birth and death rates are picked from Wikipedia
   # death rate for Corona Virus is 3.5% on high side
 
-main <- function(argv) {
-  deterministic()
-  return(0)
+sir <- function(time, state, parameters) {
+  par <- as.list(c(state, parameters))
+  ds <- -par$beta / par$N * par$I * par$S
+  di <- par$beta / par$N * par$I * par$S - par$gamma * par$I
+  dr <- par$gamma * par$I
+  list(c(ds, di, dr), N = par$N)
 }
 
-stochastic <- function() {
-param <- param.icm(
-    inf.prob = 0.5,
-    act.rate = 0.5,
-    rec.rate = 1 / 7,
-    a.rate = 4.67532468e-5,
-    ds.rate = 1.94805195e-5,
-    di.rate = 1.94805195e-5 * 1.035,
-    dr.rate = 1.94805195e-5
-  )
+rss <- function(parameters, infected = NULL, init = NULL, popn = NULL) {
+  names(parameters) <- c("beta", "gamma")
+  parameters[["N"]] <- popn
+  out <-
+    deSolve::ode(
+      y = init,
+      times = seq(length(infected)),
+      func = sir,
+      parms = parameters
+    )
+  fit <- out[, 3]
+  sum((infected - fit)^2)
+}
 
-  init <- init.icm(
-    s.num = 7700000000,
-    i.num = 555, # from John Hopkins on 22/1/20
-    r.num = 28
-  )
+main <- function(argv) {
 
-  control <- control.icm(
-    type = "SIR",
-    nsteps = 365,
-    dt = 0.5
-  )
-  mod <- EpiModel::icm(param, init, control)
-  print(mod)
 
-  par(mar = c(3.2, 3, 2, 1), mgp = c(2, 1, 0), mfrow = c(1, 2))
-  plot(mod,
-    popfrac = FALSE, alpha = 0.5,
-    lwd = 4, main = "Compartment Sizes"
-  )
-  plot(mod,
-    y = "si.flow", lwd = 4, col = "firebrick",
-    main = "Disease Incidence", legend = "n"
-  )
-
-  par(mfrow = c(1, 1))
-  EpiModel::comp_plot(mod, at = 90, digits = 1)
-  EpiModel::comp_plot(mod, at = 180, digits = 1)
-  EpiModel::comp_plot(mod, at = 270, digits = 1)
-  EpiModel::comp_plot(mod, at = 365, digits = 1)
-
-  summary(mod, at = 90)
-  summary(mod, at = 180)
-  summary(mod, at = 270)
-  summary(mod, at = 365)
+  data <- readr::read_csv("world_data.csv")
+  infected <- data$confirmed
+  init <- c(S = population$World - infected[1], I = infected[1], R = 0)
+  
+  deterministic()
+  return(0)
 }
 
 deterministic <- function() {
@@ -112,6 +95,12 @@ param <- param.dcm(
   summary(mod, at = 365)
 }
 
+# world population 7.7 billion
+# india population 1.37 billion
+population <- list(
+  World = 7700000000,
+  India = 1370000000
+)
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
 }

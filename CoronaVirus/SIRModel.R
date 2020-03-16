@@ -92,11 +92,11 @@ analyse <- function(init,
                     plot_data) {
 
   # optimize with some sensible conditions
-  opt <- optim(c(0.5, 1 / 7),
+  opt <- optim(c(0.5, recovery_rate),
     rss,
     method = "L-BFGS-B",
-    lower = c(0, 1 / 14), upper =
-      c(1, 1),
+    lower = c(0, recovery_rate - 0.005), upper =
+      c(1, recovery_rate + 0.005),
     infected = infected, init = init,
     popn = popn
   )
