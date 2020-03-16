@@ -4,8 +4,10 @@ library(readr)
 
 sir <- function(time, state, parameters) {
   par <- as.list(c(state, parameters))
-  ds <- -par$beta / par$N * par$I * par$S
-  di <- par$beta / par$N * par$I * par$S - par$gamma * par$I
+  # lambda - F force of infection
+  lambda <- par$beta / par$N * par$I
+  ds <- -lambda * par$S
+  di <- lambda * par$S - par$gamma * par$I
   dr <- par$gamma * par$I
   list(c(ds, di, dr), N = par$N)
 }
