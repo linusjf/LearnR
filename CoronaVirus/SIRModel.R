@@ -35,9 +35,10 @@ main <- function(argv) {
   recovery_rate <- last_record$recovered / last_record$confirmed
   death_rate <- last_record$deaths / last_record$confirmed
   upper_recovery_rate <- 1 - death_rate
+  
 
-  print(paste("Death rate: ",death_rate))
-  print(paste("Recovery rate: ",recovery_rate))
+  print(paste("World Death rate: ",death_rate))
+  print(paste("World Recovery rate: ",recovery_rate))
   
   init <- c(S = N - infected[1], I = infected[1], R = 0)
 
@@ -56,6 +57,8 @@ main <- function(argv) {
   recovery_rate <- last_record$recovered / last_record$confirmed
   death_rate <- last_record$deaths / last_record$confirmed
   upper_recovery_rate <- 1 - death_rate
+
+  print("Analysing with India specific rates")
   print(paste("India Death rate: ",death_rate))
   print(paste("India Recovery rate: ",recovery_rate))
   analyse(init, infected, death_rate, recovery_rate, plot_data)
@@ -69,8 +72,8 @@ analyse <- function(init, infected, death_rate, recovery_rate, plot_data) {
   opt <- optim(c(0.5, recovery_rate), 
                RSS,
     method = "L-BFGS-B", 
-    lower = c(0,max(0, recovery_rate - 0.05)), upper =
-      c(1, min(recovery_rate + 0.05,1))
+    lower = c(0,max(0, recovery_rate - 0.005)), upper =
+      c(1, min(recovery_rate + 0.005,1))
   , infected = infected, init = init )
   print(opt$message)
 
