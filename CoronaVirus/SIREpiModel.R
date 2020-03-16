@@ -14,6 +14,9 @@ library(readr)
   # epimodel suggests that it is the inverse of average recovery time
   # world population birth and death rates are picked from Wikipedia
   # death rate for Corona Virus is 3.5% on high side
+  # using R0 of 2.5 and infection durayion of 14 days,
+  # a rough estimate of contact or activity rate per
+  # per person per day can be estimated
 
 sir <- function(time, state, parameters) {
   par <- as.list(c(state, parameters))
@@ -51,7 +54,7 @@ main <- function(argv) {
 deterministic <- function() {
 param <- param.dcm(
     inf.prob = 0.5,
-    act.rate = 0.5,
+    act.rate = 2.5 / 14,
     rec.rate = 1 / 7,
     a.rate = 4.67532468e-5,
     ds.rate = 1.94805195e-5,
