@@ -4,10 +4,10 @@ library(readr)
 
 sir <- function(time, state, parameters) {
   par <- as.list(c(state, parameters))
-    ds <- -par$beta / par$N * par$I * par$S
-    di <- par$beta / par$N * par$I * par$S - par$gamma * par$I
-    dr <- par$gamma * par$I
-    list(c(ds, di, dr), N = par$N)
+  ds <- -par$beta / par$N * par$I * par$S
+  di <- par$beta / par$N * par$I * par$S - par$gamma * par$I
+  dr <- par$gamma * par$I
+  list(c(ds, di, dr), N = par$N)
 }
 
 rss <- function(parameters, infected = NULL, init = NULL, popn = NULL) {
@@ -40,10 +40,14 @@ main <- function(argv) {
   init <- c(S = population$World - infected[1], I = infected[1], R = 0)
 
   plot_data <- list(label = "\nSIR model 2019-nCoV World")
-  analyse(init, infected, death_rate, recovery_rate, deaths, population$World,
-          plot_data)
-  analyse(init, infected, death_rate, upper_recovery_rate, deaths,
-          population$World, plot_data)
+  analyse(
+    init, infected, death_rate, recovery_rate, deaths, population$World,
+    plot_data
+  )
+  analyse(
+    init, infected, death_rate, upper_recovery_rate, deaths,
+    population$World, plot_data
+  )
 
   data <- readr::read_csv("india_data.csv")
   infected <- data$confirmed
@@ -53,10 +57,14 @@ main <- function(argv) {
   init <- c(S = population$India - infected[1], I = infected[1], R = 0)
 
   plot_data <- list(label = "\nSIR model 2019-nCoV India")
-  analyse(init, infected, death_rate, recovery_rate, deaths, population$India,
-          plot_data)
-  analyse(init, infected, death_rate, upper_recovery_rate, deaths,
-          population$India, plot_data)
+  analyse(
+    init, infected, death_rate, recovery_rate, deaths, population$India,
+    plot_data
+  )
+  analyse(
+    init, infected, death_rate, upper_recovery_rate, deaths,
+    population$India, plot_data
+  )
   recovery_rate <- last_record$recovered / last_record$confirmed
   death_rate <- last_record$deaths / last_record$confirmed
   upper_recovery_rate <- 1 - death_rate
@@ -68,7 +76,7 @@ main <- function(argv) {
     init, infected, death_rate, recovery_rate, deaths, population$India,
     plot_data
   )
-  analyse(
+ analyse(
     init, infected, death_rate, upper_recovery_rate,
     deaths, population$India, plot_data
   )
@@ -84,11 +92,11 @@ analyse <- function(init,
                     plot_data) {
 
   # optimize with some sensible conditions
-  opt <- optim(c(0.5, recovery_rate),
+  opt <- optim(c(0.5, 1 / 7),
     rss,
     method = "L-BFGS-B",
-    lower = c(0, max(0, recovery_rate - 0.01)), upper =
-      c(1, min(recovery_rate + 0.01, 1)),
+    lower = c(0, 1 / 14), upper =
+      c(1, 1),
     infected = infected, init = init,
     popn = popn
   )
