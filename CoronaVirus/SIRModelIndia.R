@@ -15,6 +15,13 @@ SIR <- function(time, state, parameters) {
 # nolint end
 
 main <- function(argv) {
+  data <- readr::read_csv("world_data.csv")
+  last_record <- tail(data, 1)
+  recovery_rate <- last_record$recovered / last_record$confirmed
+  death_rate <- last_record$deaths / last_record$confirmed
+
+  print(paste("Death rate: ",death_rate))
+  print(paste("Recovery rate: ",recovery_rate))
   data <- readr::read_csv("india_data.csv")
   infected <- data$confirmed
   dates <- data$date
@@ -34,9 +41,9 @@ main <- function(argv) {
   # nolint end
 
   # optimize with some sensible conditions
-  opt <- optim(c(0.5, 0.5), RSS,
+  opt <- optim(c(0.5, recovery_rate), RSS,
     method = "L-BFGS-B", lower = c(0, 0), upper =
-      c(1, 1)
+      c(1, 1), control = list(maxit = 10000)
   )
   print(opt$message)
   ## [1] "CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH"
@@ -78,7 +85,7 @@ main <- function(argv) {
 
   fit[fit$I == max(fit$I), "I", drop = FALSE] # height of pandemic
 
-  print(max(fit$I) * 0.02)
+  print(max(fit$I) * death_rate)
   # max deaths with supposed 2% fatality rate
   return(0)
 }
