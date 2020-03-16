@@ -31,11 +31,12 @@ main <- function(argv) {
   data <- readr::read_csv("world_data.csv")
   infected <- data$confirmed
   dates <- data$date
+
   last_record <- tail(data, 1)
   recovery_rate <- last_record$recovered / last_record$confirmed
   death_rate <- last_record$deaths / last_record$confirmed
   upper_recovery_rate <- 1 - death_rate
-
+  deaths <- last_record$deaths
 
   print(paste("World Death rate: ", death_rate))
   print(paste("World Recovery rate: ", recovery_rate))
@@ -43,17 +44,19 @@ main <- function(argv) {
   init <- c(S = N - infected[1], I = infected[1], R = 0)
 
   plot_data <- list(label = "\nSIR model 2019-nCoV World")
-  analyse(init, infected, death_rate, recovery_rate, plot_data)
-  analyse(init, infected, death_rate, upper_recovery_rate, plot_data)
+  analyse(init, infected, death_rate, recovery_rate, deaths, plot_data)
+  analyse(init, infected, death_rate, upper_recovery_rate, deaths, plot_data)
 
   data <- readr::read_csv("india_data.csv")
   infected <- data$confirmed
+  last_record <- tail(data, 1)
+  deaths <- last_record$deaths
+
   init <- c(S = N_INDIA - infected[1], I = infected[1], R = 0)
 
   plot_data <- list(label = "\nSIR model 2019-nCoV India")
-  analyse(init, infected, death_rate, recovery_rate, plot_data)
-  analyse(init, infected, death_rate, upper_recovery_rate, plot_data)
-  last_record <- tail(data, 1)
+  analyse(init, infected, death_rate, recovery_rate, deaths, plot_data)
+  analyse(init, infected, death_rate, upper_recovery_rate, deaths, plot_data)
   recovery_rate <- last_record$recovered / last_record$confirmed
   death_rate <- last_record$deaths / last_record$confirmed
   upper_recovery_rate <- 1 - death_rate
@@ -61,12 +64,12 @@ main <- function(argv) {
   print("Analysing with India specific rates")
   print(paste("India Death rate: ", death_rate))
   print(paste("India Recovery rate: ", recovery_rate))
-  analyse(init, infected, death_rate, recovery_rate, plot_data)
-  analyse(init, infected, death_rate, upper_recovery_rate, plot_data)
+  analyse(init, infected, death_rate, recovery_rate, deaths, plot_data)
+  analyse(init, infected, death_rate, upper_recovery_rate, deaths, plot_data)
   return(0)
 }
 
-analyse <- function(init, infected, death_rate, recovery_rate, plot_data) {
+analyse <- function(init, infected, death_rate, recovery_rate, deaths, plot_data) {
 
   # optimize with some sensible conditions
   opt <- optim(c(0.5, recovery_rate),
@@ -134,7 +137,7 @@ analyse <- function(init, infected, death_rate, recovery_rate, plot_data) {
 
   print(paste0(
     "Maximum deaths: ",
-    round(max(fit$I) * death_rate)
+    max(round(max(fit$I) * death_rate), deaths)
   ))
 }
 
