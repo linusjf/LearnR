@@ -1,8 +1,22 @@
 #!/usr/bin/env Rscript
 library(deSolve)
 library(readr)
-library(Globals)
 
+parms <-
+  list(gamma = 1 / 7,
+       gamma_lcl = 1 / 30,
+       gamma_ucl = 1 / 2,
+       beta = 1,
+       beta_ucl = 1,
+       beta_lcl = 0.8
+  )
+
+# world population 7.7 billion
+# india population 1.37 billion
+population <- list(
+  World = 7700000000,
+  India = 1370000000
+)
 
 sir <- function(time, state, parameters) {
   par <- as.list(c(state, parameters))
@@ -54,7 +68,8 @@ main <- function(argv) {
   last_record <- tail(data, 1)
   deaths <- last_record$deaths
 
-  init <- c(S = population$India - infected[1], I = infected[1], R = recovered[1])
+  init <- c(S = population$India - infected[1], I = infected[1], R =
+            recovered[1])
 
   plot_data <- list(label = "\nSIR model 2019-nCoV India")
   analyse(
@@ -74,14 +89,16 @@ analyse <- function(init,
                     plot_data) {
 
   # optimize with some sensible conditions
-  opt <- optim(c(1, 1 / 7),
+  with(parms, {
+         opt <<- optim(c(beta, gamma),
     rss,
     method = "L-BFGS-B",
-    lower = c(0.8, 1 / 14), upper =
-      c(1, 1 / 2),
+    lower = c(beta_lcl, gamma_lcl),
+    upper =
+      c(beta_ucl, gamma_ucl),
     infected = infected, init = init,
     popn = popn
-  )
+  )})
   print(opt$message)
 
   opt_par <- setNames(opt$par, c("beta", "gamma"))
@@ -161,12 +178,6 @@ analyse <- function(init,
   ))
 }
 
-# world population 7.7 billion
-# india population 1.37 billion
-population <- list(
-  World = 7700000000,
-  India = 1370000000
-)
 
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
