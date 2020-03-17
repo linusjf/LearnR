@@ -3,12 +3,13 @@ library(deSolve)
 library(readr)
 
 parms <-
-  list(gamma = 1 / 14,
-       gamma_lcl = 1 / 30,
-       gamma_ucl = 1 / 14,
-       beta = 1,
-       beta_ucl = 1,
-       beta_lcl = 0.8
+  list(
+    gamma = 1 / 14,
+    gamma_lcl = 1 / 30,
+    gamma_ucl = 1 / 14,
+    beta = 1,
+    beta_ucl = 1,
+    beta_lcl = 0.8
   )
 
 # world population 7.7 billion
@@ -53,8 +54,10 @@ main <- function(argv) {
 
   print(paste("World Death rate: ", death_rate))
 
-  init <- c(S = population$World - infected[1], I = infected[1], R =
-            recovered[1])
+  init <- c(
+    S = population$World - infected[1], I = infected[1], R =
+      recovered[1]
+  )
 
   plot_data <- list(label = "\nSIR model 2019-nCoV World")
   analyse(
@@ -68,8 +71,10 @@ main <- function(argv) {
   last_record <- tail(data, 1)
   deaths <- last_record$deaths
 
-  init <- c(S = population$India - infected[1], I = infected[1], R =
-            recovered[1])
+  init <- c(
+    S = population$India - infected[1], I = infected[1], R =
+      recovered[1]
+  )
 
   plot_data <- list(label = "\nSIR model 2019-nCoV India")
   analyse(
@@ -87,19 +92,19 @@ analyse <- function(init,
                     deaths,
                     popn,
                     plot_data) {
-
   opt <- NULL
   # optimize with some sensible conditions
   with(parms, {
-         opt <<- optim(c(beta, gamma),
-    rss,
-    method = "L-BFGS-B",
-    lower = c(beta_lcl, gamma_lcl),
-    upper =
-      c(beta_ucl, gamma_ucl),
-    infected = infected, init = init,
-    popn = popn
-  )})
+    opt <<- optim(c(beta, gamma),
+      rss,
+      method = "L-BFGS-B",
+      lower = c(beta_lcl, gamma_lcl),
+      upper =
+        c(beta_ucl, gamma_ucl),
+      infected = infected, init = init,
+      popn = popn
+    )
+  })
   print(opt$message)
 
   opt_par <- setNames(opt$par, c("beta", "gamma"))
@@ -147,24 +152,28 @@ analyse <- function(init,
 
   points(seq(length(infected)), infected)
   legend("bottomright",
-         c("Susceptibles",
-           "Infecteds",
-           "Recovereds"),
+    c(
+      "Susceptibles",
+      "Infecteds",
+      "Recovereds"
+    ),
     lty = 1,
     lwd = 2, col = col, inset = 0.05
   )
   title(paste(
     "Recovery rate: ",
-   opt_par[["gamma"]], plot_data$label
+    opt_par[["gamma"]], plot_data$label
   ),
   outer = TRUE, line = -2
   )
 
   r0 <- setNames(opt_par["beta"] / opt_par["gamma"], "R0")
   print(r0)
-  names(opt_par) <- c("Force of infection (beta)",
-  "Rate of recovery (gamma)",
-  "Total population")
+  names(opt_par) <- c(
+    "Force of infection (beta)",
+    "Rate of recovery (gamma)",
+    "Total population"
+  )
   print(opt_par)
 
   fit[fit$I == max(fit$I), "I", drop = FALSE]
