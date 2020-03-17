@@ -31,24 +31,17 @@ main <- function(argv) {
   infected <- data$confirmed
 
   last_record <- tail(data, 1)
-  recovery_rate <- last_record$recovered / last_record$confirmed
   death_rate <- last_record$deaths / last_record$confirmed
-  upper_recovery_rate <- 1 - death_rate
   deaths <- last_record$deaths
 
   print(paste("World Death rate: ", death_rate))
-  print(paste("World Recovery rate: ", recovery_rate))
 
   init <- c(S = population$World - infected[1], I = infected[1], R = 0)
 
   plot_data <- list(label = "\nSIR model 2019-nCoV World")
   analyse(
-    init, infected, death_rate, recovery_rate, deaths, population$World,
+    init, infected, death_rate, deaths, population$World,
     plot_data
-  )
-  analyse(
-    init, infected, death_rate, upper_recovery_rate, deaths,
-    population$World, plot_data
   )
 
   data <- readr::read_csv("india_data.csv")
@@ -60,45 +53,27 @@ main <- function(argv) {
 
   plot_data <- list(label = "\nSIR model 2019-nCoV India")
   analyse(
-    init, infected, death_rate, recovery_rate, deaths, population$India,
+    init, infected, death_rate, deaths, population$India,
     plot_data
   )
-  analyse(
-    init, infected, death_rate, upper_recovery_rate, deaths,
-    population$India, plot_data
-  )
-  recovery_rate <- last_record$recovered / last_record$confirmed
   death_rate <- last_record$deaths / last_record$confirmed
-  upper_recovery_rate <- 1 - death_rate
 
-  print("Analysing with India specific rates")
-  print(paste("India Death rate: ", death_rate))
-  print(paste("India Recovery rate: ", recovery_rate))
-  analyse(
-    init, infected, death_rate, recovery_rate, deaths, population$India,
-    plot_data
-  )
- analyse(
-    init, infected, death_rate, upper_recovery_rate,
-    deaths, population$India, plot_data
-  )
   return(0)
 }
 
 analyse <- function(init,
                     infected,
                     death_rate,
-                    recovery_rate,
                     deaths,
                     popn,
                     plot_data) {
 
   # optimize with some sensible conditions
-  opt <- optim(c(0.5, recovery_rate),
+  opt <- optim(c(1, 1 / 14),
     rss,
     method = "L-BFGS-B",
-    lower = c(0, recovery_rate - 0.005), upper =
-      c(1, recovery_rate + 0.005),
+    lower = c(0, 1 / 14), upper =
+      c(1, 1 / 5),
     infected = infected, init = init,
     popn = popn
   )
@@ -126,35 +101,45 @@ analyse <- function(init,
   )
   title(paste(
     "Recovery rate: ",
-    recovery_rate, plot_data$label
+    opt_par[["gamma"]], plot_data$label
   ),
   outer = TRUE, line = -2
   )
   legend("bottomright", c("Susceptibles", "Infecteds", "Recovereds"),
     lty = 1,
-    lwd = 2, col = col, inset = 0.05
+    lwd = 2,
+    col = col,
+    inset = 0.05
   )
 
   suppressWarnings(matplot(fit$time, fit[, 2:4],
     type = "l", xlab = "Day", ylab
     = "Number of
-          subjects", lwd = 2, lty = 1, col = col, log = "y"
+          subjects",
+    lwd = 2,
+    lty = 1,
+    col = col,
+    log = "y"
   ))
 
   points(seq(length(infected)), infected)
-  legend("bottomright", c("Susceptibles", "Infecteds", "Recovereds"),
+  legend("bottomright",
+         c("Susceptibles",
+           "Infecteds",
+           "Recovereds"),
     lty = 1,
     lwd = 2, col = col, inset = 0.05
   )
   title(paste(
     "Recovery rate: ",
-    recovery_rate, plot_data$label
+   opt_par[["gamma"]], plot_data$label
   ),
   outer = TRUE, line = -2
   )
 
   r0 <- setNames(opt_par["beta"] / opt_par["gamma"], "R0")
   print(r0)
+  print(opt_par)
 
   fit[fit$I == max(fit$I), "I", drop = FALSE]
   # height of pandemic
