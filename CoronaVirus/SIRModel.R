@@ -29,6 +29,7 @@ rss <- function(parameters, infected = NULL, init = NULL, popn = NULL) {
 main <- function(argv) {
   data <- readr::read_csv("world_data.csv")
   infected <- data$confirmed
+  recovered <- data$recovered
 
   last_record <- tail(data, 1)
   death_rate <- last_record$deaths / last_record$confirmed
@@ -36,7 +37,7 @@ main <- function(argv) {
 
   print(paste("World Death rate: ", death_rate))
 
-  init <- c(S = population$World - infected[1], I = infected[1], R = 0)
+  init <- c(S = population$World - infected[1], I = infected[1], R = recovered[1])
 
   plot_data <- list(label = "\nSIR model 2019-nCoV World")
   analyse(
@@ -46,10 +47,11 @@ main <- function(argv) {
 
   data <- readr::read_csv("india_data.csv")
   infected <- data$confirmed
+  recovered <- data$recovered
   last_record <- tail(data, 1)
   deaths <- last_record$deaths
 
-  init <- c(S = population$India - infected[1], I = infected[1], R = 0)
+  init <- c(S = population$India - infected[1], I = infected[1], R = recovered[1])
 
   plot_data <- list(label = "\nSIR model 2019-nCoV India")
   analyse(
@@ -146,7 +148,10 @@ analyse <- function(init,
 
   fit[fit$I == max(fit$I), "I", drop = FALSE]
   # height of pandemic
-
+  print(paste0(
+    "Maximum infected: ",
+    max(round(fit$I))
+  ))
   print(paste0(
     "Maximum deaths: ",
     max(round(max(fit$I) * death_rate), deaths)

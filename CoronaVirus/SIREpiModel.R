@@ -16,36 +16,10 @@ library(readr)
   # This can be reduced by self-isolation and
   # sanitary habits. Using 0.8 as value.
   # activity rate * prob of infection = beta
-
-sir <- function(time, state, parameters) {
-  par <- as.list(c(state, parameters))
-  ds <- -par$beta / par$N * par$I * par$S
-  di <- par$beta / par$N * par$I * par$S - par$gamma * par$I
-  dr <- par$gamma * par$I
-  list(c(ds, di, dr), N = par$N)
-}
-
-rss <- function(parameters, infected = NULL, init = NULL, popn = NULL) {
-  names(parameters) <- c("beta", "gamma")
-  parameters[["N"]] <- popn
-  out <-
-    deSolve::ode(
-      y = init,
-      times = seq(length(infected)),
-      func = sir,
-      parms = parameters
-    )
-  fit <- out[, 3]
-  sum((infected - fit)^2)
-}
+  # you could run stochastic version of the model as well
+  # on a machine with enough memory
 
 main <- function(argv) {
-
-
-  data <- readr::read_csv("world_data.csv")
-  infected <- data$confirmed
-  init <- c(S = population$World - infected[1], I = infected[1], R = 0)
-  
   deterministic()
   return(0)
 }
@@ -67,13 +41,13 @@ param <- param.dcm(
   init <- init.dcm(
     s.num = 7700000000,
     i.num = 555, # from John Hopkins on 22/1/20
-    r.num = 28
+    r.num = 0
   )
 
   control <- control.dcm(
     type = "SIR",
     nsteps = 365,
-    dt = 0.5
+    dt = 1
   )
   mod <- EpiModel::dcm(param, init, control)
   print(mod)
@@ -98,6 +72,7 @@ param <- param.dcm(
   summary(mod, at = 180)
   summary(mod, at = 270)
   summary(mod, at = 360)
+
 }
 
 # world population 7.7 billion
