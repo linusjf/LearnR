@@ -1,6 +1,8 @@
 #!/usr/bin/env Rscript
 library(deSolve)
 library(readr)
+library(Globals)
+
 
 sir <- function(time, state, parameters) {
   par <- as.list(c(state, parameters))
@@ -37,7 +39,8 @@ main <- function(argv) {
 
   print(paste("World Death rate: ", death_rate))
 
-  init <- c(S = population$World - infected[1], I = infected[1], R = recovered[1])
+  init <- c(S = population$World - infected[1], I = infected[1], R =
+            recovered[1])
 
   plot_data <- list(label = "\nSIR model 2019-nCoV World")
   analyse(
