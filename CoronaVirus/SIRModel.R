@@ -39,7 +39,7 @@ rss <- function(parameters, infected = NULL, init = NULL, popn = NULL) {
       func = sir,
       parms = parameters
     )
-  fit <- out[, 3]
+  fit <- out[, "I"]
   sum((infected - fit)^2)
 }
 
@@ -55,8 +55,12 @@ main <- function(argv) {
   print(paste("World Death rate: ", death_rate))
 
   init <- c(
-    S = population$World - infected[1], I = infected[1], R =
-      recovered[1]
+            c(S = population$World - infected[1],
+              I = infected[1],
+              R = recovered[1]),
+            c(S = population$World - last_record$confirmed,
+              I = last_record$confirmed,
+              R = last_record$recovered)
   )
 
   plot_data <- list(label = "\nSIR model 2019-nCoV World")
@@ -71,10 +75,12 @@ main <- function(argv) {
   last_record <- tail(data, 1)
   deaths <- last_record$deaths
 
-  init <- c(
+  init <- c(c(
     S = population$India - infected[1], I = infected[1], R =
-      recovered[1]
-  )
+      recovered[1]), c(
+    S = population$India - last_record$confirmed, I = last_record$confirmed,
+    R =
+      last_record$recovered))
 
   plot_data <- list(label = "\nSIR model 2019-nCoV India")
   analyse(
@@ -101,7 +107,8 @@ analyse <- function(init,
       lower = c(beta_lcl, gamma_lcl),
       upper =
         c(beta_ucl, gamma_ucl),
-      infected = infected, init = init,
+      control = list(maxit = length(infected) * 100),
+      infected = infected, init = init[1:3],
       popn = popn
     )
   })
@@ -114,7 +121,7 @@ analyse <- function(init,
   t <- 1:365
   fit <- data.frame(
     deSolve::ode(
-      y = init, times = t,
+      y = init[4:6], times = t,
       func = sir, parms =
         opt_par
     )
