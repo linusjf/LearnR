@@ -3,9 +3,9 @@ library(deSolve)
 library(readr)
 
 parms <-
-  list(gamma = 1 / 7,
+  list(gamma = 1 / 14,
        gamma_lcl = 1 / 30,
-       gamma_ucl = 1 / 2,
+       gamma_ucl = 1 / 14,
        beta = 1,
        beta_ucl = 1,
        beta_lcl = 0.8
@@ -88,6 +88,7 @@ analyse <- function(init,
                     popn,
                     plot_data) {
 
+  opt <- NULL
   # optimize with some sensible conditions
   with(parms, {
          opt <<- optim(c(beta, gamma),
