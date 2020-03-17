@@ -4,12 +4,6 @@ library(deSolve)
 library(readr)
 
   # infection rate since Corona Virus is unknown set to 1
-  # act.rate left at 1 since it cannot be easily gauged.
-  # literature suggests that it can be as high as 2 contacts per minute
-  # in a crowded space. is this also the inverse
-  # here time is in days
-  # is activity rate as rcovery late the inverse of average nunber of contacts?
-  # i don't know
   # average recovery time for Corona Virus is 7 days
   # epimodel suggests that it is the inverse of average recovery time
   # world population birth and death rates are picked from Wikipedia
@@ -17,6 +11,11 @@ library(readr)
   # using R0 of 2.5 and infection durayion of 14 days,
   # a rough estimate of contact or activity rate per
   # per person per day can be estimated
+  # since no person has immunity to Corona Virus,
+  # the probability of infection will be close to 1
+  # This can be reduced by self-isolation and
+  # sanitary habits. Using 0.8 as value.
+  # activity rate * prob of infection = beta
 
 sir <- function(time, state, parameters) {
   par <- as.list(c(state, parameters))
@@ -53,15 +52,18 @@ main <- function(argv) {
 
 deterministic <- function() {
 param <- param.dcm(
-    inf.prob = 0.5,
-    act.rate = 2.5 / 14,
-    rec.rate = 1 / 7,
+    inf.prob = 0.8,
+    act.rate = 3.5 / 14,
+    rec.rate = 1 / 14,
     a.rate = 4.67532468e-5,
     ds.rate = 1.94805195e-5,
     di.rate = 1.94805195e-5 * 1.035,
     dr.rate = 1.94805195e-5
   )
 
+  r0 <- 0.8 * (3.5 / 14) / (1 / 14)
+  names(r0) <- "R0"
+  print(r0)
   init <- init.dcm(
     s.num = 7700000000,
     i.num = 555, # from John Hopkins on 22/1/20
@@ -90,12 +92,12 @@ param <- param.dcm(
   EpiModel::comp_plot(mod, at = 90, digits = 1)
   EpiModel::comp_plot(mod, at = 180, digits = 1)
   EpiModel::comp_plot(mod, at = 270, digits = 1)
-  EpiModel::comp_plot(mod, at = 365, digits = 1)
+  EpiModel::comp_plot(mod, at = 360, digits = 1)
 
   summary(mod, at = 90)
   summary(mod, at = 180)
   summary(mod, at = 270)
-  summary(mod, at = 365)
+  summary(mod, at = 360)
 }
 
 # world population 7.7 billion
