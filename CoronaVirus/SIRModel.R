@@ -69,11 +69,11 @@ analyse <- function(init,
                     plot_data) {
 
   # optimize with some sensible conditions
-  opt <- optim(c(1, 1 / 14),
+  opt <- optim(c(1, 1 / 7),
     rss,
     method = "L-BFGS-B",
-    lower = c(0, 1 / 14), upper =
-      c(1, 1 / 5),
+    lower = c(0.8, 1 / 14), upper =
+      c(1, 1 / 2),
     infected = infected, init = init,
     popn = popn
   )
@@ -139,6 +139,9 @@ analyse <- function(init,
 
   r0 <- setNames(opt_par["beta"] / opt_par["gamma"], "R0")
   print(r0)
+  names(opt_par) <- c("Force of infection (beta)",
+  "Rate of recovery (gamma)",
+  "Total population")
   print(opt_par)
 
   fit[fit$I == max(fit$I), "I", drop = FALSE]
