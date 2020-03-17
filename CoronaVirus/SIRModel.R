@@ -5,11 +5,14 @@ library(readr)
 parms <-
   list(
     gamma = 1 / 14,
-    gamma_lcl = 1 / 30,
-    gamma_ucl = 1 / 14,
-    beta = 1,
-    beta_ucl = 1,
-    beta_lcl = 0.8
+    gamma_lcl = 1 / 15,
+    gamma_ucl = 1 / 13,
+    inf = 1,
+    inf_ucl = 1,
+    inf_lcl = 0.8,
+    act = 5 / 14,
+    act_ucl = 9 / 14,
+    act_lcl = 2 / 14
   )
 
 # world population 7.7 billion
@@ -22,7 +25,7 @@ population <- list(
 sir <- function(time, state, parameters) {
   par <- as.list(c(state, parameters))
   # lambda - F force of infection
-  lambda <- par$beta / par$N * par$I
+  lambda <- par$inf * par$act / par$N * par$I
   ds <- -lambda * par$S
   di <- lambda * par$S - par$gamma * par$I
   dr <- par$gamma * par$I
@@ -30,7 +33,7 @@ sir <- function(time, state, parameters) {
 }
 
 rss <- function(parameters, infected = NULL, init = NULL, popn = NULL) {
-  names(parameters) <- c("beta", "gamma")
+  names(parameters) <- c("inf", "act", "gamma")
   parameters[["N"]] <- popn
   out <-
     deSolve::ode(
@@ -101,12 +104,12 @@ analyse <- function(init,
   opt <- NULL
   # optimize with some sensible conditions
   with(parms, {
-    opt <<- optim(c(beta, gamma),
+    opt <<- optim(c(inf, act, gamma),
       rss,
       method = "L-BFGS-B",
-      lower = c(beta_lcl, gamma_lcl),
+      lower = c(inf_lcl, act_lcl, gamma_lcl),
       upper =
-        c(beta_ucl, gamma_ucl),
+        c(inf_ucl, act_ucl, gamma_ucl),
       control = list(maxit = length(infected) * 100),
       infected = infected, init = init[1:3],
       popn = popn
@@ -114,7 +117,7 @@ analyse <- function(init,
   })
   print(opt$message)
 
-  opt_par <- setNames(opt$par, c("beta", "gamma"))
+  opt_par <- setNames(opt$par, c("inf", "act", "gamma"))
   opt_par[["N"]] <- popn
 
   # time in days
@@ -174,10 +177,12 @@ analyse <- function(init,
   outer = TRUE, line = -2
   )
 
-  r0 <- setNames(opt_par["beta"] / opt_par["gamma"], "R0")
+  r0 <- setNames(opt_par["inf"] * opt_par["act"] / opt_par["gamma"],
+                 "R0")
   print(r0)
   names(opt_par) <- c(
-    "Force of infection (beta)",
+    "prob of infection (inf)",
+    "activity rate (act)",
     "Rate of recovery (gamma)",
     "Total population"
   )
