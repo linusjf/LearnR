@@ -89,9 +89,6 @@ install_coronavirus <- function() {
   if (!require(EpiModel)) {
     install.packages("EpiModel", .libPaths()[1])
   }
-  if (!require(Globals)) {
-    install.packages("Globals", .libPaths()[1])
-  }
 }
 # nolint end
 
