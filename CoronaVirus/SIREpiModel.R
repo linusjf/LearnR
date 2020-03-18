@@ -20,7 +20,7 @@ library(readr)
 # activity rate * prob of infection = beta
 # you could run stochastic version of the model as well
 # on a machine with enough memory
-# The activity rate can be estimated by using R0/average 
+# The activity rate can be estimated by using R0/average
 # duration of disease
 
 
@@ -32,12 +32,13 @@ main <- function(argv) {
 deterministic <- function() {
   param <- param.dcm(
     inf.prob = 0.8,
-    act.rate = 3.5 / 14,
+    act.rate = 5 / 14,
     rec.rate = 1 / 14,
     a.rate = 4.67532468e-5,
     ds.rate = 1.94805195e-5,
     di.rate = 1.94805195e-5 * 1.035,
-    dr.rate = 1.94805195e-5
+    dr.rate = 1.94805195e-5,
+    dt.rate = 0.035
   )
 
   r0 <- NULL
@@ -61,7 +62,7 @@ deterministic <- function() {
     dt = 1
   )
   mod <- EpiModel::dcm(param, init, control)
-  print(mod)
+  print(str(mod))
 
   par(mar = c(3.2, 3, 2, 1), mgp = c(2, 1, 0), mfrow = c(1, 2))
   plot(mod,
@@ -83,6 +84,9 @@ deterministic <- function() {
   summary(mod, at = 180)
   summary(mod, at = 270)
   summary(mod, at = 360)
+
+  print("Max deaths: ")
+  print(max(mod$epi$i.num$run1 * param$dt.rate))
 }
 
 if (identical(environment(), globalenv())) {

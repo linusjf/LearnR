@@ -57,14 +57,9 @@ main <- function(argv) {
 
   print(paste("World Death rate: ", death_rate))
 
-  init <- c(
-            c(S = population$World - infected[1],
+  init <- c(S = population$World - infected[1],
               I = infected[1],
-              R = recovered[1]),
-            c(S = population$World - last_record$confirmed,
-              I = last_record$confirmed,
-              R = last_record$recovered)
-  )
+              R = recovered[1])
 
   plot_data <- list(label = "\nSIR model 2019-nCoV World")
   analyse(
@@ -78,19 +73,15 @@ main <- function(argv) {
   last_record <- tail(data, 1)
   deaths <- last_record$deaths
 
-  init <- c(c(
+  init <- c(
     S = population$India - infected[1], I = infected[1], R =
-      recovered[1]), c(
-    S = population$India - last_record$confirmed, I = last_record$confirmed,
-    R =
-      last_record$recovered))
+      recovered[1])
 
   plot_data <- list(label = "\nSIR model 2019-nCoV India")
   analyse(
     init, infected, death_rate, deaths, population$India,
     plot_data
   )
-  death_rate <- last_record$deaths / last_record$confirmed
 
   return(0)
 }
@@ -124,7 +115,7 @@ analyse <- function(init,
   t <- 1:365
   fit <- data.frame(
     deSolve::ode(
-      y = init[4:6], times = t,
+      y = init[1:3], times = t,
       func = sir, parms =
         opt_par
     )
