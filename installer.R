@@ -114,6 +114,9 @@ install_stats462 <- function() {
   if (!require(basicTrendline)) {
     install.packages("basicTrendline", .libPaths()[1])
   }
+  if (!require(DescTools)) {
+    install.packages("DescTools", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {
