@@ -18,6 +18,23 @@ process_infection_risk <- function(data) {
   print(reg)
   print(summary(reg))
   print(confint(reg))
+  newdata <- data.frame(Stay = c(10))
+  print("New Data:")
+  print(newdata)
+  print("Confidence Interval")
+  ci <- predict(
+                reg,
+                se.fit = TRUE,
+                newdata,
+                interval = "confidence")
+  print(ci)
+  print("Prediction Interval")
+  predi <- predict(
+                reg,
+                se.fit = TRUE,
+                newdata,
+                interval = "prediction")
+  print(predi)
   ci <- predict(
                 reg,
                 interval = "confidence")
