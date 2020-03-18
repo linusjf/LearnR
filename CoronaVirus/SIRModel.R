@@ -58,9 +58,11 @@ main <- function(argv) {
 
   print(paste("World Death rate: ", death_rate))
 
-  init <- c(S = population$World - infected[1],
-              I = infected[1],
-              R = recovered[1])
+  init <- c(
+    S = population$World - infected[1],
+    I = infected[1],
+    R = recovered[1]
+  )
 
   plot_data <- list(label = "SIR model 2019-nCoV World")
   analyse(
@@ -77,7 +79,8 @@ main <- function(argv) {
 
   init <- c(
     S = population$India - infected[1], I = infected[1], R =
-      recovered[1])
+      recovered[1]
+  )
 
   plot_data <- list(label = "SIR model 2019-nCoV India")
   analyse(
@@ -132,13 +135,16 @@ analyse <- function(init,
           subjects", lwd = 2, lty = 1,
     col = col, xaxt = "n"
   )
-  axis(1, at = fit$time[fit$time %% 100 == 0],
-       labels = seq(from = start_date,
-                    length.out = 365,
-                    by = "day")[c(100, 200, 300)])
-  title(plot_data$label
-  ,
-  outer = TRUE, line = -2
+  axis(1,
+    at = fit$time[fit$time %% 100 == 0],
+    labels = seq(
+      from = start_date,
+      length.out = 365,
+      by = "day"
+    )[c(100, 200, 300)]
+  )
+  title(plot_data$label,
+    outer = TRUE, line = -2
   )
   legend("bottomright", c("Susceptibles", "Infecteds", "Recovereds"),
     lty = 1,
@@ -156,10 +162,14 @@ analyse <- function(init,
     col = col,
     log = "y", xaxt = "n"
   ))
-  axis(1, at = fit$time[fit$time %% 100 == 0],
-       labels = seq(from = start_date,
-                    length.out = 365,
-                    by = "day")[c(100, 200, 300)])
+  axis(1,
+    at = fit$time[fit$time %% 100 == 0],
+    labels = seq(
+      from = start_date,
+      length.out = 365,
+      by = "day"
+    )[c(100, 200, 300)]
+  )
 
   points(seq(length(infected)), infected)
   legend("bottomright",
@@ -171,13 +181,14 @@ analyse <- function(init,
     lty = 1,
     lwd = 2, col = col, inset = 0.05
   )
-  title(plot_data$label
-  ,
-  outer = TRUE, line = -2
+  title(plot_data$label,
+    outer = TRUE, line = -2
   )
 
-  r0 <- setNames(opt_par["inf"] * opt_par["act"] / opt_par["gamma"],
-                 "R0")
+  r0 <- setNames(
+    opt_par["inf"] * opt_par["act"] / opt_par["gamma"],
+    "R0"
+  )
   print(r0)
   names(opt_par) <- c(
     "prob of infection (inf)",

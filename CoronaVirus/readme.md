@@ -2,7 +2,10 @@
 
 [Corona Virus: Data analysis](https://rdatamining.wordpress.com/2020/03/10/coronavirus-data-analysis-with-r-tidyverse-and-ggplot2/)
 
+[Cumulative fatality rate](http://freerangestats.info/blog/2020/03/17/covid19-cfr)
+
 I've collated a few R scripts that analyse the CoronaVirus outbreak using data from the [John Hopkins University repository on GitHub.](https://github.com/CSSEGISandData/COVID-19)
+
 
 The relevant scripts are worldanalysis.R, plotgrowth.R and the SIRModels. 
 

@@ -89,6 +89,15 @@ install_coronavirus <- function() {
   if (!require(EpiModel)) {
     install.packages("EpiModel", .libPaths()[1])
   }
+  if (!require(scales)) {
+    install.packages("scales", .libPaths()[1])
+  }
+  if (!require(tidyr)) {
+    install.packages("tidyr", .libPaths()[1])
+  }
+  if (!require(devtools)) {
+    install.packages("devtools", .libPaths()[1])
+  }
 }
 # nolint end
 

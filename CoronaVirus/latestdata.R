@@ -1,4 +1,7 @@
 #!/usr/bin/env Rscript
+#--------------- Setup--------------------
+devtools::install_github("GuangchuangYu/nCov2019",
+                         destdir = .libPaths()[1])
 library(nCov2019)
 
 main <- function(argv) {
@@ -7,7 +10,6 @@ main <- function(argv) {
   cat("Global data:\n")
   print(head(x["global", ], 30))
   print(summary(x))
-
   return(0)
 }
 

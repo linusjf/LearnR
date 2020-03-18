@@ -200,11 +200,11 @@ main <- function(argv) {
   data %<>%
     mutate(remaining.confirmed = confirmed - deaths - recovered)
   write.csv(data, "summarised.csv", row.names = FALSE)
-latest_data <- data %>%
-group_by(country) %>%
-slice(c(n())) %>%
-ungroup() %>%
-filter(confirmed != 0)
+  latest_data <- data %>%
+    group_by(country) %>%
+    slice(c(n())) %>%
+    ungroup() %>%
+    filter(confirmed != 0)
   write.csv(latest_data, "latest.csv", row.names = FALSE)
   data %<>%
     add_rates()
@@ -589,7 +589,7 @@ print_sample_data <- function(data, name) {
 }
 
 latest_to_pdf <- function(data, filename) {
-  date <- head(data,1)$date 
+  date <- head(data, 1)$date
   data %<>% select(c(
     country, confirmed, deaths, recovered, remaining.confirmed
   ))
@@ -598,8 +598,10 @@ latest_to_pdf <- function(data, filename) {
     kable("latex",
       booktabs = TRUE,
       longtable = TRUE,
-      caption = paste("Latest World Report",
-                      date),
+      caption = paste(
+        "Latest World Report",
+        date
+      ),
       format.args = list(big.mark = ",")
     ) %>%
     kable_styling(
