@@ -1,10 +1,5 @@
 #!/usr/bin/env Rscript
 
-#--------------- Setup--------------------
-devtools::install_github(
-                         "RamiKrispin/coronavirus",
-                         destdir = .libPaths()[1]
-)
 library(coronavirus)
 ## get the COVID-19 data
 data(coronavirus)
