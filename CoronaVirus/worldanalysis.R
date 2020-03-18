@@ -7,6 +7,7 @@ suppressMessages(library(gridExtra))
 suppressMessages(library(kableExtra))
 suppressMessages(library(RCurl))
 suppressMessages(library(rjson))
+suppressMessages(library("dplyr"))
 
 
 download_csv <- function(filename) {
@@ -199,6 +200,12 @@ main <- function(argv) {
   data %<>%
     mutate(remaining.confirmed = confirmed - deaths - recovered)
   write.csv(data, "summarised.csv", row.names = FALSE)
+latest_data <- data %>%
+group_by(country) %>%
+slice(c(n())) %>%
+ungroup() %>%
+filter(confirmed != 0)
+  write.csv(latest_data, "latest.csv", row.names = FALSE)
   data %<>%
     add_rates()
   write.csv(data, "rates.csv", row.names = FALSE)
