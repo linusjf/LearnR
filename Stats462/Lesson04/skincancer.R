@@ -30,7 +30,6 @@ main <- function(argv) {
   ci <- predict(
                 reg,
                 interval = "confidence")
-  print("Prediction Interval")
   predi <- predict(
                 reg,
                 interval = "prediction")

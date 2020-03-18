@@ -18,7 +18,13 @@ process_infection_risk <- function(data) {
   print(reg)
   print(summary(reg))
   print(confint(reg))
-  plot_infection_risk(data, reg)
+  ci <- predict(
+                reg,
+                interval = "confidence")
+  predi <- predict(
+                reg,
+                interval = "prediction")
+  plot_infection_risk(data, reg, ci, predi)
   plot_fitted(reg)
   plot_predictor(data, reg)
   plot_stdresid(reg)
@@ -84,7 +90,7 @@ plot_predictor <- function(data, reg) {
   abline(h = mean(residuals), col = "black", lty = "dashed")
 }
 
-plot_infection_risk <- function(data, reg) {
+plot_infection_risk <- function(data, reg, ci, predi) {
   par(mar = c(4, 4, 5, 1))
   coefs <- reg$coefficients
   main_label <- paste(
@@ -103,6 +109,20 @@ plot_infection_risk <- function(data, reg) {
     pch = 19, frame = TRUE
   )
   abline(reg, col = "blue")
+matlines(data$Stay, ci[, c("lwr", "upr")],
+         col = "red", lty = 1, type = "l")
+matlines(data$Stay, predi[, c("lwr", "upr")],
+         col = "blue", lty = 1, type = "l")
+polygon(c(data$Stay, rev(data$Stay)),
+        c(predi[, "upr"],
+          rev(predi[, "lwr"])),
+        col = adjustcolor("orangered",
+                          alpha.f = 0.7), border = NA)
+polygon(c(data$Stay, rev(data$Stay)),
+        c(ci[, "upr"],
+          rev(ci[, "lwr"])),
+        col = adjustcolor("wheat",
+                          alpha.f = 0.7), border = NA)
   summ <- summary(reg)
   legends <- c(
     paste0("S - ", format(summ$sigma, digits = 4)),
