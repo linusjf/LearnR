@@ -229,6 +229,7 @@ filter(confirmed != 0)
   print(plots[["top10"]], newpage = FALSE)
   plots[["top10"]] <- NULL
   invisible(lapply(plots, print_chart))
+  latest_to_pdf(latest_data, "latestreport.pdf")
   output_to_pdf(data_world, "worldreport.pdf")
   output_to_pdf(data_india, "indiareport.pdf")
   write.csv(data_world, "world_data.csv", row.names = FALSE)
@@ -583,6 +584,35 @@ print_sample_data <- function(data, name) {
         name,
         ".pdf"
       ),
+      keep_tex = TRUE
+    )
+}
+
+latest_to_pdf <- function(data, filename) {
+  date <- head(data,1)$date 
+  data %<>% select(c(
+    country, confirmed, deaths, recovered, remaining.confirmed
+  ))
+  ## output as a table
+  data %>%
+    kable("latex",
+      booktabs = TRUE,
+      longtable = TRUE,
+      caption = paste("Latest World Report",
+                      date),
+      format.args = list(big.mark = ",")
+    ) %>%
+    kable_styling(
+      font_size = 5,
+      full_width = TRUE,
+      latex_options =
+        c(
+          "striped",
+          "hold_position",
+          "repeat_header"
+        )
+    ) %>%
+    save_kable(filename,
       keep_tex = TRUE
     )
 }
