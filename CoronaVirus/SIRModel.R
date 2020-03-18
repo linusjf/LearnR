@@ -49,6 +49,7 @@ rss <- function(parameters, infected = NULL, init = NULL, popn = NULL) {
 main <- function(argv) {
   data <- readr::read_csv("world_data.csv")
   infected <- data$confirmed
+  dates <- data$date
   recovered <- data$recovered
 
   last_record <- tail(data, 1)
@@ -61,14 +62,15 @@ main <- function(argv) {
               I = infected[1],
               R = recovered[1])
 
-  plot_data <- list(label = "\nSIR model 2019-nCoV World")
+  plot_data <- list(label = "SIR model 2019-nCoV World")
   analyse(
-    init, infected, death_rate, deaths, population$World,
+    init, infected, dates, death_rate, deaths, population$World,
     plot_data
   )
 
   data <- readr::read_csv("india_data.csv")
   infected <- data$confirmed
+  dates <- data$date
   recovered <- data$recovered
   last_record <- tail(data, 1)
   deaths <- last_record$deaths
@@ -77,9 +79,9 @@ main <- function(argv) {
     S = population$India - infected[1], I = infected[1], R =
       recovered[1])
 
-  plot_data <- list(label = "\nSIR model 2019-nCoV India")
+  plot_data <- list(label = "SIR model 2019-nCoV India")
   analyse(
-    init, infected, death_rate, deaths, population$India,
+    init, infected, dates, death_rate, deaths, population$India,
     plot_data
   )
 
@@ -88,6 +90,7 @@ main <- function(argv) {
 
 analyse <- function(init,
                     infected,
+                    dates,
                     death_rate,
                     deaths,
                     popn,
@@ -123,15 +126,18 @@ analyse <- function(init,
   # colour
   col <- 1:3
 
+  start_date <- dates[1]
   matplot(fit$time, fit[, 2:4],
-    type = "l", xlab = "Day", ylab = "Number of
+    type = "l", xlab = "Date", ylab = "Number of
           subjects", lwd = 2, lty = 1,
-    col = col
+    col = col, xaxt = "n"
   )
-  title(paste(
-    "Recovery rate: ",
-    opt_par[["gamma"]], plot_data$label
-  ),
+  axis(1, at = fit$time[fit$time %% 100 == 0],
+       labels = seq(from = start_date,
+                    length.out = 365,
+                    by = "day")[c(100, 200, 300)])
+  title(plot_data$label
+  ,
   outer = TRUE, line = -2
   )
   legend("bottomright", c("Susceptibles", "Infecteds", "Recovereds"),
@@ -142,14 +148,18 @@ analyse <- function(init,
   )
 
   suppressWarnings(matplot(fit$time, fit[, 2:4],
-    type = "l", xlab = "Day", ylab
+    type = "l", xlab = "Date", ylab
     = "Number of
           subjects",
     lwd = 2,
     lty = 1,
     col = col,
-    log = "y"
+    log = "y", xaxt = "n"
   ))
+  axis(1, at = fit$time[fit$time %% 100 == 0],
+       labels = seq(from = start_date,
+                    length.out = 365,
+                    by = "day")[c(100, 200, 300)])
 
   points(seq(length(infected)), infected)
   legend("bottomright",
@@ -161,10 +171,8 @@ analyse <- function(init,
     lty = 1,
     lwd = 2, col = col, inset = 0.05
   )
-  title(paste(
-    "Recovery rate: ",
-    opt_par[["gamma"]], plot_data$label
-  ),
+  title(plot_data$label
+  ,
   outer = TRUE, line = -2
   )
 
