@@ -53,10 +53,10 @@ main <- function(argv) {
   recovered <- data$recovered
 
   last_record <- tail(data, 1)
-  death_rate <- last_record$deaths / last_record$confirmed
+  death_rate <- mean(data$deaths / data$confirmed)
   deaths <- last_record$deaths
 
-  print(paste("World Death rate: ", death_rate))
+  print(paste("Average World Death rate: ", death_rate))
 
   init <- c(
     S = population$World - infected[1],
