@@ -38,7 +38,7 @@ deterministic <- function() {
     ds.rate = 1.94805195e-5,
     di.rate = 1.94805195e-5 * 1.035,
     dr.rate = 1.94805195e-5,
-    dt.rate = 0.035
+    dt.rate = 0.03
   )
 
   r0 <- NULL
