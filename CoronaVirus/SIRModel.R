@@ -26,15 +26,14 @@ sir <- function(time, state, parameters) {
   par <- as.list(c(state, parameters))
   # nolint start
   # lambda - F force of infection
-  with(par, 
-       {
-         lambda <- inf * act * I / N
-         si <- lambda * S
-         ds <- -si
-         dr <- gamma * I
-         di <- si - dr
-         list(c(ds, di, dr), N = N)
-       })
+  with(par, {
+    lambda <- inf * act * I / N
+    si <- lambda * S
+    ds <- -si
+    dr <- gamma * I
+    di <- si - dr
+    list(c(ds, di, dr), N = N)
+  })
   # nolint end
 }
 
@@ -191,7 +190,7 @@ analyse <- function(init,
   )
 
   r0 <- setNames(
-    opt_par["inf"] * opt_par["act"]  / opt_par["gamma"],
+    opt_par["inf"] * opt_par["act"] / opt_par["gamma"],
     "R0"
   )
   print(r0)
@@ -212,7 +211,8 @@ analyse <- function(init,
   ))
   print(paste0(
     "Maximum deaths: ",
-    round(max_infected * death_rate)))
+    round(max_infected * death_rate)
+  ))
 }
 
 

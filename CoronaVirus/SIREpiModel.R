@@ -36,7 +36,7 @@ deterministic <- function() {
     rec.rate = 1 / 14,
     a.rate = 4.67532468e-5,
     ds.rate = 1.94805195e-5,
-    di.rate = 1.94805195e-5 * 1.035,
+    di.rate = 1.94805195e-5 / (1 - 0.03),
     dr.rate = 1.94805195e-5,
     dt.rate = 0.03
   )
@@ -62,7 +62,6 @@ deterministic <- function() {
     dt = 1
   )
   mod <- EpiModel::dcm(param, init, control)
-  print(str(mod))
 
   par(mar = c(3.2, 3, 2, 1), mgp = c(2, 1, 0), mfrow = c(1, 2))
   plot(mod,
