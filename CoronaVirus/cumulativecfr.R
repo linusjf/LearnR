@@ -1,6 +1,5 @@
 #!/usr/bin/env Rscript
 
-library(coronavirus)
 library(tidyverse)
 library(scales)
 

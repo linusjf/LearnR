@@ -59,9 +59,6 @@ install_coronavirus <- function() {
   if (!require(ipred)) {
     install.packages("ipred", .libPaths()[1])
   }
-  if (!require(coronavirus)) {
-    install.packages("coronavirus", .libPaths()[1])
-  }
   if (!require(magrittr)) {
     install.packages("magrittr", .libPaths()[1])
   }
