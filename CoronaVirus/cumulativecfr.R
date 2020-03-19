@@ -25,11 +25,8 @@ main <- function(argv) {
   print(top_countries)
   #---------------------------global total-------------------
 data %<>%
-  group_by(country) %>%
-  filter(top_countries %in% data$country) %>%
-  ungroup()
+  filter(country %in% top_countries)
 
-print(data)
 return(0)
   first_non_china_d <- coronavirus %>%
     filter(Country.Region != "China" & type == "death" & cases > 0) %>%
