@@ -4,6 +4,8 @@
 
 [Cumulative fatality rate](http://freerangestats.info/blog/2020/03/17/covid19-cfr)
 
+[Flattening the curve](http://staff.math.su.se/hoehle/blog/2020/03/16/flatteningthecurve.html)
+
 I've collated a few R scripts that analyse the CoronaVirus outbreak using data from the [John Hopkins University repository on GitHub.](https://github.com/CSSEGISandData/COVID-19)
 
 
