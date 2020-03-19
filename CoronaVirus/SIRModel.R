@@ -22,7 +22,6 @@ parms <-
     act_lcl = 2 / 14
   )
 
-
 sir <- function(time, state, parameters) {
   par <- as.list(c(state, parameters))
   # nolint start
@@ -206,14 +205,14 @@ analyse <- function(init,
 
   fit[fit$I == max(fit$I), "I", drop = FALSE]
   # height of pandemic
+  max_infected <- round(max(fit$I))
   print(paste0(
     "Maximum infected: ",
-    max(round(fit$I))
+    max_infected
   ))
   print(paste0(
     "Maximum deaths: ",
-    round(max(fit$I) * death_rate))
-  )
+    round(max_infected * death_rate)))
 }
 
 
