@@ -1,20 +1,36 @@
 #!/usr/bin/env Rscript
 
-library(tidyverse)
-library(scales)
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(scales))
+suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(dplyr))
 
 main <- function(argv) {
-  the_caption <- "Source: WHO and many others via Johns Hopkins University and
-  Rami Krispin's coronavirus R package.\nAnalysis by http://freerangestats.info"
+  the_caption <- "Source: WHO and many others via Johns Hopkins University.\n
+  Analysis by http://freerangestats.info"
 
-  top_countries <- coronavirus %>%
-    filter(type == "confirmed") %>%
-    group_by(Country.Region) %>%
-    summarise(cases = sum(cases)) %>%
-    top_n(8, wt = cases)
+  data <- readr::read_csv("rates.csv")
 
+  top_countries <- data %>%
+    group_by(country) %>%
+    slice(c(n())) %>%
+    ungroup() %>%
+    top_n(9, wt = confirmed)
+
+  top_countries <- top_countries$country
+  remove <- c("World")
+  top_countries <-
+    top_countries[! top_countries %in% remove]
+
+  print(top_countries)
   #---------------------------global total-------------------
+data %<>%
+  group_by(country) %>%
+  filter(top_countries %in% data$country) %>%
+  ungroup()
 
+print(data)
+return(0)
   first_non_china_d <- coronavirus %>%
     filter(Country.Region != "China" & type == "death" & cases > 0) %>%
     arrange(date) %>%
