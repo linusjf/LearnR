@@ -21,14 +21,16 @@ main <- function(argv) {
   remove <- c("World")
   top_countries <-
     top_countries[! top_countries %in% remove]
-
+  top_countries <- c(top_countries, "India")
   print(top_countries)
   #---------------------------global total-------------------
 data %<>%
   filter(country %in% top_countries)
 
   data %>%
-    ggplot(aes(x = date, y = rate.upper, color = factor(country))) +
+    ggplot(aes(x = date, y = rate.upper,
+               color = factor(country),
+               linetype = factor(country))) +
     geom_line() +
     labs(
       caption = the_caption,
