@@ -2,19 +2,6 @@
 library(deSolve)
 library(readr)
 
-parms <-
-  list(
-    gamma = 1 / 14,
-    gamma_lcl = 1 / 15,
-    gamma_ucl = 1 / 13,
-    inf = 1,
-    inf_ucl = 1,
-    inf_lcl = 0.8,
-    act = 5 / 14,
-    act_ucl = 9 / 14,
-    act_lcl = 2 / 14
-  )
-
 # world population 7.7 billion
 # india population 1.37 billion
 population <- list(
@@ -22,14 +9,34 @@ population <- list(
   India = 1370000000
 )
 
+parms <-
+  list(
+    gamma = 1 / 14,
+    gamma_lcl = 1 / 15,
+    gamma_ucl = 1 / 13,
+    inf = 1,
+    inf_ucl = 1,
+    inf_lcl = 0.99,
+    act = 5 / 14,
+    act_ucl = 9 / 14,
+    act_lcl = 2 / 14
+  )
+
+
 sir <- function(time, state, parameters) {
   par <- as.list(c(state, parameters))
+  # nolint start
   # lambda - F force of infection
-  lambda <- par$inf * par$act / par$N * par$I
-  ds <- -lambda * par$S
-  di <- lambda * par$S - par$gamma * par$I
-  dr <- par$gamma * par$I
-  list(c(ds, di, dr), N = par$N)
+  with(par, 
+       {
+         lambda <- inf * act * I / N
+         si <- lambda * S
+         ds <- -si
+         dr <- gamma * I
+         di <- si - dr
+         list(c(ds, di, dr), N = N)
+       })
+  # nolint end
 }
 
 rss <- function(parameters, infected = NULL, init = NULL, popn = NULL) {
@@ -87,7 +94,6 @@ main <- function(argv) {
     init, infected, dates, death_rate, deaths, population$India,
     plot_data
   )
-
   return(0)
 }
 
@@ -186,7 +192,7 @@ analyse <- function(init,
   )
 
   r0 <- setNames(
-    opt_par["inf"] * opt_par["act"] / opt_par["gamma"],
+    opt_par["inf"] * opt_par["act"]  / opt_par["gamma"],
     "R0"
   )
   print(r0)
@@ -206,8 +212,8 @@ analyse <- function(init,
   ))
   print(paste0(
     "Maximum deaths: ",
-    max(round(max(fit$I) * death_rate), deaths)
-  ))
+    round(max(fit$I) * death_rate))
+  )
 }
 
 
