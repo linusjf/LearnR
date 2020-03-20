@@ -79,7 +79,8 @@ deterministic <- function() {
   EpiModel::comp_plot(mod, at = 270, digits = 1)
   EpiModel::comp_plot(mod, at = 360, digits = 1)
   barplot(mod$epi$i.num$run1,
-          main = "Incidence bar plot for World")
+    main = "Incidence bar plot for World"
+  )
 
   summary(mod, at = 90)
   summary(mod, at = 180)

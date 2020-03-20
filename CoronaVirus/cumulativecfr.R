@@ -20,17 +20,19 @@ main <- function(argv) {
   top_countries <- top_countries$country
   remove <- c("World")
   top_countries <-
-    top_countries[! top_countries %in% remove]
+    top_countries[!top_countries %in% remove]
   top_countries <- c(top_countries, "India")
   print(top_countries)
   #---------------------------global total-------------------
-data %<>%
-  filter(country %in% top_countries)
+  data %<>%
+    filter(country %in% top_countries)
 
   data %>%
-    ggplot(aes(x = date, y = rate.upper,
-               color = factor(country),
-               linetype = factor(country))) +
+    ggplot(aes(
+      x = date, y = rate.upper,
+      color = factor(country),
+      linetype = factor(country)
+    )) +
     geom_line() +
     labs(
       caption = the_caption,
@@ -43,7 +45,7 @@ data %<>%
 Note that actual case fatality is likely to be much lower due to undiagnosed
 surviving cases."
     )
-    ggplot2::ggsave("cumcfr.pdf")
+  ggplot2::ggsave("cumcfr.pdf")
   return(0)
 }
 
