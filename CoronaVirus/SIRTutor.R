@@ -39,6 +39,9 @@ main <- function(argv) {
   sir_values <- as.data.frame(sir_values)
   print(sir_values)
   plot_it(sir_values)
+  r0 <- (999 + 1) * parameters_values["beta"] / parameters_values["gamma"]
+  names(r0) <- "R0"
+  print(r0)
   return(0)
 }
 
