@@ -421,7 +421,13 @@ add_rates <- function(data) {
           recovered - lag(
             recovered,
             n = 1
-          )
+          )),
+      confirmed.rt =
+        ifelse(date == day1,
+          NA,
+          (confirmed - lag(confirmed,
+            n = 1
+          )) / lag(confirmed, n = 1)
         )
     )
   ## death rate based on total deaths and cured cases
@@ -623,7 +629,7 @@ output_to_pdf <- function(data, filename) {
   ## re-order columns
   # deadIncr, curedIncr,
   data %<>% select(c(
-    date, confirmed, deaths, recovered, remaining.confirmed,
+    date, confirmed, deaths, recovered, remaining.confirmed, confirmed.rt,
     confirmed.inc, deaths.inc, recovered.inc, rate.upper, rate.daily, rate.lower
   ))
   ## to make column names shorter for output purpose only

@@ -95,6 +95,9 @@ install_coronavirus <- function() {
   if (!require(devtools)) {
     install.packages("devtools", .libPaths()[1])
   }
+  if (!require(formattable)) {
+    install.packages("formattable", .libPaths()[1])
+  }
 }
 # nolint end
 
