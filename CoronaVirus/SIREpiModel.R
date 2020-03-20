@@ -78,12 +78,16 @@ deterministic <- function() {
   EpiModel::comp_plot(mod, at = 180, digits = 1)
   EpiModel::comp_plot(mod, at = 270, digits = 1)
   EpiModel::comp_plot(mod, at = 360, digits = 1)
+  barplot(mod$epi$i.num$run1,
+          main = "Incidence bar plot for World")
 
   summary(mod, at = 90)
   summary(mod, at = 180)
   summary(mod, at = 270)
   summary(mod, at = 360)
 
+  print("Max incidence: ")
+  print(max(mod$epi$i.num$run1))
   print("Max deaths: ")
   print(max(mod$epi$i.num$run1 * param$dt.rate))
 }

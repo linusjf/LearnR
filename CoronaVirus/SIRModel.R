@@ -69,7 +69,8 @@ main <- function(argv) {
     R = recovered[1]
   )
 
-  plot_data <- list(label = "SIR model 2019-nCoV World")
+  plot_data <- list(label = "SIR model 2019-nCoV World",
+  country = "World")
   analyse(
     init, infected, dates, death_rate, deaths, population$World,
     plot_data
@@ -87,7 +88,8 @@ main <- function(argv) {
       recovered[1]
   )
 
-  plot_data <- list(label = "SIR model 2019-nCoV India")
+  plot_data <- list(label = "SIR model 2019-nCoV India",
+  country = "India")
   analyse(
     init, infected, dates, death_rate, deaths, population$India,
     plot_data
@@ -213,6 +215,9 @@ analyse <- function(init,
     "Maximum deaths: ",
     round(max_infected * death_rate)
   ))
+  barplot(fit$I, fit$time,
+          main = paste("Incidence bar plot for ",
+                               plot_data$country))
 }
 
 
