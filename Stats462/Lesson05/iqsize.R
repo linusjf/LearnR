@@ -11,7 +11,7 @@ main <- function(argv) {
   )
   print(head(data))
   print(skimr::skim(data))
-  reg <- lm(PIQ ~ Brain + Height + Weight, data = data)
+  reg <- lm(PIQ ~ Brain, data = data)
   print(reg)
   params <- reg$coefficients
   summ <- summary(reg)
@@ -39,7 +39,7 @@ main <- function(argv) {
                           do.call(cbind,
                                   as.list(params))))
   print(df)
-  reg <- lm(PIQ ~ Brain, data = data)
+  reg <- lm(PIQ ~ Brain + Height + Weight, data = data)
   print(reg)
   params <- reg$coefficients
   summ <- summary(reg)
@@ -54,7 +54,14 @@ main <- function(argv) {
               as.data.frame(
                           do.call(cbind,
                                   as.list(params))))
-  df %<>% map_df(rev)
+  df <-
+    df[c("(Intercept)",
+         "Brain",
+         "Height",
+         "Weight",
+         "sigma",
+         "R-squared",
+         "Adj R-squared")]
   print(df)
   # nolint start
   scatterplot_matrix(data, "IQ Scatterplot Matrix")
