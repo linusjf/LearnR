@@ -93,7 +93,8 @@ pred_r_squared <- function(linear_model) {
 #' @return Returns a data frame with one row and a column for each statistic
 #' @param linear.model A \code{lm()} model.
 model_fit_stats <- function(linear_model) {
-  print(str(linear_model))
+    if (class(linear_model) != "lm")
+      stop("Not an object of class 'lm' ")
   r_sqr <- summary(linear_model)$r.squared
   adj_r_sqr <- summary(linear_model)$adj.r.squared
   ratio_adjr2_to_r2 <- (adj_r_sqr / r_sqr)
@@ -108,8 +109,28 @@ model_fit_stats <- function(linear_model) {
   return(round(return_df, 3))
 }
 
+model_coeffs <- function(reg) {
+
+    if (class(reg) != "lm")
+      stop("Not an object of class 'lm' ")
+  params <- reg$coefficients
+  names <- names(params)
+  p_names <- paste(names, ".p")
+  p_values <- summary(reg)$coefficients[, 4]
+  names <- c(names, p_names)
+  params <- c(params, p_values)
+  names(params) <- names
+  names <- stringr::str_sort(names)
+  sorted_params <- c()
+  for (name in names)
+    sorted_params[name] <- params[name]
+  return_df <-
+    as.data.frame(do.call(cbind, as.list(params)))
+  return(round(return_df, 3))
+}
+
 lmp <- function(modelobject) {
-    if (class(modelobject) != "lm") 
+    if (class(modelobject) != "lm")
       stop("Not an object of class 'lm' ")
     f <- summary(modelobject)$fstatistic
     p <- pf(f[1], f[2], f[3], lower.tail = F)

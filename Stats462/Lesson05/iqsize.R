@@ -3,6 +3,7 @@
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(purrr))
+suppressPackageStartupMessages(library(stringr))
 source("libfunc.R")
 
 main <- function(argv) {
@@ -41,10 +42,7 @@ main <- function(argv) {
   print(df)
   reg <- lm(PIQ ~ Brain + Height + Weight, data = data)
   print(reg)
-  params <- reg$coefficients
-  summ <- summary(reg)
-  names <- names(params)
-  params <- c(params, summ$sigma,
+  params <- c( summ$sigma,
   summ$r.squared, summ$adj.r.squared)
   names(params) <- c(names, "sigma", "R-squared", "Adj R-squared")
   print(summary(reg))
