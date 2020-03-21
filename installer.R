@@ -98,6 +98,9 @@ install_coronavirus <- function() {
   if (!require(formattable)) {
     install.packages("formattable", .libPaths()[1])
   }
+  if (!require(ihs)) {
+    install.packages("ihs", .libPaths()[1])
+  }
 }
 # nolint end
 

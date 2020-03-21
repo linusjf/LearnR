@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 suppressMessages(library(readr))
 suppressMessages(library(formattable))
+suppressMessages(library(ihs))
 
 main <- function(argv) {
   data <- readr::read_csv("world_data.csv")
@@ -27,7 +28,7 @@ main <- function(argv) {
   plot(dates, infected, log = "y")
   abline(lm(log10(infected) ~ dates))
   plot(dates, growth, type = "b")
-  plot(dates, growth, log = "y")
+  suppressWarnings(plot(dates, growth, log = "y"))
   lines(dates, growth)
   title("Confirmed Cases 2019-nCoV India", outer = TRUE, line = -2)
   return(0)
