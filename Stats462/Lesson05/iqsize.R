@@ -1,5 +1,8 @@
 #!/usr/bin/env Rscript
 
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(purrr))
 source("libfunc.R")
 
 main <- function(argv) {
@@ -19,6 +22,39 @@ main <- function(argv) {
   print(summary(reg))
   print(params)
   df <- as.data.frame(do.call(cbind, as.list(params)))
+  print(df)
+  reg <- lm(PIQ ~ Brain + Height, data = data)
+  print(reg)
+  params <- reg$coefficients
+  summ <- summary(reg)
+  names <- names(params)
+  params <- c(params, summ$sigma,
+  summ$r.squared, summ$adj.r.squared)
+  names(params) <- c(names, "sigma", "R-squared", "Adj R-squared")
+  print(summary(reg))
+  print(params)
+  df <-
+    bind_rows(df,
+              as.data.frame(
+                          do.call(cbind,
+                                  as.list(params))))
+  print(df)
+  reg <- lm(PIQ ~ Brain, data = data)
+  print(reg)
+  params <- reg$coefficients
+  summ <- summary(reg)
+  names <- names(params)
+  params <- c(params, summ$sigma,
+  summ$r.squared, summ$adj.r.squared)
+  names(params) <- c(names, "sigma", "R-squared", "Adj R-squared")
+  print(summary(reg))
+  print(params)
+  df <-
+    bind_rows(df,
+              as.data.frame(
+                          do.call(cbind,
+                                  as.list(params))))
+  df %<>% map_df(rev)
   print(df)
   # nolint start
   scatterplot_matrix(data, "IQ Scatterplot Matrix")
