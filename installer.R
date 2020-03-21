@@ -16,6 +16,12 @@ install_tools <- function() {
   if (!require(rex)) {
     install.packages("rex", .libPaths()[1])
   }
+  if (!require(devtools)) {
+    install.packages("devtools", .libPaths()[1])
+  }
+  if (!require(roxygen2)) {
+    install.packages("roxygen2", .libPaths()[1])
+  }
 }
 
 install_rbloggers <- function() {
@@ -91,9 +97,6 @@ install_coronavirus <- function() {
   }
   if (!require(tidyr)) {
     install.packages("tidyr", .libPaths()[1])
-  }
-  if (!require(devtools)) {
-    install.packages("devtools", .libPaths()[1])
   }
   if (!require(formattable)) {
     install.packages("formattable", .libPaths()[1])
