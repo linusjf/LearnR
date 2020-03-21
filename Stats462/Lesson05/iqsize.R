@@ -13,55 +13,22 @@ main <- function(argv) {
   print(head(data))
   print(skimr::skim(data))
   reg <- lm(PIQ ~ Brain, data = data)
-  print(reg)
-  params <- reg$coefficients
-  summ <- summary(reg)
-  names <- names(params)
-  params <- c(params, summ$sigma,
-  summ$r.squared, summ$adj.r.squared)
-  names(params) <- c(names, "sigma", "R-squared", "Adj R-squared")
-  print(summary(reg))
-  print(params)
-  df <- as.data.frame(do.call(cbind, as.list(params)))
+  model_df <- model_fit_stats(reg)
+  coeff_df <- model_coeffs(reg)
+  df <- cbind(coeff_df, model_df)
   print(df)
   reg <- lm(PIQ ~ Brain + Height, data = data)
-  print(reg)
-  params <- reg$coefficients
-  summ <- summary(reg)
-  names <- names(params)
-  params <- c(params, summ$sigma,
-  summ$r.squared, summ$adj.r.squared)
-  names(params) <- c(names, "sigma", "R-squared", "Adj R-squared")
-  print(summary(reg))
-  print(params)
-  df <-
-    bind_rows(df,
-              as.data.frame(
-                          do.call(cbind,
-                                  as.list(params))))
+  model_df <- model_fit_stats(reg)
+  coeff_df <- model_coeffs(reg)
+  df <- dplyr::bind_rows(df, cbind(coeff_df, model_df))
   print(df)
   reg <- lm(PIQ ~ Brain + Height + Weight, data = data)
-  print(reg)
-  params <- c( summ$sigma,
-  summ$r.squared, summ$adj.r.squared)
-  names(params) <- c(names, "sigma", "R-squared", "Adj R-squared")
-  print(summary(reg))
-  print(params)
-  df <-
-    bind_rows(df,
-              as.data.frame(
-                          do.call(cbind,
-                                  as.list(params))))
-  df <-
-    df[c("(Intercept)",
-         "Brain",
-         "Height",
-         "Weight",
-         "sigma",
-         "R-squared",
-         "Adj R-squared")]
-  print(df)
+  model_df <- model_fit_stats(reg)
+  coeff_df <- model_coeffs(reg)
+  df <- dplyr::bind_rows(df, cbind(coeff_df, model_df))
   # nolint start
+  print(df)
+
   scatterplot_matrix(data, "IQ Scatterplot Matrix")
   # nolint end
 return(0)

@@ -1,4 +1,9 @@
 
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(purrr))
+suppressPackageStartupMessages(library(stringr))
+
 scatterplot_matrix <- function(data, title) {
 cols <- colnames(data)
 fields <- "~"
@@ -95,17 +100,21 @@ pred_r_squared <- function(linear_model) {
 model_fit_stats <- function(linear_model) {
     if (class(linear_model) != "lm")
       stop("Not an object of class 'lm' ")
-  r_sqr <- summary(linear_model)$r.squared
-  adj_r_sqr <- summary(linear_model)$adj.r.squared
+  summ <- summary(linear_model)
+  sigma <- summ$sigma
+  r_sqr <- summ$r.squared
+  adj_r_sqr <- summ$adj.r.squared
   ratio_adjr2_to_r2 <- (adj_r_sqr / r_sqr)
   pre_r_sqr <- pred_r_squared(linear_model)
   press <- PRESS(linear_model)
+  print(press)
   return_df <-
-    data.frame("R-squared" = r_sqr,
+    data.frame("Sigma" = sigma,
+               "R-squared" = r_sqr,
                "Adj R-squared" = adj_r_sqr,
                "Ratio Adj.R2 to R2" = ratio_adjr2_to_r2,
                "Pred R-squared" = pre_r_sqr,
-               PRESS = press)
+               "PRESS" = press)
   return(round(return_df, 3))
 }
 
@@ -115,7 +124,7 @@ model_coeffs <- function(reg) {
       stop("Not an object of class 'lm' ")
   params <- reg$coefficients
   names <- names(params)
-  p_names <- paste(names, ".p")
+  p_names <- paste0(names, ".p")
   p_values <- summary(reg)$coefficients[, 4]
   names <- c(names, p_names)
   params <- c(params, p_values)
@@ -124,8 +133,9 @@ model_coeffs <- function(reg) {
   sorted_params <- c()
   for (name in names)
     sorted_params[name] <- params[name]
+  print(sorted_params)
   return_df <-
-    as.data.frame(do.call(cbind, as.list(params)))
+    as.data.frame(do.call(cbind, as.list(sorted_params)))
   return(round(return_df, 3))
 }
 
