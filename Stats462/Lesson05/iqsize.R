@@ -13,18 +13,20 @@ main <- function(argv) {
   print(head(data))
   print(skimr::skim(data))
   reg <- lm(PIQ ~ Brain, data = data)
+  print(anova(reg))
   model_df <- model_fit_stats(reg)
   coeff_df <- model_coeffs(reg)
   df <- cbind(coeff_df, model_df)
   reg <- lm(PIQ ~ Brain + Height, data = data)
+  print(anova(reg))
   model_df <- model_fit_stats(reg)
   coeff_df <- model_coeffs(reg)
   df <- dplyr::bind_rows(df, cbind(coeff_df, model_df))
   reg <- lm(PIQ ~ Brain + Height + Weight, data = data)
+  print(anova(reg))
   model_df <- model_fit_stats(reg)
   coeff_df <- model_coeffs(reg)
   df <- dplyr::bind_rows(df, cbind(coeff_df, model_df))
-  print(df)
   df %<>% select("(Intercept)",
              "(Intercept).p",
              "Brain",
@@ -38,7 +40,8 @@ main <- function(argv) {
              "Adj.R.squared",
              "Ratio.Adj.R2.to.R2",
              "Pred.R.squared",
-             "PRESS")
+             "PRESS",
+  "p.value")
   print(df)
 
   scatterplot_matrix(data, "IQ Scatterplot Matrix")

@@ -108,13 +108,15 @@ model_fit_stats <- function(linear_model) {
   ratio_adjr2_to_r2 <- (adj_r_sqr / r_sqr)
   pre_r_sqr <- pred_r_squared(linear_model)
   press <- PRESS(linear_model)
+  p_value <- lmp(linear_model)
   return_df <-
     data.frame("Sigma" = sigma,
                "R.squared" = r_sqr,
                "Adj.R.squared" = adj_r_sqr,
                "Ratio.Adj.R2.to.R2" = ratio_adjr2_to_r2,
                "Pred.R.squared" = pre_r_sqr,
-               "PRESS" = press)
+               "PRESS" = press,
+    "p.value" = p_value)
   print(return_df)
   return(round(return_df, 3))
 }
