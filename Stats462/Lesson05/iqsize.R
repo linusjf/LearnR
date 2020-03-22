@@ -16,21 +16,32 @@ main <- function(argv) {
   model_df <- model_fit_stats(reg)
   coeff_df <- model_coeffs(reg)
   df <- cbind(coeff_df, model_df)
-  print(df)
   reg <- lm(PIQ ~ Brain + Height, data = data)
   model_df <- model_fit_stats(reg)
   coeff_df <- model_coeffs(reg)
   df <- dplyr::bind_rows(df, cbind(coeff_df, model_df))
-  print(df)
   reg <- lm(PIQ ~ Brain + Height + Weight, data = data)
   model_df <- model_fit_stats(reg)
   coeff_df <- model_coeffs(reg)
   df <- dplyr::bind_rows(df, cbind(coeff_df, model_df))
-  # nolint start
+  print(df)
+  df %<>% select("(Intercept)",
+             "(Intercept).p",
+             "Brain",
+             "Brain.p",
+             "Height",
+             "Height.p",
+             "Weight",
+             "Weight.p",
+             "Sigma",
+             "R.squared",
+             "Adj.R.squared",
+             "Ratio.Adj.R2.to.R2",
+             "Pred.R.squared",
+             "PRESS")
   print(df)
 
   scatterplot_matrix(data, "IQ Scatterplot Matrix")
-  # nolint end
 return(0)
 }
 
