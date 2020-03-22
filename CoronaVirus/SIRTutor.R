@@ -3,20 +3,20 @@
 # using the "ode" function
 library(deSolve)
 
-  parameters_values <- c(
-    # infectious contact rate (/person/day)
-    beta = 0.004,
-    # recovery rate (/day)
-    gamma = 0.5
-  )
-  initial_values <- c(
-    # number of susceptibles at time = 0
-    S = 999,
-    # number of infectious at time = 0
-    I =   1,
-    # number of recovered (and immune) at time = 0
-    R =   0
-  )
+parameters_values <- c(
+  # infectious contact rate (/person/day)
+  beta = 0.004,
+  # recovery rate (/day)
+  gamma = 0.5
+)
+initial_values <- c(
+  # number of susceptibles at time = 0
+  S = 999,
+  # number of infectious at time = 0
+  I =   1,
+  # number of recovered (and immune) at time = 0
+  R =   0
+)
 
 main <- function(argv) {
   # days
@@ -46,8 +46,9 @@ main <- function(argv) {
 }
 
 plot_it <- function(data) {
-  with(data, eval(parse(text =
-                   "{
+  with(data, eval(parse(
+    text =
+      "{
     # plotting the time series of susceptibles:
     plot(time, S,
       type = 'l', col = 'blue',
@@ -57,7 +58,8 @@ plot_it <- function(data) {
     lines(time, I, col = 'red')
     # adding the time series of recovered:
     lines(time, R, col = 'green')
-  }")))
+  }"
+  )))
 
   # adding a legend:
   legend("right", c("susceptibles", "infectious", "recovered"),

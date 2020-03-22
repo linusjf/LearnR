@@ -428,7 +428,8 @@ add_rates <- function(data) {
           recovered - lag(
             recovered,
             n = 1
-          )),
+          )
+        ),
       confirmed.rt =
         ifelse(date == day1,
           NA,
