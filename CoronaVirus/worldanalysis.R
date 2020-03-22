@@ -428,7 +428,7 @@ add_rates <- function(data) {
           (confirmed - lag(confirmed,
             n = 1
           )) / lag(confirmed, n = 1)
-        )
+        ) %>% round(4)
     )
   ## death rate based on total deaths and cured cases
   data %<>%
