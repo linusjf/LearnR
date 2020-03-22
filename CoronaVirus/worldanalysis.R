@@ -159,16 +159,15 @@ main <- function(argv) {
   data_deaths <- read.csv(filenames[2])
   data_recovered <- read.csv(filenames[3])
 
-  print(dim(data_confirmed))
-  print(dim(data_deaths))
-  print(dim(data_recovered))
   if (FALSE) {
     print_sample_data(data_confirmed, "Confirmed")
     print_sample_data(data_deaths, "Deaths")
     print_sample_data(data_recovered, "Recovered")
   }
   dates <- dates(data_confirmed)
+  print("Date ranges")
   print(date_range(dates))
+  print("Latest Date")
   print(latest_date(dates))
 
   ## clean the three datasets
@@ -328,6 +327,7 @@ plot_deaths_recovered <- function(data, title) {
 plot_death_rates <- function(data, title) {
   ## three death rates
   n <- nrow(data)
+  print("No. of records")
   print(n)
   plot1 <- ggplot(data, aes(x = date), na.rm = TRUE) +
     geom_line(aes(y = rate.upper, colour = "Upper bound")) +
@@ -473,7 +473,6 @@ add_rates <- function(data) {
 
 ready_plot_data <- function(data) {
   max_date <- max(data$date)
-  print(max_date)
   ## ranking by confirmed cases
   data_latest <- data %>%
     filter(date == max(date)) %>%
