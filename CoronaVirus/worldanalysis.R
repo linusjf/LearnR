@@ -33,9 +33,16 @@ download_csv <- function(filename) {
       useragent = "LearnR", ssl.verifypeer = FALSE
     )
   d <- rjson::fromJSON(url)[[1]]
-  git_date <- as.POSIXct(d$commit$author$date)
+  git_date <- as.POSIXct(d$commit$committer$date)
+  print(destination)
+  print("Latest commit Date on Github")
+  print(git_date)
+  print("File Date on filesystem")
+  mtime <- file.info(destination)$mtime
+  print(mtime)
+  print()
   must_download <- !file.exists(destination) |
-    file.info(destination)$mtime < git_date
+    mtime < git_date
   if (must_download) {
     url <- d$url
     commit <- rjson::fromJSON(RCurl::getURL(url, .opts = myopts))
@@ -488,7 +495,6 @@ ready_plot_data <- function(data) {
   top_countries %<>%
     setdiff("Others") %>%
     c("Others")
-  print(top_countries)
   ready_data <- list(
     max.date = max_date,
     data.latest = data_latest,
