@@ -36,11 +36,11 @@ download_csv <- function(filename) {
   git_date <- as.POSIXct(d$commit$committer$date)
   print(destination)
   print("Latest commit Date on Github")
-  print(git_date)
+  print(format(git_date, "%a %b %d %X %Y %Z"))
   print("File Date on filesystem")
   mtime <- file.info(destination)$mtime
-  print(mtime)
-  print()
+  print(format(mtime, "%a %b %d %X %Y %Z"))
+  print("")
   must_download <- !file.exists(destination) |
     mtime < git_date
   if (must_download) {
