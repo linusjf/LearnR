@@ -12,6 +12,11 @@ main <- function(argv) {
     mutate(so.su = soap * suds) %>%
     mutate(soap.sq = soap * soap)
   n <- nrow(data)
+  X <- matrix(c(rep(c(1), times = n),
+                data$soap),
+  ncol = 2, nrow = n, byrow = FALSE)
+  print(X)
+  `X'` <- t(X)
   sumx <- sum(data$soap)
   sumxy <- sum(data$so.su)
   sumxsquare <- sum(data$soap.sq)
@@ -26,6 +31,13 @@ main <- function(argv) {
   rownames(b) <- c("b0", "b1")
   colnames(b) <- c("Beta Hat")
   print(b)
+  H <- X %*% inverse %*% `X'`
+  print(H)
+  data %<>%
+    mutate(soap2 = soap * 2) %>%
+    mutate(soap1 = soap)
+  lm <- lm(suds ~ soap1 + soap2, data)
+  print(summary(lm))
   return(0)
 }
 
