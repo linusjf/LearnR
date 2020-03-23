@@ -135,6 +135,9 @@ install_stats462 <- function() {
   if (!require(scatterplot3d)) {
     install.packages("scatterplot3d", .libPaths()[1])
   }
+  if (!require(alr3)) {
+    install.packages("alr3", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {

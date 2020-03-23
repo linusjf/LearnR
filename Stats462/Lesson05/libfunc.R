@@ -3,6 +3,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(purrr))
 suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(alr3))
 
 scatterplot_matrix <- function(data, title) {
   cols <- colnames(data)
@@ -157,4 +158,12 @@ lmp <- function(modelobject) {
   p <- pf(f[1], f[2], f[3], lower.tail = F)
   attributes(p) <- NULL
   return(p)
+}
+
+complete_anova <- function(lm) {
+  if (class(lm) != "lm") {
+    stop("Not an object of class 'lm' ")
+  }
+ pure <- alr3::pureErrorAnova(lm)
+ return(pure)
 }

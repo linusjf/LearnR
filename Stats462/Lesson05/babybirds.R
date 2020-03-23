@@ -13,15 +13,16 @@ main <- function(argv) {
 s3d <- scatterplot3d(data, type = "h", color = "blue",
     angle = 55, pch = 16)
 # Add regression plane
-lm <- lm(data$Vent ~ data$O2 + data$CO2)
+lm <- lm(Vent ~ O2 + CO2, data)
 s3d$plane3d(lm)
 s3d <- scatterplot3d(data, type = "h", color = "blue",
-    angle = 135 , pch = 16)
+    angle = 135, pch = 16)
 s3d$plane3d(lm)
 s3d <- scatterplot3d(data, type = "h", color = "blue",
-    angle = 90 , pch = 16)
+    angle = 90, pch = 16)
 s3d$plane3d(lm)
-  return(0)
+print(complete_anova(lm))
+return(0)
 }
 
 if (identical(environment(), globalenv())) {
