@@ -4,6 +4,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(purrr))
 suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(skimr))
 source("libfunc.R")
 
 main <- function(argv) {
