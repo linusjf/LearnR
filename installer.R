@@ -132,6 +132,9 @@ install_stats462 <- function() {
   if (!require(DescTools)) {
     install.packages("DescTools", .libPaths()[1])
   }
+  if (!require(scatterplot3d)) {
+    install.packages("scatterplot3d", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {
