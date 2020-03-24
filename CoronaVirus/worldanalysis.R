@@ -89,7 +89,7 @@ plot_world_cases <- function(data, ready_data) {
       country,
       date,
       confirmed,
-      remaining.confirmed,
+      active.cases,
       recovered,
       deaths
     )) %>%
@@ -106,7 +106,7 @@ plot_world_cases <- function(data, ready_data) {
           type,
           c(
             "confirmed",
-            "remaining.confirmed", "recovered", "deaths"
+            "active.cases", "recovered", "deaths"
           )
         )
     )
@@ -202,9 +202,9 @@ main <- function(argv) {
     )
   data %<>%
     rbind(data_world)
-  ## remaining confirmed cases
+  ## active cases
   data %<>%
-    mutate(remaining.confirmed = confirmed - deaths - recovered)
+    mutate(active.cases = confirmed - deaths - recovered)
   write.csv(data, "summarised.csv", row.names = FALSE)
   latest_data <- data %>%
     group_by(country) %>%
@@ -369,11 +369,11 @@ plot_current_confirmed <- function(data, title) {
     data =
       subset(
         data,
-        !is.na(data$remaining.confirmed)
+        !is.na(data$active.cases)
       ),
     aes(
       x = date,
-      y = remaining.confirmed
+      y = active.cases
     )
   ) +
     geom_point() +
@@ -484,7 +484,7 @@ ready_plot_data <- function(data) {
   ## ranking by confirmed cases
   data_latest <- data %>%
     filter(date == max(date)) %>%
-    select(country, date, confirmed, deaths, recovered, remaining.confirmed) %>%
+    select(country, date, confirmed, deaths, recovered, active.cases) %>%
     mutate(ranking = dense_rank(desc(confirmed)))
   ## top 10 countries: 12 incl. 'World' and 'Others'
   top_countries <- data_latest %>%
@@ -603,7 +603,7 @@ print_sample_data <- function(data, name) {
 latest_to_pdf <- function(data, filename) {
   date <- head(data, 1)$date
   data %<>% select(c(
-    country, confirmed, deaths, recovered, remaining.confirmed
+    country, confirmed, deaths, recovered, active.cases
   ))
   ## output as a table
   data %>%
@@ -635,7 +635,7 @@ output_to_pdf <- function(data, filename) {
   ## re-order columns
   # deadIncr, curedIncr,
   data %<>% select(c(
-    date, confirmed, deaths, recovered, remaining.confirmed, confirmed.rt,
+    date, confirmed, deaths, recovered, active.cases, confirmed.rt,
     confirmed.inc, deaths.inc, recovered.inc, rate.upper, rate.daily, rate.lower
   ))
   ## to make column names shorter for output purpose only
