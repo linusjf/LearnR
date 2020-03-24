@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+strip --strip-debug /usr/lib/R/library/*/libs/*.so
+du -csh /usr/lib/R/library/*/libs/*.so

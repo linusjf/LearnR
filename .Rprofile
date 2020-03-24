@@ -4,6 +4,7 @@ message(paste("Hi ", Sys.info()["user"], ", Welcome to R"))
 # (use " " for a blank prompt)
 options(prompt = "> ")
 
+options(Ncpus = 6)
 # General options
 options(tab.width = 2)
 options(width = 80)
