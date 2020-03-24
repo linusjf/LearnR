@@ -12,8 +12,8 @@ suppressMessages(library("dplyr"))
 # source data files
   filenames <- c(
     "time_series_covid19_confirmed_global.csv",
-    "time_series_covid19_deaths_global.csv",
-    "time_series_covid19_testing_global.csv"
+    "time_series_covid19_deaths_global.csv"
+#    "time_series_covid19_testing_global.csv"
   )
 
 download_csv <- function(filename) {
@@ -164,12 +164,12 @@ main <- function(argv) {
   ## load data into R
   data_confirmed <- read.csv(filenames[1])
   data_deaths <- read.csv(filenames[2])
-  data_recovered <- read.csv(filenames[3])
+#  data_recovered <- read.csv(filenames[3])
 
   if (FALSE) {
     print_sample_data(data_confirmed, "Confirmed")
     print_sample_data(data_deaths, "Deaths")
-    print_sample_data(data_recovered, "Recovered")
+#    print_sample_data(data_recovered, "Recovered")
   }
   dates <- dates(data_confirmed)
   print("Date ranges")
@@ -184,27 +184,27 @@ main <- function(argv) {
   data_deaths %<>%
     clean_data() %>%
     rename(deaths = count)
-  data_recovered %<>%
-    clean_data() %>%
-    rename(recovered = count)
+#  data_recovered %<>%
+ #   clean_data() %>%
+  #  rename(recovered = count)
   ## merge above 3 datasets into one, by country and date
   data <- data_confirmed %>%
-    merge(data_deaths) %>%
-    merge(data_recovered)
+    merge(data_deaths) 
+  #  merge(data_recovered)
   ## counts for the whole world
   data_world <- data %>%
     group_by(date) %>%
     summarise(
       country = "World",
       confirmed = sum(confirmed),
-      deaths = sum(deaths),
-      recovered = sum(recovered)
+      deaths = sum(deaths)
+ #     recovered = sum(recovered)
     )
   data %<>%
     rbind(data_world)
-  ## active cases
+  ## alive cases
   data %<>%
-    mutate(active.cases = confirmed - deaths - recovered)
+    mutate(alive = confirmed - deaths)
   write.csv(data, "summarised.csv", row.names = FALSE)
   latest_data <- data %>%
     group_by(country) %>%
@@ -421,15 +421,15 @@ add_rates <- function(data) {
         ifelse(date == day1,
           NA,
           deaths - lag(deaths, n = 1)
-        ),
-      recovered.inc =
-        ifelse(date == day1,
-          NA,
-          recovered - lag(
-            recovered,
-            n = 1
-          )
-        ),
+        )
+     # recovered.inc =
+      #  ifelse(date == day1,
+       #   NA,
+        #  recovered - lag(
+         #   recovered,
+          #  n = 1
+          #)
+       # ),
       confirmed.rt =
         ifelse(date == day1,
           NA,
