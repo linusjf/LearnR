@@ -18,6 +18,11 @@ main <- function(argv) {
   lines(dates, growth)
   title("Confirmed Cases 2019-nCoV World", outer = TRUE, line = -2)
 
+  par(mfrow = c(1, 2))
+  plot(dates, infected, type = "h")
+  plot(dates, infected, log = "y", type = "h")
+  title("Confirmed Cases 2019-nCoV World", outer = TRUE, line = -2)
+
   data <- readr::read_csv("india_data.csv")
   infected <- data$confirmed
   growth <- formattable::percent(100 * data$confirmed.rt, 2)
@@ -30,6 +35,11 @@ main <- function(argv) {
   plot(dates, growth, type = "b")
   suppressWarnings(plot(dates, growth, log = "y"))
   lines(dates, growth)
+  title("Confirmed Cases 2019-nCoV India", outer = TRUE, line = -2)
+
+  par(mfrow = c(1, 2))
+  plot(dates, infected, type = "h")
+  plot(dates, infected, log = "y", type = "h")
   title("Confirmed Cases 2019-nCoV India", outer = TRUE, line = -2)
   return(0)
 }
