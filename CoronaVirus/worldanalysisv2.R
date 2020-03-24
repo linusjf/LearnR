@@ -95,8 +95,7 @@ plot_world_cases <- function(data, ready_data) {
       country,
       date,
       confirmed,
-      active.cases,
-      recovered,
+      alive,
       deaths
     )) %>%
     gather(
@@ -112,7 +111,7 @@ plot_world_cases <- function(data, ready_data) {
           type,
           c(
             "confirmed",
-            "active.cases", "recovered", "deaths"
+            "alive", "deaths"
           )
         )
     )
@@ -164,12 +163,12 @@ main <- function(argv) {
   ## load data into R
   data_confirmed <- read.csv(filenames[1])
   data_deaths <- read.csv(filenames[2])
-#  data_recovered <- read.csv(filenames[3])
+#  data_tests <- read.csv(filenames[3])
 
   if (FALSE) {
     print_sample_data(data_confirmed, "Confirmed")
     print_sample_data(data_deaths, "Deaths")
-#    print_sample_data(data_recovered, "Recovered")
+#    print_sample_data(data_tests, "Tests")
   }
   dates <- dates(data_confirmed)
   print("Date ranges")
@@ -184,13 +183,13 @@ main <- function(argv) {
   data_deaths %<>%
     clean_data() %>%
     rename(deaths = count)
-#  data_recovered %<>%
+  #  data_tests %<>%
  #   clean_data() %>%
-  #  rename(recovered = count)
+  #  rename(tests = count)
   ## merge above 3 datasets into one, by country and date
   data <- data_confirmed %>%
     merge(data_deaths) 
-  #  merge(data_recovered)
+  #  merge(data_tests)
   ## counts for the whole world
   data_world <- data %>%
     group_by(date) %>%
@@ -198,7 +197,6 @@ main <- function(argv) {
       country = "World",
       confirmed = sum(confirmed),
       deaths = sum(deaths)
- #     recovered = sum(recovered)
     )
   data %<>%
     rbind(data_world)
@@ -421,7 +419,7 @@ add_rates <- function(data) {
         ifelse(date == day1,
           NA,
           deaths - lag(deaths, n = 1)
-        )
+        ),
      # recovered.inc =
       #  ifelse(date == day1,
        #   NA,
@@ -439,16 +437,16 @@ add_rates <- function(data) {
         ) %>% round(4)
     )
   ## death rate based on total deaths and cured cases
-  data %<>%
-    mutate(
-      rate.upper =
-        ifelse(is.nan(100 * deaths /
-          (deaths + recovered)), 0,
-        100 * deaths /
-          (deaths + recovered)
-        ) %>%
-          round(1)
-    )
+  #data %<>%
+   # mutate(
+    #  rate.upper =
+     #   ifelse(is.nan(100 * deaths /
+      #    (deaths + recovered)), 0,
+       # 100 * deaths /
+        #  (deaths + recovered)
+        #) %>%
+         # round(1)
+    #)
   ## lower bound: death rate based on total confirmed cases
   data %<>%
     mutate(
