@@ -4,6 +4,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(skimr))
 suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(rsq))
 
 
 main <- function(argv) {
@@ -17,14 +18,17 @@ main <- function(argv) {
   onlyintercept <- lm(Infarc ~ 1, data = data)
   print(onlyintercept)
   print(anova(onlyintercept, reg))
+  print(rsq.partial(objR = onlyintercept, reg))
 
   areaomit <- lm(Infarc ~ X2 + X3, data = data)
   print(areaomit)
   print(anova(areaomit, reg))
-  
+  print(rsq.partial(objR = areaomit, reg))
+
   areaonly <- lm(Infarc ~ Area, data = data)
   print(areaonly)
   print(anova(areaonly, reg))
+  print(rsq.partial(objR = areaonly, reg))
 
   # save predictions of the model in the new data frame
   # together with variable you want to plot against
