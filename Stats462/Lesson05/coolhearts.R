@@ -14,6 +14,17 @@ main <- function(argv) {
   print(skimr::skim(data))
   reg <- lm(Infarc ~ Area + X2 + X3, data = data)
   print(reg)
+  onlyintercept <- lm(Infarc ~ 1, data = data)
+  print(onlyintercept)
+  print(anova(onlyintercept, reg))
+
+  areaomit <- lm(Infarc ~ X2 + X3, data = data)
+  print(areaomit)
+  print(anova(areaomit, reg))
+  
+  areaonly <- lm(Infarc ~ Area, data = data)
+  print(areaonly)
+  print(anova(areaonly, reg))
 
   # save predictions of the model in the new data frame
   # together with variable you want to plot against
