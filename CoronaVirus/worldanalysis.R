@@ -240,8 +240,18 @@ main <- function(argv) {
   output_to_pdf(data_india, "indiareport.pdf")
   write.csv(data_world, "world_data.csv", row.names = FALSE)
   write.csv(data_india, "india_data.csv", row.names = FALSE)
+  save_recoveries(data_world, "world_recoveries.csv")
+  save_recoveries(data_india, "india_recoveries.csv")
   return(0)
 }
+
+save_recoveries <- function(data, filename) {
+  data %<>%
+    select(country, date, recovered)
+  write.csv(data, filename, row.names = FALSE)
+}
+
+
 
 print_chart <- function(plot) {
   if ("grob" %in% class(plot)) {
