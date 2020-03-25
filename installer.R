@@ -22,6 +22,9 @@ install_tools <- function() {
   if (!require(roxygen2)) {
     install.packages("roxygen2", .libPaths()[1])
   }
+  if (!require(startup)) {
+    install.packages("startup", .libPaths()[1])
+  }
 }
 
 install_rbloggers <- function() {
@@ -134,6 +137,9 @@ install_stats462 <- function() {
   }
   if (!require(alr3)) {
     install.packages("alr3", .libPaths()[1])
+  }
+  if (!require(rsq)) {
+    install.packages("rsq", .libPaths()[1])
   }
 }
 
