@@ -19,6 +19,7 @@ main <- function(argv) {
   ncol = 2, nrow = n, byrow = FALSE
   )
   print(X)
+  # nolint start
   `X'` <- t(X)
   sumx <- sum(data$soap)
   sumxy <- sum(data$so.su)
@@ -33,13 +34,14 @@ main <- function(argv) {
   `X'Y` <- matrix(c(sumy, sumxy),
     nrow = 2, ncol = 1, byrow = TRUE
   )
+  # nolint end
   inverse <- solve(`X'X`)
   b <- inverse %*% `X'Y`
   rownames(b) <- c("b0", "b1")
   colnames(b) <- c("Beta Hat")
   print(b)
-  H <- X %*% inverse %*% `X'`
-  print(H)
+  HAT <- X %*% inverse %*% `X'`
+  print(HAT)
   data %<>%
     mutate(soap2 = soap * 2) %>%
     mutate(soap1 = soap)
