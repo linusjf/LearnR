@@ -23,15 +23,19 @@ main <- function(argv) {
 plot_skincancer <- function(data, reg, onlyintercept) {
   anova <- anova(onlyintercept, reg)
   rss <- round(anova$RSS, 4)
-  rss <- c(paste("Model 1 RSS:", rss[1]),
-           paste("Model 2 RSS:", rss[2]))
+  rss <- c(
+    paste("Model 1 RSS:", rss[1]),
+    paste("Model 2 RSS:", rss[2])
+  )
   p_value <- round(anova$`Pr(>F)`[2])
   p_value <- paste("p-value:", p_value)
   heading <- attr(anova, "heading")[2]
   par(mar = c(4, 7, 4, 1))
   plot(data$Lat, data$Mort,
-    main = paste0("Latitude versus Mortality\n",
-                  heading),
+    main = paste0(
+      "Latitude versus Mortality\n",
+      heading
+    ),
     xlab = "Latitude", ylab = "Mortality",
     pch = 19
   )
@@ -51,8 +55,9 @@ plot_skincancer <- function(data, reg, onlyintercept) {
     round(coefs["Lat"], 4), "Latitude"
   ))
   legend("bottomleft",
-         legend = c(rss, p_value),
-         cex = 0.8)
+    legend = c(rss, p_value),
+    cex = 0.8
+  )
 }
 
 if (identical(environment(), globalenv())) {

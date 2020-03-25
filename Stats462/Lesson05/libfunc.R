@@ -164,6 +164,6 @@ complete_anova <- function(lm) {
   if (class(lm) != "lm") {
     stop("Not an object of class 'lm' ")
   }
- pure <- alr3::pureErrorAnova(lm)
- return(pure)
+  pure <- alr3::pureErrorAnova(lm)
+  return(pure)
 }

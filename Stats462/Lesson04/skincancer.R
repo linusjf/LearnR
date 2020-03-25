@@ -17,22 +17,26 @@ main <- function(argv) {
   print(newdata)
   print("Confidence Interval")
   ci <- predict(
-                reg,
-                newdata,
-                interval = "confidence")
+    reg,
+    newdata,
+    interval = "confidence"
+  )
   print(ci)
   print("Prediction Interval")
   predi <- predict(
-                reg,
-                newdata,
-                interval = "prediction")
+    reg,
+    newdata,
+    interval = "prediction"
+  )
   print(predi)
   ci <- predict(
-                reg,
-                interval = "confidence")
+    reg,
+    interval = "confidence"
+  )
   predi <- predict(
-                reg,
-                interval = "prediction")
+    reg,
+    interval = "prediction"
+  )
   plot_skin_cancer(data, reg, ci, predi)
   return(0)
 }
@@ -46,20 +50,30 @@ plot_skin_cancer <- function(data, reg, ci, predi) {
     pch = 19, frame = FALSE
   )
   abline(reg, col = "blue")
-matlines(data$Lat, ci[, c("lwr", "upr")],
-         col = "red", lty = 1, type = "l")
-matlines(data$Lat, predi[, c("lwr", "upr")],
-         col = "blue", lty = 1, type = "l")
-polygon(c(data$Lat, rev(data$Lat)),
-        c(predi[, "upr"],
-          rev(predi[, "lwr"])),
-        col = adjustcolor("orangered",
-                          alpha.f = 0.7), border = NA)
-polygon(c(data$Lat, rev(data$Lat)),
-        c(ci[, "upr"],
-          rev(ci[, "lwr"])),
-        col = adjustcolor("wheat",
-                          alpha.f = 0.7), border = NA)
+  matlines(data$Lat, ci[, c("lwr", "upr")],
+    col = "red", lty = 1, type = "l"
+  )
+  matlines(data$Lat, predi[, c("lwr", "upr")],
+    col = "blue", lty = 1, type = "l"
+  )
+  polygon(c(data$Lat, rev(data$Lat)),
+    c(
+      predi[, "upr"],
+      rev(predi[, "lwr"])
+    ),
+    col = adjustcolor("orangered",
+      alpha.f = 0.7
+    ), border = NA
+  )
+  polygon(c(data$Lat, rev(data$Lat)),
+    c(
+      ci[, "upr"],
+      rev(ci[, "lwr"])
+    ),
+    col = adjustcolor("wheat",
+      alpha.f = 0.7
+    ), border = NA
+  )
   x0 <- mean(data$Lat)
   y0 <- mean(data$Mort)
   x1 <- x0 + 5

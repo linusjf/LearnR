@@ -23,24 +23,28 @@ process_infection_risk <- function(data) {
   print(newdata)
   print("Confidence Interval")
   ci <- predict(
-                reg,
-                se.fit = TRUE,
-                newdata,
-                interval = "confidence")
+    reg,
+    se.fit = TRUE,
+    newdata,
+    interval = "confidence"
+  )
   print(ci)
   print("Prediction Interval")
   predi <- predict(
-                reg,
-                se.fit = TRUE,
-                newdata,
-                interval = "prediction")
+    reg,
+    se.fit = TRUE,
+    newdata,
+    interval = "prediction"
+  )
   print(predi)
   ci <- predict(
-                reg,
-                interval = "confidence")
+    reg,
+    interval = "confidence"
+  )
   predi <- predict(
-                reg,
-                interval = "prediction")
+    reg,
+    interval = "prediction"
+  )
   plot_infection_risk(data, reg, ci, predi)
   plot_fitted(reg)
   plot_predictor(data, reg)
@@ -126,20 +130,30 @@ plot_infection_risk <- function(data, reg, ci, predi) {
     pch = 19, frame = TRUE
   )
   abline(reg, col = "blue")
-matlines(data$Stay, ci[, c("lwr", "upr")],
-         col = "red", lty = 1, type = "l")
-matlines(data$Stay, predi[, c("lwr", "upr")],
-         col = "blue", lty = 1, type = "l")
-polygon(c(data$Stay, rev(data$Stay)),
-        c(predi[, "upr"],
-          rev(predi[, "lwr"])),
-        col = adjustcolor("orangered",
-                          alpha.f = 0.7), border = NA)
-polygon(c(data$Stay, rev(data$Stay)),
-        c(ci[, "upr"],
-          rev(ci[, "lwr"])),
-        col = adjustcolor("wheat",
-                          alpha.f = 0.7), border = NA)
+  matlines(data$Stay, ci[, c("lwr", "upr")],
+    col = "red", lty = 1, type = "l"
+  )
+  matlines(data$Stay, predi[, c("lwr", "upr")],
+    col = "blue", lty = 1, type = "l"
+  )
+  polygon(c(data$Stay, rev(data$Stay)),
+    c(
+      predi[, "upr"],
+      rev(predi[, "lwr"])
+    ),
+    col = adjustcolor("orangered",
+      alpha.f = 0.7
+    ), border = NA
+  )
+  polygon(c(data$Stay, rev(data$Stay)),
+    c(
+      ci[, "upr"],
+      rev(ci[, "lwr"])
+    ),
+    col = adjustcolor("wheat",
+      alpha.f = 0.7
+    ), border = NA
+  )
   summ <- summary(reg)
   legends <- c(
     paste0("S - ", format(summ$sigma, digits = 4)),

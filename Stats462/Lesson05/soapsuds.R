@@ -12,20 +12,27 @@ main <- function(argv) {
     mutate(so.su = soap * suds) %>%
     mutate(soap.sq = soap * soap)
   n <- nrow(data)
-  X <- matrix(c(rep(c(1), times = n),
-                data$soap),
-  ncol = 2, nrow = n, byrow = FALSE)
+  X <- matrix(c(
+    rep(c(1), times = n),
+    data$soap
+  ),
+  ncol = 2, nrow = n, byrow = FALSE
+  )
   print(X)
   `X'` <- t(X)
   sumx <- sum(data$soap)
   sumxy <- sum(data$so.su)
   sumxsquare <- sum(data$soap.sq)
   sumy <- sum(data$suds)
-  `X'X` <- matrix(c(n, sumx,
-                    sumx, sumxsquare),
-  nrow = 2, ncol = 2, byrow = TRUE)
+  `X'X` <- matrix(c(
+    n, sumx,
+    sumx, sumxsquare
+  ),
+  nrow = 2, ncol = 2, byrow = TRUE
+  )
   `X'Y` <- matrix(c(sumy, sumxy),
-  nrow = 2, ncol = 1, byrow = TRUE)
+    nrow = 2, ncol = 1, byrow = TRUE
+  )
   inverse <- solve(`X'X`)
   b <- inverse %*% `X'Y`
   rownames(b) <- c("b0", "b1")
