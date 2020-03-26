@@ -15,12 +15,6 @@ main <- function(argv) {
   print(cor(data))
   print(cor.test(~ Moisture + Sweetness, data))
 
-  scatterplot3d(data,
-  main = "Pastry Data",
-  axis = TRUE,
-  grid = TRUE,
-  type = "b",
-  angle = 45)
 
   reg <- lm(Rating ~ Moisture, data = data)
   print(reg)
@@ -29,11 +23,23 @@ main <- function(argv) {
   reg <- lm(Rating ~ Sweetness, data = data)
   print(reg)
   print(anova(reg))
-  
+
   reg <- lm(Rating ~ Moisture  + Sweetness, data = data)
   print(reg)
   print(anova(reg))
 
+  s3d <- scatterplot3d(data,
+  main = "Pastry Data",
+  axis = TRUE,
+  grid = TRUE,
+  highlight.3d = TRUE,
+  type = "p",
+  angle = 45)
+
+p2 <- s3d$xyz.convert(subset(data, data$Sweetness == 2))
+abline(lm(y ~ x, p2))
+p2 <- s3d$xyz.convert(subset(data, data$Sweetness == 4))
+abline(lm(y ~ x, p2))
 
   labels <- c(
     "Sweetness = 2",
