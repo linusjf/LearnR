@@ -203,16 +203,16 @@ main <- function(argv) {
   ## alive cases
   data %<>%
     mutate(alive = confirmed - deaths)
-  write.csv(data, "summarised.csv", row.names = FALSE)
+  write.csv(data, "summarisedv2.csv", row.names = FALSE)
   latest_data <- data %>%
     group_by(country) %>%
     slice(c(n())) %>%
     ungroup() %>%
     filter(confirmed != 0)
-  write.csv(latest_data, "latest.csv", row.names = FALSE)
+  write.csv(latest_data, "latestv2.csv", row.names = FALSE)
   data %<>%
     add_rates()
-  write.csv(data, "rates.csv", row.names = FALSE)
+  write.csv(data, "ratesv2.csv", row.names = FALSE)
   ready_data <- ready_plot_data(data)
   plots <- list()
   plots[["top10"]] <- plot_top10_confirmed(ready_data)
@@ -236,8 +236,8 @@ main <- function(argv) {
   latest_to_pdf(latest_data, "latestreport.pdf")
   output_to_pdf(data_world, "worldreport.pdf")
   output_to_pdf(data_india, "indiareport.pdf")
-  write.csv(data_world, "world_data.csv", row.names = FALSE)
-  write.csv(data_india, "india_data.csv", row.names = FALSE)
+  write.csv(data_world, "world_datav2.csv", row.names = FALSE)
+  write.csv(data_india, "india_datav2.csv", row.names = FALSE)
   return(0)
 }
 
