@@ -141,6 +141,9 @@ install_stats462 <- function() {
   if (!require(rsq)) {
     install.packages("rsq", .libPaths()[1])
   }
+  if (!require(corrgram)) {
+    install.packages("corrgram", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {
