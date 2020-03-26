@@ -42,7 +42,7 @@ main <- function(argv) {
     "No cooling"
   )
 
-  data %>%
+plot <-  data %>%
     ggplot(aes(x = Area, y = Infarc, color = factor(Group, labels = labels))) +
     ggtitle("Scatter plot of infarction versus area") +
     theme(plot.title = element_text(hjust = 0.5)) +
@@ -53,7 +53,7 @@ main <- function(argv) {
     geom_line(color = "red", data = subset(predicted_df, Group == 1)) +
     geom_line(color = "green", data = subset(predicted_df, Group == 2)) +
     geom_line(color = "blue", data = subset(predicted_df, Group == 3))
-  ggplot2::ggsave("coolhearts.pdf")
+  print(plot)
   return(0)
 }
 

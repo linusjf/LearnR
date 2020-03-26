@@ -53,7 +53,7 @@ abline(lm(y ~ x, p2))
     Moisture = data$Moisture, Sweetness = data$Sweetness
   )
 
-  data %>%
+  plot <- data %>%
     ggplot(aes(x = Moisture, y = Rating, color = factor(Sweetness, labels =
                                                         labels))) +
     ggtitle("Scatter plot of Rating versus Moisture") +
@@ -64,7 +64,7 @@ abline(lm(y ~ x, p2))
     geom_point(size = 3) +
     geom_line(color = "red", data = subset(predicted_df, Sweetness == 2)) +
     geom_line(color = "green", data = subset(predicted_df, Sweetness == 4))
-  ggplot2::ggsave("pastry.pdf")
+  print(plot)
   return(0)
 }
 
