@@ -65,6 +65,7 @@ abline(lm(y ~ x, p2))
     geom_line(color = "red", data = subset(predicted_df, Sweetness == 2)) +
     geom_line(color = "green", data = subset(predicted_df, Sweetness == 4))
   print(plot)
+
   return(0)
 }
 
