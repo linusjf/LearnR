@@ -22,10 +22,6 @@ main <- function(argv) {
   type = "b",
   angle = 45)
 
-  reg <- lm(Rating ~ Moisture  + Sweetness, data = data)
-  print(reg)
-  print(anova(reg))
-
   reg <- lm(Rating ~ Moisture, data = data)
   print(reg)
   print(anova(reg))
@@ -33,6 +29,11 @@ main <- function(argv) {
   reg <- lm(Rating ~ Sweetness, data = data)
   print(reg)
   print(anova(reg))
+  
+  reg <- lm(Rating ~ Moisture  + Sweetness, data = data)
+  print(reg)
+  print(anova(reg))
+
 
   labels <- c(
     "Sweetness = 2",
