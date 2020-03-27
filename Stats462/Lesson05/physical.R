@@ -26,6 +26,19 @@ main <- function(argv) {
   print(reducedanova)
 
   print(anova(reducedreg, reg))
+
+  leftarmreg <- lm(Height ~ LeftArm,
+            data = data)
+  print(leftarmreg)
+  print(summary(leftarmreg))
+  leftarmanova <- anova(leftarmreg)
+  print(leftarmanova)
+
+  sse_leftarm <- sum(leftarmreg$residuals ** 2)
+  sse_reduced <- sum(reducedreg$residuals ** 2)
+  Rsquaredleftarmgivenleftfoot <-
+    (sse_leftarm - sse_reduced) / sse_leftarm
+  print(Rsquaredleftarmgivenleftfoot)
   return(0)
 }
 
