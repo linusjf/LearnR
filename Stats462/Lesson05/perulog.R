@@ -9,21 +9,22 @@ main <- function(argv) {
     header = TRUE
   )
   data %<>%
-    mutate(FracLife = Years / Age)
+    mutate(logyears = log(Years)) %>%
+    mutate(logage = log(Age))
   print(head(data))
   print(skimr::skim(data))
 
-  reg <- lm(Systol ~ . - Diastol - FracLife, data = data)
+  reg <- lm(Systol ~ . - Diastol - logyears - logage, data = data)
   print(reg)
   print(summary(reg))
   fullanova <- anova(reg)
   print(fullanova)
 
-  regratio <- lm(Systol ~ . - Diastol, data = data)
-  print(regratio)
-  print(summary(regratio))
-  fullanovaratio <- anova(regratio)
-  print(fullanovaratio)
+  reglog <- lm(Systol ~ . - Diastol, data = data)
+  print(reglog)
+  print(summary(reglog))
+  fullanovalog <- anova(reglog)
+  print(fullanovalog)
 
   partreg <-
     lm(Systol ~ . - Height - Chin - Forearm - Calf - Pulse - Diastol,
@@ -33,7 +34,7 @@ main <- function(argv) {
   partanova <- anova(partreg)
   print(partanova)
 
-  print(anova(partreg, regratio))
+  print(anova(partreg, reglog))
   return(0)
 }
 
