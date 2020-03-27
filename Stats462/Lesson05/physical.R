@@ -10,6 +10,22 @@ main <- function(argv) {
   )
   print(head(data))
   print(skimr::skim(data))
+
+  reg <- lm(Height ~ LeftArm + LeftFoot + HeadCirc + nose,
+            data = data)
+  print(reg)
+  print(summary(reg))
+  fullanova <- anova(reg)
+  print(fullanova)
+
+  reducedreg <- lm(Height ~ LeftArm + LeftFoot,
+            data = data)
+  print(reducedreg)
+  print(summary(reducedreg))
+  reducedanova <- anova(reducedreg)
+  print(reducedanova)
+
+  print(anova(reducedreg, reg))
   return(0)
 }
 
