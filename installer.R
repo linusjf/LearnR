@@ -147,6 +147,9 @@ install_stats462 <- function() {
   if (!require(e1071)) {
     install.packages("e1071", .libPaths()[1])
   }
+  if (!require(nortest)) {
+    install.packages("nortest", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {
