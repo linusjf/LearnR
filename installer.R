@@ -144,6 +144,9 @@ install_stats462 <- function() {
   if (!require(corrgram)) {
     install.packages("corrgram", .libPaths()[1])
   }
+  if (!require(e1071)) {
+    install.packages("e1071", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {
