@@ -35,7 +35,7 @@ main <- function(argv) {
   plot(q1, q2, xlab = "Residual Quantiles",
   ylab = "Theoretical Quantiles",
   main = "QQ plot")
-  abline(lm(q2 ~ q1))
+  abline(a = 0, b = 1)
   plot(data$Weight,
        residuals,
        xlab = "Weight",
