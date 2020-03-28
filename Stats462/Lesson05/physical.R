@@ -17,6 +17,8 @@ main <- function(argv) {
   print(summary(reg))
   fullanova <- anova(reg)
   print(fullanova)
+  plot(reg, which = 1,
+  caption = "Residuals versus Fitted")
 
   reducedreg <- lm(Height ~ LeftArm + LeftFoot,
             data = data)
