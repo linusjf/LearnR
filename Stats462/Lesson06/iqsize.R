@@ -88,6 +88,10 @@ main <- function(argv) {
 
   bptest <- bptest(reg, data = data)
   print(bptest)
+
+  bartlett <- bartlett.test(residuals,
+                        data[["Group"]])
+  print(bartlett)
   return(0)
 }
 
