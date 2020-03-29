@@ -150,6 +150,9 @@ install_stats462 <- function() {
   if (!require(nortest)) {
     install.packages("nortest", .libPaths()[1])
   }
+  if (!require(lmtest)) {
+    install.packages("lmtest", .libPaths()[1])
+  }
 }
 
 install_rgraphics <- function() {

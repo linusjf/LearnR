@@ -6,6 +6,7 @@ suppressPackageStartupMessages(library(e1071))
 suppressPackageStartupMessages(library(lawstat))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(lmtest))
 
 main <- function(argv) {
   data <- read.table("../Data/iqsize.txt",
