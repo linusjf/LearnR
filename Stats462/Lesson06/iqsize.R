@@ -85,6 +85,9 @@ main <- function(argv) {
   levene <- levene.test(residuals,
                         data[["Group"]])
   print(levene)
+
+  bptest <- bptest(reg, data = data)
+  print(bptest)
   return(0)
 }
 
