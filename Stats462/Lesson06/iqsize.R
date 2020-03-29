@@ -3,6 +3,9 @@
 suppressPackageStartupMessages(library(skimr))
 suppressPackageStartupMessages(library(nortest))
 suppressPackageStartupMessages(library(e1071))
+suppressPackageStartupMessages(library(lawstat))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
 
 main <- function(argv) {
   data <- read.table("../Data/iqsize.txt",
@@ -11,7 +14,9 @@ main <- function(argv) {
   print(head(data))
   print(skimr::skim(data))
 
+  data <- data[order(data$Brain, data$Height), ]
   reg <- lm(PIQ ~ Brain + Height, data = data)
+  print(reg)
   plot(reg, which = 1,
   caption = "Residuals versus Fitted")
 
@@ -60,10 +65,25 @@ main <- function(argv) {
 
   shapiro <- shapiro.test(residuals)
   print(shapiro)
-  
+
   ks <- ks.test(residuals, "pnorm", mean(residuals),
   sd(residuals))
   print(ks)
+
+  firstsample <- residuals[seq_len(length(residuals) / 2)]
+  secondsample <- residuals[seq(length(residuals) / 2 + 1,
+                                length(residuals))]
+  vartest <- var.test(firstsample, secondsample)
+  print(vartest)
+
+  data %<>%
+    cbind(residuals) %>%
+    mutate(Group = ifelse(row_number() > n() / 2,
+                          "Highest",
+                          "Lowest"))
+  levene <- levene.test(residuals,
+                        data[["Group"]])
+  print(levene)
   return(0)
 }
 
