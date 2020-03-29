@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+# https://stats.stackexchange.com/a/52107/270877
 
 suppressPackageStartupMessages(library(skimr))
 suppressPackageStartupMessages(library(nortest))
