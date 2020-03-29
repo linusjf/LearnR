@@ -1,6 +1,8 @@
 #!/usr/bin/env Rscript
 
 suppressPackageStartupMessages(library(skimr))
+suppressPackageStartupMessages(library(nortest))
+suppressPackageStartupMessages(library(e1071))
 
 main <- function(argv) {
   data <- read.table("../Data/iqsize.txt",
@@ -41,6 +43,20 @@ main <- function(argv) {
        xlab = "Weight",
        main = "Residuals versus Weight")
   abline(h = mean(residuals))
+
+  probplot(residuals,
+           probs = c(0.10, 0.25, 0.5, 0.75, 0.9, 0.99),
+  xlab = "Residuals",
+  ylab = "Probabilities (Percent)")
+
+  ad <- ad.test(residuals)
+  print(ad)
+  labels <- c(paste0("Mean: ", round(mean(residuals), 4)),
+  paste0("Stdev: ", round(sd(residuals), 2)),
+  paste0("Count: ", round(length(residuals), 2)),
+  paste0("AD: ", round(ad$statistic, 4)),
+  paste0("p-value: ", round(ad$p.value, 4)))
+  legend("bottomright", legend = labels)
   return(0)
 }
 
