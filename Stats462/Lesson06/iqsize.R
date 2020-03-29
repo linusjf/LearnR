@@ -57,6 +57,13 @@ main <- function(argv) {
   paste0("AD: ", round(ad$statistic, 4)),
   paste0("p-value: ", round(ad$p.value, 4)))
   legend("bottomright", legend = labels)
+
+  shapiro <- shapiro.test(residuals)
+  print(shapiro)
+  
+  ks <- ks.test(residuals, "pnorm", mean(residuals),
+  sd(residuals))
+  print(ks)
   return(0)
 }
 
