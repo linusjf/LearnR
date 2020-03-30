@@ -92,6 +92,16 @@ main <- function(argv) {
   bartlett <- bartlett.test(residuals,
                         data[["Group"]])
   print(bartlett)
+
+  ## Calculate confidence intervals
+  newdata <- data.frame(Brain = c(90, 79),
+  Height = c(70, 62))
+  predicted <- predict(reg, newdata,
+  interval = "confidence", se.fit = TRUE)
+  print(predicted)
+  predicted <- predict(reg, newdata,
+  interval = "prediction", se.fit = TRUE)
+  print(predicted)
   return(0)
 }
 
