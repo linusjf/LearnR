@@ -14,13 +14,23 @@ main <- function(argv) {
 
   reg <- lm(prop ~ time, data = data)
   print(reg)
+  coefs <- reg$coefficients
+  summ <- summary(reg)
 
+  eqn <- paste(round(coefs["(Intercept)"], 4),
+  round(coefs["time"], 4), "time")
   with(data,
-  plot(time, prop, main = "Scatterplot: prop versus time"))
+  plot(time, prop,
+       main = "Scatterplot: prop versus time",
+       sub = eqn))
+  labels <- c(paste0("Sigma: ", round(summ$sigma, 4)),
+              paste0("R-squared: ", round(summ$r.squared, 4)),
+              paste0("Adj R-squared: ", round(summ$adj.r.squared, 4)))
   with(data, {
   abline(reg, col = "red")
   lines(lowess(time, prop),
         col = "blue")
+  legend("topright", legend = labels)
   })
   plot(reg, which = 1,
   caption = "Residuals versus Fitted")
