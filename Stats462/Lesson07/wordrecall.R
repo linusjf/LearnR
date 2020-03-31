@@ -141,6 +141,19 @@ main <- function(argv) {
   paste0("AD: ", round(ad$statistic, 4)),
   paste0("p-value: ", round(ad$p.value, 4)))
   legend("bottomright", legend = labels)
+
+  reg <- lm(prop ~ lntime, data = data)
+  print(anova(reg))
+
+  newdata <-
+    data.frame(
+               lntime = log(1000))
+  prediction <- predict(reg, newdata, se.fit = TRUE,
+  interval = "confidence")
+  print(prediction)
+  prediction <- predict(reg, newdata, se.fit = TRUE,
+  interval = "prediction")
+  print(prediction)
   return(0)
 }
 
