@@ -108,6 +108,11 @@ main <- function(argv) {
   prediction <- predict(reg, newdata, se.fit = TRUE,
   interval = "prediction")
   print(exp(prediction$fit))
+
+  # for 10 kg increase in Birth Weight
+  confint <- confint(reg, "Birthwgt")
+  rownames(confint) <- "Gestation increase"
+  print(exp(10 * confint))
   return(0)
 }
 
