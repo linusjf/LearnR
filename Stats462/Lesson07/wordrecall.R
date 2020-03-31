@@ -144,6 +144,7 @@ main <- function(argv) {
 
   reg <- lm(prop ~ lntime, data = data)
   print(anova(reg))
+  print(summary(reg))
 
   newdata <-
     data.frame(
@@ -154,6 +155,9 @@ main <- function(argv) {
   prediction <- predict(reg, newdata, se.fit = TRUE,
   interval = "prediction")
   print(prediction)
+
+  confint <- confint(reg, "lntime")
+  print(log(10) * confint)
   return(0)
 }
 
