@@ -148,6 +148,17 @@ main <- function(argv) {
   paste0("p-value: ", round(ad$p.value, 4)))
   legend("bottomright", legend = labels)
 
+  print(anova(reg))
+
+  # What is the "average" volume of all shortleaf 
+  # pine trees that are 10" in diameter?
+  lndiam10 <- log(10)
+  newdata <- data.frame(lndiam = lndiam10)
+  prediction <- predict(reg, newdata, se.fit = TRUE,
+  interval = "confidence")
+  fit <- prediction$fit
+  fit <- exp(fit)
+  print(fit)
   return(0)
 }
 
