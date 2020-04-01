@@ -159,6 +159,14 @@ main <- function(argv) {
   fit <- prediction$fit
   fit <- exp(fit)
   print(fit)
+
+  # for 2 fold increase in diameter
+  beta_one <- reg$coefficients["lndiam"]
+  ci <- confint(reg, "lndiam")
+  fit <- c(beta_one, ci)
+  fit <- 2 ^ fit
+  names(fit) <- c("Diameter", "Lower", "Upper")
+  print(fit)
   return(0)
 }
 
