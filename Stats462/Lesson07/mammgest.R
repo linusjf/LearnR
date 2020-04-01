@@ -23,7 +23,7 @@ main <- function(argv) {
   summ <- summary(reg)
 
   eqn <- paste(round(coefs["(Intercept)"], 4),
-  round(coefs["Birthwgt"], 4), "Birthwgt")
+  sprintf("%+0.4f", round(coefs["Birthwgt"], 4)), "Birthwgt")
   with(data,
   plot(Birthwgt, Gestation,
        main = "Scatterplot: Birthweight versus Gestation",
@@ -64,7 +64,7 @@ main <- function(argv) {
   summ <- summary(reg)
 
   eqn <- paste(round(coefs["(Intercept)"], 4),
-  round(coefs["Birthwgt"], 4), "Birthwgt")
+  sprintf("%+0.4f", round(coefs["Birthwgt"], 4)), "Birthwgt")
   with(data,
   plot(Birthwgt, lngestation,
        main = "Scatterplot: Birthweight versus log(Gestation)",
