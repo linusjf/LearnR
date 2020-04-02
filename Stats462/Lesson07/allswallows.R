@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
 library(scatterplot3d)
+suppressPackageStartupMessages(library(e1071))
 
 main <- function(argv) {
   data <- read.table("../Data/allswallows.txt",
@@ -42,6 +43,46 @@ main <- function(argv) {
   print("Reduced model adjusted R squared")
   print(summary(lmreduced)$adj.r.squared)
   print(anova(lmreduced, lmfull))
+
+  print(summary(lmreduced))
+  plot(lmfull, which = 1,
+  caption = "Residuals vs Fitted",
+  main = "Residuals plot with interaction terms")
+
+  residuals <- resid(lmfull)
+  probplot(residuals,
+           probs = c(0.10, 0.25, 0.5, 0.75, 0.9, 0.99, 0.999),
+  xlab = "Residuals",
+  ylab = "Probabilities (Percent)")
+
+  ad <- nortest::ad.test(residuals)
+  print(ad)
+  labels <- c(paste0("Mean: ", round(mean(residuals), 4)),
+  paste0("Stdev: ", round(sd(residuals), 2)),
+  paste0("Count: ", round(length(residuals), 2)),
+  paste0("AD: ", round(ad$statistic, 4)),
+  paste0("p-value: ", round(ad$p.value, 4)))
+  legend("bottomright", legend = labels)
+
+  plot(lmreduced, which = 1,
+  caption = "Residuals vs Fitted",
+  main = "Residuals plot with no interaction terms")
+
+  residuals <- resid(lmreduced)
+  probplot(residuals,
+           probs = c(0.10, 0.25, 0.5, 0.75, 0.9, 0.99, 0.999),
+  xlab = "Residuals",
+  ylab = "Probabilities (Percent)")
+
+  ad <- nortest::ad.test(residuals)
+  print(ad)
+  labels <- c(paste0("Mean: ", round(mean(residuals), 4)),
+  paste0("Stdev: ", round(sd(residuals), 2)),
+  paste0("Count: ", round(length(residuals), 2)),
+  paste0("AD: ", round(ad$statistic, 4)),
+  paste0("p-value: ", round(ad$p.value, 4)))
+  legend("bottomright", legend = labels)
+
   return(0)
 }
 
