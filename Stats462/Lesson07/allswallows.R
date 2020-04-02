@@ -32,6 +32,12 @@ main <- function(argv) {
          s3d$plane3d(lm)
   }
   )
+
+  lmfull <- lm(Vent ~ CO2 + O2 + Type + CO2 * Type + O2 * Type + CO2 * O2,
+           data)
+  lmreduced <- lm(Vent ~ CO2 + O2 + Type,
+           data)
+  print(anova(lmreduced, lmfull))
   return(0)
 }
 
