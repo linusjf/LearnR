@@ -35,8 +35,12 @@ main <- function(argv) {
 
   lmfull <- lm(Vent ~ CO2 + O2 + Type + CO2 * Type + O2 * Type + CO2 * O2,
            data)
+  print("Full model adjusted R squared")
+  print(summary(lmfull)$adj.r.squared)
   lmreduced <- lm(Vent ~ CO2 + O2 + Type,
            data)
+  print("Reduced model adjusted R squared")
+  print(summary(lmreduced)$adj.r.squared)
   print(anova(lmreduced, lmfull))
   return(0)
 }
