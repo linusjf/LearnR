@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 library(scatterplot3d)
-source("libfunc.R")
+source("../Lib/libfunc.R")
 
 main <- function(argv) {
   data <- read.table("../Data/babybirds.txt",

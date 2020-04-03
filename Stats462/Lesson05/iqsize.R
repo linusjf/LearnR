@@ -5,7 +5,7 @@ suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(purrr))
 suppressPackageStartupMessages(library(stringr))
 suppressPackageStartupMessages(library(skimr))
-source("libfunc.R")
+source("../Lib/libfunc.R")
 
 main <- function(argv) {
   data <- read.table("../Data/iqsize.txt",
