@@ -47,6 +47,18 @@ main <- function(argv) {
         add = TRUE,
   col = "red")
   legend("bottomright", legend = labels)
+
+  newdata <-
+    data.frame(
+               age = 5)
+  prediction <- predict(lm, newdata, se.fit = TRUE,
+  interval = "prediction")
+  print("Prediction interval for age = 5")
+  print(prediction$fit)
+  prediction <- predict(lm, newdata, se.fit = TRUE,
+  interval = "confidence")
+  print("Confidence interval for age = 5")
+  print(prediction$fit)
   return(0)
 }
 
