@@ -9,6 +9,7 @@ main <- function(argv) {
   print(head(data))
   print(skimr::skim(data))
   lm <- lm(Wgt ~ Gest + Smoke, data)
+  print(summary(lm))
   return(0)
 }
 
