@@ -56,6 +56,11 @@ main <- function(argv) {
   zlim = c(0, 1),
   type = "l", add = TRUE, colkey = FALSE
   )
+
+  lm <- lm(Wgt ~ Gest + Smoke, data)
+  print(complete_anova(lm))
+  print(anova(lm))
+  print(summary(lm))
   return(0)
 }
 
