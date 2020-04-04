@@ -61,6 +61,11 @@ main <- function(argv) {
   print(complete_anova(lm))
   print(anova(lm))
   print(summary(lm))
+  smokecoeff <- lm$coefficients["Smoke"]
+  cis <- confint(lm, "Smoke")
+  fit <- c(smokecoeff, cis)
+  names(fit) <- c("Value", "Lower", "Upper")
+  print(fit)
   return(0)
 }
 
