@@ -5,7 +5,7 @@ library(plot3D)
 suppressPackageStartupMessages(
                                library(dplyr))
 library(magrittr)
-source("../Lib/libfunc.R")
+source("~/LearnR/Stats462/Lib/libfunc.R")
 
 main <- function(argv) {
   data <- read.table("../Data/birthsmokers.txt",

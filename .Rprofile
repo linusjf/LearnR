@@ -1,5 +1,4 @@
 # A fun welcome message
-
 try(startup::startup())
 message(paste("Hi ", Sys.info()["user"], ", Welcome to R"))
 # Customise the R prompt that prefixes every command

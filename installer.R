@@ -25,6 +25,9 @@ install_tools <- function() {
   if (!require(startup)) {
     install.packages("startup", .libPaths()[1])
   }
+  if (!require(rprojroot)) {
+    install.packages("rprojroot", .libPaths()[1])
+  }
 }
 
 install_rbloggers <- function() {
