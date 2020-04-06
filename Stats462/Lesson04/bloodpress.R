@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+bloodpress.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/bloodpress.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/bloodpress.txt",
+  data <- read.table(bloodpress.txt(),
     header = TRUE
   )
   print(head(data))

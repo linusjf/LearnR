@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+alligator.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/alligator.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/alligator.txt",
+  data <- read.table(alligator.txt(),
     header = TRUE
   )
   print(head(data))

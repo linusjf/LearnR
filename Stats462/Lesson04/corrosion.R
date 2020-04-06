@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+corrosion.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/corrosion.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/corrosion.txt",
+  data <- read.table(corrosion.txt(),
     header = TRUE
   )
   print(head(data))

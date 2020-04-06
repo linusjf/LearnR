@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+anscombe.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/anscombe.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/anscombe.txt",
+  data <- read.table(anscombe.txt(),
     header = TRUE
   )
   print(head(data))

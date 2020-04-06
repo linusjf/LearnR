@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+oldfaithfulgeyser.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/Old_Faithful_geyser.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/Old_Faithful_geyser.txt",
+  data <- read.table(oldfaithfulgeyser.txt(),
     header = TRUE
   )
   print(head(data))

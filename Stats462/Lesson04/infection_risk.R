@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+infectionrisk.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/infection_risk.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/infection_risk.txt",
+  data <- read.table(infectionrisk.txt(),
     header = TRUE
   )
   print(head(data))

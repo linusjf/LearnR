@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+treadwear.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/treadwear.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/treadwear.txt",
+  data <- read.table(treadwear.txt(),
     header = TRUE
   )
   print(head(data))

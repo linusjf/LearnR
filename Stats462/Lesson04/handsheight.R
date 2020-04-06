@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+handsheight.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/handsheight.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/handsheight.txt",
+  data <- read.table(handsheight.txt(),
     header = TRUE
   )
   print(head(data))

@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+carstopping.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/carstopping.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/carstopping.txt",
+  data <- read.table(carstopping.txt(),
     header = TRUE
   )
   print(head(data))

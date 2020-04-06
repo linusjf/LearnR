@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+solutionsconc.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/solutions_conc.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/solutions_conc.txt",
+  data <- read.table(solutionsconc.txt(),
     header = TRUE
   )
   print(head(data))

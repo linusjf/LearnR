@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+realestate.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/realestate.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/realestate.txt",
+  data <- read.table(realestate.txt(),
     header = TRUE
   )
   print(head(data))

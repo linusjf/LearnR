@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+alcoholarm.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/alcoholarm.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/alcoholarm.txt",
+  data <- read.table(alcoholarm.txt(),
     header = TRUE
   )
   print(head(data))

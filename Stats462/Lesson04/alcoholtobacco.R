@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+alcoholtobacco.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/alcoholtobacco.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/alcoholtobacco.txt",
+  data <- read.table(alcoholtobacco.txt(),
     header = TRUE
   )
   print(head(data))
