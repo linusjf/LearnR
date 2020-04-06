@@ -1,4 +1,11 @@
 #!/usr/bin/env Rscript
+toluca.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/Toluca.txt"
+  )
+}
 
 suppressPackageStartupMessages(library(skimr))
 suppressPackageStartupMessages(library(nortest))
@@ -9,7 +16,7 @@ suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(lmtest))
 
 main <- function(argv) {
-  data <- read.table("../Data/Toluca.txt",
+  data <- read.table(toluca.txt(),
     header = TRUE
   )
   print(head(data))
