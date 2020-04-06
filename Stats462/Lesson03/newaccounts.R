@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+newaccounts() <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/newaccounts.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/newaccounts.txt",
+  data <- read.table(newaccounts(),
     header = TRUE
   )
   print(head(data))

@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+leadcord() <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/leadcord.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/leadcord.txt",
+  data <- read.table(leadcord(),
     header = TRUE
   )
   print(head(data))

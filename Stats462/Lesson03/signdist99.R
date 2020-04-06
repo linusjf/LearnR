@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+signdist() <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/signdist.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/signdist.txt",
+  data <- read.table(signdist(),
     header = TRUE
   )
   print(head(data))

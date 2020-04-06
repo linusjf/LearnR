@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+mens200m() <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/mens200m.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/mens200m.txt",
+  data <- read.table(mens200m(),
     header = TRUE
   )
   print(head(data))
