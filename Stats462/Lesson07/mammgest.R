@@ -1,4 +1,11 @@
 #!/usr/bin/env Rscript
+mammgest.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/mammgest.txt"
+  )
+}
 
 suppressPackageStartupMessages(library(skimr))
 suppressPackageStartupMessages(library(nortest))
@@ -8,7 +15,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 
 main <- function(argv) {
-  data <- read.table("../Data/mammgest.txt",
+  data <- read.table(mammgest.txt(),
     header = TRUE
   )
   print(head(data))
@@ -82,7 +89,8 @@ main <- function(argv) {
   caption = "Residuals versus Fitted")
 
   residuals <- resid(reg)
-  plot(data$Birthwgt, residuals, xlab = "Birth Weight", main = "Residuals versus Birth Weight")
+  plot(data$Birthwgt, residuals, xlab = "Birth Weight", main = "Residuals versus
+       Birth Weight")
   abline(h = mean(residuals))
 
   probplot(residuals,

@@ -1,9 +1,16 @@
 #!/usr/bin/env Rscript
+bluegills.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/bluegills.txt"
+  )
+}
 library(scatterplot3d)
 suppressPackageStartupMessages(library(e1071))
 
 main <- function(argv) {
-  data <- read.table("../Data/bluegills.txt",
+  data <- read.table(bluegills.txt(),
     header = TRUE
   )
 

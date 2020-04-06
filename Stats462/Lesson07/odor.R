@@ -1,9 +1,16 @@
 #!/usr/bin/env Rscript
+odor.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/odor.txt"
+  )
+}
 library(scatterplot3d)
 suppressPackageStartupMessages(library(e1071))
 
 main <- function(argv) {
-  data <- read.table("../Data/odor.txt",
+  data <- read.table(odor.txt(),
     header = TRUE
   )
 

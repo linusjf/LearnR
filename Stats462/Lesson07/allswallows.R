@@ -1,9 +1,16 @@
 #!/usr/bin/env Rscript
+allswallows.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/allswallows.txt"
+  )
+}
 library(scatterplot3d)
 suppressPackageStartupMessages(library(e1071))
 
 main <- function(argv) {
-  data <- read.table("../Data/allswallows.txt",
+  data <- read.table(allswallows.txt(),
     header = TRUE
   )
   print(head(data))

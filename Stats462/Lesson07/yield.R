@@ -1,9 +1,16 @@
 #!/usr/bin/env Rscript
+yield.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/yield.txt"
+  )
+}
 library(scatterplot3d)
 suppressPackageStartupMessages(library(e1071))
 
 main <- function(argv) {
-  data <- read.table("../Data/yield.txt",
+  data <- read.table(yield.txt(),
     header = TRUE
   )
 

@@ -1,4 +1,11 @@
 #!/usr/bin/env Rscript
+wordrecall.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/wordrecall.txt"
+  )
+}
 
 suppressPackageStartupMessages(library(skimr))
 suppressPackageStartupMessages(library(nortest))
@@ -8,7 +15,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 
 main <- function(argv) {
-  data <- read.table("../Data/wordrecall.txt",
+  data <- read.table(wordrecall.txt(),
     header = TRUE
   )
   print(head(data))

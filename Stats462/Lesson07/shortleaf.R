@@ -1,4 +1,11 @@
 #!/usr/bin/env Rscript
+shortleaf.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/shortleaf.txt"
+  )
+}
 
 suppressPackageStartupMessages(library(skimr))
 suppressPackageStartupMessages(library(nortest))
@@ -8,7 +15,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 
 main <- function(argv) {
-  data <- read.table("../Data/shortleaf.txt",
+  data <- read.table(shortleaf.txt(),
     header = TRUE
   )
   print(head(data))
@@ -150,7 +157,7 @@ main <- function(argv) {
 
   print(anova(reg))
 
-  # What is the "average" volume of all shortleaf 
+  # What is the "average" volume of all shortleaf
   # pine trees that are 10" in diameter?
   lndiam10 <- log(10)
   newdata <- data.frame(lndiam = lndiam10)
