@@ -1,4 +1,12 @@
 #!/usr/bin/env Rscript
+birthsmokers02.txt <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/birthsmokers_02.txt"
+  )
+}
+
 lib_path <- function() {
   library(rprojroot)
   paste0(
@@ -11,7 +19,7 @@ library(skimr)
 source(lib_path())
 
 main <- function(argv) {
-  data <- read.table("../Data/birthsmokers_02.txt",
+  data <- read.table(birthsmokers02.txt(),
     header = TRUE, fill = TRUE
   )
   print(head(data))
