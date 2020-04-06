@@ -1,11 +1,19 @@
 #!/usr/bin/env Rscript
+  lib_path <- function() {
+    library(rprojroot)
+    paste0(
+      find_root(has_file(".Rprofile")),
+      "/Stats462/Lib/libfunc.R"
+    )
+  }
+
+  library(skimr)
+  source(lib_path())
 
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(purrr))
 suppressPackageStartupMessages(library(stringr))
-suppressPackageStartupMessages(library(skimr))
-source("../Lib/libfunc.R")
 
 main <- function(argv) {
   data <- read.table("../Data/iqsize.txt",

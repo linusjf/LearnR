@@ -1,6 +1,15 @@
 #!/usr/bin/env Rscript
+  lib_path <- function() {
+    library(rprojroot)
+    paste0(
+      find_root(has_file(".Rprofile")),
+      "/Stats462/Lib/libfunc.R"
+    )
+  }
+
+  library(skimr)
+  source(lib_path())
 library(scatterplot3d)
-source("../Lib/libfunc.R")
 
 main <- function(argv) {
   data <- read.table("../Data/babybirds.txt",
