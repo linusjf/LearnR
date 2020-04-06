@@ -114,7 +114,10 @@ main <- function(argv) {
   )
 
   residuals <- resid(reg)
-  plot(data$time, residuals, xlab = "log(time)", main = "Residuals versus log(Time)")
+  plot(data$time,
+       residuals,
+       xlab = "log(time)",
+       main = "Residuals versus log(Time)")
   abline(h = mean(residuals))
 
   probplot(residuals,
