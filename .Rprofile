@@ -27,6 +27,7 @@ local({
   cat("\nGoodbye at ", date(), "\n")
 }
 # nolint end
+
 if (interactive()) {
   try(fortunes::fortune(), silent = TRUE)
 }

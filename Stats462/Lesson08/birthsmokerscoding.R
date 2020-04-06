@@ -8,13 +8,14 @@ lib_path <- function() {
 }
 
 library(skimr)
-source(lib_path())
 library(scatterplot3d)
 library(plot3D)
 suppressPackageStartupMessages(
   library(dplyr)
 )
 library(magrittr)
+source(lib_path())
+
 
 main <- function(argv) {
   data <- read.table("../Data/birthsmokers.txt",
@@ -24,7 +25,7 @@ main <- function(argv) {
   print(skimr::skim(data))
   scatterplot_matrix(data, "Birth Smokers Scatterplot Matrix")
   data %<>%
-    mutate(Smoke = ifelse(data$Smoke == "yes", 1, 0))
+    mutate(Smoke = ifelse(data$Smoke == "yes", 1, -1))
   print(head(data))
   s <- subset(data, data$Smoke == 1)
   lm <- lm(Wgt ~ Gest + Smoke, s)
@@ -37,7 +38,7 @@ main <- function(argv) {
     s$Gest, s$Smoke,
     type = "l"
   )
-  ns <- subset(data, data$Smoke == 0)
+  ns <- subset(data, data$Smoke == -1)
   lm <- lm(Wgt ~ Gest, ns)
   s3d$points3d(lm$fitted.values,
     ns$Gest, ns$Smoke,
@@ -48,7 +49,7 @@ main <- function(argv) {
     data$Smoke,
     xlab = "Wgt", ylab = "Gest",
     zlab = "Smoke",
-    zlim = c(0, 1),
+    zlim = c(-1, 1),
     type = "p", bty = "f", colkey = FALSE,
     ticktype = "detailed"
   )
@@ -57,23 +58,24 @@ main <- function(argv) {
   plot3D::lines3D(lm$fitted.values,
     s$Gest,
     s$Smoke,
-    zlim = c(0, 1),
     type = "l",
     add = TRUE, colkey = FALSE
   )
-  ns <- subset(data, data$Smoke == 0)
+  ns <- subset(data, data$Smoke == -1)
   lm <- lm(Wgt ~ Gest, ns)
   plot3D::lines3D(lm$fitted.values,
     ns$Gest,
     ns$Smoke,
-    zlim = c(0, 1),
     type = "l", add = TRUE, colkey = FALSE
   )
 
   lm <- lm(Wgt ~ Gest + Smoke, data)
-  print(complete_anova(lm))
-  print(anova(lm))
-  print(summary(lm))
+  complete <- complete_anova(lm)
+  print(complete)
+  anova <- anova(lm)
+  print(anova)
+  summ <- summary(lm)
+  print(summ)
   smokecoeff <- lm$coefficients["Smoke"]
   cis <- confint(lm, "Smoke")
   fit <- c(smokecoeff, cis)

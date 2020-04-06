@@ -7,6 +7,9 @@ install_tools <- function() {
   if (!require(styler)) {
     install.packages("styler", .libPaths()[1])
   }
+  if (!require(startup)) {
+    install.packages("startup", .libPaths()[1])
+  }
 }
 
 main <- function(argv) {
