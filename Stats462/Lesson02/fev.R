@@ -1,9 +1,16 @@
 #!/usr/bin/env Rscript
+fev_dat <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/fev_dat.txt"
+  )
+}
 library(skimr)
 library(lawstat)
 
 main <- function(argv) {
-  data <- read.table("../Data/fev_dat.txt",
+  data <- read.table(fev_dat(),
     header = TRUE
   )
   print(head(data))

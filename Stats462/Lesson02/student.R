@@ -1,10 +1,17 @@
 #!/usr/bin/env Rscript
+student_height_weight() <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/student_height_weight.txt"
+  )
+}
 library(skimr)
 library(Metrics)
 suppressMessages(library(dvmisc))
 
 main <- function(argv) {
-  data <- read.table("../Data/student_height_weight.txt",
+  data <- read.table(student_height_weight(),
     header = TRUE
   )
   print(head(data))

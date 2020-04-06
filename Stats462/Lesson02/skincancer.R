@@ -1,8 +1,15 @@
 #!/usr/bin/env Rscript
+skincancer <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/skincancer.txt"
+  )
+}
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table("../Data/skincancer.txt",
+  data <- read.table(skincancer(),
     header = TRUE
   )
   print(head(data))

@@ -1,10 +1,17 @@
 #!/usr/bin/env Rscript
+heightgpa <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Data/heightgpa.txt"
+  )
+}
 library(skimr)
 library(Metrics)
 suppressMessages(library(dvmisc))
 
 main <- function(argv) {
-  data <- read.table("../Data/heightgpa.txt",
+  data <- read.table(heightgpa(),
     header = TRUE
   )
   print(head(data))
