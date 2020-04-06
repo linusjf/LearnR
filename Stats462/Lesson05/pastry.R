@@ -24,22 +24,23 @@ main <- function(argv) {
   print(reg)
   print(anova(reg))
 
-  reg <- lm(Rating ~ Moisture  + Sweetness, data = data)
+  reg <- lm(Rating ~ Moisture + Sweetness, data = data)
   print(reg)
   print(anova(reg))
 
   s3d <- scatterplot3d(data,
-  main = "Pastry Data",
-  axis = TRUE,
-  grid = TRUE,
-  highlight.3d = TRUE,
-  type = "p",
-  angle = 45)
+    main = "Pastry Data",
+    axis = TRUE,
+    grid = TRUE,
+    highlight.3d = TRUE,
+    type = "p",
+    angle = 45
+  )
 
-p2 <- s3d$xyz.convert(subset(data, data$Sweetness == 2))
-abline(lm(y ~ x, p2))
-p2 <- s3d$xyz.convert(subset(data, data$Sweetness == 4))
-abline(lm(y ~ x, p2))
+  p2 <- s3d$xyz.convert(subset(data, data$Sweetness == 2))
+  abline(lm(y ~ x, p2))
+  p2 <- s3d$xyz.convert(subset(data, data$Sweetness == 4))
+  abline(lm(y ~ x, p2))
 
   labels <- c(
     "Sweetness = 2",
@@ -54,8 +55,10 @@ abline(lm(y ~ x, p2))
   )
 
   plot <- data %>%
-    ggplot(aes(x = Moisture, y = Rating, color = factor(Sweetness, labels =
-                                                        labels))) +
+    ggplot(aes(x = Moisture, y = Rating, color = factor(Sweetness,
+      labels =
+        labels
+    ))) +
     ggtitle("Scatter plot of Rating versus Moisture") +
     theme(plot.title = element_text(hjust = 0.5)) +
     xlab("Moisture") +

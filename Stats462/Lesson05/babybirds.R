@@ -1,14 +1,14 @@
 #!/usr/bin/env Rscript
-  lib_path <- function() {
-    library(rprojroot)
-    paste0(
-      find_root(has_file(".Rprofile")),
-      "/Stats462/Lib/libfunc.R"
-    )
-  }
+lib_path <- function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Lib/libfunc.R"
+  )
+}
 
-  library(skimr)
-  source(lib_path())
+library(skimr)
+source(lib_path())
 library(scatterplot3d)
 
 main <- function(argv) {

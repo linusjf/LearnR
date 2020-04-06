@@ -28,7 +28,8 @@ main <- function(argv) {
 
   partreg <-
     lm(Systol ~ . - Height - Chin - Forearm - Calf - Pulse - Diastol,
-       data = data)
+      data = data
+    )
   print(partreg)
   print(summary(partreg))
   partanova <- anova(partreg)

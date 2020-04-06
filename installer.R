@@ -108,7 +108,6 @@ install_coronavirus <- function() {
     install.packages("formattable", .libPaths()[1])
   }
 }
-# nolint end
 
 install_stats462 <- function() {
   if (!require(skimr)) {
@@ -160,6 +159,7 @@ install_stats462 <- function() {
     install.packages("lmtest", .libPaths()[1])
   }
 }
+# nolint end
 
 install_rgraphics <- function() {
   if (!require(RGraphics)) {

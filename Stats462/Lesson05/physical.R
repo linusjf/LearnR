@@ -12,16 +12,20 @@ main <- function(argv) {
   print(skimr::skim(data))
 
   reg <- lm(Height ~ LeftArm + LeftFoot + HeadCirc + nose,
-            data = data)
+    data = data
+  )
   print(reg)
   print(summary(reg))
   fullanova <- anova(reg)
   print(fullanova)
-  plot(reg, which = 1,
-  caption = "Residuals versus Fitted")
+  plot(reg,
+    which = 1,
+    caption = "Residuals versus Fitted"
+  )
 
   reducedreg <- lm(Height ~ LeftArm + LeftFoot,
-            data = data)
+    data = data
+  )
   print(reducedreg)
   print(summary(reducedreg))
   reducedanova <- anova(reducedreg)
@@ -30,14 +34,15 @@ main <- function(argv) {
   print(anova(reducedreg, reg))
 
   leftarmreg <- lm(Height ~ LeftArm,
-            data = data)
+    data = data
+  )
   print(leftarmreg)
   print(summary(leftarmreg))
   leftarmanova <- anova(leftarmreg)
   print(leftarmanova)
 
-  sse_leftarm <- sum(leftarmreg$residuals ** 2)
-  sse_reduced <- sum(reducedreg$residuals ** 2)
+  sse_leftarm <- sum(leftarmreg$residuals**2)
+  sse_reduced <- sum(reducedreg$residuals**2)
   Rsquaredleftarmgivenleftfoot <-
     (sse_leftarm - sse_reduced) / sse_leftarm
   print(Rsquaredleftarmgivenleftfoot)

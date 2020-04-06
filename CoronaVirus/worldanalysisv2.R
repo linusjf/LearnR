@@ -10,11 +10,11 @@ suppressMessages(library(rjson))
 suppressMessages(library("dplyr"))
 
 # source data files
-  filenames <- c(
-    "time_series_covid19_confirmed_global.csv",
-    "time_series_covid19_deaths_global.csv"
-#    "time_series_covid19_testing_global.csv"
-  )
+filenames <- c(
+  "time_series_covid19_confirmed_global.csv",
+  "time_series_covid19_deaths_global.csv"
+  #    "time_series_covid19_testing_global.csv"
+)
 
 download_csv <- function(filename) {
   destination <- filename
@@ -163,12 +163,12 @@ main <- function(argv) {
   ## load data into R
   data_confirmed <- read.csv(filenames[1])
   data_deaths <- read.csv(filenames[2])
-#  data_tests <- read.csv(filenames[3])
+  #  data_tests <- read.csv(filenames[3])
 
   if (FALSE) {
     print_sample_data(data_confirmed, "Confirmed")
     print_sample_data(data_deaths, "Deaths")
-#    print_sample_data(data_tests, "Tests")
+    #    print_sample_data(data_tests, "Tests")
   }
   dates <- dates(data_confirmed)
   print("Date ranges")
@@ -184,11 +184,11 @@ main <- function(argv) {
     clean_data() %>%
     rename(deaths = count)
   #  data_tests %<>%
- #   clean_data() %>%
+  #   clean_data() %>%
   #  rename(tests = count)
   ## merge above 3 datasets into one, by country and date
   data <- data_confirmed %>%
-    merge(data_deaths) 
+    merge(data_deaths)
   #  merge(data_tests)
   ## counts for the whole world
   data_world <- data %>%
@@ -420,14 +420,14 @@ add_rates <- function(data) {
           NA,
           deaths - lag(deaths, n = 1)
         ),
-     # recovered.inc =
+      # recovered.inc =
       #  ifelse(date == day1,
-       #   NA,
-        #  recovered - lag(
-         #   recovered,
-          #  n = 1
-          #)
-       # ),
+      #   NA,
+      #  recovered - lag(
+      #   recovered,
+      #  n = 1
+      # )
+      # ),
       confirmed.rt =
         ifelse(date == day1,
           NA,
@@ -437,16 +437,16 @@ add_rates <- function(data) {
         ) %>% round(4)
     )
   ## death rate based on total deaths and cured cases
-  #data %<>%
-   # mutate(
-    #  rate.upper =
-     #   ifelse(is.nan(100 * deaths /
-      #    (deaths + recovered)), 0,
-       # 100 * deaths /
-        #  (deaths + recovered)
-        #) %>%
-         # round(1)
-    #)
+  # data %<>%
+  # mutate(
+  #  rate.upper =
+  #   ifelse(is.nan(100 * deaths /
+  #    (deaths + recovered)), 0,
+  # 100 * deaths /
+  #  (deaths + recovered)
+  # ) %>%
+  # round(1)
+  # )
   ## lower bound: death rate based on total confirmed cases
   data %<>%
     mutate(

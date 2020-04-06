@@ -3,13 +3,15 @@ library(devtools)
 library(parallel)
 
 create_package <- function(folder) {
-path <- file.path(".", folder)
-if (dir.exists(path))
-  stop("Folder", path, "already exists.",
-  call = TRUE)
-dir.create(path)
-setwd("..")
-devtools::create(path)
+  path <- file.path(".", folder)
+  if (dir.exists(path)) {
+    stop("Folder", path, "already exists.",
+      call = TRUE
+    )
+  }
+  dir.create(path)
+  setwd("..")
+  devtools::create(path)
 }
 
 main <- function(argv) {

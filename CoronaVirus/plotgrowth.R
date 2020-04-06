@@ -25,7 +25,7 @@ main <- function(argv) {
   plot(dates, infected, type = "h")
   plot(dates, infected, log = "y", type = "h")
   title("Confirmed Cases 2019-nCoV World", outer = TRUE, line = -2)
-  
+
   par(mfrow = c(1, 1))
   plot(dates, infected, type = "b")
   points(dates, active_cases, col = "red")
@@ -57,7 +57,7 @@ main <- function(argv) {
   plot(dates, infected, type = "h")
   plot(dates, infected, log = "y", type = "h")
   title("Confirmed Cases 2019-nCoV India", outer = TRUE, line = -2)
-  
+
   par(mfrow = c(1, 1))
   plot(dates, infected, type = "b")
   points(dates, active_cases, col = "red")

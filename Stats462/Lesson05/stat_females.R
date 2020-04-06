@@ -25,25 +25,30 @@ main <- function(argv) {
   print(reg)
   print(anova(reg))
 
-  reg <- lm(Height ~ momheight  + dadheight, data = data)
+  reg <- lm(Height ~ momheight + dadheight, data = data)
   print(reg)
   print(anova(reg))
 
   scatterplot3d(data,
-  main = "Height versus momheight,dadheight",
-  axis = TRUE,
-  grid = TRUE,
-  highlight.3d = TRUE,
-  type = "p",
-  angle = 45)
+    main = "Height versus momheight,dadheight",
+    axis = TRUE,
+    grid = TRUE,
+    highlight.3d = TRUE,
+    type = "p",
+    angle = 45
+  )
 
   plot(reg)
 
   residuals <- resid(reg)
-  plot(data$momheight, residuals, xlab = "Mom's height",
-  ylab = "Residuals", main = "Mom's height versus Residuals")
-  plot(data$dadheight, residuals, xlab = "Dad's height",
-  ylab = "Residuals", main = "Dad's height versus Residuals")
+  plot(data$momheight, residuals,
+    xlab = "Mom's height",
+    ylab = "Residuals", main = "Mom's height versus Residuals"
+  )
+  plot(data$dadheight, residuals,
+    xlab = "Dad's height",
+    ylab = "Residuals", main = "Dad's height versus Residuals"
+  )
 
   reg <- lm(dadheight ~ momheight, data = data)
   print(reg)

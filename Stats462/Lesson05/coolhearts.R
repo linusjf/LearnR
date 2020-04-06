@@ -42,7 +42,7 @@ main <- function(argv) {
     "No cooling"
   )
 
-plot <-  data %>%
+  plot <- data %>%
     ggplot(aes(x = Area, y = Infarc, color = factor(Group, labels = labels))) +
     ggtitle("Scatter plot of infarction versus area") +
     theme(plot.title = element_text(hjust = 0.5)) +
