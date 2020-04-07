@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 library(devtools)
 library(parallel)
+library(rprojroot)
 
 create_package <- function(folder) {
   path <- file.path(".", folder)
@@ -9,7 +10,6 @@ create_package <- function(folder) {
       call = TRUE
     )
   }
-  dir.create(path)
   setwd("..")
   devtools::create(path)
 }
