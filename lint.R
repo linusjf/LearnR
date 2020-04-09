@@ -8,7 +8,10 @@ process_folder <- function(folder) {
     folder == "./.git") {
     return(violations)
   }
-  cat(folder, "\n")
+  cat(
+    folder,
+    "\n"
+  )
   if (folder == ".") {
     for (file in list.files(
       pattern = "\\.[Rr]{1}(profile)?$",
