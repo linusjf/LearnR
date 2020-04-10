@@ -22,6 +22,24 @@ main <- function(argv) {
   print(head(data))
   print(skimr::skim(data))
   print(head(data))
+  
+  scatter(data)
+
+  analyze_interactions(data)
+
+  return(0)
+}
+
+analyze_interactions <- function(data) {
+  lm <- lm(y ~ age + x2 + x3 + age * x2 + age * x3, data)
+  summ <- summary(lm)
+  anova <- anova(lm)
+  print(summ)
+  print(anova)
+  return(lm)
+}
+
+scatter <- function(data) {
   a <- subset(data, data$TRT == "A")
   b <- subset(data, data$TRT == "B")
   c <- subset(data, data$TRT == "C")
@@ -41,7 +59,6 @@ main <- function(argv) {
     pch = 19
   )
   box(which = "plot", lty = "solid")
-  return(0)
 }
 
 if (identical(environment(), globalenv())) {
