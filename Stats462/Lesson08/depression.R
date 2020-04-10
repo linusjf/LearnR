@@ -25,9 +25,30 @@ main <- function(argv) {
 
   scatter(data)
 
-  analyze_interactions(data)
+  lm <- analyze_interactions(data)
+
+  plot_fitted_lines(data, lm)
 
   return(0)
+}
+
+plot_fitted_lines <- function(data, lm) {
+  scatter(data)
+  a <- subset(data, data$TRT == "A")
+  b <- subset(data, data$TRT == "B")
+  c <- subset(data, data$TRT == "C")
+  lm <- lm(y ~ age + x2 + x3 + age * x2 + age * x3, a)
+  suppressWarnings(
+  abline(lm, col = "black", lty = 2)
+  )
+  lm <- lm(y ~ age + x2 + x3 + age * x2 + age * x3, b)
+  suppressWarnings(
+  abline(lm, col = "blue", lty = 3)
+  )
+  lm <- lm(y ~ age + x2 + x3 + age * x2 + age * x3, c)
+  suppressWarnings(
+                   abline(lm, col = "green", lty = 4)
+  )
 }
 
 analyze_interactions <- function(data) {
@@ -61,10 +82,11 @@ scatter <- function(data) {
   box(which = "plot", lty = "solid")
   labels <- c("A", "B", "C")
   legend("bottomright",
-  col = c("black", "blue", "green"),
-  title = "TRT",
-  legend = labels, lty = 1:3,
-  text.col = c("black", "blue", "green"))
+    col = c("black", "blue", "green"),
+    title = "TRT",
+    legend = labels, lty = 1:3,
+    text.col = c("black", "blue", "green")
+  )
 }
 
 if (identical(environment(), globalenv())) {
