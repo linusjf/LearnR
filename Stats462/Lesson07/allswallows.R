@@ -7,7 +7,7 @@ allswallows.txt <- function() {
   )
 }
 library(scatterplot3d)
-suppressPackageStartupMessages(library(e1071))
+library(e1071)
 
 main <- function(argv) {
   data <- read.table(allswallows.txt(),
@@ -68,7 +68,6 @@ main <- function(argv) {
   )
 
   ad <- nortest::ad.test(residuals)
-  print(ad)
   labels <- c(
     paste0("Mean: ", round(mean(residuals), 4)),
     paste0("Stdev: ", round(sd(residuals), 2)),
