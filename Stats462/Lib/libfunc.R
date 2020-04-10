@@ -5,6 +5,39 @@ suppressPackageStartupMessages(library(purrr))
 suppressPackageStartupMessages(library(stringr))
 suppressPackageStartupMessages(library(alr3))
 
+rad2deg <- function(rad) {
+  (rad * 180) / (pi)
+}
+
+deg2rad <- function(deg) {
+  (deg * pi) / (180)
+}
+
+model_equation <- function(model, ...) {
+  format_args <- list(...)
+
+  model_coeff <- model$coefficients
+  model_coeff <- model_coeff[!is.na(model_coeff)]
+  format_args$x <- abs(model_coeff)
+  model_coeff_sign <- sign(model_coeff)
+  model_coeff_prefix <- case_when(model_coeff_sign == -1 ~ " - ",
+                                  model_coeff_sign == 1 ~ " + ",
+                                  model_coeff_sign == 0 ~ " + ")
+  model_eqn <- paste(strsplit(as.character(model$call$formula), "~")[[2]], # 'y'
+                     "=",
+                     paste(if_else(model_coeff[1] < 0, "- ", ""),
+                           do.call(format, format_args)[1],
+                           paste(model_coeff_prefix[-1],
+                                 do.call(format, format_args)[-1],
+                                 " * ",
+                                 names(model_coeff[-1]),
+                                 sep = "", collapse = ""),
+                           sep = ""))
+  return(model_eqn)
+}
+
+
+
 scatterplot_matrix <- function(data, title) {
   cols <- colnames(data)
   fields <- "~"
