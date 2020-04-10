@@ -22,7 +22,7 @@ main <- function(argv) {
   print(head(data))
   print(skimr::skim(data))
   print(head(data))
-  
+
   scatter(data)
 
   analyze_interactions(data)
@@ -59,6 +59,12 @@ scatter <- function(data) {
     pch = 19
   )
   box(which = "plot", lty = "solid")
+  labels <- c("A", "B", "C")
+  legend("bottomright",
+  col = c("black", "blue", "green"),
+  title = "TRT",
+  legend = labels, lty = 1:3,
+  text.col = c("black", "blue", "green"))
 }
 
 if (identical(environment(), globalenv())) {
