@@ -37,7 +37,23 @@ main <- function(argv) {
 
   evaluate_model(lm)
 
+  are_treatments_meaningful(lm, data)
+  
+  are_interactions_meaningful(lm, data)
+
   return(0)
+}
+
+are_treatments_meaningful <- function(full_lm, data) {
+  lm <- lm(y ~ age, data)
+  anova <- anova(lm, full_lm)
+  print(anova)
+}
+
+are_interactions_meaningful <- function(full_lm, data) {
+  lm <- lm(y ~ age + x2 + x3, data)
+  anova <- anova(lm, full_lm)
+  print(anova)
 }
 
 evaluate_model <- function(lm) {
