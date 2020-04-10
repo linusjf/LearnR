@@ -19,10 +19,7 @@ library(skimr)
 source(lib_path())
 library(scatterplot3d)
 library(plot3D)
-suppressPackageStartupMessages(
-  library(dplyr)
-)
-library(magrittr)
+library(e1071)
 
 main <- function(argv) {
   data <- read.table(depression.txt(),
@@ -36,12 +33,38 @@ main <- function(argv) {
 
   lm <- analyze_interactions(data)
 
-  plot_fitted_lines(data, lm)
+  plot_fitted_lines(data)
+
+  evaluate_model(lm)
 
   return(0)
 }
 
-plot_fitted_lines <- function(data, lm) {
+evaluate_model <- function(lm) {
+  plot(lm, which = 1,
+  caption = "Standardised Residuals versus Fitted",
+    main = "Residuals plot with interaction terms"
+  )
+
+  residuals <- resid(lm)
+  probplot(residuals,
+    probs = c(0.10, 0.25, 0.5, 0.75, 0.9, 0.99, 0.999),
+    xlab = "Residuals",
+    ylab = "Probabilities (Percent)"
+  )
+
+  ad <- nortest::ad.test(residuals)
+  labels <- c(
+    paste0("Mean: ", round(mean(residuals), 4)),
+    paste0("Stdev: ", round(sd(residuals), 2)),
+    paste0("Count: ", round(length(residuals), 2)),
+    paste0("AD: ", round(ad$statistic, 4)),
+    paste0("p-value: ", round(ad$p.value, 4))
+  )
+  legend("bottomright", legend = labels)
+}
+
+plot_fitted_lines <- function(data) {
   scatter(data)
   a <- subset(data, data$TRT == "A")
   b <- subset(data, data$TRT == "B")
@@ -107,7 +130,7 @@ scatter <- function(data) {
   labels <- c("A", "B", "C")
   legend("bottomright",
     col = c("black", "blue", "red"),
-    title = "TRT",
+    title = "Treatment",
     legend = labels, lty = 1:3,
     text.col = c("black", "blue", "red")
   )
