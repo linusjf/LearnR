@@ -18,6 +18,8 @@ lib_path <- function() {
 library(skimr)
 source(lib_path())
 library(e1071)
+suppressPackageStartupMessages(library(dplyr))
+library(magrittr)
 
 main <- function(argv) {
   data <- read.table(realestate.txt(),
@@ -32,19 +34,19 @@ main <- function(argv) {
 
   plot_fitted_lines(data)
 
+  evaluate_model(interactions)
+
+  data %<>%
+    mutate(lnSalePrice = log(SalePrice)) %>%
+    mutate(lnSqFeet = log(SqFeet))
+
+  log <- fit_log(data)
+  
+  plot_fitted_lines_log(data)
+
+  evaluate_model(log)
+  
   return(0)
-}
-
-are_treatments_meaningful <- function(full_lm, data) {
-  lm <- lm(y ~ age, data)
-  anova <- anova(lm, full_lm)
-  print(anova)
-}
-
-are_interactions_meaningful <- function(full_lm, data) {
-  lm <- lm(y ~ age + x2 + x3, data)
-  anova <- anova(lm, full_lm)
-  print(anova)
 }
 
 evaluate_model <- function(lm) {
@@ -72,6 +74,34 @@ evaluate_model <- function(lm) {
   legend("bottomright", legend = labels)
 }
 
+plot_fitted_lines_log <- function(data) {
+  scatter_log(data)
+  NoAC <- subset(data, data$Air == 0)
+  AC <- subset(data, data$Air == 1)
+
+  lm <- lm(lnSalePrice ~ lnSqFeet + Air + Air * lnSqFeet, NoAC)
+  eqnNoAC <- model_equation(lm, digits = 4, trim = TRUE)
+  suppressWarnings(
+    abline(lm, col = "red", lty = 2)
+  )
+
+  lm <- lm(lnSalePrice ~ lnSqFeet + Air + Air * lnSqFeet, AC)
+  eqnAC <- model_equation(lm, digits = 4, trim = TRUE)
+  suppressWarnings(
+    abline(lm, col = "blue", lty = 3)
+  )
+
+  labels <- c(
+    paste0("No A/C - ", eqnNoAC),
+    paste0("A/C - ", eqnAC)
+  )
+  legend("topleft", cex = 0.8,
+    col = c("red", "blue"),
+    legend = labels, lty = 1:3,
+    text.col = c("red", "blue")
+  )
+}
+
 plot_fitted_lines <- function(data) {
   scatter(data)
   NoAC <- subset(data, data$Air == 0)
@@ -93,7 +123,7 @@ plot_fitted_lines <- function(data) {
     paste0("No A/C - ", eqnNoAC),
     paste0("A/C - ", eqnAC)
   )
-  legend("topleft",
+  legend("topleft", cex = 0.8,
     col = c("red", "blue"),
     legend = labels, lty = 1:3,
     text.col = c("red", "blue")
@@ -116,6 +146,32 @@ fit_simple <- function(data) {
   print(summ)
   print(anova)
   return(lm)
+}
+
+fit_log  <- function(data) {
+  lm <- lm(lnSalePrice ~ lnSqFeet + Air + lnSqFeet * Air, data)
+  summ <- summary(lm)
+  anova <- anova(lm)
+  print(summ)
+  print(anova)
+  return(lm)
+}
+
+scatter_log <- function(data) {
+  NoAC <- subset(data, data$Air == 0)
+  AC <- subset(data, data$Air == 1)
+  plot(NoAC$lnSqFeet, NoAC$lnSalePrice,
+    main = "log(Sale Price) against log(area) scatterplot",
+    xlab = "log[Square Feet (Area)]", ylab = "log(Sale Price)",
+    pch = 19, frame = FALSE, col = "red",
+    ylim = c(min(data$lnSalePrice), max(data$lnSalePrice)),
+    xlim = c(min(data$lnSqFeet), max(data$lnSqFeet))
+  )
+  points(AC$lnSqFeet, AC$lnSalePrice,
+    col = "blue",
+    pch = 19
+  )
+  box(which = "plot", lty = "solid")
 }
 
 scatter <- function(data) {
