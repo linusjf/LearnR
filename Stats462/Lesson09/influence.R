@@ -74,9 +74,11 @@ outlieronly <- function(argv) {
   lm <- lm(y ~ x, data)
   eqn <- model_equation(lm, digits = 4, trim = TRUE)
   abline(lm)
+  print(summary(lm))
   lm <- lm(y ~ x, data1)
   eqn2 <- model_equation(lm, digits = 4, trim = TRUE)
   abline(lm, col = "red")
+  print(summary(lm))
   labels <- c(eqn, eqn2)
   cols <- c("black", "red")
   legend("bottomright",
