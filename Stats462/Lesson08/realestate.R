@@ -17,9 +17,11 @@ lib_path <- function() {
 
 library(skimr)
 source(lib_path())
-library(e1071)
 suppressPackageStartupMessages(library(dplyr))
 library(magrittr)
+library(e1071)
+
+
 
 main <- function(argv) {
   data <- read.table(realestate.txt(),
@@ -27,6 +29,7 @@ main <- function(argv) {
   )
   print(head(data))
   print(skimr::skim(data))
+  data <- data[order(data$SqFeet, data$Air), ]
 
   simple <- fit_simple(data)
 
@@ -34,7 +37,7 @@ main <- function(argv) {
 
   plot_fitted_lines(data)
 
-  evaluate_model(interactions)
+  evaluate_model(interactions, data)
 
   data %<>%
     mutate(lnSalePrice = log(SalePrice)) %>%
@@ -44,16 +47,16 @@ main <- function(argv) {
   
   plot_fitted_lines_log(data)
 
-  evaluate_model(log)
+  evaluate_model(log, data)
   
   return(0)
 }
 
-evaluate_model <- function(lm) {
+evaluate_model <- function(lm, data) {
   plot(lm,
-    which = 1,
-    caption = "Standardised Residuals versus Fitted",
-    main = "Residuals plot with interaction terms"
+    which = c(1, 3),
+    caption = list("Standardised Residuals versus Fitted",
+                "Scale-Location"),
   )
 
   residuals <- resid(lm)
@@ -62,16 +65,6 @@ evaluate_model <- function(lm) {
     xlab = "Residuals",
     ylab = "Probabilities (Percent)"
   )
-
-  ad <- nortest::ad.test(residuals)
-  labels <- c(
-    paste0("Mean: ", round(mean(residuals), 4)),
-    paste0("Stdev: ", round(sd(residuals), 2)),
-    paste0("Count: ", round(length(residuals), 2)),
-    paste0("AD: ", round(ad$statistic, 4)),
-    paste0("p-value: ", round(ad$p.value, 4))
-  )
-  legend("bottomright", legend = labels)
 }
 
 plot_fitted_lines_log <- function(data) {
