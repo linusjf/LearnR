@@ -72,9 +72,18 @@ outlieronly <- function(argv) {
   data2 <- tail(data, 1)
   points(data2$x, data2$y, col = "red")
   lm <- lm(y ~ x, data)
+  eqn <- model_equation(lm, digits = 4, trim = TRUE)
   abline(lm)
   lm <- lm(y ~ x, data1)
+  eqn2 <- model_equation(lm, digits = 4, trim = TRUE)
   abline(lm, col = "red")
+  labels <- c(eqn, eqn2)
+  cols <- c("black", "red")
+  legend("bottomright",
+    col = cols,
+    legend = labels, lty = 1:2,
+    text.col = cols
+  )
 }
 
 if (identical(environment(), globalenv())) {
