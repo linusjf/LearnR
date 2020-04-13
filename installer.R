@@ -158,6 +158,9 @@ install_stats462 <- function() {
   if (!require(lmtest)) {
     install.packages("lmtest", .libPaths()[1])
   }
+  if (!require(VGAM)) {
+    install.packages("VGAM", .libPaths()[1])
+  }
 }
 # nolint end
 
