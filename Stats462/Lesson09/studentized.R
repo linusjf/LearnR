@@ -17,7 +17,6 @@ lib_path <- function() {
 
 library(skimr)
 source(lib_path())
-suppressPackageStartupMessages(library(VGAM))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(MASS))
