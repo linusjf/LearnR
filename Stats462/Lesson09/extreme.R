@@ -74,7 +74,7 @@ influence <- function(path) {
   xlim = c(min(data$x), max(data$x)),
   ylim = c(min(hat), max(hat))
   )
-  k <- length(lm$coefficients)
+  k <- length(lm$coefficients) - 1
   hat_mean <- mean(hat)
   upper_bound <- 3 * hat_mean
   n <- nrow(data)
