@@ -36,6 +36,7 @@ source(lib_path())
 suppressPackageStartupMessages(library(VGAM))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(MASS))
 
 main <- function(argv) {
 
@@ -64,7 +65,10 @@ influence <- function(path) {
   lm <- lm(y ~ x, data)
   hat <- hatvalues(lm)
   data %<>%
-    mutate(hat = hat)
+    mutate(hat = hat) %>%
+    mutate(stdres = stdres(lm))
+  print(head(data))
+  print(skimr::skim(data))
   plot(data$x, hat, xlab = "X", ylab = "Hat values",
   main = "Scatter plot of hat values versus x",
   xlim = c(min(data$x), max(data$x)),
@@ -82,6 +86,10 @@ influence <- function(path) {
   data2 <- data %>%
     filter(hat > lower_bound2)
   points(data2$x, data2$hat, col = "orange")
+  data2 <- data %>%
+    filter(abs(stdres) > 2)
+  print(data2)
+  points(data2$x, data2$hat, col = "blue", pch = 4)
   abline(v = mean(data$x))
   print("Sum hat values: ")
   print(sum(hat))

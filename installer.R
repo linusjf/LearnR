@@ -161,6 +161,9 @@ install_stats462 <- function() {
   if (!require(VGAM)) {
     install.packages("VGAM", .libPaths()[1])
   }
+  if (!require(MASS)) {
+    install.packages("MASS", .libPaths()[1])
+  }
 }
 # nolint end
 
