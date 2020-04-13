@@ -34,6 +34,8 @@ lib_path <- function() {
 library(skimr)
 source(lib_path())
 suppressPackageStartupMessages(library(VGAM))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
 
 main <- function(argv) {
 
@@ -61,14 +63,25 @@ influence <- function(path) {
   points(data2$x, data2$y, col = "red")
   lm <- lm(y ~ x, data)
   hat <- hatvalues(lm)
-  hat1 <- head(hat, -1)
-  plot(data1$x, hat1, xlab = "X", ylab = "Hat values",
+  data %<>%
+    mutate(hat = hat)
+  plot(data$x, hat, xlab = "X", ylab = "Hat values",
   main = "Scatter plot of hat values versus x",
   xlim = c(min(data$x), max(data$x)),
   ylim = c(min(hat), max(hat))
   )
-  hat2 <- tail(hat, 1)
-  points(data2$x, hat2, col = "red")
+  k <- length(lm$coefficients)
+  hat_mean <- mean(hat)
+  upper_bound <- 3 * hat_mean
+  n <- nrow(data)
+  upper_bound2 <- 3 * ((k + 1) / n)
+  lower_bound2 <- 2 * ((k + 1) / n)
+  data2 <- data %>%
+    filter(hat > upper_bound | hat > upper_bound2)
+  points(data2$x, data2$hat, col = "red")
+  data2 <- data %>%
+    filter(hat > lower_bound2)
+  points(data2$x, data2$hat, col = "orange")
   abline(v = mean(data$x))
   print("Sum hat values: ")
   print(sum(hat))
