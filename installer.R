@@ -164,6 +164,9 @@ install_stats462 <- function() {
   if (!require(MASS)) {
     install.packages("MASS", .libPaths()[1])
   }
+  if (!require(olsrr)) {
+    install.packages("olsrr", .libPaths()[1])
+  }
 }
 # nolint end
 
