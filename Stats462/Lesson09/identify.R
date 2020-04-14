@@ -42,17 +42,15 @@ main <- function(argv) {
             influence3.txt(),
             influence4.txt()
   )
-
-  lapply(data, dffits_plot)
+  lapply(data, identify)
   return(0)
 }
 
-dffits_plot <- function(path) {
+identify <- function(path) {
   data <- read.table(path,
     header = TRUE
   )
   model <- lm(y ~ x, data)
-  print(model$rank)
   data %<>%
     mutate(dffits = dffits(model, infl = lm.influence(model)))
   print(head(data))
@@ -61,6 +59,13 @@ dffits_plot <- function(path) {
   main = "Scatter plot of y versus x")
   data2 <- tail(data, 1)
   points(data2$x, data2$y, col = "red")
+  plot_dffits(data, model)
+  ols_plot_dffits(model)
+  ols_plot_cooksd_bar(model)
+  ols_plot_cooksd_chart(model)
+}
+
+plot_dffits <- function(data, model) {
   n <- nrow(data)
   k <- length(model$coefficients) - 1
   cv <- 2 * sqrt((k + 2) / (n - k - 2))
