@@ -167,6 +167,9 @@ install_stats462 <- function() {
   if (!require(olsrr)) {
     install.packages("olsrr", .libPaths()[1])
   }
+  if (!require(qualityTools)) {
+    install.packages("qualityTools", .libPaths()[1])
+  }
 }
 # nolint end
 
