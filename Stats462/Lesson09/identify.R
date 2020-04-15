@@ -91,7 +91,7 @@ plot_fdistr <- function(data, model, path) {
   type = "l",
   xlim = c(0, max(data$x))
   )
-  points(data$x, data$cooksdistance)
+  points(data$x, pf(data$cooksdistance, df1 = df1, df2 = df2))
 }
 
 plot_dffits <- function(data, model, path) {
