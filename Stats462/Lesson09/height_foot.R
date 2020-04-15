@@ -17,7 +17,6 @@ lib_path <- function() {
 
 library(skimr)
 source(lib_path())
-suppressPackageStartupMessages(library(qualityTools))
 library(car)
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
@@ -39,12 +38,41 @@ scatter_plot <- function(data) {
 }
 
 analyze <- function(data) {
-  model <- lm(foot ~ height, data)
-  outliers <- detect_outliers(data, model)
-  data1 <- data %>%
+  orig_model <- lm(foot ~ height, data)
+  print("Original equation")
+  print(model_equation(orig_model))
+  outliers <- detect_outliers(data, orig_model)
+  analyze_for_dffits(data, outliers, orig_model)
+  analyze_for_cooks(data, orig_model)
+}
+
+analyze_for_cooks <- function(data, model) {
+  data %<>%
+     mutate(cooksdistance = cooks.distance(model))
+  old <- par(mar = c(6, 6, 4, 4))
+   dotchart(data$cooksdistance,
+            main = "Dot plot for Height versus foot",
+   xlab = "Cook's distance",
+   ylab = "Index",
+   pch = 19)
+  par(old)
+}
+  
+analyze_for_dffits <- function(data, outliers, orig_model) {
+data1 <- data %>%
     filter(!(height %in% outliers$height &
     foot %in% outliers$foot))
-  print(data1)
+  model <- lm(foot ~ height, data1)
+  print("Modified equation w/o outliers")
+  print(model_equation(model))
+  data %<>%
+     mutate(dffits = dffits(orig_model,
+                            infl = lm.influence(orig_model)))
+  data1 <- data %>%
+    filter(height %in% outliers$height &
+    foot %in% outliers$foot)
+  print("dffit for outliers")
+  print(data1$dffits)
 }
 
 detect_outliers <- function(data, model) {
