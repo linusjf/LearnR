@@ -61,7 +61,8 @@ identify <- function(path) {
   )
   model <- lm(y ~ x, data)
   data %<>%
-    mutate(dffits = dffits(model, infl = lm.influence(model)))
+    mutate(dffits = dffits(model, infl = lm.influence(model))) %>%
+    mutate(cooksdistance = cooks.distance(model, infl = lm.influence(model)))
   print(head(data))
   print(skimr::skim(data))
   plot(data$x, data$y, xlab = "X", ylab = "Y",
@@ -73,6 +74,24 @@ identify <- function(path) {
   ols_plot_dffits(model)
   ols_plot_cooksd_bar(model)
   ols_plot_cooksd_chart(model)
+  plot_fdistr(data, model, path)
+}
+
+plot_fdistr <- function(data, model, path) {
+  n <- nrow(data)
+  k <- length(model$coefficients) - 1
+  df1 <- k + 1
+  df2 <- n - k - 1
+
+  x <- seq(0, max(data$x), length = 300)
+  plot(x,
+       df(x = x, df1 = df1, df2 = df2),
+  main = paste0("F distribution (", df1, ",", df2, ")"),
+  sub = path,
+  type = "l",
+  xlim = c(0, max(data$x))
+  )
+  points(data$x, data$cooksdistance)
 }
 
 plot_dffits <- function(data, model, path) {
