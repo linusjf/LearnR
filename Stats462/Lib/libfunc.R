@@ -36,8 +36,6 @@ model_equation <- function(model, ...) {
   return(model_eqn)
 }
 
-
-
 scatterplot_matrix <- function(data, title) {
   cols <- colnames(data)
   fields <- "~"

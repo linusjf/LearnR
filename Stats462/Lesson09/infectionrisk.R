@@ -20,7 +20,6 @@ source(lib_path())
 library(car)
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
-suppressPackageStartupMessages(library(qualityTools))
 
 main <- function(argv) {
   data <- read.table(infectionrisk.txt(),
@@ -34,9 +33,19 @@ main <- function(argv) {
 }
 
 scatter_plot <- function(data) {
+  model <- lm(InfctRsk ~ Stay, data)
+  eqn <- model_equation(model, digits = 4)
   plot(data$Stay, data$InfctRsk, xlab = "Hospital Stay", ylab = "Infection
-       Risk",
+       Risk", sub = eqn, col.sub = "red",
   main = "Scatter plot of Infection Risk versus Hospital Stay")
+  abline(model, col = "red")
+  stats <- model_fit_stats(model)
+  labels <- c(
+  paste0("S : ", stats$Sigma),
+  paste0("R squared: ", stats$R.squared),
+  paste0("Adj R squared: ", stats$Adj.R.squared)
+  )
+  legend("topright", legend = labels)
 }
 
 analyze <- function(data) {
