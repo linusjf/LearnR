@@ -60,9 +60,17 @@ identify <- function(path) {
     header = TRUE
   )
   model <- lm(y ~ x, data)
+  n <- nrow(data)
+  k <- length(model$coefficients) - 1
+  df1 <- k + 1
+  df2 <- n - k - 1
   data %<>%
     mutate(dffits = dffits(model, infl = lm.influence(model))) %>%
-    mutate(cooksdistance = cooks.distance(model, infl = lm.influence(model)))
+    mutate(cooksdistance =
+           cooks.distance(model,
+                          infl =
+                            lm.influence(model))) %>%
+    mutate(probcook = pf(cooksdistance, df1 = df1, df2 = df2))
   print(head(data))
   print(skimr::skim(data))
   plot(data$x, data$y, xlab = "X", ylab = "Y",
@@ -71,9 +79,21 @@ identify <- function(path) {
   data2 <- tail(data, 1)
   points(data2$x, data2$y, col = "red")
   plot_dffits(data, model, path)
-  ols_plot_dffits(model)
-  ols_plot_cooksd_bar(model)
-  ols_plot_cooksd_chart(model)
+  plot_obj <- ols_plot_dffits(model, print_plot = FALSE)
+  plot_obj$plot$labels$title <-
+  paste0(plot_obj$plot$labels$title, "\n",
+         path)
+  print(plot_obj)
+  plot_obj <- ols_plot_cooksd_bar(model, print_plot = FALSE)
+  plot_obj$plot$labels$title <-
+  paste0(plot_obj$plot$labels$title, "\n",
+         path)
+  print(plot_obj)
+  plot_obj <- ols_plot_cooksd_chart(model, print_plot = FALSE)
+  plot_obj$plot$labels$title <-
+  paste0(plot_obj$plot$labels$title, "\n",
+         path)
+  print(plot_obj)
   plot_fdistr(data, model, path)
 }
 
@@ -89,9 +109,14 @@ plot_fdistr <- function(data, model, path) {
   main = paste0("F distribution (", df1, ",", df2, ")"),
   sub = path,
   type = "l",
-  xlim = c(0, max(data$x))
+  xlim = c(0, max(data$x)),
+  ylab = "Probability Density Function"
   )
-  points(data$x, pf(data$cooksdistance, df1 = df1, df2 = df2))
+  points(data$x, data$probcook)
+  influential <- data %>%
+    filter(data$probcook >= 0.5)
+  points(influential$x, influential$probcook, col = "red",
+  pch = 4)
 }
 
 plot_dffits <- function(data, model, path) {
