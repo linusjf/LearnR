@@ -32,7 +32,7 @@ main <- function(argv) {
 
   attach(data)
   plot(
-    x = date, y = price, col = "red",
+    x = date, y = price, col = "blue",
     pch = 15, type = "b",
     main = "Time series plot of price versus date",
     xlab = "Date", ylab = "Price"
