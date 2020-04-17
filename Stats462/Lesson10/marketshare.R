@@ -30,7 +30,8 @@ main <- function(argv) {
   print(anova(model.1))
   print(model_fit_stats(model.1))
   print(model_coeffs(model.1))
-  print(model_equation(model.1, digits = 4))
+  eqn.1 <- model_equation(model.1, digits = 4)
+  print(eqn.1)
   detach(data)
 
   # plot scatter plot for residuals versus fitted values
@@ -39,45 +40,56 @@ main <- function(argv) {
     mutate(fitted = fitted(model.1))
   no_discounts <- data %>%
     filter(Discount == 0)
-  print(nrow(no_discounts))
   discounts <- data %>%
     filter(Discount == 1)
-  print(nrow(discounts))
   with(no_discounts,
   plot(fitted, residuals, col = "blue",
-  pch = 15, main = "Scatterplot of residuals versus fits",
+  pch = 15, main = "OLS Scatterplot of residuals versus fits",
   xlab = "Fitted", ylab = "Residuals",
   xlim = c(min(data$fitted), max(data$fitted)),
-  ylim = c(min(data$residuals), max(data$residuals))
+  ylim = c(min(data$residuals), max(data$residuals)),
+  sub = eqn.1, col.sub = "blue"
   ))
   with(discounts,
   points(fitted, residuals, col = "red",
   pch = 15))
   abline(h = 0)
+
+  var_discounts <- sd(discounts$residuals) ** 2
+  var_no_discounts <- sd(no_discounts$residuals) ** 2
+
+  weights <- ifelse(data$Discount == 0, 1 / var_no_discounts,
+                                 1 / var_discounts)
+  print(weights)
+  model.2 <- lm(MarketShare ~ Price + P1 + P2,
+                weights = weights, data)
+  print(anova(model.2))
+  print(model_fit_stats(model.2))
+  print(model_coeffs(model.2))
+  eqn.2 <- model_equation(model.2, digits = 4)
+  print(eqn.2)
+
+  # plot scatter plot for residuals versus fitted values wls
+  data %<>%
+    mutate(residuals.wls = rstandard(model.2)) %>%
+    mutate(fitted.wls = fitted(model.2))
+  no_discounts <- data %>%
+    filter(Discount == 0)
+  discounts <- data %>%
+    filter(Discount == 1)
+  with(no_discounts,
+  plot(fitted.wls, residuals.wls, col = "blue",
+  pch = 15, main = "WLS Scatterplot of standardized residuals versus fits",
+  xlab = "Fitted", ylab = "Standardized Residuals",
+  xlim = c(min(data$fitted.wls), max(data$fitted.wls)),
+  ylim = c(min(data$residuals.wls), max(data$residuals.wls)),
+  sub = eqn.2, col.sub = "red"
+  ))
+  with(discounts,
+  points(fitted.wls, residuals.wls, col = "red",
+  pch = 15))
+  abline(h = 0)
   return(0)
-}
-
-plot_models <- function(data) {
-
-  model.2 <- lm(Progeny ~ Parent, weights = 1 / SD^2, data)
-  summary(model.2)
-  eqn2 <- model_equation(model.2, digits = 4)
-
-  plot(
-    x = Parent, y = Progeny, ylim = c(0.158, 0.174),
-    panel.last = c(
-      lines(sort(Parent), fitted(model.1)[order(Parent)], col = "blue"),
-      lines(sort(Parent), fitted(model.2)[order(Parent)], col = "red")
-    ),
-      col.main = "blue",
-      col.sub = "red",
-      main = eqn1,
-      sub = eqn2
-  )
-  legend("topleft",
-    col = c("blue", "red"), lty = 1,
-    inset = 0.02, legend = c("OLS", "WLS")
-  )
 }
 
 if (identical(environment(), globalenv())) {
