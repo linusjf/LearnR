@@ -27,11 +27,33 @@ main <- function(argv) {
 
   attach(data)
   model.1 <- lm(MarketShare ~ Price + P1 + P2, data)
-  print(summary(model.1))
   print(anova(model.1))
-  eqn1 <- model_equation(model.1, digits = 4)
-  
+  print(model_fit_stats(model.1))
+  print(model_coeffs(model.1))
+  print(model_equation(model.1, digits = 4))
   detach(data)
+
+  # plot scatter plot for residuals versus fitted values
+  data %<>%
+    mutate(residuals = resid(model.1)) %>%
+    mutate(fitted = fitted(model.1))
+  no_discounts <- data %>%
+    filter(Discount == 0)
+  print(nrow(no_discounts))
+  discounts <- data %>%
+    filter(Discount == 1)
+  print(nrow(discounts))
+  with(no_discounts,
+  plot(fitted, residuals, col = "blue",
+  pch = 15, main = "Scatterplot of residuals versus fits",
+  xlab = "Fitted", ylab = "Residuals",
+  xlim = c(min(data$fitted), max(data$fitted)),
+  ylim = c(min(data$residuals), max(data$residuals))
+  ))
+  with(discounts,
+  points(fitted, residuals, col = "red",
+  pch = 15))
+  abline(h = 0)
   return(0)
 }
 

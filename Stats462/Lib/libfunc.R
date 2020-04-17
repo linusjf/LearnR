@@ -140,7 +140,6 @@ model_fit_stats <- function(linear_model) {
   summ <- summary(linear_model)
   sigma <- summ$sigma
   r_sqr <- summ$r.squared
-  print(r_sqr)
   adj_r_sqr <- summ$adj.r.squared
   ratio_adjr2_to_r2 <- (adj_r_sqr / r_sqr)
   pre_r_sqr <- pred_r_squared(linear_model)
@@ -156,7 +155,6 @@ model_fit_stats <- function(linear_model) {
       "PRESS" = press,
       "p.value" = p_value
     )
-  print(return_df)
   return(round(return_df, 3))
 }
 
