@@ -52,6 +52,50 @@ main <- function(argv) {
 
   detach(data)
 
+  data %<>%
+    mutate(residuals = resid(model.log)) %>%
+    mutate(fitted = fitted(model.log))
+
+  attach(data)
+  plot(fitted, residuals,
+  pch = 15, col = "blue",
+  main = "OLS Residuals versus Fitted",
+  xlab = "Fitted",
+  ylab = "Residuals",
+  sub = eqn.log, col.sub = "blue")
+  detach(data)
+
+  data %<>%
+    mutate(absres = abs(residuals))
+
+  attach(data)
+  model.absres <- lm(absres ~ fitted, data)
+  print(anova(model.absres))
+  print(model_fit_stats(model.absres))
+  print(model_coeffs(model.absres))
+  eqn.absres <- model_equation(model.absres, digits = 4)
+  print(eqn.absres)
+  detach(data)
+
+  data %<>%
+    mutate(fits = fitted(model.absres))
+
+  attach(data)
+  model.wls <- lm(lnSalePrice ~ lnSqFeet + lnLot,
+                  weights = 1 / fits ^ 2, data)
+  print(anova(model.wls))
+  print(model_fit_stats(model.wls))
+  print(model_coeffs(model.wls))
+  eqn.wls <- model_equation(model.wls, digits = 4)
+  print(eqn.wls)
+  plot(fitted, rstandard(model.wls),
+  pch = 15, col = "red",
+  main = "WLS Standardized Residuals versus Fitted",
+  xlab = "Fitted",
+  ylab = "Standardized Residuals",
+  sub = eqn.wls, col.sub = "red")
+  detach(data)
+
   return(0)
 }
 
