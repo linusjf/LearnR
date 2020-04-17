@@ -88,7 +88,7 @@ main <- function(argv) {
   print(model_coeffs(model.wls))
   eqn.wls <- model_equation(model.wls, digits = 4)
   print(eqn.wls)
-  plot(fitted, rstandard(model.wls),
+  plot(fitted(model.wls), rstandard(model.wls),
   pch = 15, col = "red",
   main = "WLS Standardized Residuals versus Fitted",
   xlab = "Fitted",
