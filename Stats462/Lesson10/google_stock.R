@@ -19,6 +19,7 @@ lib_path <- function() {
 
 library(skimr)
 source(lib_path())
+library(forecast)
 
 main <- function(argv) {
   pdf(paper = "USr")
@@ -42,6 +43,7 @@ main <- function(argv) {
   labels <- format(at, format = "%m/%d/%Y")
   axis(1, at = at, labels = labels,
   tick = TRUE)
+  Pacf(price)
   detach(data)
   return(0)
 }
