@@ -170,6 +170,9 @@ install_stats462 <- function() {
   if (!require(qualityTools)) {
     install.packages("qualityTools", .libPaths()[1])
   }
+  if (!require(tseries)) {
+    install.packages("tseries", .libPaths()[1])
+  }
 }
 # nolint end
 
