@@ -173,6 +173,9 @@ install_stats462 <- function() {
   if (!require(tseries)) {
     install.packages("tseries", .libPaths()[1])
   }
+  if (!require(forecast)) {
+    install.packages("forecast", .libPaths()[1])
+  }
 }
 # nolint end
 
