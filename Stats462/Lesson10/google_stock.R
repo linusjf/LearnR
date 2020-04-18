@@ -48,7 +48,7 @@ main <- function(argv) {
   detach(data)
 
   data %<>%
-    mutate(lag_1_price = Lag(price, -1))
+    mutate(lag_1_price = Lag(price, 1))
   attach(data)
   plot(
     y = price, x = lag_1_price, col = "blue",
