@@ -4,6 +4,7 @@ suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(purrr))
 suppressPackageStartupMessages(library(stringr))
 suppressPackageStartupMessages(library(alr3))
+suppressPackageStartupMessages(library(regclass))
 
 rad2deg <- function(rad) {
   (rad * 180) / (pi)
@@ -11,6 +12,10 @@ rad2deg <- function(rad) {
 
 deg2rad <- function(deg) {
   (deg * pi) / (180)
+}
+
+vif_factors <- function(model) {
+  VIF(model)
 }
 
 model_equation <- function(model, ...) {
@@ -168,6 +173,12 @@ model_coeffs <- function(reg) {
   p_values <- summary(reg)$coefficients[, 4]
   names <- c(names, p_names)
   params <- c(params, p_values)
+  names(params) <- names
+  vif_values <- vif_factors(reg)
+  vif_names <- names(vif_values)
+  vif_names <- paste0(vif_names, ".vif")
+  names <- c(names, vif_names)
+  params <- c(params, vif_values)
   names(params) <- names
   names <- stringr::str_sort(names)
   sorted_params <- c()

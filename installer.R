@@ -179,6 +179,9 @@ install_stats462 <- function() {
   if (!require(Hmisc)) {
     install.packages("Hmisc", .libPaths()[1])
   }
+  if (!require(regclass)) {
+    install.packages("regclass", .libPaths()[1])
+  }
 }
 # nolint end
 
