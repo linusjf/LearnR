@@ -19,7 +19,8 @@ lib_path <- function() {
 
 library(skimr)
 source(lib_path())
-library(forecast)
+suppressPackageStartupMessages(library(forecast))
+suppressPackageStartupMessages(library(Hmisc))
 
 main <- function(argv) {
   pdf(paper = "USr")
@@ -44,6 +45,17 @@ main <- function(argv) {
   axis(1, at = at, labels = labels,
   tick = TRUE)
   Pacf(price)
+  detach(data)
+
+  data %<>%
+    mutate(lag_1_price = Lag(price, -1))
+  attach(data)
+  plot(
+    y = price, x = lag_1_price, col = "blue",
+    pch = 15,
+    main = "Scatter plot of Price versus Lagged Price",
+    ylab = "Price", xlab = "Lag 1 Price"
+  )
   detach(data)
   return(0)
 }

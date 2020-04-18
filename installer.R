@@ -176,6 +176,9 @@ install_stats462 <- function() {
   if (!require(forecast)) {
     install.packages("forecast", .libPaths()[1])
   }
+  if (!require(Hmisc)) {
+    install.packages("Hmisc", .libPaths()[1])
+  }
 }
 # nolint end
 
