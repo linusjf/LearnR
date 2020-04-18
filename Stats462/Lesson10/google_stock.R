@@ -34,9 +34,14 @@ main <- function(argv) {
   plot(
     x = date, y = price, col = "blue",
     pch = 15, type = "b",
-    main = "Time series plot of price versus date",
-    xlab = "Date", ylab = "Price"
+    main = "Time series plot of price",
+    xlab = "Date", ylab = "Price",
+    xaxt = "n"
   )
+  at <- date[c(1, 16, 31, 46, 61, 76, 91, 105)]
+  labels <- format(at, format = "%m/%d/%Y")
+  axis(1, at = at, labels = labels,
+  tick = TRUE)
   detach(data)
   return(0)
 }
