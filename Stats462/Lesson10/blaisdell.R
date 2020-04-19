@@ -23,7 +23,6 @@ suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(FitAR))
 suppressPackageStartupMessages(library(forecast))
 suppressPackageStartupMessages(library(Hmisc))
-library(orcutt)
 
 main <- function(argv) {
   data <- read.table(blaisdell.txt(),
@@ -92,10 +91,8 @@ main <- function(argv) {
   col.main = "red")
   lines(indsales, intercept + coeffs[2, 1] * indsales,
   col = "red")
-  detach(data)
 
-  coch <- cochrane.orcutt(model, max.iter = 1)
-  print(coch)
+  detach(data)
   return(0)
 }
 
