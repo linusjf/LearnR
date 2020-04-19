@@ -185,6 +185,9 @@ install_stats462 <- function() {
   if (!require(FitAR)) {
     install.packages("FitAR", .libPaths()[1])
   }
+  if (!require(orcutt)) {
+    install.packages("orcutt", .libPaths()[1])
+  }
 }
 # nolint end
 
