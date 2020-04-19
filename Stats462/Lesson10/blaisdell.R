@@ -21,6 +21,8 @@ suppressPackageStartupMessages(library(lmtest))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(FitAR))
+suppressPackageStartupMessages(library(forecast))
+suppressPackageStartupMessages(library(Hmisc))
 
 main <- function(argv) {
   data <- read.table(blaisdell.txt(),
@@ -54,6 +56,26 @@ main <- function(argv) {
        ylab = "P-values",
        xlab = "Lag")
   detach(data)
+
+  data %<>%
+    mutate(lag1residuals = Lag(residuals, 1))
+  residmodel <- lm(residuals ~ lag1residuals - 1, data)
+
+  rho <- residmodel$coefficients[1]
+  print("rho : ")
+  print(rho)
+
+  data %<>%
+    mutate(Y_co = comsales - rho * Lag(comsales, 1)) %>%
+    mutate(X_co = indsales - rho * Lag(indsales, 1))
+
+  lagmodel <- lm(Y_co ~ X_co, data)
+
+  print(model_coeffs(lagmodel))
+  print(model_fit_stats(lagmodel))
+  print(model_equation(lagmodel, digits = 4))
+
+  print(dwtest(lagmodel))
 
   return(0)
 }
