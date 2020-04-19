@@ -42,6 +42,7 @@ main <- function(argv) {
   with(data,
   print(Box.test(residuals, type = "Ljung-Box"))
   )
+  
 
   return(0)
 }

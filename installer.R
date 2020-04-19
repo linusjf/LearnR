@@ -182,9 +182,6 @@ install_stats462 <- function() {
   if (!require(regclass)) {
     install.packages("regclass", .libPaths()[1])
   }
-  if (!require(LSTS)) {
-    install.packages("LSTS", .libPaths()[1])
-  }
 }
 # nolint end
 
