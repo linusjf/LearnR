@@ -23,6 +23,7 @@ suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(FitAR))
 suppressPackageStartupMessages(library(forecast))
 suppressPackageStartupMessages(library(Hmisc))
+library(orcutt)
 
 main <- function(argv) {
   data <- read.table(blaisdell.txt(),
@@ -62,7 +63,6 @@ main <- function(argv) {
   residmodel <- lm(residuals ~ lag1residuals - 1, data)
 
   rho <- residmodel$coefficients[1]
-  print("rho : ")
   print(rho)
 
   data %<>%
@@ -77,6 +77,25 @@ main <- function(argv) {
 
   print(dwtest(lagmodel))
 
+  coeffs <- summary(lagmodel)$coefficients
+  intercept <- coeffs[1, 1] / (1 - rho)
+  print(intercept)
+  intercept.se <- coeffs[1, 2] / (1 - rho)
+  print(intercept.se)
+
+  attach(data)
+  eqn <- paste0("comsales = ",
+                round(intercept, 4), " + ",
+                round(coeffs[2, 1], 4), " * indsales")
+  plot(indsales, comsales, pch = 15,
+  col = "blue", main = eqn,
+  col.main = "red")
+  lines(indsales, intercept + coeffs[2, 1] * indsales,
+  col = "red")
+  detach(data)
+
+  coch <- cochrane.orcutt(model, max.iter = 1)
+  print(coch)
   return(0)
 }
 
