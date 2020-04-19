@@ -182,6 +182,9 @@ install_stats462 <- function() {
   if (!require(regclass)) {
     install.packages("regclass", .libPaths()[1])
   }
+  if (!require(FitAR)) {
+    install.packages("FitAR", .libPaths()[1])
+  }
 }
 # nolint end
 
