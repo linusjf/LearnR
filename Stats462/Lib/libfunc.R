@@ -174,12 +174,15 @@ model_coeffs <- function(reg) {
   names <- c(names, p_names)
   params <- c(params, p_values)
   names(params) <- names
+  # add vif only if more than 1 predictor
+  if (length(reg$coefficients) > 2) {
   vif_values <- vif_factors(reg)
   vif_names <- names(vif_values)
   vif_names <- paste0(vif_names, ".vif")
   names <- c(names, vif_names)
   params <- c(params, vif_values)
   names(params) <- names
+  }
   names <- stringr::str_sort(names)
   sorted_params <- c()
   for (name in names) {
