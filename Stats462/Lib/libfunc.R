@@ -6,6 +6,7 @@ suppressPackageStartupMessages(library(stringr))
 suppressPackageStartupMessages(library(alr3))
 suppressPackageStartupMessages(library(regclass))
 suppressPackageStartupMessages(library(HoRM))
+suppressPackageStartupMessages(library(lmtest))
 
 rad2deg <- function(rad) {
   (rad * 180) / (pi)
@@ -54,6 +55,27 @@ scatterplot_matrix <- function(data, title) {
     lower.panel = panel.smooth, upper.panel = panel_cor,
     pch = 20, main = title
   )
+}
+
+first_differences <- function(y, x, los = 0.01) {
+  y_fd <- y - Lag(y, 1)
+  x_fd <- x - Lag(x, 1)
+  model <- lm(y_fd ~ x_fd)
+  dw <- dwtest(model)
+  print(dw)
+  if (dw$p.value > los) {
+    print("No evidence that error terms are correlated.")
+    no_intercept <- lm(y_fd ~ x_fd - 1)
+    slope <- no_intercept$coefficients["x_fd"]
+    y_bar <- mean(y)
+    x_bar <- mean(x)
+    intercept <- y_bar - slope * x_bar
+    coefficients <- c(intercept, slope)
+    names(coefficients) <- c("(Intercept)", "x")
+    return(coefficients)
+  } else {
+    stop("Error terms are correlated")
+  }
 }
 
 hildreth_lu <- function(y, x, rho) {

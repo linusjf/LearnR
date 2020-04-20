@@ -125,6 +125,19 @@ main <- function(argv) {
   col.main = "red", sub = "Hildreth Ru Least SSE for rho")
   lines(indsales, intercept + slope * indsales,
   col = "red")
+
+  parms <- first_differences(comsales, indsales, 0.01)
+  intercept <- parms[1]
+  slope <- parms[2]
+  eqn <- paste0("comsales = ",
+                round(intercept, 4), " + ",
+                round(slope, 4), " * indsales")
+  plot(indsales, comsales, pch = 15,
+  col = "blue", main = eqn,
+  col.main = "red", sub = "First differences method")
+  lines(indsales, intercept + slope * indsales,
+  col = "red")
+
   detach(data)
   return(0)
 }
