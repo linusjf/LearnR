@@ -107,31 +107,12 @@ main <- function(argv) {
   col.main = "red", sub = "Cochrane Orcutt convergence")
   lines(indsales, intercept + slope * indsales,
   col = "red")
-  detach(data)
 
-  leastssemodel <- hildreth_lu(data)
-  print(leastssemodel)
-  return(0)
-}
-
-
-hildreth_lu <- function(data) {
   rho <- seq(from = 0.01, to = 1, by = 0.01)
-  models <- vector("list", 100)
-  sses <- c()
-  attach(data)
-  i <- 1
-  for (value in rho) {
-    model <- hildreth.lu(comsales,
-                         indsales,
-                         value)
-    models[[i]] <- model
-    sses <- c(sses, sigma(model))
-    i <- i + 1
-  }
+  leastssemodel <- hildreth_lu(comsales, indsales, rho)
+  print(leastssemodel)
   detach(data)
-  idx <- which(sses == min(sses))
-  return(models[c(idx)])
+  return(0)
 }
 
 if (identical(environment(), globalenv())) {

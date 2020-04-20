@@ -5,6 +5,7 @@ suppressPackageStartupMessages(library(purrr))
 suppressPackageStartupMessages(library(stringr))
 suppressPackageStartupMessages(library(alr3))
 suppressPackageStartupMessages(library(regclass))
+library(HoRM)
 
 rad2deg <- function(rad) {
   (rad * 180) / (pi)
@@ -53,6 +54,22 @@ scatterplot_matrix <- function(data, title) {
     lower.panel = panel.smooth, upper.panel = panel_cor,
     pch = 20, main = title
   )
+}
+
+hildreth_lu <- function(y, x, rho) {
+  models <- vector("list", length(rho))
+  sses <- c()
+  i <- 1
+  for (value in rho) {
+    model <- hildreth.lu(y,
+                         x,
+                         value)
+    models[[i]] <- model
+    sses <- c(sses, sigma(model))
+    i <- i + 1
+  }
+  idx <- which(sses == min(sses))
+  return(models[c(idx)])
 }
 
 # panel.smooth function is built in.
