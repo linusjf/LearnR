@@ -108,10 +108,14 @@ main <- function(argv) {
   col = "red")
 
   rho <- seq(from = 0.01, to = 1, by = 0.01)
-  leastssemodel <- hildreth_lu(comsales, indsales, rho)
+  parms <- hildreth_lu(comsales, indsales, rho)
+  leastssemodel <- parms[[1]]
+  rho_val <- parms[[2]]
+  print(anova(leastssemodel))
+  print(dwtest(leastssemodel))
 
   coeffs <- leastssemodel$coefficients
-  intercept <- coeffs[1]
+  intercept <- coeffs[1] / (1 - rho_val)
   slope <- coeffs[2]
   eqn <- paste0("comsales = ",
                 round(intercept, 4), " + ",

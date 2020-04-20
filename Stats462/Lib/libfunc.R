@@ -5,7 +5,7 @@ suppressPackageStartupMessages(library(purrr))
 suppressPackageStartupMessages(library(stringr))
 suppressPackageStartupMessages(library(alr3))
 suppressPackageStartupMessages(library(regclass))
-library(HoRM)
+suppressPackageStartupMessages(library(HoRM))
 
 rad2deg <- function(rad) {
   (rad * 180) / (pi)
@@ -69,7 +69,8 @@ hildreth_lu <- function(y, x, rho) {
     i <- i + 1
   }
   idx <- which(sses == min(sses))
-  return(models[[c(idx)]])
+  return(list(models[[c(idx)]],
+              rho[c(idx)]))
 }
 
 # panel.smooth function is built in.
