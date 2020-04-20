@@ -188,6 +188,9 @@ install_stats462 <- function() {
   if (!require(orcutt)) {
     install.packages("orcutt", .libPaths()[1])
   }
+  if (!require(HoRM)) {
+    install.packages("HoRM", .libPaths()[1])
+  }
 }
 # nolint end
 
