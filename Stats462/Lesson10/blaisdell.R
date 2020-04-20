@@ -23,6 +23,7 @@ suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(FitAR))
 suppressPackageStartupMessages(library(forecast))
 suppressPackageStartupMessages(library(Hmisc))
+library(orcutt)
 
 main <- function(argv) {
   data <- read.table(blaisdell.txt(),
@@ -88,10 +89,22 @@ main <- function(argv) {
                 round(coeffs[2, 1], 4), " * indsales")
   plot(indsales, comsales, pch = 15,
   col = "blue", main = eqn,
-  col.main = "red")
+  col.main = "red", sub = "Cochrane Orcutt 1 iteration")
   lines(indsales, intercept + coeffs[2, 1] * indsales,
   col = "red")
 
+  coch <- cochrane.orcutt(model, max.iter = 1000)
+  coeffs <- coch$coefficients
+  intercept <- coeffs[1]
+  slope <- coeffs[2]
+  eqn <- paste0("comsales = ",
+                round(intercept, 4), " + ",
+                round(slope, 4), " * indsales")
+  plot(indsales, comsales, pch = 15,
+  col = "blue", main = eqn,
+  col.main = "red", sub = "Cochrane Orcutt convergence")
+  lines(indsales, intercept + slope * indsales,
+  col = "red")
   detach(data)
   return(0)
 }
