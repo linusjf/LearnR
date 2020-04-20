@@ -69,7 +69,7 @@ hildreth_lu <- function(y, x, rho) {
     i <- i + 1
   }
   idx <- which(sses == min(sses))
-  return(models[c(idx)])
+  return(models[[c(idx)]])
 }
 
 # panel.smooth function is built in.

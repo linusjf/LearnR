@@ -24,7 +24,6 @@ suppressPackageStartupMessages(library(FitAR))
 suppressPackageStartupMessages(library(forecast))
 suppressPackageStartupMessages(library(Hmisc))
 library(orcutt)
-library(HoRM)
 
 main <- function(argv) {
   data <- read.table(blaisdell.txt(),
@@ -110,7 +109,18 @@ main <- function(argv) {
 
   rho <- seq(from = 0.01, to = 1, by = 0.01)
   leastssemodel <- hildreth_lu(comsales, indsales, rho)
-  print(leastssemodel)
+
+  coeffs <- leastssemodel$coefficients
+  intercept <- coeffs[1]
+  slope <- coeffs[2]
+  eqn <- paste0("comsales = ",
+                round(intercept, 4), " + ",
+                round(slope, 4), " * indsales")
+  plot(indsales, comsales, pch = 15,
+  col = "blue", main = eqn,
+  col.main = "red", sub = "Hildreth Ru Least SSE for rho")
+  lines(indsales, intercept + slope * indsales,
+  col = "red")
   detach(data)
   return(0)
 }
