@@ -98,14 +98,21 @@ main <- function(argv) {
   coeffs <- coch$coefficients
   intercept <- coeffs[1]
   slope <- coeffs[2]
+  data %<>%
+    mutate(fitted.cochrane = intercept + slope * indsales) %>%
+    mutate(e.cochrane = comsales - fitted.cochrane) %>%
+    mutate(forecast.cochrane = comsales + slope * Lag(e.cochrane))
   eqn <- paste0("comsales = ",
                 round(intercept, 4), " + ",
                 round(slope, 4), " * indsales")
   plot(indsales, comsales, pch = 15,
   col = "blue", main = eqn,
   col.main = "red", sub = "Cochrane Orcutt convergence")
-  lines(indsales, intercept + slope * indsales,
-  col = "red")
+  with(data, {
+  lo <- lm(forecast.cochrane ~ indsales)
+  abline(lo, col = "red")
+  }
+  )
 
   rho <- seq(from = 0.01, to = 1, by = 0.01)
   parms <- hildreth_lu(comsales, indsales, rho)
@@ -117,14 +124,21 @@ main <- function(argv) {
   coeffs <- leastssemodel$coefficients
   intercept <- coeffs[1] / (1 - rho_val)
   slope <- coeffs[2]
+  data %<>%
+    mutate(fitted.hildrethru = intercept + slope * indsales) %>%
+    mutate(e.hildrethru = comsales - fitted.hildrethru) %>%
+    mutate(forecast.hildrethru = comsales + slope * Lag(e.hildrethru))
   eqn <- paste0("comsales = ",
                 round(intercept, 4), " + ",
                 round(slope, 4), " * indsales")
   plot(indsales, comsales, pch = 15,
   col = "blue", main = eqn,
   col.main = "red", sub = "Hildreth Ru Least SSE for rho")
-  lines(indsales, intercept + slope * indsales,
-  col = "red")
+  with(data, {
+  lo <- lm(forecast.hildrethru ~ indsales)
+  abline(lo, col = "red")
+  }
+  )
 
   parms <- first_differences(comsales, indsales, 0.01)
   intercept <- parms[1]
