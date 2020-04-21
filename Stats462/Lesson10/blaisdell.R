@@ -82,16 +82,23 @@ main <- function(argv) {
   print(intercept)
   intercept.se <- coeffs[1, 2] / (1 - rho)
   print(intercept.se)
+  slope <- coeffs[2, 1]
 
   attach(data)
+  data %<>%
+    mutate(fitted.cochrane1 = intercept + slope * indsales) %>%
+    mutate(e.cochrane1 = comsales - fitted.cochrane1) %>%
+    mutate(forecast.cochrane1 = comsales + slope * Lag(e.cochrane1))
   eqn <- paste0("comsales = ",
                 round(intercept, 4), " + ",
-                round(coeffs[2, 1], 4), " * indsales")
+                round(slope, 4), " * indsales")
   plot(indsales, comsales, pch = 15,
   col = "blue", main = eqn,
   col.main = "red", sub = "Cochrane Orcutt 1 iteration")
-  lines(indsales, intercept + coeffs[2, 1] * indsales,
-  col = "red")
+  with(data, {
+  lo <- lm(forecast.cochrane1 ~ indsales)
+  abline(lo, col = "red")
+  })
 
   coch <- cochrane.orcutt(model, max.iter = 1000)
   print(coch)
@@ -143,14 +150,21 @@ main <- function(argv) {
   parms <- first_differences(comsales, indsales, 0.01)
   intercept <- parms[1]
   slope <- parms[2]
+  data %<>%
+    mutate(fitted.firstdiff = intercept + slope * indsales) %>%
+    mutate(e.firstdiff = comsales - fitted.firstdiff) %>%
+    mutate(forecast.firstdiff = comsales + slope * Lag(e.firstdiff))
   eqn <- paste0("comsales = ",
                 round(intercept, 4), " + ",
                 round(slope, 4), " * indsales")
   plot(indsales, comsales, pch = 15,
   col = "blue", main = eqn,
   col.main = "red", sub = "First differences method")
-  lines(indsales, intercept + slope * indsales,
-  col = "red")
+  with(data, {
+  lo <- lm(forecast.firstdiff ~ indsales)
+  abline(lo, col = "red")
+  }
+  )
 
   detach(data)
   return(0)
