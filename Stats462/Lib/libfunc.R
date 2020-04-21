@@ -64,7 +64,7 @@ first_differences <- function(y, x, los = 0.01) {
   dw <- dwtest(model)
   print(dw)
   if (dw$p.value > los) {
-    print("No evidence that error terms are correlated.")
+    cat("\nConclusion: No evidence that error terms are correlated.\n")
     no_intercept <- lm(y_fd ~ x_fd - 1)
     slope <- no_intercept$coefficients["x_fd"]
     y_bar <- mean(y)
