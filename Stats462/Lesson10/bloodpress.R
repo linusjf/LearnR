@@ -17,6 +17,7 @@ lib_path <- function() {
 
 library(skimr)
 source(lib_path())
+library(scatterplot3d)
 
 main <- function(argv) {
   cairo_pdf(onefile = TRUE)
@@ -27,11 +28,12 @@ main <- function(argv) {
   print(skimr::skim(data))
 
   scatterplot_matrix(data, "Scatterplots for bloodpress")
-  analysis(data)
+  analysis_uncorrelated(data)
+  analysis_correlated(data)
   return(0)
 }
 
-analysis <- function(data) {
+analysis_uncorrelated <- function(data) {
   model <- lm(BP ~ Stress, data)
   complete <- complete_anova(model)
   print(complete)
@@ -47,6 +49,40 @@ analysis <- function(data) {
   model <- lm(BP ~ BSA + Stress, data)
   complete <- complete_anova(model)
   print(complete)
+
+  with(data,
+  scatterplot3d(BP, BSA, Stress, pch = 15,
+                type = "h",
+                color = "steelblue")
+  )
+}
+
+analysis_correlated <- function(data) {
+  model <- lm(BP ~ BSA, data)
+  complete <- complete_anova(model)
+  print(complete)
+
+  model <- lm(BP ~ Weight, data)
+  complete <- complete_anova(model)
+  print(complete)
+
+  model <- lm(BP ~ BSA + Weight, data)
+  complete <- complete_anova(model)
+  print(complete)
+
+  model <- lm(BP ~ Weight + BSA, data)
+  complete <- complete_anova(model)
+  print(complete)
+
+  with(data, {
+  scatterplot3d(BP, BSA, Weight, pch = 15,
+                color = "steelblue",
+  type = "h")
+  par(mar = c(5, 6, 4, 4))
+  plot(BSA, Weight, main = "Weight versus BSA",
+  col = "blue", pch = 15)
+  }
+  )
 }
 
 if (identical(environment(), globalenv())) {
