@@ -191,6 +191,9 @@ install_stats462 <- function() {
   if (!require(HoRM)) {
     install.packages("HoRM", .libPaths()[1])
   }
+  if (!require(stringi)) {
+    install.packages("stringi", .libPaths()[1])
+  }
 }
 # nolint end
 

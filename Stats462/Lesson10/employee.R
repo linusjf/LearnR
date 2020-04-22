@@ -1,9 +1,9 @@
 #!/usr/bin/env Rscript
-blaisdell.txt <- function() {
+employee.txt <- function() {
   library(rprojroot)
   paste0(
     find_root(has_file(".Rprofile")),
-    "/Stats462/Data/blaisdell.txt"
+    "/Stats462/Data/employee.txt"
   )
 }
 
@@ -24,10 +24,9 @@ suppressPackageStartupMessages(library(FitAR))
 suppressPackageStartupMessages(library(forecast))
 suppressPackageStartupMessages(library(Hmisc))
 library(orcutt)
-library(stringi)
 
 ols_analysis <- function(data) {
-  model <- lm(comsales ~ indsales, data)
+  model <- lm(metal ~ vendor, data)
 
   print(model_coeffs(model))
   print(model_fit_stats(model))
@@ -39,7 +38,7 @@ ols_analysis <- function(data) {
   intercept <- coeffs[1, 1]
   slope <- coeffs[2, 1]
   with(data,
-  plot(indsales, comsales,
+  plot(vendor, metal,
     pch = 15,
     col = "blue", main = eqn,
     col.main = "red", sub = "Ordinary Least Squares"
@@ -184,7 +183,7 @@ hildreth_lu_analysis <- function(data) {
 
 main <- function(argv) {
   cairo_pdf(onefile = TRUE)
-  data <- read.table(blaisdell.txt(),
+  data <- read.table(employee.txt(),
     header = TRUE, as.is = TRUE
   )
   print(head(data))
@@ -194,16 +193,12 @@ main <- function(argv) {
 
   data %<>%
     mutate(residuals = resid(model))
-
-  ljung_boxq(model, data)
-
-  cochrane_orcutt(data)
-
-  cochrane_orcutt_convergence(model, data)
-
-  hildreth_lu_analysis(data)
-
-  first_differences_analysis(data)
+  with(data, {
+  plot(time, residuals, main = "Residuals",
+  xlab = "Order (time)",
+  ylab = "Residuals")
+  abline(h = 0)
+  })
   return(0)
 }
 
