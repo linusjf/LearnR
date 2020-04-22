@@ -27,7 +27,26 @@ main <- function(argv) {
   print(skimr::skim(data))
 
   scatterplot_matrix(data, "Scatterplots for bloodpress")
+  analysis(data)
   return(0)
+}
+
+analysis <- function(data) {
+  model <- lm(BP ~ Stress, data)
+  complete <- complete_anova(model)
+  print(complete)
+
+  model <- lm(BP ~ BSA, data)
+  complete <- complete_anova(model)
+  print(complete)
+
+  model <- lm(BP ~ Stress + BSA, data)
+  complete <- complete_anova(model)
+  print(complete)
+
+  model <- lm(BP ~ BSA + Stress, data)
+  complete <- complete_anova(model)
+  print(complete)
 }
 
 if (identical(environment(), globalenv())) {
