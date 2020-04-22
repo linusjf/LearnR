@@ -101,7 +101,7 @@ cochrane_orcutt <- function(data) {
   data %<>%
     mutate(fitted.cochrane1 = intercept + slope * indsales) %>%
     mutate(e.cochrane1 = comsales - fitted.cochrane1) %>%
-    mutate(forecast.cochrane1 = comsales + slope * Lag(e.cochrane1))
+    mutate(forecast.cochrane1 = fitted.cochrane1 + rho * Lag(e.cochrane1))
   eqn <- paste0(
     "comsales = ",
     round(intercept, 4), " + ",
@@ -122,13 +122,14 @@ cochrane_orcutt <- function(data) {
 cochrane_orcutt_convergence <- function(model, data) {
   coch <- cochrane.orcutt(model, max.iter = 1000)
   print(coch)
+  rho <- coch$rho
   coeffs <- coch$coefficients
   intercept <- coeffs[1]
   slope <- coeffs[2]
   data %<>%
     mutate(fitted.cochrane = intercept + slope * indsales) %>%
     mutate(e.cochrane = comsales - fitted.cochrane) %>%
-    mutate(forecast.cochrane = comsales + slope * Lag(e.cochrane))
+    mutate(forecast.cochrane = fitted.cochrane + rho * Lag(e.cochrane))
   eqn <- paste0(
     "comsales = ",
     round(intercept, 4), " + ",
@@ -151,10 +152,11 @@ hildreth_lu_analysis <- function(data) {
   rho <- seq(from = 0.01, to = 1, by = 0.01)
   intercept <- NULL
   slope <- NULL
+  rho_val <- NULL
   with(data, {
   parms <- hildreth_lu(comsales, indsales, rho)
   leastssemodel <- parms[[1]]
-  rho_val <- parms[[2]]
+  rho_val <<- parms[[2]]
   print(anova(leastssemodel))
   print(dwtest(leastssemodel))
 
@@ -165,7 +167,7 @@ hildreth_lu_analysis <- function(data) {
   data %<>%
     mutate(fitted.hildrethlu = intercept + slope * indsales) %>%
     mutate(e.hildrethlu = comsales - fitted.hildrethlu) %>%
-    mutate(forecast.hildrethlu = comsales + slope * Lag(e.hildrethlu))
+    mutate(forecast.hildrethlu = fitted.hildrethlu + rho_val * Lag(e.hildrethlu))
   eqn <- paste0(
     "comsales = ",
     round(intercept, 4), " + ",
@@ -208,7 +210,7 @@ main <- function(argv) {
 }
 
 first_differences_analysis <- function(data) {
-
+  rho <- 1
   intercept <- NULL
   slope <- NULL
   with(data, {
@@ -219,7 +221,7 @@ first_differences_analysis <- function(data) {
   data %<>%
     mutate(fitted.firstdiff = intercept + slope * indsales) %>%
     mutate(e.firstdiff = comsales - fitted.firstdiff) %>%
-    mutate(forecast.firstdiff = comsales + slope * Lag(e.firstdiff))
+    mutate(forecast.firstdiff = fitted.firstdiff + rho * Lag(e.firstdiff))
   eqn <- paste0(
     "comsales = ",
     round(intercept, 4), " + ",

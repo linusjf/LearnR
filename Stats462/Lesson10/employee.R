@@ -47,40 +47,18 @@ ols_analysis <- function(data) {
   return(model)
 }
 
-ljung_boxq <- function(model, data) {
-  print(dwtest(model))
-
-  # Ljung - BoxQ test
-  with(
-    data,
-    print(Box.test(residuals, type = "Ljung-Box"))
-  )
-
-  with(data, {
-    x <- LjungBoxTest(residuals,
-      k = 2,
-      StartLag = 1
-    )
-    plot(x[, 3],
-      main = "Ljung-Box Q Test",
-      col = "blue", pch = 15,
-      ylab = "P-values",
-      xlab = "Lag"
-    )
-  })
-}
-
-cochrane_orcutt <- function(data) {
+cochrane_orcutt <- function(model, data) {
 
   data %<>%
-    mutate(lag1residuals = Lag(residuals, 1))
+    mutate(residuals = resid(model)) %>%
+    mutate(lag1residuals = Lag(residuals))
   residmodel <- lm(residuals ~ lag1residuals - 1, data)
 
   rho <- residmodel$coefficients[1]
 
   data %<>%
-    mutate(Y_co = comsales - rho * Lag(comsales, 1)) %>%
-    mutate(X_co = indsales - rho * Lag(indsales, 1))
+    mutate(Y_co = metal - rho * Lag(metal)) %>%
+    mutate(X_co = vendor - rho * Lag(vendor))
 
   lagmodel <- lm(Y_co ~ X_co, data)
 
@@ -98,86 +76,23 @@ cochrane_orcutt <- function(data) {
   slope <- coeffs[2, 1]
 
   data %<>%
-    mutate(fitted.cochrane1 = intercept + slope * indsales) %>%
-    mutate(e.cochrane1 = comsales - fitted.cochrane1) %>%
-    mutate(forecast.cochrane1 = comsales + slope * Lag(e.cochrane1))
+    mutate(fitted.cochrane1 = intercept + slope * vendor) %>%
+    mutate(e.cochrane1 = metal - fitted.cochrane1) %>%
+    mutate(forecast.cochrane1 = fitted.cochrane1 + rho * Lag(e.cochrane1))
   eqn <- paste0(
-    "comsales = ",
+    "metal = ",
     round(intercept, 4), " + ",
-    round(slope, 4), " * indsales"
+    round(slope, 4), " * vendor"
   )
   with(data,
-  plot(indsales, comsales,
+  plot(vendor, metal,
     pch = 15,
     col = "blue", main = eqn,
     col.main = "red", sub = "Cochrane Orcutt 1 iteration"
   ))
   with(data, {
-    lo <- lm(forecast.cochrane1 ~ indsales)
+    lo <- lm(forecast.cochrane1 ~ vendor)
     abline(lo, col = "red")
-  })
-}
-
-cochrane_orcutt_convergence <- function(model, data) {
-  coch <- cochrane.orcutt(model, max.iter = 1000)
-  print(coch)
-  coeffs <- coch$coefficients
-  intercept <- coeffs[1]
-  slope <- coeffs[2]
-  data %<>%
-    mutate(fitted.cochrane = intercept + slope * indsales) %>%
-    mutate(e.cochrane = comsales - fitted.cochrane) %>%
-    mutate(forecast.cochrane = comsales + slope * Lag(e.cochrane))
-  eqn <- paste0(
-    "comsales = ",
-    round(intercept, 4), " + ",
-    round(slope, 4), " * indsales"
-  )
-  with(data,
-  plot(indsales, comsales,
-    pch = 15,
-    col = "blue", main = eqn,
-    col.main = "red", sub = "Cochrane Orcutt convergence"
-  ))
-  with(data, {
-    lo <- lm(forecast.cochrane ~ indsales)
-    abline(lo, col = "red")
-  })
-}
-
-hildreth_lu_analysis <- function(data) {
-
-  rho <- seq(from = 0.01, to = 1, by = 0.01)
-  intercept <- NULL
-  slope <- NULL
-  with(data, {
-  parms <- hildreth_lu(comsales, indsales, rho)
-  leastssemodel <- parms[[1]]
-  rho_val <- parms[[2]]
-  print(anova(leastssemodel))
-  print(dwtest(leastssemodel))
-
-  coeffs <- leastssemodel$coefficients
-  intercept <<- coeffs[1] / (1 - rho_val)
-  slope <<- coeffs[2]
-  })
-  data %<>%
-    mutate(fitted.hildrethlu = intercept + slope * indsales) %>%
-    mutate(e.hildrethlu = comsales - fitted.hildrethlu) %>%
-    mutate(forecast.hildrethlu = comsales + slope * Lag(e.hildrethlu))
-  eqn <- paste0(
-    "comsales = ",
-    round(intercept, 4), " + ",
-    round(slope, 4), " * indsales"
-  )
-  with(data, {
-  plot(indsales, comsales,
-    pch = 15,
-    col = "blue", main = eqn,
-    col.main = "red", sub = "Hildreth Ru Least SSE for rho"
-  )
-  lo <- lm(forecast.hildrethlu ~ indsales)
-  abline(lo, col = "red")
   })
 }
 
@@ -190,7 +105,12 @@ main <- function(argv) {
   print(skimr::skim(data))
 
   model <- ols_analysis(data)
+  test_autocorrelations(model, data)
+  cochrane_orcutt(model, data)
+  return(0)
+}
 
+test_autocorrelations <- function(model, data) {
   data %<>%
     mutate(residuals = resid(model))
   with(data, {
@@ -199,36 +119,10 @@ main <- function(argv) {
   ylab = "Residuals")
   abline(h = 0)
   })
-  return(0)
-}
-
-first_differences_analysis <- function(data) {
-
-  intercept <- NULL
-  slope <- NULL
-  with(data, {
-  parms <- first_differences(comsales, indsales, 0.01)
-  intercept <<- parms[1]
-  slope <<- parms[2]
-  })
-  data %<>%
-    mutate(fitted.firstdiff = intercept + slope * indsales) %>%
-    mutate(e.firstdiff = comsales - fitted.firstdiff) %>%
-    mutate(forecast.firstdiff = comsales + slope * Lag(e.firstdiff))
-  eqn <- paste0(
-    "comsales = ",
-    round(intercept, 4), " + ",
-    round(slope, 4), " * indsales"
+  with(data,
+  Pacf(residuals)
   )
-  with(data, {
-  plot(indsales, comsales,
-    pch = 15,
-    col = "blue", main = eqn,
-    col.main = "red", sub = "First differences method")
-  lo <- lm(forecast.firstdiff ~ indsales)
-  abline(lo, col = "red")
-  }
-  )
+  print(dwtest(model))
 }
 
 if (identical(environment(), globalenv())) {
