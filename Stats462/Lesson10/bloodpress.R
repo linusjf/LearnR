@@ -26,6 +26,7 @@ main <- function(argv) {
   print(head(data))
   print(skimr::skim(data))
 
+  scatterplot_matrix(data, "Scatterplots for bloodpress")
   return(0)
 }
 
