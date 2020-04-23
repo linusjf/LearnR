@@ -61,14 +61,35 @@ analysis_correlated <- function(data) {
   model <- lm(BP ~ BSA, data)
   complete <- complete_anova(model)
   print(complete)
+  new <- data.frame(BSA = 2)
+  pred.pi <- predict(model, new, interval = "prediction")
+  pred.ci <- predict(model, new, interval = "confidence")
+  print("Prediction interval")
+  print(pred.pi)
+  print("Confidence interval")
+  print(pred.ci)
 
   model <- lm(BP ~ Weight, data)
   complete <- complete_anova(model)
   print(complete)
+  new <- data.frame(Weight = 92)
+  pred.pi <- predict(model, new, interval = "prediction")
+  pred.ci <- predict(model, new, interval = "confidence")
+  print("Prediction interval")
+  print(pred.pi)
+  print("Confidence interval")
+  print(pred.ci)
 
   model <- lm(BP ~ BSA + Weight, data)
   complete <- complete_anova(model)
   print(complete)
+  new <- data.frame(Weight = 92, BSA = 2)
+  pred.pi <- predict(model, new, interval = "prediction")
+  pred.ci <- predict(model, new, interval = "confidence")
+  print("Prediction interval")
+  print(pred.pi)
+  print("Confidence interval")
+  print(pred.ci)
 
   model <- lm(BP ~ Weight + BSA, data)
   complete <- complete_anova(model)
@@ -83,6 +104,7 @@ analysis_correlated <- function(data) {
   col = "blue", pch = 15)
   }
   )
+
 }
 
 if (identical(environment(), globalenv())) {
