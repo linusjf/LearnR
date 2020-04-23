@@ -194,6 +194,9 @@ install_stats462 <- function() {
   if (!require(stringi)) {
     install.packages("stringi", .libPaths()[1])
   }
+  if (!require(PerformanceAnalytics)) {
+    install.packages("PerformanceAnalytics", .libPaths()[1])
+  }
 }
 # nolint end
 

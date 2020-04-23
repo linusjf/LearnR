@@ -18,6 +18,9 @@ lib_path <- function() {
 library(skimr)
 source(lib_path())
 library(scatterplot3d)
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(PerformanceAnalytics))
 
 main <- function(argv) {
   cairo_pdf(onefile = TRUE)
@@ -30,6 +33,7 @@ main <- function(argv) {
   scatterplot_matrix(data, "Scatterplots for bloodpress")
   analysis_uncorrelated(data)
   analysis_correlated(data)
+  analysis_vif(data)
   return(0)
 }
 
@@ -55,6 +59,32 @@ analysis_uncorrelated <- function(data) {
                 type = "h",
                 color = "steelblue")
   )
+}
+
+analysis_vif <- function(data) {
+  model <- lm(BP ~ BSA + Stress + Age + Weight + Pulse + Dur, data)
+  coeffs <- model_coeffs(model)
+  vifs <- coeffs[,
+                 grepl("[.]vif",
+                       names(coeffs))]
+  vifs <- vifs[, (vifs[1, ]) > 4]
+  print(vifs)
+
+  wt_model <- lm(Weight ~ BSA + Age + Dur + Pulse + Stress, data)
+  stats <- model_fit_stats(wt_model)
+  r.squared <- stats$R.squared
+  vif.weight <- 1 / (1 - r.squared)
+  names(vif.weight) <- "vif.Weight"
+  print(vif.weight)
+
+  datanew <- data %>%
+    select(Weight, BSA, Age, Dur, Pulse, Stress)
+  chart.Correlation(datanew, histogram = TRUE, pch = 19, col = "blue")
+
+  model <- lm(BP ~ Weight + Age + Dur + Stress, data)
+  print(anova(model))
+  print(model_fit_stats(model))
+  print(model_coeffs(model))
 }
 
 analysis_correlated <- function(data) {
