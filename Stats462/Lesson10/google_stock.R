@@ -42,8 +42,10 @@ main <- function(argv) {
   )
   at <- date[c(1, 16, 31, 46, 61, 76, 91, 105)]
   labels <- format(at, format = "%m/%d/%Y")
-  axis(1, at = at, labels = labels,
-  tick = TRUE)
+  axis(1,
+    at = at, labels = labels,
+    tick = TRUE
+  )
   Pacf(price)
   detach(data)
 

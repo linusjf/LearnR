@@ -27,19 +27,25 @@ model_equation <- function(model, ...) {
   model_coeff <- model_coeff[!is.na(model_coeff)]
   format_args$x <- abs(model_coeff)
   model_coeff_sign <- sign(model_coeff)
-  model_coeff_prefix <- case_when(model_coeff_sign == -1 ~ " - ",
-                                  model_coeff_sign == 1 ~ " + ",
-                                  model_coeff_sign == 0 ~ " + ")
-  model_eqn <- paste(strsplit(as.character(model$call$formula), "~")[[2]], # 'y'
-                     "=",
-                     paste(if_else(model_coeff[1] < 0, "- ", ""),
-                           do.call(format, format_args)[1],
-                           paste(model_coeff_prefix[-1],
-                                 do.call(format, format_args)[-1],
-                                 " * ",
-                                 names(model_coeff[-1]),
-                                 sep = "", collapse = ""),
-                           sep = ""))
+  model_coeff_prefix <- case_when(
+    model_coeff_sign == -1 ~ " - ",
+    model_coeff_sign == 1 ~ " + ",
+    model_coeff_sign == 0 ~ " + "
+  )
+  model_eqn <- paste(
+    strsplit(as.character(model$call$formula), "~")[[2]], # 'y'
+    "=",
+    paste(if_else(model_coeff[1] < 0, "- ", ""),
+      do.call(format, format_args)[1],
+      paste(model_coeff_prefix[-1],
+        do.call(format, format_args)[-1],
+        " * ",
+        names(model_coeff[-1]),
+        sep = "", collapse = ""
+      ),
+      sep = ""
+    )
+  )
   return(model_eqn)
 }
 
@@ -83,16 +89,20 @@ hildreth_lu <- function(y, x, rho) {
   sses <- c()
   i <- 1
   for (value in rho) {
-    model <- hildreth.lu(y,
-                         x,
-                         value)
+    model <- hildreth.lu(
+      y,
+      x,
+      value
+    )
     models[[i]] <- model
     sses <- c(sses, sigma(model))
     i <- i + 1
   }
   idx <- which(sses == min(sses))
-  return(list(models[[c(idx)]],
-              rho[c(idx)]))
+  return(list(
+    models[[c(idx)]],
+    rho[c(idx)]
+  ))
 }
 
 # panel.smooth function is built in.
@@ -216,12 +226,12 @@ model_coeffs <- function(reg) {
   names(params) <- names
   # add vif only if more than 1 predictor
   if (length(reg$coefficients) > 2) {
-  vif_values <- vif_factors(reg)
-  vif_names <- names(vif_values)
-  vif_names <- paste0(vif_names, ".vif")
-  names <- c(names, vif_names)
-  params <- c(params, vif_values)
-  names(params) <- names
+    vif_values <- vif_factors(reg)
+    vif_names <- names(vif_values)
+    vif_names <- paste0(vif_names, ".vif")
+    names <- c(names, vif_names)
+    params <- c(params, vif_values)
+    names(params) <- names
   }
   names <- stringr::str_sort(names)
   sorted_params <- c()

@@ -42,27 +42,36 @@ main <- function(argv) {
     filter(Discount == 0)
   discounts <- data %>%
     filter(Discount == 1)
-  with(no_discounts,
-  plot(fitted, residuals, col = "blue",
-  pch = 15, main = "OLS Scatterplot of residuals versus fits",
-  xlab = "Fitted", ylab = "Residuals",
-  xlim = c(min(data$fitted), max(data$fitted)),
-  ylim = c(min(data$residuals), max(data$residuals)),
-  sub = eqn.1, col.sub = "blue"
-  ))
-  with(discounts,
-  points(fitted, residuals, col = "red",
-  pch = 15))
+  with(
+    no_discounts,
+    plot(fitted, residuals,
+      col = "blue",
+      pch = 15, main = "OLS Scatterplot of residuals versus fits",
+      xlab = "Fitted", ylab = "Residuals",
+      xlim = c(min(data$fitted), max(data$fitted)),
+      ylim = c(min(data$residuals), max(data$residuals)),
+      sub = eqn.1, col.sub = "blue"
+    )
+  )
+  with(
+    discounts,
+    points(fitted, residuals,
+      col = "red",
+      pch = 15
+    )
+  )
   abline(h = 0)
 
-  var_discounts <- sd(discounts$residuals) ** 2
-  var_no_discounts <- sd(no_discounts$residuals) ** 2
+  var_discounts <- sd(discounts$residuals)**2
+  var_no_discounts <- sd(no_discounts$residuals)**2
 
   weights <- ifelse(data$Discount == 0, 1 / var_no_discounts,
-                                 1 / var_discounts)
+    1 / var_discounts
+  )
   print(weights)
   model.2 <- lm(MarketShare ~ Price + P1 + P2,
-                weights = weights, data)
+    weights = weights, data
+  )
   print(anova(model.2))
   print(model_fit_stats(model.2))
   print(model_coeffs(model.2))
@@ -77,17 +86,24 @@ main <- function(argv) {
     filter(Discount == 0)
   discounts <- data %>%
     filter(Discount == 1)
-  with(no_discounts,
-  plot(fitted.wls, residuals.wls, col = "blue",
-  pch = 15, main = "WLS Scatterplot of standardized residuals versus fits",
-  xlab = "Fitted", ylab = "Standardized Residuals",
-  xlim = c(min(data$fitted.wls), max(data$fitted.wls)),
-  ylim = c(min(data$residuals.wls), max(data$residuals.wls)),
-  sub = eqn.2, col.sub = "red"
-  ))
-  with(discounts,
-  points(fitted.wls, residuals.wls, col = "red",
-  pch = 15))
+  with(
+    no_discounts,
+    plot(fitted.wls, residuals.wls,
+      col = "blue",
+      pch = 15, main = "WLS Scatterplot of standardized residuals versus fits",
+      xlab = "Fitted", ylab = "Standardized Residuals",
+      xlim = c(min(data$fitted.wls), max(data$fitted.wls)),
+      ylim = c(min(data$residuals.wls), max(data$residuals.wls)),
+      sub = eqn.2, col.sub = "red"
+    )
+  )
+  with(
+    discounts,
+    points(fitted.wls, residuals.wls,
+      col = "red",
+      pch = 15
+    )
+  )
   abline(h = 0)
   return(0)
 }

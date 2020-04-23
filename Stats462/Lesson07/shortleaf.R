@@ -61,9 +61,10 @@ main <- function(argv) {
 
   residuals <- resid(reg)
   plot(data$Diam,
-       residuals,
-       xlab = "Diameter",
-       main = "Residuals versus Diameter")
+    residuals,
+    xlab = "Diameter",
+    main = "Residuals versus Diameter"
+  )
   abline(h = mean(residuals))
 
   probplot(residuals,

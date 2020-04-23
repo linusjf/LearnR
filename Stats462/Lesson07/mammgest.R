@@ -59,9 +59,10 @@ main <- function(argv) {
 
   residuals <- resid(reg)
   plot(data$Birthwgt,
-       residuals,
-       xlab = "Birth Weight",
-       main = "Residuals versus Birth Weight")
+    residuals,
+    xlab = "Birth Weight",
+    main = "Residuals versus Birth Weight"
+  )
   abline(h = mean(residuals))
 
   probplot(residuals,

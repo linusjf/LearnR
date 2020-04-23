@@ -54,19 +54,26 @@ analysis_uncorrelated <- function(data) {
   complete <- complete_anova(model)
   print(complete)
 
-  with(data,
-  scatterplot3d(BP, BSA, Stress, pch = 15,
-                type = "h",
-                color = "steelblue")
+  with(
+    data,
+    scatterplot3d(BP, BSA, Stress,
+      pch = 15,
+      type = "h",
+      color = "steelblue"
+    )
   )
 }
 
 analysis_vif <- function(data) {
   model <- lm(BP ~ BSA + Stress + Age + Weight + Pulse + Dur, data)
   coeffs <- model_coeffs(model)
-  vifs <- coeffs[,
-                 grepl("[.]vif",
-                       names(coeffs))]
+  vifs <- coeffs[
+    ,
+    grepl(
+      "[.]vif",
+      names(coeffs)
+    )
+  ]
   vifs <- vifs[, (vifs[1, ]) > 4]
   print(vifs)
 
@@ -126,15 +133,17 @@ analysis_correlated <- function(data) {
   print(complete)
 
   with(data, {
-  scatterplot3d(BP, BSA, Weight, pch = 15,
-                color = "steelblue",
-  type = "h")
-  par(mar = c(5, 6, 4, 4))
-  plot(BSA, Weight, main = "Weight versus BSA",
-  col = "blue", pch = 15)
-  }
-  )
-
+    scatterplot3d(BP, BSA, Weight,
+      pch = 15,
+      color = "steelblue",
+      type = "h"
+    )
+    par(mar = c(5, 6, 4, 4))
+    plot(BSA, Weight,
+      main = "Weight versus BSA",
+      col = "blue", pch = 15
+    )
+  })
 }
 
 if (identical(environment(), globalenv())) {

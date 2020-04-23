@@ -38,7 +38,7 @@ main <- function(argv) {
   evaluate_model(lm)
 
   are_treatments_meaningful(lm, data)
-  
+
   are_interactions_meaningful(lm, data)
 
   return(0)
@@ -57,8 +57,9 @@ are_interactions_meaningful <- function(full_lm, data) {
 }
 
 evaluate_model <- function(lm) {
-  plot(lm, which = 1,
-  caption = "Standardised Residuals versus Fitted",
+  plot(lm,
+    which = 1,
+    caption = "Standardised Residuals versus Fitted",
     main = "Residuals plot with interaction terms"
   )
 

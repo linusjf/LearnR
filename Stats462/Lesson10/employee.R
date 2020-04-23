@@ -31,24 +31,27 @@ ols_analysis <- function(data) {
   print(model_coeffs(model))
   print(model_fit_stats(model))
   eqn <- model_equation(
-  model, digits = 4)
+    model,
+    digits = 4
+  )
   print(eqn)
 
   coeffs <- summary(model)$coefficients
   intercept <- coeffs[1, 1]
   slope <- coeffs[2, 1]
-  with(data,
-  plot(vendor, metal,
-    pch = 15,
-    col = "blue", main = eqn,
-    col.main = "red", sub = "Ordinary Least Squares"
-  ))
+  with(
+    data,
+    plot(vendor, metal,
+      pch = 15,
+      col = "blue", main = eqn,
+      col.main = "red", sub = "Ordinary Least Squares"
+    )
+  )
   abline(model, col = "red")
   return(model)
 }
 
 cochrane_orcutt <- function(model, data) {
-
   data %<>%
     mutate(residuals = resid(model)) %>%
     mutate(lag1residuals = Lag(residuals))
@@ -84,12 +87,14 @@ cochrane_orcutt <- function(model, data) {
     round(intercept, 4), " + ",
     round(slope, 4), " * vendor"
   )
-  with(data,
-  plot(vendor, metal,
-    pch = 15,
-    col = "blue", main = eqn,
-    col.main = "red", sub = "Cochrane Orcutt 1 iteration"
-  ))
+  with(
+    data,
+    plot(vendor, metal,
+      pch = 15,
+      col = "blue", main = eqn,
+      col.main = "red", sub = "Cochrane Orcutt 1 iteration"
+    )
+  )
   with(data, {
     lo <- lm(forecast.cochrane1 ~ vendor)
     abline(lo, col = "red")
@@ -114,13 +119,16 @@ test_autocorrelations <- function(model, data) {
   data %<>%
     mutate(residuals = resid(model))
   with(data, {
-  plot(time, residuals, main = "Residuals",
-  xlab = "Order (time)",
-  ylab = "Residuals")
-  abline(h = 0)
+    plot(time, residuals,
+      main = "Residuals",
+      xlab = "Order (time)",
+      ylab = "Residuals"
+    )
+    abline(h = 0)
   })
-  with(data,
-  Pacf(residuals)
+  with(
+    data,
+    Pacf(residuals)
   )
   print(dwtest(model))
 }

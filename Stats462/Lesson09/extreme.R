@@ -39,11 +39,14 @@ suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(MASS))
 
 main <- function(argv) {
-
-  lapply(c(influence2.txt(),
-           influence3.txt(),
-           influence4.txt()),
-  influence)
+  lapply(
+    c(
+      influence2.txt(),
+      influence3.txt(),
+      influence4.txt()
+    ),
+    influence
+  )
   return(0)
 }
 
@@ -54,11 +57,12 @@ influence <- function(path) {
   print(head(data))
   print(skimr::skim(data))
   data1 <- head(data, -1)
-  plot(data1$x, data1$y, xlab = "X", ylab = "Y",
-  main = "Scatter plot of y versus x",
-  sub = path,
-  xlim = c(min(data$x), max(data$x)),
-  ylim = c(min(data$y), max(data$y))
+  plot(data1$x, data1$y,
+    xlab = "X", ylab = "Y",
+    main = "Scatter plot of y versus x",
+    sub = path,
+    xlim = c(min(data$x), max(data$x)),
+    ylim = c(min(data$y), max(data$y))
   )
   data2 <- tail(data, 1)
   points(data2$x, data2$y, col = "red")
@@ -69,10 +73,11 @@ influence <- function(path) {
     mutate(stdres = stdres(lm))
   print(head(data))
   print(skimr::skim(data))
-  plot(data$x, hat, xlab = "X", ylab = "Hat values",
-  main = "Scatter plot of hat values versus x",
-  xlim = c(min(data$x), max(data$x)),
-  ylim = c(min(hat), max(hat))
+  plot(data$x, hat,
+    xlab = "X", ylab = "Hat values",
+    main = "Scatter plot of hat values versus x",
+    xlim = c(min(data$x), max(data$x)),
+    ylim = c(min(hat), max(hat))
   )
   k <- length(lm$coefficients) - 1
   hat_mean <- mean(hat)
@@ -94,12 +99,13 @@ influence <- function(path) {
   print("Sum hat values: ")
   print(sum(hat))
   boxplot(hat,
-  main = path,
-  xlab = "Hat values",
-  col = "orange",
-  border = "brown",
-  horizontal = TRUE,
-  notch = FALSE)
+    main = path,
+    xlab = "Hat values",
+    col = "orange",
+    border = "brown",
+    horizontal = TRUE,
+    notch = FALSE
+  )
 }
 
 if (identical(environment(), globalenv())) {

@@ -58,11 +58,12 @@ main <- function(argv) {
 
   attach(data)
   plot(fitted, residuals,
-  pch = 15, col = "blue",
-  main = "OLS Residuals versus Fitted",
-  xlab = "Fitted",
-  ylab = "Residuals",
-  sub = eqn.log, col.sub = "blue")
+    pch = 15, col = "blue",
+    main = "OLS Residuals versus Fitted",
+    xlab = "Fitted",
+    ylab = "Residuals",
+    sub = eqn.log, col.sub = "blue"
+  )
   detach(data)
 
   data %<>%
@@ -82,18 +83,20 @@ main <- function(argv) {
 
   attach(data)
   model.wls <- lm(lnSalePrice ~ lnSqFeet + lnLot,
-                  weights = 1 / fits ^ 2, data)
+    weights = 1 / fits^2, data
+  )
   print(anova(model.wls))
   print(model_fit_stats(model.wls))
   print(model_coeffs(model.wls))
   eqn.wls <- model_equation(model.wls, digits = 4)
   print(eqn.wls)
   plot(fitted(model.wls), rstandard(model.wls),
-  pch = 15, col = "red",
-  main = "WLS Standardized Residuals versus Fitted",
-  xlab = "Fitted",
-  ylab = "Standardized Residuals",
-  sub = eqn.wls, col.sub = "red")
+    pch = 15, col = "red",
+    main = "WLS Standardized Residuals versus Fitted",
+    xlab = "Fitted",
+    ylab = "Standardized Residuals",
+    sub = eqn.wls, col.sub = "red"
+  )
   detach(data)
 
   return(0)

@@ -44,19 +44,21 @@ main <- function(argv) {
     mutate(lnSqFeet = log(SqFeet))
 
   log <- fit_log(data)
-  
+
   plot_fitted_lines_log(data)
 
   evaluate_model(log, data)
-  
+
   return(0)
 }
 
 evaluate_model <- function(lm, data) {
   plot(lm,
     which = c(1, 3),
-    caption = list("Standardised Residuals versus Fitted",
-                "Scale-Location"),
+    caption = list(
+      "Standardised Residuals versus Fitted",
+      "Scale-Location"
+    ),
   )
 
   residuals <- resid(lm)
@@ -88,7 +90,8 @@ plot_fitted_lines_log <- function(data) {
     paste0("No A/C - ", eqnNoAC),
     paste0("A/C - ", eqnAC)
   )
-  legend("topleft", cex = 0.8,
+  legend("topleft",
+    cex = 0.8,
     col = c("red", "blue"),
     legend = labels, lty = 1:3,
     text.col = c("red", "blue")
@@ -116,7 +119,8 @@ plot_fitted_lines <- function(data) {
     paste0("No A/C - ", eqnNoAC),
     paste0("A/C - ", eqnAC)
   )
-  legend("topleft", cex = 0.8,
+  legend("topleft",
+    cex = 0.8,
     col = c("red", "blue"),
     legend = labels, lty = 1:3,
     text.col = c("red", "blue")
@@ -141,7 +145,7 @@ fit_simple <- function(data) {
   return(lm)
 }
 
-fit_log  <- function(data) {
+fit_log <- function(data) {
   lm <- lm(lnSalePrice ~ lnSqFeet + Air + lnSqFeet * Air, data)
   summ <- summary(lm)
   anova <- anova(lm)

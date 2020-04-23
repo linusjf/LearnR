@@ -56,8 +56,10 @@ noinfluence <- function(argv) {
   )
   print(head(data))
   print(skimr::skim(data))
-  plot(data$x, data$y, xlab = "X", ylab = "Y",
-  main = "Scatter plot of y versus x")
+  plot(data$x, data$y,
+    xlab = "X", ylab = "Y",
+    main = "Scatter plot of y versus x"
+  )
 }
 
 outlieronly <- function(argv) {
@@ -66,11 +68,15 @@ outlieronly <- function(argv) {
   )
   print(head(data))
   print(skimr::skim(data))
-  plot(data$x, data$y, xlab = "X", ylab = "Y",
-  main = "Scatter plot of y versus x")
+  plot(data$x, data$y,
+    xlab = "X", ylab = "Y",
+    main = "Scatter plot of y versus x"
+  )
   data1 <- head(data, -1)
-  plot(data1$x, data1$y, xlab = "X", ylab = "Y",
-  main = "Scatter plot of y versus x")
+  plot(data1$x, data1$y,
+    xlab = "X", ylab = "Y",
+    main = "Scatter plot of y versus x"
+  )
   data2 <- tail(data, 1)
   points(data2$x, data2$y, col = "red")
   lm <- lm(y ~ x, data)
@@ -96,13 +102,16 @@ leverage <- function(argv) {
   )
   print(head(data))
   print(skimr::skim(data))
-  plot(data$x, data$y, xlab = "X", ylab = "Y",
-  main = "Scatter plot of y versus x")
+  plot(data$x, data$y,
+    xlab = "X", ylab = "Y",
+    main = "Scatter plot of y versus x"
+  )
   data1 <- head(data, -1)
-  plot(data1$x, data1$y, xlab = "X", ylab = "Y",
-  main = "Scatter plot of y versus x",
-  xlim = c(min(data$x), max(data$x)),
-  ylim = c(min(data$y), max(data$y))
+  plot(data1$x, data1$y,
+    xlab = "X", ylab = "Y",
+    main = "Scatter plot of y versus x",
+    xlim = c(min(data$x), max(data$x)),
+    ylim = c(min(data$y), max(data$y))
   )
   data2 <- tail(data, 1)
   points(data2$x, data2$y, col = "red")
@@ -129,13 +138,16 @@ all <- function(argv) {
   )
   print(head(data))
   print(skimr::skim(data))
-  plot(data$x, data$y, xlab = "X", ylab = "Y",
-  main = "Scatter plot of y versus x")
+  plot(data$x, data$y,
+    xlab = "X", ylab = "Y",
+    main = "Scatter plot of y versus x"
+  )
   data1 <- head(data, -1)
-  plot(data1$x, data1$y, xlab = "X", ylab = "Y",
-  main = "Scatter plot of y versus x",
-  xlim = c(min(data$x), max(data$x)),
-  ylim = c(min(data$y), max(data$y))
+  plot(data1$x, data1$y,
+    xlab = "X", ylab = "Y",
+    main = "Scatter plot of y versus x",
+    xlim = c(min(data$x), max(data$x)),
+    ylim = c(min(data$y), max(data$y))
   )
   data2 <- tail(data, 1)
   points(data2$x, data2$y, col = "red")

@@ -32,9 +32,10 @@ main <- function(argv) {
 
   residuals <- resid(reg)
   plot(data$LotSize,
-       residuals,
-       xlab = "LotSize",
-       main = "Residuals versus LotSize")
+    residuals,
+    xlab = "LotSize",
+    main = "Residuals versus LotSize"
+  )
   abline(h = mean(residuals))
   hist(residuals)
   plot(density(residuals))

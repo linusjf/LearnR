@@ -33,8 +33,10 @@ main <- function(argv) {
 }
 
 scatter_plot <- function(data) {
-  plot(data$height, data$foot, xlab = "height", ylab = "foot",
-  main = "Scatter plot of foot versus height")
+  plot(data$height, data$foot,
+    xlab = "height", ylab = "foot",
+    main = "Scatter plot of foot versus height"
+  )
 }
 
 analyze <- function(data) {
@@ -48,29 +50,31 @@ analyze <- function(data) {
 
 analyze_for_cooks <- function(data, model) {
   data %<>%
-     mutate(cooksdistance = cooks.distance(model))
+    mutate(cooksdistance = cooks.distance(model))
   old <- par(mar = c(6, 6, 4, 4))
-   dotchart(data$cooksdistance,
-            main = "Dot plot for Height versus foot",
-   xlab = "Cook's distance",
-   ylab = "Index",
-   pch = 19)
+  dotchart(data$cooksdistance,
+    main = "Dot plot for Height versus foot",
+    xlab = "Cook's distance",
+    ylab = "Index",
+    pch = 19
+  )
   par(old)
 }
-  
+
 analyze_for_dffits <- function(data, outliers, orig_model) {
-data1 <- data %>%
+  data1 <- data %>%
     filter(!(height %in% outliers$height &
-    foot %in% outliers$foot))
+      foot %in% outliers$foot))
   model <- lm(foot ~ height, data1)
   print("Modified equation w/o outliers")
   print(model_equation(model))
   data %<>%
-     mutate(dffits = dffits(orig_model,
-                            infl = lm.influence(orig_model)))
+    mutate(dffits = dffits(orig_model,
+      infl = lm.influence(orig_model)
+    ))
   data1 <- data %>%
     filter(height %in% outliers$height &
-    foot %in% outliers$foot)
+      foot %in% outliers$foot)
   print("dffit for outliers")
   print(data1$dffits)
 }

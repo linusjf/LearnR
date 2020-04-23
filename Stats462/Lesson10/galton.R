@@ -46,10 +46,10 @@ main <- function(argv) {
       lines(sort(Parent), fitted(model.1)[order(Parent)], col = "blue"),
       lines(sort(Parent), fitted(model.2)[order(Parent)], col = "red")
     ),
-      col.main = "blue",
-      col.sub = "red",
-      main = eqn1,
-      sub = eqn2
+    col.main = "blue",
+    col.sub = "red",
+    main = eqn1,
+    sub = eqn2
   )
   legend("topleft",
     col = c("blue", "red"), lty = 1,

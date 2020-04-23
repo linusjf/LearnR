@@ -32,18 +32,22 @@ ols_analysis <- function(data) {
   print(model_coeffs(model))
   print(model_fit_stats(model))
   eqn <- model_equation(
-  model, digits = 4)
+    model,
+    digits = 4
+  )
   print(eqn)
 
   coeffs <- summary(model)$coefficients
   intercept <- coeffs[1, 1]
   slope <- coeffs[2, 1]
-  with(data,
-  plot(indsales, comsales,
-    pch = 15,
-    col = "blue", main = eqn,
-    col.main = "red", sub = "Ordinary Least Squares"
-  ))
+  with(
+    data,
+    plot(indsales, comsales,
+      pch = 15,
+      col = "blue", main = eqn,
+      col.main = "red", sub = "Ordinary Least Squares"
+    )
+  )
   abline(model, col = "red")
   return(model)
 }
@@ -72,7 +76,6 @@ ljung_boxq <- function(model, data) {
 }
 
 cochrane_orcutt <- function(data) {
-
   data %<>%
     mutate(lag1residuals = Lag(residuals, 1))
   residmodel <- lm(residuals ~ lag1residuals - 1, data)
@@ -107,12 +110,14 @@ cochrane_orcutt <- function(data) {
     round(intercept, 4), " + ",
     round(slope, 4), " * indsales"
   )
-  with(data,
-  plot(indsales, comsales,
-    pch = 15,
-    col = "blue", main = eqn,
-    col.main = "red", sub = "Cochrane Orcutt 1 iteration"
-  ))
+  with(
+    data,
+    plot(indsales, comsales,
+      pch = 15,
+      col = "blue", main = eqn,
+      col.main = "red", sub = "Cochrane Orcutt 1 iteration"
+    )
+  )
   with(data, {
     lo <- lm(forecast.cochrane1 ~ indsales)
     abline(lo, col = "red")
@@ -135,12 +140,14 @@ cochrane_orcutt_convergence <- function(model, data) {
     round(intercept, 4), " + ",
     round(slope, 4), " * indsales"
   )
-  with(data,
-  plot(indsales, comsales,
-    pch = 15,
-    col = "blue", main = eqn,
-    col.main = "red", sub = "Cochrane Orcutt convergence"
-  ))
+  with(
+    data,
+    plot(indsales, comsales,
+      pch = 15,
+      col = "blue", main = eqn,
+      col.main = "red", sub = "Cochrane Orcutt convergence"
+    )
+  )
   with(data, {
     lo <- lm(forecast.cochrane ~ indsales)
     abline(lo, col = "red")
@@ -148,39 +155,39 @@ cochrane_orcutt_convergence <- function(model, data) {
 }
 
 hildreth_lu_analysis <- function(data) {
-
   rho <- seq(from = 0.01, to = 1, by = 0.01)
   intercept <- NULL
   slope <- NULL
   rho_val <- NULL
   with(data, {
-  parms <- hildreth_lu(comsales, indsales, rho)
-  leastssemodel <- parms[[1]]
-  rho_val <<- parms[[2]]
-  print(anova(leastssemodel))
-  print(dwtest(leastssemodel))
+    parms <- hildreth_lu(comsales, indsales, rho)
+    leastssemodel <- parms[[1]]
+    rho_val <<- parms[[2]]
+    print(anova(leastssemodel))
+    print(dwtest(leastssemodel))
 
-  coeffs <- leastssemodel$coefficients
-  intercept <<- coeffs[1] / (1 - rho_val)
-  slope <<- coeffs[2]
+    coeffs <- leastssemodel$coefficients
+    intercept <<- coeffs[1] / (1 - rho_val)
+    slope <<- coeffs[2]
   })
   data %<>%
     mutate(fitted.hildrethlu = intercept + slope * indsales) %>%
     mutate(e.hildrethlu = comsales - fitted.hildrethlu) %>%
-    mutate(forecast.hildrethlu = fitted.hildrethlu + rho_val * Lag(e.hildrethlu))
+    mutate(forecast.hildrethlu = fitted.hildrethlu + rho_val *
+           Lag(e.hildrethlu))
   eqn <- paste0(
     "comsales = ",
     round(intercept, 4), " + ",
     round(slope, 4), " * indsales"
   )
   with(data, {
-  plot(indsales, comsales,
-    pch = 15,
-    col = "blue", main = eqn,
-    col.main = "red", sub = "Hildreth Ru Least SSE for rho"
-  )
-  lo <- lm(forecast.hildrethlu ~ indsales)
-  abline(lo, col = "red")
+    plot(indsales, comsales,
+      pch = 15,
+      col = "blue", main = eqn,
+      col.main = "red", sub = "Hildreth Ru Least SSE for rho"
+    )
+    lo <- lm(forecast.hildrethlu ~ indsales)
+    abline(lo, col = "red")
   })
 }
 
@@ -214,9 +221,9 @@ first_differences_analysis <- function(data) {
   intercept <- NULL
   slope <- NULL
   with(data, {
-  parms <- first_differences(comsales, indsales, 0.01)
-  intercept <<- parms[1]
-  slope <<- parms[2]
+    parms <- first_differences(comsales, indsales, 0.01)
+    intercept <<- parms[1]
+    slope <<- parms[2]
   })
   data %<>%
     mutate(fitted.firstdiff = intercept + slope * indsales) %>%
@@ -228,14 +235,14 @@ first_differences_analysis <- function(data) {
     round(slope, 4), " * indsales"
   )
   with(data, {
-  plot(indsales, comsales,
-    pch = 15,
-    col = "blue", main = eqn,
-    col.main = "red", sub = "First differences method")
-  lo <- lm(forecast.firstdiff ~ indsales)
-  abline(lo, col = "red")
-  }
-  )
+    plot(indsales, comsales,
+      pch = 15,
+      col = "blue", main = eqn,
+      col.main = "red", sub = "First differences method"
+    )
+    lo <- lm(forecast.firstdiff ~ indsales)
+    abline(lo, col = "red")
+  })
 }
 
 if (identical(environment(), globalenv())) {
