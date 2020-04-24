@@ -114,6 +114,27 @@ main <- function(argv) {
   "Normal Q-Q"),
   main = "LINE conditions met?")
 
+  # predict values
+  oxygencent <- scale(data$oxygen)
+  scaleList <- list(scale = attr(oxygencent, "scaled:scale"),
+    center = attr(oxygencent, "scaled:center"))
+  oxygen <- 70
+  oxygencent <- (oxygen - scaleList$center) /
+    scaleList$scale
+
+  oxygencentsq <- oxygencent ^ 2
+  newdata <- data.frame(oxygencent = oxygencent,
+  oxygencentsq = oxygencentsq)
+  prediction <-
+    rbind(
+          predict(model, newdata, se.fit = TRUE,
+  interval = c("prediction"))$fit,
+          predict(model, newdata, se.fit = TRUE,
+  interval = c("confidence"))$fit)
+  rownames(prediction) <- c("prediction",
+                                "confidence")
+  print(prediction)
+
   model <- lm(igg ~ oxygencent, data)
   print(anova(model))
   print(model_coeffs(model))
