@@ -51,10 +51,22 @@ main <- function(argv) {
   print(anova(model))
   print(model_coeffs(model))
   print(model_fit_stats(model))
-  print(model_equation(model, digits = 4))
+  eqn <- model_equation(model, digits = 4)
+  print(eqn)
+  with(data,
+  plot(oxygen, igg,
+  pch = 15, col = "blue",
+  main = "Fitted line plot",
+  sub = eqn))
+  curve(predict(
+                model,
+                newdata =
+                  data.frame(oxygen = oxygen,
+                             oxygensq = oxygen ^ 2)),
+        add = TRUE, xname = "oxygen")
 
   data %<>%
-    mutate(oxygencent = scale(oxygen)) %>%
+    mutate(oxygencent = c(scale(oxygen))) %>%
     mutate(oxygencentsq = oxygencent ^ 2)
   with(data,
   plot(oxygencent, oxygencentsq,
@@ -63,12 +75,25 @@ main <- function(argv) {
   sub = paste0("Correlation = ",
                round(cor(oxygencent, oxygencentsq), 4)))
   )
-  
+
   model <- lm(igg ~ oxygencent + oxygencentsq, data)
   print(anova(model))
   print(model_coeffs(model))
   print(model_fit_stats(model))
-  print(model_equation(model, digits = 4))
+  eqn <- model_equation(model, digits = 4)
+  print(eqn)
+  with(data,
+  plot(x = oxygencent, y = igg,
+  pch = 15, col = "blue",
+  main = "Fitted line plot",
+  sub = eqn))
+  curve(predict(
+                model,
+                newdata =
+                  data.frame(oxygencent = oxygencent,
+                             oxygencentsq = oxygencent ^ 2)),
+        add = TRUE, xname = "oxygencent")
+
   return(0)
 }
 
