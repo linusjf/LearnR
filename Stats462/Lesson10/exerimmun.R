@@ -50,7 +50,8 @@ main <- function(argv) {
   model <- lm(igg ~ oxygen + oxygensq, data)
   print(anova(model))
   print(model_coeffs(model))
-  print(model_fit_stats(model))
+  stats <- model_fit_stats(model)
+  print(stats)
   eqn <- model_equation(model, digits = 4)
   print(eqn)
   with(data,
@@ -64,6 +65,13 @@ main <- function(argv) {
                   data.frame(oxygen = oxygen,
                              oxygensq = oxygen ^ 2)),
         add = TRUE, xname = "oxygen")
+  labels <- c(
+    paste0("Sigma: ", stats$Sigma),
+    paste0("R squared: ", stats$R.squared),
+    paste0("Adj R squared: ", stats$Adj.R.squared)
+  )
+  legend("bottomright",
+  legend = labels)
 
   data %<>%
     mutate(oxygencent = c(scale(oxygen))) %>%
@@ -79,7 +87,8 @@ main <- function(argv) {
   model <- lm(igg ~ oxygencent + oxygencentsq, data)
   print(anova(model))
   print(model_coeffs(model))
-  print(model_fit_stats(model))
+  stats <- model_fit_stats(model)
+  print(stats)
   eqn <- model_equation(model, digits = 4)
   print(eqn)
   with(data,
@@ -93,6 +102,42 @@ main <- function(argv) {
                   data.frame(oxygencent = oxygencent,
                              oxygencentsq = oxygencent ^ 2)),
         add = TRUE, xname = "oxygencent")
+  labels <- c(
+    paste0("Sigma: ", stats$Sigma),
+    paste0("R squared: ", stats$R.squared),
+    paste0("Adj R squared: ", stats$Adj.R.squared)
+  )
+  legend("bottomright",
+  legend = labels)
+  plot(model, which = c(1, 2),
+  caption = c("Residuals vs Fitted",
+  "Normal Q-Q"),
+  main = "LINE conditions met?")
+
+  model <- lm(igg ~ oxygencent, data)
+  print(anova(model))
+  print(model_coeffs(model))
+  stats <- model_fit_stats(model)
+  print(stats)
+  eqn <- model_equation(model, digits = 4)
+  print(eqn)
+  with(data,
+  plot(x = oxygencent, y = igg,
+  pch = 15, col = "blue",
+  main = "Fitted line plot",
+  sub = eqn))
+  curve(predict(
+                model,
+                newdata =
+                  data.frame(oxygencent = oxygencent)),
+        add = TRUE, xname = "oxygencent")
+  labels <- c(
+    paste0("Sigma: ", stats$Sigma),
+    paste0("R squared: ", stats$R.squared),
+    paste0("Adj R squared: ", stats$Adj.R.squared)
+  )
+  legend("bottomright",
+  legend = labels)
 
   return(0)
 }
