@@ -222,9 +222,10 @@ model_coeffs <- function(reg) {
   p_names <- paste0(names, ".p")
   t_names <- paste0(names, ".t")
   se_names <- paste0(names, ".se")
-  p_values <- summary(reg)$coefficients[, 4]
-  t_values <- summary(reg)$coefficients[, 3]
-  se_values <- summary(reg)$coefficients[, 2]
+  summ <- summary(reg)
+  p_values <- summ$coefficients[, 4]
+  t_values <- summ$coefficients[, 3]
+  se_values <- summ$coefficients[, 2]
   names <- c(names, p_names, t_names, se_names)
   params <- c(params, p_values, t_values, se_values)
   names(params) <- names
