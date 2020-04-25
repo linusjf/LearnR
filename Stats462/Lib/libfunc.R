@@ -220,9 +220,13 @@ model_coeffs <- function(reg) {
   params <- reg$coefficients
   names <- names(params)
   p_names <- paste0(names, ".p")
+  t_names <- paste0(names, ".t")
+  se_names <- paste0(names, ".se")
   p_values <- summary(reg)$coefficients[, 4]
-  names <- c(names, p_names)
-  params <- c(params, p_values)
+  t_values <- summary(reg)$coefficients[, 3]
+  se_values <- summary(reg)$coefficients[, 2]
+  names <- c(names, p_names, t_names, se_names)
+  params <- c(params, p_values, t_values, se_values)
   names(params) <- names
   # add vif only if more than 1 predictor
   if (length(reg$coefficients) > 2) {
