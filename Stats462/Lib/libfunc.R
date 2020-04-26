@@ -32,8 +32,9 @@ model_equation <- function(model, ...) {
     model_coeff_sign == 1 ~ " + ",
     model_coeff_sign == 0 ~ " + "
   )
+  f <- formula(model)
   model_eqn <- paste(
-    strsplit(as.character(model$call$formula), "~")[[2]], # 'y'
+    strsplit(as.character(f), "~")[[2]], # 'y'
     "=",
     paste(if_else(model_coeff[1] < 0, "- ", ""),
       do.call(format, format_args)[1],
