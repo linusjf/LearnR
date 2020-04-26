@@ -42,20 +42,28 @@ step_wise_regression <- function(data,
                                  predictors = NULL,
                                  removals = NULL,
                                  alpha_remove = 0.15,
-                                 alpha_enter = 0.15) {
-  validate(data = data, response = response, predictors = predictors, removals =
-           removals, alpha_remove = alpha_remove, alpha_enter = alpha_enter)
+                                 alpha_enter = 0.15,
+                                 prev_model = NULL) {
+  validate(
+    data = data, response = response, predictors = predictors, removals =
+      removals, alpha_remove = alpha_remove, alpha_enter = alpha_enter
+  )
   models <- list()
-  if (is.null(predictors))
+  if (is.null(predictors)) {
     predictors <- colnames(data)
+  }
   predictors <- predictors[predictors != response]
-  if (!is.null(removals))
+  if (!is.null(removals)) {
     predictors <- predictors[!predictors %in% removals]
+  }
   i <- 1
   for (value in predictors) {
-    expr <- paste0(response, " ~ ", value)
-    model <- eval(parse(text = paste0("lm(", expr,
-                ",data)")))
+    variables <- c(value)
+    f <-
+      as.formula(paste(response,
+                       paste(variables, collapse = " + "),
+                       sep = " ~ "))
+    model <- lm(f, data)
     models[[i]] <- model
     i <- i + 1
   }
@@ -68,13 +76,19 @@ step_wise_regression <- function(data,
   }
   p_min <- min(p_vals)
   if (p_min < alpha_enter) {
-  p_min_index <- which(p_vals == p_min)
-  model_chosen <- models[[p_min_index]]
-  print("Model chosen: ")
-  print(model_chosen)
+    p_min_index <- which(p_vals == p_min)
+    model_chosen <- models[[p_min_index]]
+    print("Model chosen currently: ")
+    print(model_equation(model_chosen, digits = 4))
   } else {
-    print(sprintf("No p-value meets criteria of alpha entry = ",
-                  alpha_entry))
+    print(sprintf(
+      "No p-value meets criteria of alpha entry = ",
+      alpha_entry
+    ))
+    if (!is.null(prev_model)) {
+      print("Final Model chosen: ")
+      print(model_equation(prev_model, digits = 4))
+    }
   }
 }
 
