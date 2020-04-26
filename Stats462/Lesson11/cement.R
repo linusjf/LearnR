@@ -67,9 +67,15 @@ step_wise_regression <- function(data,
     p_vals <- c(p_vals, p)
   }
   p_min <- min(p_vals)
+  if (p_min < alpha_enter) {
   p_min_index <- which(p_vals == p_min)
   model_chosen <- models[[p_min_index]]
+  print("Model chosen: ")
   print(model_chosen)
+  } else {
+    print(sprintf("No p-value meets criteria of alpha entry = ",
+                  alpha_entry))
+  }
 }
 
 validate <- function(...) {
