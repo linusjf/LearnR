@@ -87,12 +87,30 @@ step_wise_regression <- function(data,
     model_chosen <- models[[p_min_index]]
     print("Model chosen currently: ")
     print(model_equation(model_chosen, digits = 4))
+
     model_variables <-
            model_chosen$coefficients[c(2:
                                      length(model$coefficients))]
     predictors <- predictors[!predictors %in% model_variables]
     formula <- formula(model_chosen)
     removals <- attr(terms(formula), "term.labels")
+    print("Checking for impact on p-values")
+    indexes <- c(2: length(model$coefficients) - 1)
+    print(indexes)
+    summ <- summary(model_chosen)
+    prev <- matrix(summ$coefficients[indexes, ],
+                   nrow = length(indexes))
+    rownames(prev) <- rownames(summ$coefficients)[indexes]
+    p_values <- prev[indexes, 4]
+    indexes <- which(p_values > alpha_remove)
+    retain_indexes <- c(which(p_values <= alpha_remove))
+    drop <- prev[indexes, 1]
+    retain <- prev[retain_indexes, 1]
+    removals <- c(removals, drop)
+    attr(formula, "term.labels") <-
+      c(retain,
+        model$coefficients[length(model$coefficients)])
+    print(attr(formula, "term.labels"))
     step_wise_regression(data, response,
     predictors, removals, formula,
     alpha_remove,
