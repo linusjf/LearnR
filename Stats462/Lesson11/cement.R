@@ -41,9 +41,10 @@ step_wise_regression <- function(data,
                                  response,
                                  predictors = NULL,
                                  removals = NULL,
+                                 formula = NULL,
                                  alpha_remove = 0.15,
-                                 alpha_enter = 0.15,
-                                 prev_model = NULL) {
+                                 alpha_enter = 0.15
+                                 ) {
   validate(
     data = data, response = response, predictors = predictors, removals =
       removals, alpha_remove = alpha_remove, alpha_enter = alpha_enter
@@ -56,9 +57,15 @@ step_wise_regression <- function(data,
   if (!is.null(removals)) {
     predictors <- predictors[!predictors %in% removals]
   }
+  model_variables <- c()
+  if (!is.null(formula)) {
+      term <-
+           terms(formula, keep.order = TRUE)
+  model_variables <- attr(term, "term.labels")
+  }
   i <- 1
   for (value in predictors) {
-    variables <- c(value)
+    variables <- c(model_variables, value)
     f <-
       as.formula(paste(response,
                        paste(variables, collapse = " + "),
@@ -80,14 +87,26 @@ step_wise_regression <- function(data,
     model_chosen <- models[[p_min_index]]
     print("Model chosen currently: ")
     print(model_equation(model_chosen, digits = 4))
+    model_variables <-
+           model_chosen$coefficients[c(2:
+                                     length(model$coefficients))]
+    predictors <- predictors[!predictors %in% model_variables]
+    formula <- formula(model_chosen)
+    removals <- attr(terms(formula), "term.labels")
+    step_wise_regression(data, response,
+    predictors, removals, formula,
+    alpha_remove,
+    alpha_enter)
+
   } else {
     print(sprintf(
-      "No p-value meets criteria of alpha entry = ",
-      alpha_entry
+      "No p-value meets criteria of alpha entry = %f",
+      alpha_enter
     ))
-    if (!is.null(prev_model)) {
+    if (!is.null(formula)) {
       print("Final Model chosen: ")
-      print(model_equation(prev_model, digits = 4))
+      model <- lm(formula, data)
+      print(model_equation(model, digits = 4))
     }
   }
 }
