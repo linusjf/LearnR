@@ -18,6 +18,7 @@ lib_path <- function() {
 library(skimr)
 source(lib_path())
 suppressPackageStartupMessages(library(PerformanceAnalytics))
+suppressPackageStartupMessages(library(olsrr))
 
 main <- function(argv) {
   cairo_pdf(onefile = TRUE)
@@ -48,12 +49,27 @@ step_wise_regression <- function(data,
   if (is.null(predictors))
     predictors <- colnames(data)
   predictors <- predictors[predictors != response]
+  if (!is.null(removals))
+    predictors <- predictors[!predictors %in% removals]
+  i <- 1
   for (value in predictors) {
     expr <- paste0(response, " ~ ", value)
-    model <- eval(parse(text = "lm(expr,
-                data)"))
-    models <- append(models, model)
+    model <- eval(parse(text = paste0("lm(", expr,
+                ",data)")))
+    models[[i]] <- model
+    i <- i + 1
   }
+  p_vals <- c()
+  for (model in models) {
+    index <- length(model$coefficients)
+    summ <- summary(model)
+    p <- summ$coefficients[index, 4]
+    p_vals <- c(p_vals, p)
+  }
+  p_min <- min(p_vals)
+  p_min_index <- which(p_vals == p_min)
+  model_chosen <- models[[p_min_index]]
+  print(model_chosen)
 }
 
 validate <- function(...) {
