@@ -35,6 +35,31 @@ main <- function(argv) {
   return(0)
 }
 
+step_wise_regression <- function(data,
+                                 response,
+                                 predictors,
+                                 removals,
+                                 alpha_remove = 0.15,
+                                 alpha_enter = 0.15) {
+  if (data == NULL) {
+    stop("Data frame expected. Cannot be NULL")
+  }
+  if (response == NULl | response == "") {
+    stop("Response cannot be NULL or empty")
+  }
+  if (predictors == NULl | length(predictors) == 0) {
+    stop("Predictors cannot be NULL or empty")
+  }
+  if (!response %in% colnames(data)) {
+    stop(sprintf("Column %s does not exist", response))
+  }
+  for (value in predictors) {
+    if (!value %in% colnames(data)) {
+      stop(sprintf("Column %s does not exist", value))
+    }
+  }
+}
+
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
 }
