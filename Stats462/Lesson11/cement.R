@@ -42,8 +42,18 @@ step_wise_regression <- function(data,
                                  removals = NULL,
                                  alpha_remove = 0.15,
                                  alpha_enter = 0.15) {
-  validate(data = data, response = response, predictors = predictors, removals = removals,
-  alpha_remove = alpha_remove, alpha_enter = alpha_enter)
+  validate(data = data, response = response, predictors = predictors, removals =
+           removals, alpha_remove = alpha_remove, alpha_enter = alpha_enter)
+  models <- list()
+  if (is.null(predictors))
+    predictors <- colnames(data)
+  predictors <- predictors[predictors != response]
+  for (value in predictors) {
+    expr <- paste0(response, " ~ ", value)
+    model <- eval(parse(text = "lm(expr,
+                data)"))
+    models <- append(models, model)
+  }
 }
 
 validate <- function(...) {
