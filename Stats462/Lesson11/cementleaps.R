@@ -18,6 +18,7 @@ lib_path <- function() {
 library(skimr)
 source(lib_path())
 suppressPackageStartupMessages(library(PerformanceAnalytics))
+suppressPackageStartupMessages(library(leaps))
 
 main <- function(argv) {
   cairo_pdf(onefile = TRUE)
@@ -32,13 +33,11 @@ main <- function(argv) {
     pch = 15
   )
 
-  model <- lm(y ~ ., data)
-  final <-
-    step(model,
-         trace = 10, k = log(nrow(data)),
-    direction = "both",
-    pent = 0.15, prem = 0.15)
-  print(final)
+  subsets <- regsubsets(y ~ .,
+                        data = data,
+  intercept = TRUE,
+  method = "exhaustive")
+  print(summary(subsets, all.best = FALSE))
   return(0)
 }
 

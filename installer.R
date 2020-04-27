@@ -200,6 +200,9 @@ install_stats462 <- function() {
   if (!require(tibble)) {
     install.packages("tibble", .libPaths()[1])
   }
+  if (!require(leaps)) {
+    install.packages("leaps", .libPaths()[1])
+  }
 }
 # nolint end
 
