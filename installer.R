@@ -197,6 +197,9 @@ install_stats462 <- function() {
   if (!require(PerformanceAnalytics)) {
     install.packages("PerformanceAnalytics", .libPaths()[1])
   }
+  if (!require(tibble)) {
+    install.packages("tibble", .libPaths()[1])
+  }
 }
 # nolint end
 

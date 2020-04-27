@@ -18,7 +18,9 @@ lib_path <- function() {
 library(skimr)
 source(lib_path())
 suppressPackageStartupMessages(library(PerformanceAnalytics))
-suppressPackageStartupMessages(library(olsrr))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(tibble))
 
 main <- function(argv) {
   cairo_pdf(onefile = TRUE)
@@ -94,23 +96,32 @@ step_wise_regression <- function(data,
     predictors <- predictors[!predictors %in% model_variables]
     formula <- formula(model_chosen)
     removals <- attr(terms(formula), "term.labels")
+
     print("Checking for impact on p-values")
-    indexes <- c(2: length(model$coefficients) - 1)
-    print(indexes)
     summ <- summary(model_chosen)
-    prev <- matrix(summ$coefficients[indexes, ],
-                   nrow = length(indexes))
-    rownames(prev) <- rownames(summ$coefficients)[indexes]
-    p_values <- prev[indexes, 4]
-    indexes <- which(p_values > alpha_remove)
-    retain_indexes <- c(which(p_values <= alpha_remove))
-    drop <- prev[indexes, 1]
-    retain <- prev[retain_indexes, 1]
-    removals <- c(removals, drop)
-    attr(formula, "term.labels") <-
-      c(retain,
-        model$coefficients[length(model$coefficients)])
-    print(attr(formula, "term.labels"))
+    coefficients <-
+      as.data.frame(summ$coefficients)
+    colnames(coefficients) <-
+      c("Beta", "SE", "t.val", "p.val")
+    coefficients <- tail(coefficients, -1)
+    print(coefficients)
+    drop <- coefficients %>%
+      rownames_to_column("rownames") %>%
+      filter(p.val > alpha_remove) %>%
+      column_to_rownames("rownames")
+    if (nrow(drop) > 0) {
+    retain <- coefficients %>%
+      rownames_to_column("rownames") %>%
+      filter(p.val <= alpha_remove) %>%
+      column_to_rownames("rownames")
+    removals <- c(removals, rownames(drop))
+    retain <-
+      rownames(retain)
+    formula <-
+      as.formula(paste(response,
+                       paste(retain, collapse = " + "),
+                       sep = " ~ "))
+    }
     step_wise_regression(data, response,
     predictors, removals, formula,
     alpha_remove,
