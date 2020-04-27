@@ -1,9 +1,9 @@
 #!/usr/bin/env Rscript
-cement.txt <- function() {
+iqsize.txt <- function() {
   library(rprojroot)
   paste0(
     find_root(has_file(".Rprofile")),
-    "/Stats462/Data/cement.txt"
+    "/Stats462/Data/iqsize.txt"
   )
 }
 
@@ -21,7 +21,7 @@ suppressPackageStartupMessages(library(PerformanceAnalytics))
 
 main <- function(argv) {
   cairo_pdf(onefile = TRUE)
-  data <- read.table(cement.txt(),
+  data <- read.table(iqsize.txt(),
     header = TRUE, as.is = TRUE
   )
   print(head(data))
@@ -32,7 +32,7 @@ main <- function(argv) {
     pch = 15
   )
 
-  step_wise_regression(data, "y")
+  step_wise_regression(data, "PIQ")
 
   return(0)
 }
