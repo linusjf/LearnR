@@ -126,6 +126,52 @@ finalize_model <- function(data, formula, alpha_entry) {
     }
 }
 
+choose_model <- function(p_vals, models) {
+    p_min <- min(p_vals)
+    p_min_index <- which(p_vals == p_min)
+    model_chosen <- models[[p_min_index]]
+    print("Model chosen currently: ")
+    print(model_equation(model_chosen, digits = 4))
+    return(model_chosen)
+}
+
+check_impact_p <- function(model_chosen, alpha_removal) {
+
+    formula <- formula(model_chosen)
+    terms.object <- terms(formula)
+    response_index <- attr(terms.object, "response")
+    factors <- attr(terms.object, "factors")
+    response <- rownames(factors)[response_index]
+
+    print("Checking for impact on p-values")
+
+    summ <- summary(model_chosen)
+    coefficients <-
+      as.data.frame(summ$coefficients)
+    colnames(coefficients) <-
+      c("Beta", "SE", "t.val", "p.val")
+    coefficients <- tail(coefficients, -1)
+    print(coefficients)
+    drop <- coefficients %>%
+      rownames_to_column("rownames") %>%
+      filter(p.val > alpha_removal) %>%
+      column_to_rownames("rownames")
+    if (nrow(drop) > 0) {
+    retain <- coefficients %>%
+      rownames_to_column("rownames") %>%
+      filter(p.val <= alpha_removal) %>%
+      column_to_rownames("rownames")
+    retain <-
+      rownames(retain)
+    formula <-
+      as.formula(paste(response,
+                       paste(retain, collapse = " + "),
+                       sep = " ~ "))
+    }
+    return(formula)
+}
+
+
 step_wise_regression <- function(data,
                                  response,
                                  predictors = NULL,
@@ -145,49 +191,19 @@ step_wise_regression <- function(data,
 
   p_vals <- collect_p(models)
 
-  p_min <- min(p_vals)
-
   # is p >= alpha entry criteria
-  if (p_min >= alpha_entry) {
+  if (min(p_vals) >= alpha_entry) {
       finalize_model(data, formula, alpha_entry)
   } else {
-    p_min_index <- which(p_vals == p_min)
-    model_chosen <- models[[p_min_index]]
-    print("Model chosen currently: ")
-    print(model_equation(model_chosen, digits = 4))
+    model_chosen <- choose_model(p_vals, models)
 
-    model_variables <-
-           model_chosen$coefficients[c(2:
-                                     length(model_chosen$coefficients))]
-    predictors <- predictors[!predictors %in% model_variables]
     formula <- formula(model_chosen)
-    removals <- attr(terms(formula), "term.labels")
+    model_variables <- attr(terms(formula), "term.labels")
+    predictors <- predictors[!predictors %in% removals]
+    removals <- c(removals, model_variables)
 
-    print("Checking for impact on p-values")
-    summ <- summary(model_chosen)
-    coefficients <-
-      as.data.frame(summ$coefficients)
-    colnames(coefficients) <-
-      c("Beta", "SE", "t.val", "p.val")
-    coefficients <- tail(coefficients, -1)
-    print(coefficients)
-    drop <- coefficients %>%
-      rownames_to_column("rownames") %>%
-      filter(p.val > alpha_removal) %>%
-      column_to_rownames("rownames")
-    if (nrow(drop) > 0) {
-    retain <- coefficients %>%
-      rownames_to_column("rownames") %>%
-      filter(p.val <= alpha_removal) %>%
-      column_to_rownames("rownames")
-    removals <- c(removals, rownames(drop))
-    retain <-
-      rownames(retain)
-    formula <-
-      as.formula(paste(response,
-                       paste(retain, collapse = " + "),
-                       sep = " ~ "))
-    }
+    formula <- check_impact_p(model_chosen, alpha_removal)
+
     step_wise_regression(data, response,
     predictors, removals, formula,
     alpha_removal,
