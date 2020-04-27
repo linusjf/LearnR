@@ -199,7 +199,7 @@ step_wise_regression <- function(data,
 
     formula <- formula(model_chosen)
     model_variables <- attr(terms(formula), "term.labels")
-    predictors <- predictors[!predictors %in% removals]
+    predictors <- predictors[!predictors %in% model_variables]
     removals <- c(removals, model_variables)
 
     formula <- check_impact_p(model_chosen, alpha_removal)
