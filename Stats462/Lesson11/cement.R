@@ -36,6 +36,7 @@ main <- function(argv) {
   )
 
   step_wise_regression(data, "y")
+
   return(0)
 }
 
@@ -57,11 +58,11 @@ validate <- function(...) {
       }
     }
   }
-  if (parms$alpha_remove < 0 | parms$alpha_remove > 1) {
-    stop("Alpha remove is between 0 and 1 included")
+  if (parms$alpha_removal < 0 | parms$alpha_removal > 1) {
+    stop("alpha_removal is between 0 and 1 included")
   }
-  if (parms$alpha_enter < 0 | parms$alpha_enter > 1) {
-    stop("Alpha enter is between 0 and 1 included")
+  if (parms$alpha_entry < 0 | parms$alpha_entry > 1) {
+    stop("alpha_entry is between 0 and 1 included")
   }
 }
 
@@ -135,7 +136,7 @@ step_wise_regression <- function(data,
                                  ) {
   validate(
     data = data, response = response, predictors = predictors, removals =
-      removals, alpha_remove = alpha_removal, alpha_enter = alpha_entry
+      removals, alpha_removal = alpha_removal, alpha_entry = alpha_entry
   )
   predictors <- get_predictors(data, response, predictors, removals)
   model_variables <- get_model_variables(formula)
