@@ -21,7 +21,6 @@ suppressPackageStartupMessages(library(PerformanceAnalytics))
 suppressPackageStartupMessages(library(olsrr))
 
 main <- function(argv) {
-  cairo_pdf(onefile = TRUE)
   cement <- read.table(cement.txt(),
     header = TRUE, as.is = TRUE
   )
@@ -32,11 +31,10 @@ main <- function(argv) {
     histogram = TRUE,
     pch = 15
   )
-
-  model <- lm(y ~ ., cement)
+  model <- lm(y ~ ., data = cement)
   k <- ols_step_all_possible(model)
-  print(k)
-  plot(k)
+  plot.obj <- plot(k, print_plot = FALSE)
+  lapply(plot.obj, print)
   return(0)
 }
 
