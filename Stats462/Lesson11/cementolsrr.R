@@ -32,7 +32,9 @@ main <- function(argv) {
     pch = 15
   )
   model <- lm(y ~ ., data = cement)
-  k <- ols_step_all_possible(model)
+  k <- ols_step_both_p(model, details = TRUE,
+  pent = 0.15, prem = 0.15)
+  print(k)
   plot.obj <- plot(k, print_plot = FALSE)
   lapply(plot.obj, print)
   return(0)
