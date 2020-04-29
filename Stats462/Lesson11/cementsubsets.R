@@ -21,7 +21,6 @@ suppressPackageStartupMessages(library(PerformanceAnalytics))
 suppressPackageStartupMessages(library(olsrr))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
-suppressPackageStartupMessages(library(reshape))
 suppressPackageStartupMessages(library(stringr))
 
 main <- function(argv) {
@@ -36,9 +35,6 @@ main <- function(argv) {
     pch = 15
   )
   model <- lm(y ~ ., data = cement)
-  formula <- formula(model)
-  response <- all.vars(formula)[1]
-  print(response)
   best <- ols_step_best_subset(model)
   print(str(best))
   best_rsq <- best_model_rsquare(best, model)
