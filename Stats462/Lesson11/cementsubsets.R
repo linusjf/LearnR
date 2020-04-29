@@ -44,37 +44,20 @@ main <- function(argv) {
 }
 
 best_model_rsquare <- function(models, rsqinc = 0.05) {
-  subset <- best_subset_rsquare(models)
-  subset %<>%
+  models %<>%
     mutate(rsq.inc = ((rsquare / lag(rsquare) - 1)))
-  subset %<>%
+  models %<>%
     filter(rsq.inc >= rsqinc) %>%
     filter(n == max(n))
-  return(subset)
+  return(models)
 }
 
 best_model_adjrsquare <- function(models) {
-  subset <- best_subset_adjrsquare(models)
-  subset %<>%
+  models %<>%
     filter(adjr == max(adjr))
-  return(subset)
-}
-
-best_subset_rsquare <- function(models) {
-  models %<>%
-    group_by(n) %>%
-    slice(which.max(rsquare)) %>%
-    ungroup()
   return(models)
 }
 
-best_subset_adjrsquare <- function(models) {
-  models %<>%
-    group_by(n) %>%
-    slice(which.max(adjr)) %>%
-    ungroup()
-  return(models)
-}
 
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
