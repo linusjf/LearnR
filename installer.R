@@ -203,6 +203,9 @@ install_stats462 <- function() {
   if (!require(leaps)) {
     install.packages("leaps", .libPaths()[1])
   }
+  if (!require(reshape)) {
+    install.packages("reshape", .libPaths()[1])
+  }
 }
 # nolint end
 

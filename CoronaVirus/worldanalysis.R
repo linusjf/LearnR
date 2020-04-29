@@ -251,8 +251,6 @@ save_recoveries <- function(data, filename) {
   write.csv(data, filename, row.names = FALSE)
 }
 
-
-
 print_chart <- function(plot) {
   if ("grob" %in% class(plot)) {
     grid::grid.newpage()
