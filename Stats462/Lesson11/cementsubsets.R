@@ -34,12 +34,12 @@ main <- function(argv) {
     pch = 15
   )
   model <- lm(y ~ ., data = cement)
-  all <- ols_step_all_possible(model)
-  print(str(all))
-  print(
-        head(
-             data.frame(
-                        best_model_rsquare(all))))
+  best <- ols_step_best_subset(model)
+  print(str(best))
+  best_rsq <- best_model_rsquare(best)
+  best_adjr <- best_model_adjrsquare(best)
+  print(data.frame(best_rsq))
+  print(data.frame(best_adjr))
   return(0)
 }
 
@@ -53,10 +53,25 @@ best_model_rsquare <- function(models, rsqinc = 0.05) {
   return(subset)
 }
 
+best_model_adjrsquare <- function(models) {
+  subset <- best_subset_adjrsquare(models)
+  subset %<>%
+    filter(adjr == max(adjr))
+  return(subset)
+}
+
 best_subset_rsquare <- function(models) {
   models %<>%
     group_by(n) %>%
     slice(which.max(rsquare)) %>%
+    ungroup()
+  return(models)
+}
+
+best_subset_adjrsquare <- function(models) {
+  models %<>%
+    group_by(n) %>%
+    slice(which.max(adjr)) %>%
     ungroup()
   return(models)
 }
