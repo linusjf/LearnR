@@ -206,6 +206,9 @@ install_stats462 <- function() {
   if (!require(reshape)) {
     install.packages("reshape", .libPaths()[1])
   }
+  if (!require(stringr)) {
+    install.packages("stringr", .libPaths()[1])
+  }
 }
 # nolint end
 

@@ -21,6 +21,8 @@ suppressPackageStartupMessages(library(PerformanceAnalytics))
 suppressPackageStartupMessages(library(olsrr))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(reshape))
+suppressPackageStartupMessages(library(stringr))
 
 main <- function(argv) {
   cement <- read.table(cement.txt(),
@@ -34,30 +36,38 @@ main <- function(argv) {
     pch = 15
   )
   model <- lm(y ~ ., data = cement)
+  formula <- formula(model)
+  response <- all.vars(formula)[1]
+  print(response)
   best <- ols_step_best_subset(model)
   print(str(best))
-  best_rsq <- best_model_rsquare(best)
-  best_adjr <- best_model_adjrsquare(best)
-  print(data.frame(best_rsq))
-  print(data.frame(best_adjr))
+  best_rsq <- best_model_rsquare(best, model)
+  best_adjr <- best_model_adjrsquare(best, model)
+  print(best_rsq)
+  print(best_adjr)
   return(0)
 }
 
-best_model_rsquare <- function(models, rsqinc = 0.05) {
+best_model_rsquare <- function(models, model, rsqinc = 0.05) {
   models %<>%
     mutate(rsq.inc = ((rsquare / lag(rsquare) - 1)))
   models %<>%
     filter(rsq.inc >= rsqinc) %>%
     filter(n == max(n))
-  return(models)
+  predictors <- models$predictors
+  rhs <- str_replace_all(predictors, " ", "+")
+  formula <- update(formula(model), paste0(". ~ ", rhs))
+  return(lm(formula, model$model))
 }
 
-best_model_adjrsquare <- function(models) {
+best_model_adjrsquare <- function(models, model) {
   models %<>%
     filter(adjr == max(adjr))
-  return(models)
+  predictors <- models$predictors
+  rhs <- str_replace_all(predictors, " ", "+")
+  formula <- update(formula(model), paste0(". ~ ", rhs))
+  return(lm(formula, model$model))
 }
-
 
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
