@@ -45,6 +45,8 @@ main <- function(argv) {
 }
 
 best_model_rsquare <- function(models, model, rsqinc = 0.05) {
+  if (!inherits(models, "ols_step_best_subset"))
+    stop("Class has to be ols_step_best_subset")
   models %<>%
     mutate(rsq.inc = ((rsquare / lag(rsquare) - 1)))
   models %<>%
@@ -53,16 +55,20 @@ best_model_rsquare <- function(models, model, rsqinc = 0.05) {
   predictors <- models$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
-  return(lm(formula, model$model))
+  data <- model$model
+  return(lm(formula, data))
 }
 
 best_model_adjrsquare <- function(models, model) {
+  if (!inherits(models, "ols_step_best_subset"))
+    stop("Class has to be ols_step_best_subset")
   models %<>%
     filter(adjr == max(adjr))
   predictors <- models$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
-  return(lm(formula, model$model))
+  data <- model$model
+  return(lm(formula, data))
 }
 
 if (identical(environment(), globalenv())) {
