@@ -537,6 +537,7 @@ main <- function(argv) {
     install.packages("R.devices", .libPaths()[1])
   }
   install_efficientr()
+  install_msdrs()
   if (!is.null(warnings())) {
     summary(warnings())
   }
