@@ -307,12 +307,6 @@ install_msdrs <- function() {
   if (!require(bookdown)) {
     install.packages("bookdown", .libPaths()[1])
   }
-  if (!require(choroplethr)) {
-    install.packages("choroplethr", .libPaths()[1])
-  }
-  if (!require(choroplethrMaps)) {
-    install.packages("choroplethrMaps", .libPaths()[1])
-  }
   if (!require(data.table)) {
     install.packages("data.table", .libPaths()[1])
   }
@@ -348,9 +342,6 @@ install_msdrs <- function() {
   }
   if (!require(ghit)) {
     install.packages("ghit", .libPaths()[1])
-  }
-  if (!require(GISTools)) {
-    install.packages("GISTools", .libPaths()[1])
   }
   if (!require(grid)) {
     install.packages("grid", .libPaths()[1])
@@ -439,24 +430,17 @@ install_msdrs <- function() {
   if (!require(tidyverse)) {
     install.packages("tidyverse", .libPaths()[1])
   }
-  if (!require(tigris)) {
-    install.packages("tigris", .libPaths()[1])
-  }
   if (!require(titanic)) {
     install.packages("titanic", .libPaths()[1])
   }
   if (!require(viridis)) {
     install.packages("viridis", .libPaths()[1])
   }
-  if (!require(OpenStreetMap)) {
-    install.packages("OpenStreetMap", .libPaths()[1])
-  }
 }
 
 main <- function(argv) {
   print(Sys.info())
   print(sessionInfo())
-  update.packages()
   install_tools()
   install_programs()
   install_rbyexample()
@@ -464,80 +448,9 @@ main <- function(argv) {
   install_rgraphics()
   install_rbloggers()
   install_stats462()
-  if (!require(readr)) {
-    install.packages("readr", .libPaths()[1])
-  }
-  if (!require(dplyr)) {
-    install.packages("dplyr", .libPaths()[1])
-  }
-  if (!require(httr)) {
-    install.packages("httr", .libPaths()[1])
-  }
-  if (!require(magrittr)) {
-    install.packages("magrittr", .libPaths()[1])
-  }
-  if (!require(ggplot2)) {
-    install.packages("ggplot2", .libPaths()[1])
-  }
-  if (!require(faraway)) {
-    install.packages("faraway", .libPaths()[1])
-  }
-  if (!require(tidyr)) {
-    install.packages("tidyr", .libPaths()[1])
-  }
-  if (!require(knitr)) {
-    install.packages("knitr", .libPaths()[1])
-  }
-  if (!require(lubridate)) {
-    install.packages("lubridate", .libPaths()[1])
-  }
-  if (!require(gridExtra)) {
-    install.packages("gridExtra", .libPaths()[1])
-  }
-  if (!require(ggmap)) {
-    install.packages("ggmap", .libPaths()[1])
-  }
-  if (!require(stringr)) {
-    install.packages("stringr", .libPaths()[1])
-  }
-  if (!require(pryr)) {
-    install.packages("pryr", .libPaths()[1])
-  }
-  if (!require(data.table)) {
-    install.packages("data.table", .libPaths()[1])
-  }
-  if (!require(purrr)) {
-    install.packages("purrr", .libPaths()[1])
-  }
-  if (!require(microbenchmark)) {
-    install.packages("microbenchmark", .libPaths()[1])
-  }
-  if (!require(tibble)) {
-    install.packages("tibble", .libPaths()[1])
-  }
-  if (!require(tidyverse)) {
-    install.packages("tidyverse", .libPaths()[1])
-  }
-  if (!require(titanic)) {
-    install.packages("titanic", .libPaths()[1])
-  }
-  if (!require(GGally)) {
-    install.packages("GGally", .libPaths()[1])
-  }
-  if (!require(ggthemes)) {
-    install.packages("ggthemes", .libPaths()[1])
-  }
-  if (!require(forcats)) {
-    install.packages("forcats", .libPaths()[1])
-  }
-  if (!require(grid)) {
-    install.packages("grid", .libPaths()[1])
-  }
-  if (!require(R.devices)) {
-    install.packages("R.devices", .libPaths()[1])
-  }
   install_efficientr()
   install_msdrs()
+  update.packages()
   if (!is.null(warnings())) {
     summary(warnings())
   }
