@@ -5,7 +5,7 @@ main <- function(argv) {
   print(Sys.info())
   print(sessionInfo())
 
-  if (argv != NULL & length(argv) > 0) {
+  if (!is.null(argv) & length(argv) > 0) {
     option <- argv[1]
 
     switch(option, "save"
