@@ -45,7 +45,27 @@ main <- function(argv) {
   print(best_adjr)
   print(best_cp)
   print(best_cp2)
+  print(compute_cp(model, best_cp))
+  print(compute_cp(model, best_cp2))
   return(0)
+}
+
+compute_cp <- function(full_model, model) {
+  res <- NULL
+  if (length(full_model$coefficients) <
+      length(model$coefficients))
+    res <- anova(model, full_model)
+  else
+    res <- anova(full_model, model)
+  res %<>%
+    mutate(mse = RSS / Res.Df)
+  n <- nrow(model$model)
+  p <- length(model$coefficients)
+  ssek <- res$RSS[2]
+  mseall <- res$mse[1]
+  cp <-  ssek / mseall  +
+    2 * p - n
+  return(cp)
 }
 
 best_model_rsquare <- function(models, model, rsqinc = 0.05) {
