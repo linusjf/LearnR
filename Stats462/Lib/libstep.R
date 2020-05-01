@@ -242,8 +242,10 @@ compute_cp <- function(full_model, model) {
 }
 
 fill_models <- function(models, model) {
-  if (!inherits(models, "ols_step_best_subset")) {
-    stop("Class has to be ols_step_best_subset")
+  if (!inherits(models, c("ols_step_best_subset",
+                          "ols_step_all_possible"))) {
+    stop("Class has to be ols_step_best_subset or
+         ols_step_all_possible")
   }
   lmset <- list()
   nrows <- nrow(models)
@@ -261,9 +263,10 @@ fill_models <- function(models, model) {
 }
 
 best_model_rsquare <- function(models, model, rsqinc = 0.05) {
-  if (!inherits(models, "ols_step_best_subset")) {
-    stop("Class has to be ols_step_best_subset")
-  }
+  if (!inherits(models, c("ols_step_best_subset",
+                          "ols_step_all_possible"))) {
+    stop("Class has to be ols_step_best_subset or
+         ols_step_all_possible") }
   models %<>%
     mutate(rsq.inc = ((rsquare / lag(rsquare) - 1)))
   models %<>%
@@ -277,9 +280,10 @@ best_model_rsquare <- function(models, model, rsqinc = 0.05) {
 }
 
 best_model_adjrsquare <- function(models, model) {
-  if (!inherits(models, "ols_step_best_subset")) {
-    stop("Class has to be ols_step_best_subset")
-  }
+  if (!inherits(models, c("ols_step_best_subset",
+                          "ols_step_all_possible"))) {
+    stop("Class has to be ols_step_best_subset or
+         ols_step_all_possible") }
   models %<>%
     filter(adjr == max(adjr))
   predictors <- models$predictors
@@ -290,9 +294,10 @@ best_model_adjrsquare <- function(models, model) {
 }
 
 best_model_cp <- function(models, model, criteria = "mincp") {
-  if (!inherits(models, "ols_step_best_subset")) {
-    stop("Class has to be ols_step_best_subset")
-  }
+  if (!inherits(models, c("ols_step_best_subset",
+                          "ols_step_all_possible"))) {
+    stop("Class has to be ols_step_best_subset or
+         ols_step_all_possible") }
   data <- model$model
   ncoefs <- length(model$coefficients)
   models %<>%
