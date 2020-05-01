@@ -63,7 +63,7 @@ main <- function(argv) {
   return(0)
 }
 
-best_vif <- function(models) {
+best_vif <- function(models, cutoff = 4) {
   selected <- list()
   nvars <- c()
   for (model in models) {
@@ -76,7 +76,7 @@ best_vif <- function(models) {
     coeffs <- names(model$coefficients)[2:length(model$coefficients)]
     df <- data.frame(list(coeffs = coeffs, vif = vif))
     df %<>%
-      filter(vif > 4)
+      filter(vif > cutoff)
     if (nrow(df) == 0) {
       nvars <- c(nvars, length(coeffs))
       selected[[length(selected) + 1]] <- model
