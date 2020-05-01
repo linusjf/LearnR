@@ -1,30 +1,32 @@
 #!/usr/bin/env Rscript
-cement.txt <- function() {
+cement.txt <- do.call(function() {
   library(rprojroot)
   paste0(
     find_root(has_file(".Rprofile")),
     "/Stats462/Data/cement.txt"
   )
-}
+}, list())
 
-lib_path <- function() {
+lib_path <- do.call(function() {
   library(rprojroot)
   paste0(
     find_root(has_file(".Rprofile")),
     "/Stats462/Lib/libfunc.R"
   )
-}
+}, list())
 
 library(skimr)
-source(lib_path())
+source(lib_path)
 suppressPackageStartupMessages(library(PerformanceAnalytics))
 suppressPackageStartupMessages(library(olsrr))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(regclass))
+suppressPackageStartupMessages(library(purrr))
 
 main <- function(argv) {
-  cement <- read.table(cement.txt(),
+  cement <- read.table(cement.txt,
     header = TRUE, as.is = TRUE
   )
   print(head(cement))
@@ -47,26 +49,55 @@ main <- function(argv) {
   print(best_cp2)
   print(compute_cp(model, best_cp))
   print(compute_cp(model, best_cp2))
+  best <- unique(list(
+    best_rsq,
+    best_adjr,
+    best_cp,
+      best_cp2
+  ))
+  print(best_vif(best))
   return(0)
+}
+
+best_vif <- function(models) {
+  selected <- list()
+  for (model in models) {
+    vif <- NULL
+    if (length(model$coefficients) > 2) {
+      vif <- VIF(model)
+    } else {
+      vif <- 1
+    }
+    coeffs <- names(model$coefficients)[2:length(model$coefficients)]
+    df <- data.frame(list(coeffs = coeffs, vif = vif))
+    df %<>%
+      filter(vif > 4)
+    if (nrow(df) == 0) {
+      selected[[length(selected) + 1]] <- model
+    }
+  }
+  return(selected)
 }
 
 compute_cp <- function(full_model, model) {
   res <- NULL
   if (length(full_model$coefficients) <
-      length(model$coefficients))
+    length(model$coefficients)) {
     res <- anova(model, full_model)
-  else
+  } else {
     res <- anova(full_model, model)
+  }
   res %<>%
     mutate(mse = RSS / Res.Df)
   n <- nrow(model$model)
   p <- length(model$coefficients)
   ssek <- res$RSS[2]
   mseall <- res$mse[1]
-  cp <-  ssek / mseall  +
+  cp <- ssek / mseall +
     2 * p - n
   return(cp)
 }
+
 
 best_model_rsquare <- function(models, model, rsqinc = 0.05) {
   if (!inherits(models, "ols_step_best_subset")) {
@@ -102,11 +133,11 @@ best_model_cp <- function(models, model, criteria = "mincp") {
     stop("Class has to be ols_step_best_subset")
   }
   data <- model$model
-  cols <- ncol(data)
+  ncoefs <- length(model$coefficients)
   models %<>%
     mutate(p = n + 1) %>%
     mutate(cpratio = cp / p) %>%
-    filter(p != cols)
+    filter(p != ncoefs)
   if (criteria == "mincp") {
     models %<>%
       filter(cp == min(cp))
