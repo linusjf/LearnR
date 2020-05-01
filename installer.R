@@ -28,6 +28,9 @@ install_tools <- function() {
   if (!require(rprojroot)) {
     install.packages("rprojroot", .libPaths()[1])
   }
+  if (!require(githubinstall)) {
+    install.packages("githubinstall", .libPaths()[1])
+  }
 }
 
 install_rbloggers <- function() {
