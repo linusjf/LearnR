@@ -24,6 +24,7 @@ suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(stringr))
 suppressPackageStartupMessages(library(regclass))
 suppressPackageStartupMessages(library(purrr))
+suppressPackageStartupMessages(library(nortest))
 
 main <- function(argv) {
   cement <- read.table(cement.txt,
@@ -58,9 +59,17 @@ main <- function(argv) {
     best_cp2
   ))
   print(best_vif(best))
-  print(best_vif(lmset))
+  models <- best_vif(lmset)
+  print(models)
 
+  lapply(models, checkfit)
   return(0)
+}
+
+checkfit <- function(model) {
+  plot(model, which = c(1, 2),
+  caption = list("Residuals vs Fitted", "Normal Q-Q"))
+  print(ad.test(resid(model)))
 }
 
 best_vif <- function(models, cutoff = 4) {
@@ -85,6 +94,7 @@ best_vif <- function(models, cutoff = 4) {
   if (length(selected) == 1) {
     return(selected)
   } else {
+    # pick models with least variables
     min_nvars <- min(nvars)
     index <- 1
     for (model in selected) {
