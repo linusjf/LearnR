@@ -116,8 +116,7 @@ compute_cp <- function(full_model, model) {
   return(cp)
 }
 
-
-fill_models <- function(models, model, rsqinc = 0.05) {
+fill_models <- function(models, model) {
   if (!inherits(models, "ols_step_best_subset")) {
     stop("Class has to be ols_step_best_subset")
   }
