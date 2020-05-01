@@ -61,6 +61,7 @@ main <- function(argv) {
 
 best_vif <- function(models) {
   selected <- list()
+  nvars <- c()
   for (model in models) {
     vif <- NULL
     if (length(model$coefficients) > 2) {
@@ -73,10 +74,23 @@ best_vif <- function(models) {
     df %<>%
       filter(vif > 4)
     if (nrow(df) == 0) {
+      nvars <- c(nvars, length(coeffs))
       selected[[length(selected) + 1]] <- model
     }
   }
-  return(selected)
+  if (length(selected) == 1)
+    return(selected)
+   else {
+    min_nvars <- min(nvars)
+    index <- 1
+    for (model in selected) {
+      if ((length(model$coefficients) - 1) != min_nvars) {
+        selected[[index]] <- NULL
+      index <- index + 1
+      }
+    }
+    return(compact(selected))
+   }
 }
 
 compute_cp <- function(full_model, model) {
