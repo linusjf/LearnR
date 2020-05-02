@@ -99,7 +99,10 @@ finalize_model <- function(data, formula, alpha_entry) {
       print("Final Model chosen: ")
       model <- lm(formula, data)
       print(model_equation(model, digits = 4))
+      return(model)
     }
+    else
+      return(NULL)
 }
 
 choose_model <- function(p_vals, models) {
@@ -169,7 +172,11 @@ step_wise_regression <- function(data,
 
   # is p >= alpha entry criteria
   if (min(p_vals) >= alpha_entry) {
-      finalize_model(data, formula, alpha_entry)
+      final <- finalize_model(data, formula, alpha_entry)
+      if (is.null(final))
+        return(lm(paste0(response, " ~ ."),
+                  data))
+      else return(final)
   } else {
     model_chosen <- choose_model(p_vals, models)
 
@@ -180,10 +187,10 @@ step_wise_regression <- function(data,
 
     formula <- check_impact_p(model_chosen, alpha_removal)
 
-    step_wise_regression(data, response,
+    return(step_wise_regression(data, response,
     predictors, removals, formula,
     alpha_removal,
-    alpha_entry)
+    alpha_entry))
     }
 }
 
