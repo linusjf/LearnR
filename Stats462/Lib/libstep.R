@@ -206,7 +206,7 @@ best_vif <- function(models, cutoff = 4) {
       selected[[length(selected) + 1]] <- model
     }
   }
-  if (length(selected) == 1) {
+  if (length(selected) <= 1) {
     return(selected)
   } else {
     # pick models with least variables
