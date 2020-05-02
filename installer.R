@@ -31,6 +31,12 @@ install_tools <- function() {
   if (!require(githubinstall)) {
     install.packages("githubinstall", .libPaths()[1])
   }
+  if (!require(pacman)) {
+    install.packages("pacman", .libPaths()[1])
+  }
+  if (!require(drat)) {
+    install.packages("drat", .libPaths()[1])
+  }
 }
 
 install_rbloggers <- function() {
