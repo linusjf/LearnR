@@ -278,7 +278,7 @@ best_model_rsquare <- function(models, model, rsqinc = 0.05) {
     mutate(rsq.inc = ((rsquare / lag(rsquare) - 1)))
   models %<>%
     filter(rsq.inc >= rsqinc) %>%
-    filter(n == max(n))
+    filter(n == min(n))
   predictors <- models$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
