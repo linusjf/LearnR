@@ -46,10 +46,13 @@ main <- function(argv) {
   lmset <- fill_models(best, model)
   print("All possible subsets")
   print(lmset)
+  best_p <- step_wise_regression(datum, "BP")
   best_rsq <- best_model_rsquare(best, model)
   best_adjr <- best_model_adjrsquare(best, model)
   best_cp <- best_model_cp(best, model, "mincp")
   best_cp2 <- best_model_cp(best, model, "relcp")
+  print("Best p model(s)")
+  print(best_p)
   print("Best rsquared model(s)")
   print(best_rsq)
   print("Best adj rsquared model(s)")
@@ -61,12 +64,14 @@ main <- function(argv) {
   print(compute_cp(model, best_cp))
   print(compute_cp(model, best_cp2))
   best <- unique(list(
+    best_p,
     best_rsq,
     best_adjr,
     best_cp,
     best_cp2
   ))
-  print("Best subset using rsquare, adjr and cp")
+  print(unique)
+  print("Best subset using p, rsquare, adjr and cp")
   print(best)
   lapply(best, checkfit)
   print("Best vif model(s)")
