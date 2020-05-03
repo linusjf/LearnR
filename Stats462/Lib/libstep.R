@@ -274,10 +274,13 @@ best_model_rsquare <- function(models, model, rsqinc = 0.05) {
     stop("Class has to be ols_step_best_subset or
          ols_step_all_possible") }
   models %<>%
-    mutate(rsq.inc = ((rsquare / lag(rsquare) - 1)))
+    group_by(n) %>%
+    filter(rsquare == max(rsquare)) %>%
+    ungroup() %>%
+    mutate(rsq.inc = (rsquare / lag(rsquare)) - 1)
   models %<>%
-    filter(rsq.inc >= rsqinc) %>%
-    filter(n == min(n))
+    filter(rsq.inc >= rsqinc)
+  models <- tail(models, 1)
   predictors <- models$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
@@ -285,13 +288,19 @@ best_model_rsquare <- function(models, model, rsqinc = 0.05) {
   return(lm(formula, data))
 }
 
-best_model_adjrsquare <- function(models, model) {
+best_model_adjrsquare <- function(models, model, adjrinc = 0.05) {
   if (!inherits(models, c("ols_step_best_subset",
                           "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
          ols_step_all_possible") }
   models %<>%
-    filter(adjr == max(adjr))
+    group_by(n) %>%
+    filter(adjr == max(adjr)) %>%
+    ungroup() %>%
+    mutate(adjr.inc = (adjr / lag(adjr)) - 1)
+  models %<>%
+    filter(adjr.inc >= adjrinc)
+  models <- tail(models, 1)
   predictors <- models$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
