@@ -90,34 +90,6 @@ main <- function(argv) {
   return(0)
 }
 
-unique_models <- function(models) {
-  if (!inherits(models, "list"))
-    stop("Expecting a list object.")
-  if (length(models) == 0) {
-    return(models)
-  }
-  classname <- "lm"
-  class <- c()
-  for (val in models) {
-    class <- c(class, class(val))
-  }
-  if (!(length(intersect(class, class)) == 1 &
-    class[1] == classname)) {
-    stop("Not all models are 'lm' objects")
-  }
-  env <- new.env(hash = TRUE)
-  lapply(models, add_to_env, env)
-  return(as.list(env))
-}
-
-add_to_env <- function(model, env) {
-  coefficients <- names(model$coefficients)[2:length(model$coefficients)]
-  coefficients <- sort(coefficients)
-  key <- paste(coefficients, collapse = "")
-  expr <- paste0("env$", key, " <- model")
-  eval(parse(text = expr))
-}
-
 checkfit <- function(model) {
   eqn <- model_equation(model, digits = 4)
   frm <- format(formula(model))
