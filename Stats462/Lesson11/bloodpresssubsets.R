@@ -52,7 +52,8 @@ main <- function(argv) {
   p <- 2 * pt(-abs(t), df = N - k - 1)
   best_p <- step_wise_regression(datum, "BP")
   best_p2 <- step_wise_regression(datum, "BP",
-  alpha_entry = p, alpha_removal = p)
+    alpha_entry = p, alpha_removal = p
+  )
   best_rsq <- best_model_rsquare(best, model)
   best_adjr <- best_model_adjrsquare(best, model)
   best_cp <- best_model_cp(best, model, "mincp")
@@ -70,14 +71,6 @@ main <- function(argv) {
   print("Computed cp(s)")
   print(compute_cp(model, best_cp))
   print(compute_cp(model, best_cp2))
-  best <- unique(list(
-    best_p,
-    best_p2,
-    best_rsq,
-    best_adjr,
-    best_cp,
-    best_cp2
-  ))
   best <- unique_models(list(
     best_p,
     best_p2,
@@ -98,41 +91,47 @@ main <- function(argv) {
 }
 
 unique_models <- function(models) {
-  if (length(models) == 0)
-    return(NULL)
+  if (!inherits(models, "list"))
+    stop("Expecting a list object.")
+  if (length(models) == 0) {
+    return(models)
+  }
   classname <- "lm"
   class <- c()
   for (val in models) {
-  class <- c(class, class(val))
+    class <- c(class, class(val))
   }
-  if (!(length(unique(class)) == 1 &
-      class[1] == classname))
+  if (!(length(intersect(class, class)) == 1 &
+    class[1] == classname)) {
     stop("Not all models are 'lm' objects")
+  }
   env <- new.env(hash = TRUE)
-  envs <- lapply(models, add_to_env, env)
-  return(as.list(envs[[1]]))
+  lapply(models, add_to_env, env)
+  return(as.list(env))
 }
 
 add_to_env <- function(model, env) {
-  coefficients <- names(model$coefficients)[2: length(model$coefficients)]
+  coefficients <- names(model$coefficients)[2:length(model$coefficients)]
   coefficients <- sort(coefficients)
   key <- paste(coefficients, collapse = "")
   expr <- paste0("env$", key, " <- model")
   eval(parse(text = expr))
-  return(env)
 }
 
 checkfit <- function(model) {
   eqn <- model_equation(model, digits = 4)
   frm <- format(formula(model))
-  plot(model, which = c(1, 2),
-  caption = list("Residuals vs Fitted", "Normal Q-Q"),
-  sub.caption = list(frm, frm))
+  plot(model,
+    which = c(1, 2),
+    caption = list("Residuals vs Fitted", "Normal Q-Q"),
+    sub.caption = list(frm, frm)
+  )
   ad <- ad.test(resid(model))
   print(eqn)
   print(ad)
-  if (ad$p.value < 0.05)
+  if (ad$p.value < 0.05) {
     print("Model rejected: Residuals are non-normal")
+  }
 }
 
 if (identical(environment(), globalenv())) {
