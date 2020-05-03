@@ -150,7 +150,6 @@ check_impact_p <- function(model_chosen, alpha_removal) {
     return(formula)
 }
 
-
 step_wise_regression <- function(data,
                                  response,
                                  predictors = NULL,
@@ -293,6 +292,62 @@ best_model_adjrsquare <- function(models, model) {
          ols_step_all_possible") }
   models %<>%
     filter(adjr == max(adjr))
+  predictors <- models$predictors
+  rhs <- str_replace_all(predictors, " ", "+")
+  formula <- update(formula(model), paste0(". ~ ", rhs))
+  data <- model$model
+  return(lm(formula, data))
+}
+
+best_model_aic <- function(models, model) {
+  if (!inherits(models, c("ols_step_best_subset",
+                          "ols_step_all_possible"))) {
+    stop("Class has to be ols_step_best_subset or
+         ols_step_all_possible") }
+  models %<>%
+    filter(aic == min(aic))
+  predictors <- models$predictors
+  rhs <- str_replace_all(predictors, " ", "+")
+  formula <- update(formula(model), paste0(". ~ ", rhs))
+  data <- model$model
+  return(lm(formula, data))
+}
+
+best_model_sbic <- function(models, model) {
+  if (!inherits(models, c("ols_step_best_subset",
+                          "ols_step_all_possible"))) {
+    stop("Class has to be ols_step_best_subset or
+         ols_step_all_possible") }
+  models %<>%
+    filter(sbic == min(sbic))
+  predictors <- models$predictors
+  rhs <- str_replace_all(predictors, " ", "+")
+  formula <- update(formula(model), paste0(". ~ ", rhs))
+  data <- model$model
+  return(lm(formula, data))
+}
+
+best_model_sbc <- function(models, model) {
+  if (!inherits(models, c("ols_step_best_subset",
+                          "ols_step_all_possible"))) {
+    stop("Class has to be ols_step_best_subset or
+         ols_step_all_possible") }
+  models %<>%
+    filter(sbc == min(sbc))
+  predictors <- models$predictors
+  rhs <- str_replace_all(predictors, " ", "+")
+  formula <- update(formula(model), paste0(". ~ ", rhs))
+  data <- model$model
+  return(lm(formula, data))
+}
+
+best_model_apc <- function(models, model) {
+  if (!inherits(models, c("ols_step_best_subset",
+                          "ols_step_all_possible"))) {
+    stop("Class has to be ols_step_best_subset or
+         ols_step_all_possible") }
+  models %<>%
+    filter(apc == min(apc))
   predictors <- models$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
