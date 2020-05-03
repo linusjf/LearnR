@@ -46,13 +46,20 @@ main <- function(argv) {
   lmset <- fill_models(best, model)
   print("All possible subsets")
   print(lmset)
+  N <- nrow(datum)
+  t <- sqrt(log(N))
+  k <- ncol(datum) - 1
+  p <- 2 * pt(-abs(t), df = N - k - 1)
   best_p <- step_wise_regression(datum, "BP")
+  best_p2 <- step_wise_regression(datum, "BP",
+  alpha_entry = p, alpha_removal = p)
   best_rsq <- best_model_rsquare(best, model)
   best_adjr <- best_model_adjrsquare(best, model)
   best_cp <- best_model_cp(best, model, "mincp")
   best_cp2 <- best_model_cp(best, model, "relcp")
   print("Best p model(s)")
   print(best_p)
+  print(best_p2)
   print("Best rsquared model(s)")
   print(best_rsq)
   print("Best adj rsquared model(s)")
@@ -65,12 +72,20 @@ main <- function(argv) {
   print(compute_cp(model, best_cp2))
   best <- unique(list(
     best_p,
+    best_p2,
     best_rsq,
     best_adjr,
     best_cp,
     best_cp2
   ))
-  print(unique)
+  best <- unique_models(list(
+    best_p,
+    best_p2,
+    best_rsq,
+    best_adjr,
+    best_cp,
+    best_cp2
+  ))
   print("Best subset using p, rsquare, adjr and cp")
   print(best)
   lapply(best, checkfit)
@@ -80,6 +95,31 @@ main <- function(argv) {
 
   lapply(models, checkfit)
   return(0)
+}
+
+unique_models <- function(models) {
+  if (length(models) == 0)
+    return(NULL)
+  classname <- "lm"
+  class <- c()
+  for (val in models) {
+  class <- c(class, class(val))
+  }
+  if (!(length(unique(class)) == 1 &
+      class[1] == classname))
+    stop("Not all models are 'lm' objects")
+  env <- new.env(hash = TRUE)
+  envs <- lapply(models, add_to_env, env)
+  return(as.list(envs[[1]]))
+}
+
+add_to_env <- function(model, env) {
+  coefficients <- names(model$coefficients)[2: length(model$coefficients)]
+  coefficients <- sort(coefficients)
+  key <- paste(coefficients, collapse = "")
+  expr <- paste0("env$", key, " <- model")
+  eval(parse(text = expr))
+  return(env)
 }
 
 checkfit <- function(model) {
