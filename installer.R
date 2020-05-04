@@ -219,6 +219,15 @@ install_stats462 <- function() {
   if (!require(stringr)) {
     install.packages("stringr", .libPaths()[1])
   }
+  if (!require(survey)) {
+    install.packages("survey", .libPaths()[1])
+  }
+  if (!require(glmulti)) {
+    install.packages("glmulti", .libPaths()[1])
+  }
+  if (!require(bestglm)) {
+    install.packages("bestglm", .libPaths()[1])
+  }
 }
 # nolint end
 

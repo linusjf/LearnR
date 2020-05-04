@@ -8,6 +8,7 @@ leukemia.txt <- do.call(function() {
 }, list())
 
 library(skimr)
+suppressPackageStartupMessages(library(survey))
 
 main <- function(argv) {
   data <- read.table(leukemia.txt,
@@ -19,6 +20,17 @@ main <- function(argv) {
                data = data,
                family = "binomial")
   print(model)
+  print(summary(model))
+  print(format(formula(model)))
+  result <- regTermTest(model,
+                        DF2formula(data),
+                        method = "Wald")
+  print(result)
+  model <- glm(REMISS ~ LI,
+               data = data,
+               family = "binomial")
+  print(model)
+  print(summary(model))
   return(0)
 }
 
