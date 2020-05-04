@@ -54,7 +54,7 @@ main <- function(argv) {
   t <- sqrt(log(N))
   k <- ncol(data) - 1
   p <- 2 * pt(-abs(t), df = N - k - 1)
-  print("p-value for Schwarz Bayesian equivalent")
+  print("p-value for Schwartz Bayesian equivalent")
   print(p)
   best_p <- step_wise_regression(data, "Height")
   best_p2 <- step_wise_regression(data, "Height",
@@ -92,7 +92,8 @@ checkfit <- function(model) {
     caption = list("Residuals vs Fitted", "Normal Q-Q"),
     sub.caption = list(frm, frm)
   )
-  ad <- ad.test(resid(model))
+  residuals <- resid(model)
+  ad <- ad.test(residuals)
   print(eqn)
   print(ad)
   if (ad$p.value < 0.05) {
