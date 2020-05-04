@@ -9,6 +9,7 @@ leukemia.txt <- do.call(function() {
 
 library(skimr)
 suppressPackageStartupMessages(library(survey))
+suppressPackageStartupMessages(library(glmulti))
 
 main <- function(argv) {
   data <- read.table(leukemia.txt,
@@ -17,20 +18,31 @@ main <- function(argv) {
   print(head(data))
   print(skimr::skim(data))
   model <- glm(REMISS ~ .,
-               data = data,
-               family = "binomial")
+    data = data,
+    family = "binomial"
+  )
   print(model)
   print(summary(model))
-  print(format(formula(model)))
+  glmulti.logistic.out <-
+    glmulti(DF2formula(data),
+      data = data,
+      level = 1, # No interaction considered
+      method = "h", # Exhaustive approach
+      crit = "bic", # BIC as criteria
+      confsetsize = 1, # Keep 1 best models
+      plotty = F, report = F, # No plot or interim reports
+      fitfunction = "glm", # glm function
+      family = binomial
+    ) # binomial family for logistic regression
+  print(glmulti.logistic.out@formulas)
+  model <- glmulti.logistic.out@objects[[1]]
+  print(summary(model))
   result <- regTermTest(model,
-                        DF2formula(data),
-                        method = "Wald")
+    formula(model),
+    method = "Wald"
+  )
   print(result)
-  model <- glm(REMISS ~ LI,
-               data = data,
-               family = "binomial")
-  print(model)
-  print(summary(model))
+
   return(0)
 }
 
