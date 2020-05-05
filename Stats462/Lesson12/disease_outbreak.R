@@ -70,6 +70,8 @@ main <- function(argv) {
   print(lrtest(reduced_model, full_model))
   print(reduced_model$deviance - full_model$deviance)
   print(anova(reduced_model, full_model))
+  print(anova(reduced_model, full_model, test = "Rao"))
+  print(anova(reduced_model, full_model, test = "LRT"))
   return(0)
 }
 
