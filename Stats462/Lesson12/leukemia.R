@@ -21,6 +21,7 @@ suppressPackageStartupMessages(library(survey))
 suppressPackageStartupMessages(library(glmulti))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
+library(finalfit)
 
 main <- function(argv) {
   data <- read.table(leukemia.txt,
@@ -53,18 +54,29 @@ main <- function(argv) {
     method = "Wald"
   )
   print(result)
-  pred <- predict(model, se.fit = TRUE, type = "r")
+  #pred <- predict(model, se.fit = TRUE, type = "r")
   data %<>%
-    mutate(fitted = pred$fit) %>%
+    mutate(fitted = model$fitted.values) %>%
+    mutate(linear.fitted = model$linear.predictors) %>%
     arrange(LI)
   eqn <- logit_model_equation(model, digits = 4)
   with(data, {
          plot(LI, fitted, type = "b",
                   xlab = "LI", ylab = "probability of event", col = "red",
          ylim = c(-0.001, 1.001),
-         main = paste0("Binary fitted plot\n",
+         main = paste0("Binary Fitted Line Plot\n",
                        eqn))
          points(LI, REMISS, pch = 15, col = "blue")
+  })
+  with(data, {
+         plot(LI, exp(linear.fitted), type = "b",
+                  xlab = "LI", ylab = "Odds", col = "red",
+         main = "Odds Plot")
+  })
+  with(data, {
+         plot(LI, linear.fitted, type = "b",
+                  xlab = "LI", ylab = "Odds", col = "red",
+         main = "Log Odds Plot")
   })
 
   return(0)

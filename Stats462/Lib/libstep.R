@@ -254,9 +254,10 @@ fill_models <- function(models, model) {
          ols_step_all_possible")
   }
   lmset <- list()
-  nrows <- nrow(models)
+  result <- models$result
+  nrows <- nrow(result)
   for (idx in seq_len(nrows)) {
-    df <- models %>%
+    df <- result %>%
       filter(mindex == idx)
     predictors <- df$predictors
     rhs <- str_replace_all(predictors, " ", "+")
@@ -273,15 +274,16 @@ best_model_rsquare <- function(models, model, rsqinc = 0.05) {
                           "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
          ols_step_all_possible") }
-  models %<>%
+    result <- models$result
+         result %<>%
     group_by(n) %>%
     filter(rsquare == max(rsquare)) %>%
     ungroup() %>%
     mutate(rsq.inc = (rsquare / lag(rsquare)) - 1)
-  models %<>%
+  result %<>%
     filter(rsq.inc >= rsqinc)
-  models <- tail(models, 1)
-  predictors <- models$predictors
+  result <- tail(result, 1)
+  predictors <- result$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
   data <- model$model
@@ -293,15 +295,16 @@ best_model_adjrsquare <- function(models, model, adjrinc = 0.05) {
                           "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
          ols_step_all_possible") }
-  models %<>%
+  result <- models$result
+         result %<>%
     group_by(n) %>%
     filter(adjr == max(adjr)) %>%
     ungroup() %>%
     mutate(adjr.inc = (adjr / lag(adjr)) - 1)
-  models %<>%
+  result %<>%
     filter(adjr.inc >= adjrinc)
-  models <- tail(models, 1)
-  predictors <- models$predictors
+  result <- tail(result, 1)
+  predictors <- result$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
   data <- model$model
@@ -313,9 +316,10 @@ best_model_aic <- function(models, model) {
                           "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
          ols_step_all_possible") }
-  models %<>%
+  result <- models$result
+  result %<>%
     filter(aic == min(aic))
-  predictors <- models$predictors
+  predictors <- result$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
   data <- model$model
@@ -327,9 +331,10 @@ best_model_sbic <- function(models, model) {
                           "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
          ols_step_all_possible") }
-  models %<>%
+  result <- models$result
+  result %<>%
     filter(sbic == min(sbic))
-  predictors <- models$predictors
+  predictors <- result$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
   data <- model$model
@@ -341,9 +346,10 @@ best_model_sbc <- function(models, model) {
                           "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
          ols_step_all_possible") }
-  models %<>%
+  result <- models$result
+  result %<>%
     filter(sbc == min(sbc))
-  predictors <- models$predictors
+  predictors <- result$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
   data <- model$model
@@ -355,9 +361,10 @@ best_model_apc <- function(models, model) {
                           "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
          ols_step_all_possible") }
-  models %<>%
+  result <- models$result
+  result %<>%
     filter(apc == min(apc))
-  predictors <- models$predictors
+  predictors <- result$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
   data <- model$model
@@ -371,22 +378,23 @@ best_model_cp <- function(models, model, criteria = "mincp") {
          ols_step_all_possible") }
   data <- model$model
   ncoefs <- length(model$coefficients)
-  models %<>%
+  result <- models$result
+  result %<>%
     mutate(p = n + 1) %>%
     mutate(cpratio = cp / p) %>%
     filter(p != ncoefs)
   if (criteria == "mincp") {
-    models %<>%
+    result %<>%
       filter(cp == min(cp))
   } else if (criteria == "relcp") {
-    models %<>%
+    result %<>%
       filter(cpratio == min(cpratio))
   } else {
     stop("Criteria should be mincp or relcp")
   }
-  models %<>%
+  result %<>%
     filter(n == min(n))
-  predictors <- models$predictors
+  predictors <- result$predictors
   rhs <- str_replace_all(predictors, " ", "+")
   formula <- update(formula(model), paste0(". ~ ", rhs))
   return(lm(formula, data))

@@ -228,6 +228,9 @@ install_stats462 <- function() {
   if (!require(bestglm)) {
     install.packages("bestglm", .libPaths()[1])
   }
+  if (!require(finalfit)) {
+    install.packages("finalfit", .libPaths()[1])
+  }
 }
 # nolint end
 
