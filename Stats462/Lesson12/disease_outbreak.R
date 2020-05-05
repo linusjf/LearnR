@@ -21,7 +21,6 @@ suppressPackageStartupMessages(library(survey))
 suppressPackageStartupMessages(library(glmulti))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
-suppressPackageStartupMessages(library(finalfit))
 suppressPackageStartupMessages(library(oddsratio))
 suppressPackageStartupMessages(library(lmtest))
 
@@ -33,7 +32,7 @@ main <- function(argv) {
     select(-Case)
   print(head(data))
   print(skimr::skim(data))
-  full_model <- glm(Disease ~ .^2 -(Middle*Lower),
+  full_model <- glm(Disease ~ .^2,
     data = data,
     family = "binomial"
   )
@@ -64,6 +63,13 @@ main <- function(argv) {
   )
   print(lrtest(null_model, model))
   print(null_model$deviance - model$deviance)
+  reduced_model <- glm(Disease ~ .,
+    data = data,
+    family = "binomial"
+  )
+  print(lrtest(reduced_model, full_model))
+  print(reduced_model$deviance - full_model$deviance)
+  print(anova(reduced_model, full_model))
   return(0)
 }
 
