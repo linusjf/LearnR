@@ -101,7 +101,12 @@ main <- function(argv) {
     model = model,
     incr = list(LI = 1)
   )))
-  print(lrtest(model, full_model))
+  null_model <- glm(REMISS ~ 1,
+    data = data,
+    family = "binomial"
+  )
+  print(lrtest(null_model, model))
+  print(null_model$deviance - model$deviance)
   return(0)
 }
 
