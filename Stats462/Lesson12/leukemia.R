@@ -23,6 +23,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(finalfit))
 suppressPackageStartupMessages(library(oddsratio))
+suppressPackageStartupMessages(library(lmtest))
 
 main <- function(argv) {
   data <- read.table(leukemia.txt,
@@ -30,12 +31,12 @@ main <- function(argv) {
   )
   print(head(data))
   print(skimr::skim(data))
-  model <- glm(REMISS ~ .,
+  full_model <- glm(REMISS ~ .,
     data = data,
     family = "binomial"
   )
-  print(model)
-  print(summary(model))
+  print(full_model)
+  print(summary(full_model))
   glmulti.logistic.out <-
     glmulti(DF2formula(data),
       data = data,
@@ -55,41 +56,53 @@ main <- function(argv) {
     method = "Wald"
   )
   print(result)
-  #pred <- predict(model, se.fit = TRUE, type = "r")
   data %<>%
     mutate(fitted = model$fitted.values) %>%
     mutate(linear.fitted = model$linear.predictors) %>%
     arrange(LI)
   eqn <- logit_model_equation(model, digits = 4)
   with(data, {
-         plot(LI, fitted, type = "b",
-                  xlab = "LI", ylab = "probability of event", col = "red",
-         ylim = c(-0.001, 1.001),
-         main = paste0("Binary Fitted Line Plot\n",
-                       eqn))
-         points(LI, REMISS, pch = 15, col = "blue")
+    plot(LI, fitted,
+      type = "b",
+      xlab = "LI", ylab = "probability of event", col = "red",
+      ylim = c(-0.001, 1.001),
+      main = paste0(
+        "Binary Fitted Line Plot\n",
+        eqn
+      )
+    )
+    points(LI, REMISS, pch = 15, col = "blue")
   })
   with(data, {
-         plot(LI, exp(linear.fitted), type = "b",
-                  xlab = "LI", ylab = "Odds", col = "red",
-         main = "Odds Plot")
+    plot(LI, exp(linear.fitted),
+      type = "b",
+      xlab = "LI", ylab = "Odds", col = "red",
+      main = "Odds Plot"
+    )
   })
   with(data, {
-         plot(LI, linear.fitted, type = "b",
-                  xlab = "LI", ylab = "Odds", col = "red",
-         main = "Log Odds Plot")
+    plot(LI, linear.fitted,
+      type = "b",
+      xlab = "LI", ylab = "Odds", col = "red",
+      main = "Log Odds Plot"
+    )
   })
-explanatory <- c("LI")
-dependent <- "REMISS"
-data %>%
-         or_plot(dependent, explanatory)
-print(as.data.frame(or_glm(data = data,
-       model = model,
-       incr = list(LI = 0.1))))
-print(as.data.frame(or_glm(data = data,
-       model = model,
-       incr = list(LI = 1))))
-       return(0)
+  explanatory <- c("LI")
+  dependent <- "REMISS"
+  data %>%
+    or_plot(dependent, explanatory)
+  print(as.data.frame(or_glm(
+    data = data,
+    model = model,
+    incr = list(LI = 0.1)
+  )))
+  print(as.data.frame(or_glm(
+    data = data,
+    model = model,
+    incr = list(LI = 1)
+  )))
+  print(lrtest(model, full_model))
+  return(0)
 }
 
 if (identical(environment(), globalenv())) {
