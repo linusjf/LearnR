@@ -231,6 +231,9 @@ install_stats462 <- function() {
   if (!require(finalfit)) {
     install.packages("finalfit", .libPaths()[1])
   }
+  if (!require(oddsratio)) {
+    install.packages("oddsratio", .libPaths()[1])
+  }
 }
 # nolint end
 
