@@ -21,7 +21,8 @@ suppressPackageStartupMessages(library(survey))
 suppressPackageStartupMessages(library(glmulti))
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
-library(finalfit)
+suppressPackageStartupMessages(library(finalfit))
+suppressPackageStartupMessages(library(oddsratio))
 
 main <- function(argv) {
   data <- read.table(leukemia.txt,
@@ -78,8 +79,17 @@ main <- function(argv) {
                   xlab = "LI", ylab = "Odds", col = "red",
          main = "Log Odds Plot")
   })
-
-  return(0)
+explanatory <- c("LI")
+dependent <- "REMISS"
+data %>%
+         or_plot(dependent, explanatory)
+print(as.data.frame(or_glm(data = data,
+       model = model,
+       incr = list(LI = 0.1))))
+print(as.data.frame(or_glm(data = data,
+       model = model,
+       incr = list(LI = 1))))
+       return(0)
 }
 
 if (identical(environment(), globalenv())) {
