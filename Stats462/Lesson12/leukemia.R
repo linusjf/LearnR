@@ -7,9 +7,20 @@ leukemia.txt <- do.call(function() {
   )
 }, list())
 
+libfunc <- do.call(function() {
+  library(rprojroot)
+  paste0(
+    find_root(has_file(".Rprofile")),
+    "/Stats462/Lib/libfunc.R"
+  )
+}, list())
+
 library(skimr)
+source(libfunc)
 suppressPackageStartupMessages(library(survey))
 suppressPackageStartupMessages(library(glmulti))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(magrittr))
 
 main <- function(argv) {
   data <- read.table(leukemia.txt,
@@ -42,6 +53,19 @@ main <- function(argv) {
     method = "Wald"
   )
   print(result)
+  pred <- predict(model, se.fit = TRUE, type = "r")
+  data %<>%
+    mutate(fitted = pred$fit) %>%
+    arrange(LI)
+  eqn <- logit_model_equation(model, digits = 4)
+  with(data, {
+         plot(LI, fitted, type = "b",
+                  xlab = "LI", ylab = "probability of event", col = "red",
+         ylim = c(-0.001, 1.001),
+         main = paste0("Binary fitted plot\n",
+                       eqn))
+         points(LI, REMISS, pch = 15, col = "blue")
+  })
 
   return(0)
 }
