@@ -24,6 +24,7 @@ suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(finalfit))
 suppressPackageStartupMessages(library(oddsratio))
 suppressPackageStartupMessages(library(lmtest))
+suppressPackageStartupMessages(library(ResourceSelection))
 
 main <- function(argv) {
   data <- read.table(leukemia.txt,
@@ -44,7 +45,7 @@ main <- function(argv) {
       method = "h", # Exhaustive approach
       crit = "bic", # BIC as criteria
       confsetsize = 1, # Keep 1 best models
-      plotty = F, report = F, # No plot or interim reports
+      plotty = FALSE, report = FALSE, # No plot or interim reports
       fitfunction = "glm", # glm function
       family = binomial
     ) # binomial family for logistic regression
@@ -107,6 +108,9 @@ main <- function(argv) {
   )
   print(lrtest(null_model, model))
   print(null_model$deviance - model$deviance)
+  with(data,
+    print(hoslem.test(REMISS, fitted))
+    )
   return(0)
 }
 

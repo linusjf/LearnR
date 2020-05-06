@@ -41,11 +41,11 @@ main <- function(argv) {
   glmulti.logistic.out <-
     glmulti(DF2formula(full_model$model),
       data = data,
-      level = 1, # No interaction considered
+      level = 2, # interactions considered
       method = "h", # Exhaustive approach
       crit = "bic", # BIC as criteria
       confsetsize = 1, # Keep 1 best models
-      plotty = F, report = F, # No plot or interim reports
+      plotty = FALSE, report = FALSE, # No plot or interim reports
       fitfunction = "glm", # glm function
       family = binomial
     ) # binomial family for logistic regression
