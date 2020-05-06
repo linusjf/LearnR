@@ -173,7 +173,7 @@ main <- function(argv) {
     ylim = c(-3, 3), type = "b", pch = 15, col = "blue"
   )
   abline(h = 0, col = "red")
-  hats <- hatvalues(model)
+  hats <- calculate_hat(model, data)
   data %<>%
     mutate(hat.values = hats)
   p <- length(model$coefficients)
@@ -191,7 +191,7 @@ main <- function(argv) {
   abline(h = 2 * p / n, col = "orange")
 
   data %<>%
-    mutate(studentized.residuals =
+    mutate(studentized.pearson =
            pearson.residuals / sqrt(1 - hat.values)) %>%
     mutate(studentized.deviance =
            deviance.residuals / sqrt(1 - hat.values)) %>%
@@ -201,7 +201,52 @@ main <- function(argv) {
   df <- data %>%
     filter(abs(pearson.residuals) > 2)
   print(df)
+
+  plot(seq_len(obs_count), data$studentized.pearson,
+    ylab = "Studentized pearson residuals",
+    xlab = "Observation order",
+    main = "Versus order",
+    sub = "(response is REMISS)",
+    type = "b", pch = 15, col = "blue",
+    ylim = c(min(data$studentized.pearson, -3),
+    max(data$studentized.pearson, 3))
+  )
+  abline(h = 3, col = "red")
+  abline(h = -3, col = "red")
+  abline(h = 2, col = "orange")
+  abline(h = -2, col = "orange")
+
+  plot(seq_len(obs_count), data$studentized.deviance,
+    ylab = "Studentized deviance residuals",
+    xlab = "Observation order",
+    main = "Versus order",
+    sub = "(response is REMISS)",
+    type = "b", pch = 15, col = "blue",
+    ylim = c(min(data$studentized.deviance, -3),
+    max(data$studentized.deviance, 3))
+  )
+  abline(h = 3, col = "red")
+  abline(h = -3, col = "red")
+  abline(h = 2, col = "orange")
+  abline(h = -2, col = "orange")
   return(0)
+}
+
+calculate_hat <- function(model, data) {
+v <- model$fitted.values * (1 - model$fitted.values)
+X <- model.matrix(model)
+n <- nrow(data)
+W <- diag(v, n, n)
+Xt <- t(X)
+XtWX <- Xt %*% W %*% X
+XtWXinverse <- solve(XtWX)
+HAT <- vector(mode = "numeric", length = n)
+for (idx in seq_len(n)) {
+ xi <- matrix(X[idx, ], nrow = 2)
+ xit <- t(xi)
+ HAT[idx] <- v[idx] * (xit %*% XtWXinverse %*% xi)
+}
+return(HAT)
 }
 
 
