@@ -184,11 +184,23 @@ main <- function(argv) {
     main = "Versus order",
     sub = "(response is REMISS)",
     type = "b", pch = 15, col = "blue",
-    ylim = c(min(hats, 2 * p / n ),
+    ylim = c(min(hats, 2 * p / n),
     max(hats, 3 * p / n))
   )
   abline(h = 3 * p / n, col = "red")
   abline(h = 2 * p / n, col = "orange")
+
+  data %<>%
+    mutate(studentized.residuals =
+           pearson.residuals / sqrt(1 - hat.values)) %>%
+    mutate(studentized.deviance =
+           deviance.residuals / sqrt(1 - hat.values)) %>%
+    mutate(cooks.distance =
+           pearson.residuals ^ 2 * hat.values / p * (1 - hat.values) ^ 2)
+
+  df <- data %>%
+    filter(abs(pearson.residuals) > 2)
+  print(df)
   return(0)
 }
 
