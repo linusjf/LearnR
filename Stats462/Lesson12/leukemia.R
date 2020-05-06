@@ -59,34 +59,49 @@ main <- function(argv) {
   print(result)
   data %<>%
     mutate(fitted = model$fitted.values) %>%
-    mutate(linear.fitted = model$linear.predictors) %>%
-    arrange(LI)
+    mutate(linear.fitted = model$linear.predictors)
+  #    arrange(LI)
   eqn <- logit_model_equation(model, digits = 4)
   with(data, {
-    plot(LI, fitted,
-      type = "b",
-      xlab = "LI", ylab = "probability of event", col = "red",
+    plot(x = LI, fitted,
+      xlab = "LI", 
+      ylab = "probability of event", 
+      col = "red",
       ylim = c(-0.001, 1.001),
       main = paste0(
         "Binary Fitted Line Plot\n",
         eqn
       )
     )
+  curve(predict(
+                model,
+                newdata =
+                  data.frame(LI = LI),
+                type = "response"),
+        add = TRUE, xname = "LI")
     points(LI, REMISS, pch = 15, col = "blue")
   })
   with(data, {
-    plot(LI, exp(linear.fitted),
-      type = "b",
+    plot(x = LI, exp(linear.fitted),
       xlab = "LI", ylab = "Odds", col = "red",
       main = "Odds Plot"
     )
+  curve(exp(predict(
+                model,
+                newdata =
+                  data.frame(LI = LI))),
+        add = TRUE, xname = "LI")
   })
   with(data, {
     plot(LI, linear.fitted,
-      type = "b",
       xlab = "LI", ylab = "Odds", col = "red",
       main = "Log Odds Plot"
     )
+  curve(predict(
+                model,
+                newdata =
+                  data.frame(LI = LI)),
+        add = TRUE, xname = "LI")
   })
   explanatory <- c("LI")
   dependent <- "REMISS"
@@ -108,14 +123,46 @@ main <- function(argv) {
   )
   print(lrtest(null_model, model))
   print(null_model$deviance - model$deviance)
-  with(data,
+  with(
+    data,
     print(hoslem.test(REMISS, fitted))
-    )
-  with(summary(model), {
-       print("R-squared")
-       print(1 - deviance / null.deviance)
-    }
   )
+  with(summary(model), {
+    print("R-squared")
+    print(1 - deviance / null.deviance)
+  })
+  data %<>%
+    mutate(raw.residuals = REMISS - fitted) %>%
+    mutate(pearson.residuals = raw.residuals /
+      sqrt(fitted * (1 - fitted)))
+  deviance.residuals <- NULL
+  with(data, {
+    term <- ifelse(data$REMISS == 1,
+      REMISS * log(REMISS / fitted),
+      (1 - REMISS) * log((1 - REMISS) / (1 - fitted)))
+    full_term <- 2 * term
+    deviance.residuals <<- sign(REMISS - fitted) *
+      sqrt(full_term)
+  })
+  data %<>%
+    mutate(deviance.residuals = deviance.residuals)
+  obs_count <- nrow(data)
+  plot(seq_len(obs_count), data$pearson.residuals,
+    ylab = "Pearson residual",
+    xlab = "Observation order",
+    main = "Versus order",
+    sub = "(response is REMISS)",
+    ylim = c(-3, 3), type = "b", pch = 15, col = "blue"
+  )
+  abline(h = 0, col = "red")
+  plot(seq_len(obs_count), data$deviance.residuals,
+    ylab = "Deviance residual",
+    xlab = "Observation order",
+    main = "Versus order",
+    sub = "(response is REMISS)",
+    ylim = c(-3, 3), type = "b", pch = 15, col = "blue"
+  )
+  abline(h = 0, col = "red")
   return(0)
 }
 
