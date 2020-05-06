@@ -234,6 +234,9 @@ install_stats462 <- function() {
   if (!require(oddsratio)) {
     install.packages("oddsratio", .libPaths()[1])
   }
+  if (!require(ResourceSelection)) {
+    install.packages("ResourceSelection", .libPaths()[1])
+  }
 }
 # nolint end
 
