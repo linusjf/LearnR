@@ -27,6 +27,7 @@ suppressPackageStartupMessages(library(lmtest))
 suppressPackageStartupMessages(library(ResourceSelection))
 
 main <- function(argv) {
+  options(warn = 1)
   data <- read.table(leukemia.txt,
     header = TRUE, as.is = TRUE
   )
@@ -63,9 +64,10 @@ main <- function(argv) {
   #    arrange(LI)
   eqn <- logit_model_equation(model, digits = 4)
   with(data, {
-    plot(x = LI, fitted,
-      xlab = "LI", 
-      ylab = "probability of event", 
+    plot(
+      x = LI, fitted,
+      xlab = "LI",
+      ylab = "probability of event",
       col = "red",
       ylim = c(-0.001, 1.001),
       main = paste0(
@@ -73,35 +75,42 @@ main <- function(argv) {
         eqn
       )
     )
-  curve(predict(
-                model,
-                newdata =
-                  data.frame(LI = LI),
-                type = "response"),
-        add = TRUE, xname = "LI")
+    curve(predict(
+      model,
+      newdata =
+        data.frame(LI = LI),
+      type = "response"
+    ),
+    add = TRUE, xname = "LI"
+    )
     points(LI, REMISS, pch = 15, col = "blue")
   })
   with(data, {
-    plot(x = LI, exp(linear.fitted),
+    plot(
+      x = LI, exp(linear.fitted),
       xlab = "LI", ylab = "Odds", col = "red",
       main = "Odds Plot"
     )
-  curve(exp(predict(
-                model,
-                newdata =
-                  data.frame(LI = LI))),
-        add = TRUE, xname = "LI")
+    curve(exp(predict(
+      model,
+      newdata =
+        data.frame(LI = LI)
+    )),
+    add = TRUE, xname = "LI"
+    )
   })
   with(data, {
     plot(LI, linear.fitted,
       xlab = "LI", ylab = "Odds", col = "red",
       main = "Log Odds Plot"
     )
-  curve(predict(
-                model,
-                newdata =
-                  data.frame(LI = LI)),
-        add = TRUE, xname = "LI")
+    curve(predict(
+      model,
+      newdata =
+        data.frame(LI = LI)
+    ),
+    add = TRUE, xname = "LI"
+    )
   })
   explanatory <- c("LI")
   dependent <- "REMISS"
@@ -139,7 +148,8 @@ main <- function(argv) {
   with(data, {
     term <- ifelse(data$REMISS == 1,
       REMISS * log(REMISS / fitted),
-      (1 - REMISS) * log((1 - REMISS) / (1 - fitted)))
+      (1 - REMISS) * log((1 - REMISS) / (1 - fitted))
+    )
     full_term <- 2 * term
     deviance.residuals <<- sign(REMISS - fitted) *
       sqrt(full_term)
@@ -163,8 +173,25 @@ main <- function(argv) {
     ylim = c(-3, 3), type = "b", pch = 15, col = "blue"
   )
   abline(h = 0, col = "red")
+  hats <- hatvalues(model)
+  data %<>%
+    mutate(hat.values = hats)
+  p <- length(model$coefficients)
+  n <- nrow(data)
+  plot(seq_len(obs_count), data$hat.values,
+    ylab = "Hat values",
+    xlab = "Observation order",
+    main = "Versus order",
+    sub = "(response is REMISS)",
+    type = "b", pch = 15, col = "blue",
+    ylim = c(min(hats, 2 * p / n ),
+    max(hats, 3 * p / n))
+  )
+  abline(h = 3 * p / n, col = "red")
+  abline(h = 2 * p / n, col = "orange")
   return(0)
 }
+
 
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
