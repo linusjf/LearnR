@@ -111,6 +111,11 @@ main <- function(argv) {
   with(data,
     print(hoslem.test(REMISS, fitted))
     )
+  with(summary(model), {
+       print("R-squared")
+       print(1 - deviance / null.deviance)
+    }
+  )
   return(0)
 }
 
