@@ -240,7 +240,17 @@ main <- function(argv) {
     type = "b", pch = 15, col = "blue"
   )
   abline(h = cooks.cutoff, col = "red")
+  abline(h = 4 / (n - p), col = "pink")
   abline(h = 4 / n, col = "orange")
+  plot(seq_len(obs_count), pf(data$cooks.distance, p, n - p),
+    ylab = "F distribution prob",
+    xlab = "Observation order",
+    main = "Versus order",
+    sub = "(response is REMISS)",
+    type = "b", pch = 15, col = "blue",
+    ylim = c(0, max(0.5, pf(data$cooks.distance, p, n - p)))
+  )
+  abline(h = 0.5, col = "red")
   return(0)
 }
 
