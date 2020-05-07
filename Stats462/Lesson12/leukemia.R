@@ -203,7 +203,7 @@ main <- function(argv) {
     ) %>%
     mutate(
       cooks.distance =
-        pearson.residuals^2 * hat.values / p * (1 - hat.values)^2
+        (pearson.residuals^2 * hat.values) / (p * (1 - hat.values)^2)
     )
 
   df <- data %>%
