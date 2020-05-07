@@ -229,6 +229,18 @@ main <- function(argv) {
   abline(h = -3, col = "red")
   abline(h = 2, col = "orange")
   abline(h = -2, col = "orange")
+
+  cooks.cutoff <- mean(data$hat.values / (1 - data$hat.values)) *
+    qchisq(0.95, 1)
+  plot(seq_len(obs_count), data$cooks.distance,
+    ylab = "Cooks distance",
+    xlab = "Observation order",
+    main = "Versus order",
+    sub = "(response is REMISS)",
+    type = "b", pch = 15, col = "blue"
+  )
+  abline(h = cooks.cutoff, col = "red")
+  abline(h = 4 / n, col = "orange")
   return(0)
 }
 
