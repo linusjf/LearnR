@@ -184,19 +184,27 @@ main <- function(argv) {
     main = "Versus order",
     sub = "(response is REMISS)",
     type = "b", pch = 15, col = "blue",
-    ylim = c(min(hats, 2 * p / n),
-    max(hats, 3 * p / n))
+    ylim = c(
+      min(hats, 2 * p / n),
+      max(hats, 3 * p / n)
+    )
   )
   abline(h = 3 * p / n, col = "red")
   abline(h = 2 * p / n, col = "orange")
 
   data %<>%
-    mutate(studentized.pearson =
-           pearson.residuals / sqrt(1 - hat.values)) %>%
-    mutate(studentized.deviance =
-           deviance.residuals / sqrt(1 - hat.values)) %>%
-    mutate(cooks.distance =
-           pearson.residuals ^ 2 * hat.values / p * (1 - hat.values) ^ 2)
+    mutate(
+      studentized.pearson =
+        pearson.residuals / sqrt(1 - hat.values)
+    ) %>%
+    mutate(
+      studentized.deviance =
+        deviance.residuals / sqrt(1 - hat.values)
+    ) %>%
+    mutate(
+      cooks.distance =
+        pearson.residuals^2 * hat.values / p * (1 - hat.values)^2
+    )
 
   df <- data %>%
     filter(abs(pearson.residuals) > 2)
@@ -208,8 +216,10 @@ main <- function(argv) {
     main = "Versus order",
     sub = "(response is REMISS)",
     type = "b", pch = 15, col = "blue",
-    ylim = c(min(data$studentized.pearson, -3),
-    max(data$studentized.pearson, 3))
+    ylim = c(
+      min(data$studentized.pearson, -3),
+      max(data$studentized.pearson, 3)
+    )
   )
   abline(h = 3, col = "red")
   abline(h = -3, col = "red")
@@ -222,22 +232,31 @@ main <- function(argv) {
     main = "Versus order",
     sub = "(response is REMISS)",
     type = "b", pch = 15, col = "blue",
-    ylim = c(min(data$studentized.deviance, -3),
-    max(data$studentized.deviance, 3))
+    ylim = c(
+      min(data$studentized.deviance, -3),
+      max(data$studentized.deviance, 3)
+    )
   )
   abline(h = 3, col = "red")
   abline(h = -3, col = "red")
   abline(h = 2, col = "orange")
   abline(h = -2, col = "orange")
 
-  cooks.cutoff <- mean(data$hat.values / (1 - data$hat.values)) *
+  data %<>%
+    mutate(cumsum_hat = cumsum(hat.values / (1 - hat.values)))
+  mean_hat <- sum(data$cumsum_hat) / (n * (n + 1) / 2)
+  cooks.cutoff <- mean_hat *
     qchisq(0.95, 1)
   plot(seq_len(obs_count), data$cooks.distance,
     ylab = "Cooks distance",
     xlab = "Observation order",
     main = "Versus order",
     sub = "(response is REMISS)",
-    type = "b", pch = 15, col = "blue"
+    type = "b", pch = 15, col = "blue",
+    ylim = c(
+      min(data$cooks.distance),
+      max(data$cooks.distance, cooks.cutoff)
+    )
   )
   abline(h = cooks.cutoff, col = "red")
   abline(h = 4 / (n - p), col = "pink")
@@ -255,22 +274,21 @@ main <- function(argv) {
 }
 
 calculate_hat <- function(model, data) {
-v <- model$fitted.values * (1 - model$fitted.values)
-X <- model.matrix(model)
-n <- nrow(data)
-W <- diag(v, n, n)
-Xt <- t(X)
-XtWX <- Xt %*% W %*% X
-XtWXinverse <- solve(XtWX)
-HAT <- vector(mode = "numeric", length = n)
-for (idx in seq_len(n)) {
- xi <- matrix(X[idx, ], nrow = 2)
- xit <- t(xi)
- HAT[idx] <- v[idx] * (xit %*% XtWXinverse %*% xi)
+  v <- model$fitted.values * (1 - model$fitted.values)
+  X <- model.matrix(model)
+  n <- nrow(data)
+  W <- diag(v, n, n)
+  Xt <- t(X)
+  XtWX <- Xt %*% W %*% X
+  XtWXinverse <- solve(XtWX)
+  HAT <- vector(mode = "numeric", length = n)
+  for (idx in seq_len(n)) {
+    xi <- matrix(X[idx, ], nrow = 2)
+    xit <- t(xi)
+    HAT[idx] <- v[idx] * (xit %*% XtWXinverse %*% xi)
+  }
+  return(HAT)
 }
-return(HAT)
-}
-
 
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
