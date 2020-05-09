@@ -75,7 +75,7 @@ main <- function(argv) {
   GSQUARE <- 2 * (as.numeric(log.lik.model) -
                   as.numeric(log.lik.nullmodel))
   print(GSQUARE)
-  print(dchisq(x = GSQUARE, df = 1))
+  print(1 - pchisq(GSQUARE, df = 1))
   return(0)
 }
 
