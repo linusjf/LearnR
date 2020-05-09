@@ -52,6 +52,30 @@ main <- function(argv) {
   )
   print(lrtest(null_model, model))
   print(null_model$deviance - model$deviance)
+  print(null_model)
+  print(summary(null_model))
+  print(anova(null_model, model, test = "Chisq"))
+  print(anova(null_model, model, test = "Rao"))
+  XBeta <- model.matrix(model) %*%
+    coef(model)
+  lambda <- exp(XBeta)
+  data %<>%
+    mutate(lambda = lambda) %>%
+    mutate(prob = (exp(-lambda) * (lambda ^ y)) /
+    factorial(y)) %>%
+    mutate(fitted = model$fitted.values)
+  print(data)
+  print(sum(data$prob))
+  log_likelihood <- log(prod(data$prob))
+  print(log_likelihood)
+  log.lik.model <- logLik(model)
+  print(log.lik.model)
+  log.lik.nullmodel <- logLik(null_model)
+  print(log.lik.nullmodel)
+  GSQUARE <- 2 * (as.numeric(log.lik.model) -
+                  as.numeric(log.lik.nullmodel))
+  print(GSQUARE)
+  print(dchisq(x = GSQUARE, df = 1))
   return(0)
 }
 
