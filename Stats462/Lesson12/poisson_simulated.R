@@ -186,6 +186,9 @@ main <- function(argv) {
     )
     abline(h = 0, col = "red")
   })
+  df <- data %>%
+    filter(hat.values > 2 * p / n)
+  print(df)
   return(0)
 }
 
