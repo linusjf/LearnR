@@ -19,11 +19,13 @@ library(skimr)
 source(libfunc)
 suppressPackageStartupMessages(library(survey))
 suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(plyr))
 suppressPackageStartupMessages(library(magrittr))
 suppressPackageStartupMessages(library(finalfit))
 suppressPackageStartupMessages(library(oddsratio))
 suppressPackageStartupMessages(library(lmtest))
 suppressPackageStartupMessages(library(ResourceSelection))
+suppressPackageStartupMessages(library(rsq))
 
 main <- function(argv) {
   options(warn = 1)
@@ -88,8 +90,32 @@ main <- function(argv) {
   deviance.statistic <-
     2 * sum(terms)
   print(1 - pchisq(deviance.statistic, df = n - p))
+  pseudo.rsquare <- 1 -
+    ((as.numeric(-2 * log.lik.model) /
+     as.numeric(-2 * log.lik.nullmodel)))
+  print(pseudo.rsquare)
+  print(rsq(model, type = "n"))
+  null.deviance <- model$null.deviance
+  residual.deviance <- model$deviance
+  rsquare <- 1 - (residual.deviance /
+  null.deviance)
+  print(rsquare)
+  rsquared_vals <- lapply(c("v", "kl", "sse", "lr", "n"), rsquared, model)
+  print(rsquared_vals)
     })
   return(0)
+}
+
+rsquared <- function(type, model) {
+  rsquare <- rsq(model, type = type)
+  longname <- revalue(type, c(
+  "v" = "Variance function based",
+  "kl" = "KL divergence based",
+  "sse" = "SSE based",
+  "lr" = "Likelihood Ratio Based",
+  "n" = "Nagelkerke"))
+  names(rsquare) <- longname
+  return(rsquare)
 }
 
 if (identical(environment(), globalenv())) {
