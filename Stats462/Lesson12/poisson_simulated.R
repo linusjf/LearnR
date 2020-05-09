@@ -67,22 +67,30 @@ main <- function(argv) {
     factorial(y)) %>%
     mutate(fitted = model$fitted.values)
   print(data)
+
   with(data, {
   log_likelihood <- log(prod(prob))
   print(log_likelihood)
+
   log.lik.model <- logLik(model)
   print(log.lik.model)
+
   log.lik.nullmodel <- logLik(null_model)
   print(log.lik.nullmodel)
+
   GSQUARE <- 2 * (as.numeric(log.lik.model) -
                   as.numeric(log.lik.nullmodel))
   print(GSQUARE)
+
   print(1 - pchisq(GSQUARE, df = 1))
+
   pearson.statistic <-
     sum((y - lambda) ^ 2 / lambda)
+
   n <- nrow(data)
   p <- length(model$coefficients)
   print(1 - pchisq(pearson.statistic, df = n - p))
+
   terms <- ifelse(y == 0,
    0 - (y - lambda),
     y * log(y / lambda) -
@@ -90,30 +98,29 @@ main <- function(argv) {
   deviance.statistic <-
     2 * sum(terms)
   print(1 - pchisq(deviance.statistic, df = n - p))
-  pseudo.rsquare <- 1 -
-    ((as.numeric(-2 * log.lik.model) /
-     as.numeric(-2 * log.lik.nullmodel)))
-  print(pseudo.rsquare)
-  print(rsq(model, type = "n"))
+    }
+  )
+
   null.deviance <- model$null.deviance
   residual.deviance <- model$deviance
+
   rsquare <- 1 - (residual.deviance /
   null.deviance)
   print(rsquare)
+
   rsquared_vals <- lapply(c("v", "kl", "sse", "lr", "n"), rsquared, model)
   print(rsquared_vals)
-    })
+
   return(0)
 }
 
 rsquared <- function(type, model) {
   rsquare <- rsq(model, type = type)
-  longname <- revalue(type, c(
-  "v" = "Variance function based",
-  "kl" = "KL divergence based",
-  "sse" = "SSE based",
-  "lr" = "Likelihood Ratio Based",
-  "n" = "Nagelkerke"))
+  longname <- case_when(type == "v" ~ "Variance function based",
+                        type == "kl" ~ "KL divergence based",
+                        type == "sse" ~ "SSE based",
+                        type == "lr" ~ "Likelihood Ratio Based",
+                        type == "n" ~ "Nagelkerke")
   names(rsquare) <- longname
   return(rsquare)
 }
