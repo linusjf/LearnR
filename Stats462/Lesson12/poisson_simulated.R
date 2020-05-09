@@ -76,6 +76,18 @@ main <- function(argv) {
                   as.numeric(log.lik.nullmodel))
   print(GSQUARE)
   print(1 - pchisq(GSQUARE, df = 1))
+  pearson.statistic <-
+    sum((data$y - lambda) ^ 2 / lambda)
+  n <- nrow(data)
+  p <- length(model$coefficients)
+  print(1 - pchisq(pearson.statistic, df = n - p))
+  terms <- ifelse(data$y == 0,
+   0 - (data$y - lambda),
+    data$y * log(data$y / lambda) -
+    (data$y - lambda))
+  deviance.statistic <-
+    2 * sum(terms)
+  print(1 - pchisq(deviance.statistic, df = n - p))
   return(0)
 }
 
