@@ -65,8 +65,8 @@ main <- function(argv) {
     factorial(y)) %>%
     mutate(fitted = model$fitted.values)
   print(data)
-  print(sum(data$prob))
-  log_likelihood <- log(prod(data$prob))
+  with(data, {
+  log_likelihood <- log(prod(prob))
   print(log_likelihood)
   log.lik.model <- logLik(model)
   print(log.lik.model)
@@ -77,17 +77,18 @@ main <- function(argv) {
   print(GSQUARE)
   print(1 - pchisq(GSQUARE, df = 1))
   pearson.statistic <-
-    sum((data$y - lambda) ^ 2 / lambda)
+    sum((y - lambda) ^ 2 / lambda)
   n <- nrow(data)
   p <- length(model$coefficients)
   print(1 - pchisq(pearson.statistic, df = n - p))
-  terms <- ifelse(data$y == 0,
-   0 - (data$y - lambda),
-    data$y * log(data$y / lambda) -
-    (data$y - lambda))
+  terms <- ifelse(y == 0,
+   0 - (y - lambda),
+    y * log(y / lambda) -
+    (y - lambda))
   deviance.statistic <-
     2 * sum(terms)
   print(1 - pchisq(deviance.statistic, df = n - p))
+    })
   return(0)
 }
 
