@@ -29,7 +29,15 @@ main <- function(argv) {
   linear_model <- lm(log(prog) ~ days,
     data = data,
   )
-  print(summary(linear_model))
+  print(linear_model)
+  coefs <- linear_model$coefficients
+  theta0 <- exp(coefs[1])
+  theta1 <- coefs[2]
+  nl_model <- nls(prog ~ I(theta0 * exp(theta1 * days)),
+  data = data, start = list(theta0 = theta0,
+                            theta1 = theta1),
+  trace = TRUE)
+  print(summary(nl_model))
   return(0)
 }
 
