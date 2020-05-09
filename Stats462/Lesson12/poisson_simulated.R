@@ -119,9 +119,10 @@ main <- function(argv) {
   data %<>%
     mutate(raw.residuals = y - lambda)
   phi <- NULL
-  with(data,
-  phi <<- ((n - p) ^ (-1)) *
-    sum(((y - lambda)^2) / lambda)
+  with(
+    data,
+    phi <<- ((n - p)^(-1)) *
+      sum(((y - lambda)^2) / lambda)
   )
   data %<>%
     mutate(pearson.residuals = raw.residuals /
@@ -164,8 +165,27 @@ main <- function(argv) {
       sub = "(response is y)"
     )
     abline(h = 2 * p / n, col = "red")
-  }
-  )
+  })
+  data %<>%
+    mutate(studentized.pearson = pearson.residuals / sqrt(1 - hat.values)) %>%
+    mutate(studentized.deviance = deviance.residuals / sqrt(1 - hat.values))
+  with(data, {
+    plot(log(fitted), studentized.pearson,
+      pch = 15, col = "blue", xlab = "Fitted values",
+      ylab = "Studentized Pearson residuals",
+      main = "Versus Log of Fits",
+      sub = "(response is y)",
+      ylim = c(-2, 2)
+    )
+    abline(h = 0, col = "red")
+    plot(log(fitted), studentized.deviance,
+      pch = 15, col = "blue", xlab = "Fitted values",
+      ylab = "Studentized Deviance residuals",
+      main = "Versus Log of Fits",
+      sub = "(response is y)"
+    )
+    abline(h = 0, col = "red")
+  })
   return(0)
 }
 
