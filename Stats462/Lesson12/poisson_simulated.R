@@ -34,9 +34,13 @@ main <- function(argv) {
   )
   print(head(data))
   print(skimr::skim(data))
-  with(data,
-  plot(x, y, main = "Simulated Poisson Data",
-       pch = 15, col = "blue"))
+  with(
+    data,
+    plot(x, y,
+      main = "Simulated Poisson Data",
+      pch = 15, col = "blue"
+    )
+  )
   model <- glm(y ~ x,
     data = data,
     family = "poisson"
@@ -63,64 +67,117 @@ main <- function(argv) {
   lambda <- exp(XBeta)
   data %<>%
     mutate(lambda = lambda) %>%
-    mutate(prob = (exp(-lambda) * (lambda ^ y)) /
-    factorial(y)) %>%
+    mutate(prob = (exp(-lambda) * (lambda^y)) /
+      factorial(y)) %>%
     mutate(fitted = model$fitted.values)
   print(data)
 
-  with(data, {
-  log_likelihood <- log(prod(prob))
-  print(log_likelihood)
-
-  log.lik.model <- logLik(model)
-  print(log.lik.model)
-
-  log.lik.nullmodel <- logLik(null_model)
-  print(log.lik.nullmodel)
-
-  GSQUARE <- 2 * (as.numeric(log.lik.model) -
-                  as.numeric(log.lik.nullmodel))
-  print(GSQUARE)
-
-  print(1 - pchisq(GSQUARE, df = 1))
-
-  pearson.statistic <-
-    sum((y - lambda) ^ 2 / lambda)
-
   n <- nrow(data)
   p <- length(model$coefficients)
-  print(1 - pchisq(pearson.statistic, df = n - p))
 
-  terms <- ifelse(y == 0,
-   0 - (y - lambda),
-    y * log(y / lambda) -
-    (y - lambda))
-  deviance.statistic <-
-    2 * sum(terms)
-  print(1 - pchisq(deviance.statistic, df = n - p))
-    }
-  )
+  with(data, {
+    log_likelihood <- log(prod(prob))
+    print(log_likelihood)
+
+    log.lik.model <- logLik(model)
+    print(log.lik.model)
+
+    log.lik.nullmodel <- logLik(null_model)
+    print(log.lik.nullmodel)
+
+    GSQUARE <- 2 * (as.numeric(log.lik.model) -
+      as.numeric(log.lik.nullmodel))
+    print(GSQUARE)
+
+    print(1 - pchisq(GSQUARE, df = 1))
+
+    pearson.statistic <-
+      sum((y - lambda)^2 / lambda)
+
+    print(1 - pchisq(pearson.statistic, df = n - p))
+
+    terms <- ifelse(y == 0,
+      0 - (y - lambda),
+      y * log(y / lambda) -
+        (y - lambda)
+    )
+    deviance.statistic <-
+      2 * sum(terms)
+    print(1 - pchisq(deviance.statistic, df = n - p))
+  })
 
   null.deviance <- model$null.deviance
   residual.deviance <- model$deviance
 
   rsquare <- 1 - (residual.deviance /
-  null.deviance)
+    null.deviance)
   print(rsquare)
 
   rsquared_vals <- lapply(c("v", "kl", "sse", "lr", "n"), rsquared, model)
   print(rsquared_vals)
 
+  data %<>%
+    mutate(raw.residuals = y - lambda)
+  phi <- NULL
+  with(data,
+  phi <<- ((n - p) ^ (-1)) *
+    sum(((y - lambda)^2) / lambda)
+  )
+  data %<>%
+    mutate(pearson.residuals = raw.residuals /
+      sqrt(phi * lambda)) %>%
+    mutate(
+      root.term =
+        ifelse(y == 0,
+          lambda - y,
+          y * log(y / lambda) - (y - lambda)
+        )
+    ) %>%
+    mutate(deviance.residuals = sign(y - lambda) *
+      sqrt(2 * root.term))
+  data$root.term <- NULL
+  with(data, {
+    plot(log(fitted), pearson.residuals,
+      pch = 15, col = "blue", xlab = "Fitted values",
+      ylab = "Pearson residuals",
+      main = "Versus Log of Fits",
+      sub = "(response is y)",
+      ylim = c(-2, 2)
+    )
+    abline(h = 0, col = "red")
+    plot(log(fitted), deviance.residuals,
+      pch = 15, col = "blue", xlab = "Fitted values",
+      ylab = "Deviance residuals",
+      main = "Versus Log of Fits",
+      sub = "(response is y)",
+      ylim = c(-2, 2)
+    )
+    abline(h = 0, col = "red")
+  })
+  data %<>%
+    mutate(hat.values = hatvalues(model))
+  with(data, {
+    plot(seq_len(n), hat.values,
+      pch = 15, col = "blue", xlab = "Observations",
+      ylab = "Hat values",
+      main = "Versus Observations",
+      sub = "(response is y)"
+    )
+    abline(h = 2 * p / n, col = "red")
+  }
+  )
   return(0)
 }
 
 rsquared <- function(type, model) {
   rsquare <- rsq(model, type = type)
-  longname <- case_when(type == "v" ~ "Variance function based",
-                        type == "kl" ~ "KL divergence based",
-                        type == "sse" ~ "SSE based",
-                        type == "lr" ~ "Likelihood Ratio Based",
-                        type == "n" ~ "Nagelkerke")
+  longname <- case_when(
+    type == "v" ~ "Variance function based",
+    type == "kl" ~ "KL divergence based",
+    type == "sse" ~ "SSE based",
+    type == "lr" ~ "Likelihood Ratio Based",
+    type == "n" ~ "Nagelkerke"
+  )
   names(rsquare) <- longname
   return(rsquare)
 }
