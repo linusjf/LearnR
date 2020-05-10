@@ -20,6 +20,34 @@ vif_factors <- function(model) {
   VIF(model)
 }
 
+exp_model_equation <- function(model, ...) {
+  if (!inherits(model, "nls"))
+    stop("Model has to be nls object")
+  format_args <- list(...)
+  model_param <- model$m$getPars()
+  model_param <- model_param[!is.na(model_param)]
+  format_args$x <- abs(model_param)
+  model_param_sign <- sign(model_param)
+  model_param_prefix <- case_when(
+    model_param_sign == -1 ~ " - ",
+    model_param_sign == 1 ~ " + ",
+    model_param_sign == 0 ~ " + "
+  )
+  f <- formula(model)
+  model_eqn <- format(f)
+  split <- strsplit(as.character(f), "~")
+  model_eqn <- paste(split[2], " = ", split[3])
+  names <- names(model_param)
+  model_param <- paste0(model_param_prefix, do.call(format, format_args))
+  names(model_param) <- names
+  for (idx in seq_len(length(names))) {
+  model_eqn <- str_replace_all(model_eqn, names[idx], model_param[idx])
+  }
+  model_eqn <- str_replace(model_eqn, "I[(]", "")
+  model_eqn <- str_replace(model_eqn, "[)]$", "")
+  return(model_eqn)
+}
+
 logit_model_equation <- function(model, ...) {
   format_args <- list(...)
 
@@ -43,7 +71,7 @@ logit_model_equation <- function(model, ...) {
         " * ",
         names(model_coeff[-1]),
         sep = "", collapse = ""
-      ), 
+      ),
       sep = ""
     ), "))"
   )

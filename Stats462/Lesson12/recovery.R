@@ -38,6 +38,11 @@ main <- function(argv) {
                             theta1 = theta1),
   trace = TRUE)
   print(summary(nl_model))
+  eqn <- exp_model_equation(nl_model, digits = 4)
+  with(data,
+  plot(days, prog, xlab = "Days",
+  ylab = "Prog", main = "Fitted line plot",
+  sub = eqn))
   return(0)
 }
 
