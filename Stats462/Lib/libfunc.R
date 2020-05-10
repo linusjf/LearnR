@@ -38,13 +38,18 @@ exp_model_equation <- function(model, ...) {
   split <- strsplit(as.character(f), "~")
   model_eqn <- paste(split[2], " = ", split[3])
   names <- names(model_param)
-  model_param <- paste0(model_param_prefix, do.call(format, format_args))
+  model_param <-
+    c(do.call(format, format_args)[1],
+      paste0(model_param_prefix[-1],
+             do.call(format, format_args)[-1]))
   names(model_param) <- names
   for (idx in seq_len(length(names))) {
   model_eqn <- str_replace_all(model_eqn, names[idx], model_param[idx])
   }
   model_eqn <- str_replace(model_eqn, "I[(]", "")
   model_eqn <- str_replace(model_eqn, "[)]$", "")
+  model_eqn <- str_replace(model_eqn, "[(] [+]( )*", "(")
+  model_eqn <- str_replace(model_eqn, "[+]( )*[-]", "-")
   return(model_eqn)
 }
 

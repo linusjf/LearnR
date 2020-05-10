@@ -26,6 +26,33 @@ main <- function(argv) {
   )
   print(head(data))
   print(skimr::skim(data))
+  beta_one <- 350
+  y1 <- data$population[1]
+  beta_two <- log(beta_one / y1 - 1)
+  y2 <- data$population[2]
+  beta_three <- log(beta_one / y2 - 1) - beta_two
+  nl_model <- nls(population ~
+                  I(beta1 /
+                    (1 + exp(beta2 + beta3 * (year - 1790) / 10)
+                     )),
+  data = data, start = list(beta1 = beta_one,
+                            beta2 = beta_two,
+                            beta3 = beta_three),
+  trace = TRUE)
+  print(summary(nl_model))
+  eqn <- exp_model_equation(nl_model, digits = 4)
+  with(data, {
+  plot(year, population, xlab = "Year",
+  ylab = "Population", main = "Fitted line plot",
+  sub = eqn)
+    curve(predict(
+      nl_model,
+      newdata =
+        data.frame(year = year)
+    ),
+    add = TRUE, xname = "year"
+    )
+})
   return(0)
 }
 
