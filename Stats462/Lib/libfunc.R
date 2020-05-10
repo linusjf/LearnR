@@ -48,8 +48,8 @@ exp_model_equation <- function(model, ...) {
   }
   model_eqn <- str_replace(model_eqn, "I[(]", "")
   model_eqn <- str_replace(model_eqn, "[)]$", "")
-  model_eqn <- str_replace(model_eqn, "[(] [+]( )*", "(")
-  model_eqn <- str_replace(model_eqn, "[+]( )*[-]", "-")
+  model_eqn <- str_replace(model_eqn, "[(] [+]( )+", "(")
+  model_eqn <- str_replace(model_eqn, "[+]( )+[-]", "-")
   return(model_eqn)
 }
 
