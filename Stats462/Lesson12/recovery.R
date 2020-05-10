@@ -39,10 +39,18 @@ main <- function(argv) {
   trace = TRUE)
   print(summary(nl_model))
   eqn <- exp_model_equation(nl_model, digits = 4)
-  with(data,
+  with(data, {
   plot(days, prog, xlab = "Days",
   ylab = "Prog", main = "Fitted line plot",
-  sub = eqn))
+  sub = eqn)
+    curve(predict(
+      nl_model,
+      newdata =
+        data.frame(days = days)
+    ),
+    add = TRUE, xname = "days"
+    )
+})
   return(0)
 }
 
