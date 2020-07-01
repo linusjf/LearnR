@@ -45,6 +45,12 @@ install_rbloggers <- function() {
   }
 }
 
+install_DSForEngineers <- function() {
+  if (!require(reshape2)) {
+    install.packages("reshape2", .libPaths()[1])
+  }
+}
+
 install_programs <- function() {
   if (!require(stargazer)) {
     install.packages("stargazer", .libPaths()[1])
@@ -477,6 +483,7 @@ main <- function(argv) {
   install_rbloggers()
   install_stats462()
   install_efficientr()
+  install_DSForEngineers() 
   install_msdrs()
   update.packages()
   if (!is.null(warnings())) {

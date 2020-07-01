@@ -53,6 +53,13 @@ main <- function(argv) {
     add = TRUE, xname = "year"
     )
 })
+  with(data, {
+  plot(year, resid(nl_model), xlab = "Year",
+  ylab = "Residuals", main = "Versus Year",
+  sub = "Response is population",
+  pch = 15, col = "blue")
+  abline(h = 0, col = "red")
+})
   return(0)
 }
 
