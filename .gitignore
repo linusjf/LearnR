@@ -1,7 +1,7 @@
 .RData
 .Rhistory
 *.Rout
-*.pdf
+Rplots.pdf
 *.png
 **/data/**
 *.out
