@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+library(reshape2)
 
 vec1 <- c(1, 2, 3)
 vec2 <- c("R", "Scilab", "Java")
@@ -73,7 +74,6 @@ pd <- data.frame(
   "BP" = c(90, 78, 80, 81)
 )
 
-library(reshape2)
 Df <- melt(pd,
   id.vars = c(
     "Name",
@@ -82,3 +82,13 @@ Df <- melt(pd,
   measure.vars = c("BS", "BP")
 )
 print(Df)
+
+# cast operation sample code
+# continued from previous code
+# we use dcast as we are working on
+# a dataframe
+Df2 <- dcast(Df,
+  variable + Month ~ Name,
+  value.var = "value"
+)
+print(Df2)

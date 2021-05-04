@@ -15,6 +15,7 @@ main <- function(argv) {
         save(installedpkgs, file = "installed_old.rda")
       },
       "upgrade" = {
+        old <- options(verbose = TRUE)
         load(file = "installed_old.rda")
         tmp <- installed.packages()
         installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
@@ -27,8 +28,9 @@ main <- function(argv) {
         installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
         missing <- setdiff(installedpkgs, installedpkgs.new)
         for (i in seq_len(length(missing))) {
-          BiocManager::install(missing[i])
+          BiocManager::install(missing[i], verbose = TRUE)
         }
+        options(old)
       },
       print("usage: upgrade.R save|upgrade")
     )
