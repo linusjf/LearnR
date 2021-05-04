@@ -492,6 +492,5 @@ main <- function(argv) {
 }
 # nolint end
 
-if (identical(environment(), globalenv())) {
+if (identical(environment(), globalenv())) 
   suppressWarnings(quit(status = main(commandArgs(trailingOnly = TRUE))))
-}
