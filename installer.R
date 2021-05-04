@@ -486,9 +486,8 @@ main <- function(argv) {
   install_DSForEngineers() 
   install_msdrs()
   update.packages()
-  if (!is.null(warnings())) {
+  if (!is.null(warnings())) 
     summary(warnings())
-  }
   return(0)
 }
 # nolint end
