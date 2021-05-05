@@ -23,5 +23,5 @@ main <- function(argv) {
 }
 
 if (identical(environment(), globalenv())) {
-  quit(status = main(commandArgs(trailingOnly = TRUE)))
+  suppressWarnings(quit(status = main(commandArgs(trailingOnly = TRUE))))
 }
