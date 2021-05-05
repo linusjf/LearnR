@@ -7,11 +7,10 @@ suppressPackageStartupMessages(library(regclass))
 suppressPackageStartupMessages(library(purrr))
 
 lib_path <- function() {
-  library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  library(rprojr
+t)
+  paste0(find_r
+t(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }
 
 source(lib_path())
@@ -56,9 +55,8 @@ get_predictors <- function(data, response, predictors, removals) {
 get_model_variables <- function(formula) {
   model_variables <- c()
   if (!is.null(formula)) {
-      term <-
-           terms(formula, keep.order = TRUE)
-  model_variables <- attr(term, "term.labels")
+    term <- terms(formula, keep.order = TRUE)
+    model_variables <- attr(term, "term.labels")
   }
   return(model_variables)
 }
@@ -68,10 +66,7 @@ get_models <- function(data, response, predictors, model_variables) {
   models <- list()
   for (value in predictors) {
     variables <- c(model_variables, value)
-    f <-
-      as.formula(paste(response,
-                       paste(variables, collapse = " + "),
-                       sep = " ~ "))
+    f <- as.formula(paste(response, paste(variables, collapse = " + "), sep = " ~ "))
     model <- lm(f, data)
     models[[i]] <- model
     i <- i + 1
@@ -91,77 +86,59 @@ collect_p <- function(models) {
 }
 
 finalize_model <- function(data, formula, alpha_entry) {
-    print(sprintf(
-      "No p-value meets criteria of alpha entry < %f",
-      alpha_entry
-    ))
-    if (!is.null(formula)) {
-      print("Final Model chosen: ")
-      model <- lm(formula, data)
-      print(model_equation(model, digits = 4))
-      return(model)
-    }
-    else
-      return(NULL)
+  print(sprintf("No p-value meets criteria of alpha entry < %f", alpha_entry))
+  if (!is.null(formula)) {
+    print("Final Model chosen: ")
+    model <- lm(formula, data)
+    print(model_equation(model, digits = 4))
+    return(model)
+  } else return(NULL)
 }
 
-choose_model <- function(p_vals, models) {
-    p_min <- min(p_vals)
-    p_min_index <- which(p_vals == p_min)
-    model_chosen <- models[[p_min_index]]
-    print("Model chosen currently: ")
-    print(model_equation(model_chosen, digits = 4))
-    return(model_chosen)
+ch
+se_model <- function(p_vals, models) {
+  p_min <- min(p_vals)
+  p_min_index <- which(p_vals == p_min)
+  model_chosen <- models[[p_min_index]]
+  print("Model chosen currently: ")
+  print(model_equation(model_chosen, digits = 4))
+  return(model_chosen)
 }
 
 check_impact_p <- function(model_chosen, alpha_removal) {
 
-    formula <- formula(model_chosen)
-    terms.object <- terms(formula)
-    response_index <- attr(terms.object, "response")
-    factors <- attr(terms.object, "factors")
-    response <- rownames(factors)[response_index]
+  formula <- formula(model_chosen)
+  terms.object <- terms(formula)
+  response_index <- attr(terms.object, "response")
+  factors <- attr(terms.object, "factors")
+  response <- rownames(factors)[response_index]
 
-    print("Checking for impact on p-values")
+  print("Checking for impact on p-values")
 
-    summ <- summary(model_chosen)
-    coefficients <-
-      as.data.frame(summ$coefficients)
-    colnames(coefficients) <-
-      c("Beta", "SE", "t.val", "p.val")
-    coefficients <- tail(coefficients, -1)
-    print(coefficients)
-    drop <- coefficients %>%
-      rownames_to_column("rownames") %>%
-      filter(p.val > alpha_removal) %>%
-      column_to_rownames("rownames")
-    if (nrow(drop) > 0) {
+  summ <- summary(model_chosen)
+  coefficients <- as.data.frame(summ$coefficients)
+  colnames(coefficients) <- c("Beta", "SE", "t.val", "p.val")
+  coefficients <- tail(coefficients, -1)
+  print(coefficients)
+  drop <- coefficients %>%
+    rownames_to_column("rownames") %>%
+    filter(p.val > alpha_removal) %>%
+    column_to_rownames("rownames")
+  if (nrow(drop) > 0) {
     retain <- coefficients %>%
       rownames_to_column("rownames") %>%
       filter(p.val <= alpha_removal) %>%
       column_to_rownames("rownames")
-    retain <-
-      rownames(retain)
-    formula <-
-      as.formula(paste(response,
-                       paste(retain, collapse = " + "),
-                       sep = " ~ "))
-    }
-    return(formula)
+    retain <- rownames(retain)
+    formula <- as.formula(paste(response, paste(retain, collapse = " + "), sep = " ~ "))
+  }
+  return(formula)
 }
 
-step_wise_regression <- function(data,
-                                 response,
-                                 predictors = NULL,
-                                 removals = NULL,
-                                 formula = NULL,
-                                 alpha_removal = 0.15,
-                                 alpha_entry = 0.15
-                                 ) {
-  validate(
-    data = data, response = response, predictors = predictors, removals =
-      removals, alpha_removal = alpha_removal, alpha_entry = alpha_entry
-  )
+step_wise_regression <- function(data, response, predictors = NULL, removals = NULL, 
+  formula = NULL, alpha_removal = 0.15, alpha_entry = 0.15) {
+  validate(data = data, response = response, predictors = predictors, removals = removals, 
+    alpha_removal = alpha_removal, alpha_entry = alpha_entry)
   predictors <- get_predictors(data, response, predictors, removals)
   model_variables <- get_model_variables(formula)
 
@@ -171,13 +148,12 @@ step_wise_regression <- function(data,
 
   # is p >= alpha entry criteria
   if (min(p_vals) >= alpha_entry) {
-      final <- finalize_model(data, formula, alpha_entry)
-      if (is.null(final))
-        return(lm(paste0(response, " ~ ."),
-                  data))
-      else return(final)
+    final <- finalize_model(data, formula, alpha_entry)
+    if (is.null(final)) 
+      return(lm(paste0(response, " ~ ."), data)) else return(final)
   } else {
-    model_chosen <- choose_model(p_vals, models)
+    model_chosen <- ch
+se_model(p_vals, models)
 
     formula <- formula(model_chosen)
     model_variables <- attr(terms(formula), "term.labels")
@@ -186,11 +162,9 @@ step_wise_regression <- function(data,
 
     formula <- check_impact_p(model_chosen, alpha_removal)
 
-    return(step_wise_regression(data, response,
-    predictors, removals, formula,
-    alpha_removal,
-    alpha_entry))
-    }
+    return(step_wise_regression(data, response, predictors, removals, formula, 
+      alpha_removal, alpha_entry))
+  }
 }
 
 best_vif <- function(models, cutoff = 4) {
@@ -230,26 +204,23 @@ best_vif <- function(models, cutoff = 4) {
 
 compute_cp <- function(full_model, model) {
   res <- NULL
-  if (length(full_model$coefficients) <
-    length(model$coefficients)) {
+  if (length(full_model$coefficients) < length(model$coefficients)) {
     res <- anova(model, full_model)
   } else {
     res <- anova(full_model, model)
   }
   res %<>%
-    mutate(mse = RSS / Res.Df)
+    mutate(mse = RSS/Res.Df)
   n <- nrow(model$model)
   p <- length(model$coefficients)
   ssek <- res$RSS[2]
   mseall <- res$mse[1]
-  cp <- ssek / mseall +
-    2 * p - n
+  cp <- ssek/mseall + 2 * p - n
   return(cp)
 }
 
 fill_models <- function(models, model) {
-  if (!inherits(models, c("ols_step_best_subset",
-                          "ols_step_all_possible"))) {
+  if (!inherits(models, c("ols_step_best_subset", "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
          ols_step_all_possible")
   }
@@ -263,23 +234,22 @@ fill_models <- function(models, model) {
     rhs <- str_replace_all(predictors, " ", "+")
     formula <- update(formula(model), paste0(". ~ ", rhs))
     data <- model$model
-    lmset[[length(lmset) + 1]] <-
-      lm(formula, data)
+    lmset[[length(lmset) + 1]] <- lm(formula, data)
   }
   return(lmset)
 }
 
 best_model_rsquare <- function(models, model, rsqinc = 0.05) {
-  if (!inherits(models, c("ols_step_best_subset",
-                          "ols_step_all_possible"))) {
+  if (!inherits(models, c("ols_step_best_subset", "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
-         ols_step_all_possible") }
-    result <- models$result
-         result %<>%
+         ols_step_all_possible")
+  }
+  result <- models$result
+  result %<>%
     group_by(n) %>%
     filter(rsquare == max(rsquare)) %>%
     ungroup() %>%
-    mutate(rsq.inc = (rsquare / lag(rsquare)) - 1)
+    mutate(rsq.inc = (rsquare/lag(rsquare)) - 1)
   result %<>%
     filter(rsq.inc >= rsqinc)
   result <- tail(result, 1)
@@ -291,16 +261,16 @@ best_model_rsquare <- function(models, model, rsqinc = 0.05) {
 }
 
 best_model_adjrsquare <- function(models, model, adjrinc = 0.05) {
-  if (!inherits(models, c("ols_step_best_subset",
-                          "ols_step_all_possible"))) {
+  if (!inherits(models, c("ols_step_best_subset", "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
-         ols_step_all_possible") }
+         ols_step_all_possible")
+  }
   result <- models$result
-         result %<>%
+  result %<>%
     group_by(n) %>%
     filter(adjr == max(adjr)) %>%
     ungroup() %>%
-    mutate(adjr.inc = (adjr / lag(adjr)) - 1)
+    mutate(adjr.inc = (adjr/lag(adjr)) - 1)
   result %<>%
     filter(adjr.inc >= adjrinc)
   result <- tail(result, 1)
@@ -312,10 +282,10 @@ best_model_adjrsquare <- function(models, model, adjrinc = 0.05) {
 }
 
 best_model_aic <- function(models, model) {
-  if (!inherits(models, c("ols_step_best_subset",
-                          "ols_step_all_possible"))) {
+  if (!inherits(models, c("ols_step_best_subset", "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
-         ols_step_all_possible") }
+         ols_step_all_possible")
+  }
   result <- models$result
   result %<>%
     filter(aic == min(aic))
@@ -327,10 +297,10 @@ best_model_aic <- function(models, model) {
 }
 
 best_model_sbic <- function(models, model) {
-  if (!inherits(models, c("ols_step_best_subset",
-                          "ols_step_all_possible"))) {
+  if (!inherits(models, c("ols_step_best_subset", "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
-         ols_step_all_possible") }
+         ols_step_all_possible")
+  }
   result <- models$result
   result %<>%
     filter(sbic == min(sbic))
@@ -342,10 +312,10 @@ best_model_sbic <- function(models, model) {
 }
 
 best_model_sbc <- function(models, model) {
-  if (!inherits(models, c("ols_step_best_subset",
-                          "ols_step_all_possible"))) {
+  if (!inherits(models, c("ols_step_best_subset", "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
-         ols_step_all_possible") }
+         ols_step_all_possible")
+  }
   result <- models$result
   result %<>%
     filter(sbc == min(sbc))
@@ -357,10 +327,10 @@ best_model_sbc <- function(models, model) {
 }
 
 best_model_apc <- function(models, model) {
-  if (!inherits(models, c("ols_step_best_subset",
-                          "ols_step_all_possible"))) {
+  if (!inherits(models, c("ols_step_best_subset", "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
-         ols_step_all_possible") }
+         ols_step_all_possible")
+  }
   result <- models$result
   result %<>%
     filter(apc == min(apc))
@@ -372,16 +342,16 @@ best_model_apc <- function(models, model) {
 }
 
 best_model_cp <- function(models, model, criteria = "mincp") {
-  if (!inherits(models, c("ols_step_best_subset",
-                          "ols_step_all_possible"))) {
+  if (!inherits(models, c("ols_step_best_subset", "ols_step_all_possible"))) {
     stop("Class has to be ols_step_best_subset or
-         ols_step_all_possible") }
+         ols_step_all_possible")
+  }
   data <- model$model
   ncoefs <- length(model$coefficients)
   result <- models$result
   result %<>%
     mutate(p = n + 1) %>%
-    mutate(cpratio = cp / p) %>%
+    mutate(cpratio = cp/p) %>%
     filter(p != ncoefs)
   if (criteria == "mincp") {
     result %<>%
@@ -401,7 +371,7 @@ best_model_cp <- function(models, model, criteria = "mincp") {
 }
 
 unique_models <- function(models) {
-  if (!inherits(models, "list"))
+  if (!inherits(models, "list")) 
     stop("Expecting a list object.")
   if (length(models) == 0) {
     return(models)
@@ -411,8 +381,7 @@ unique_models <- function(models) {
   for (val in models) {
     class <- c(class, class(val))
   }
-  if (!(length(intersect(class, class)) == 1 &
-    class[1] == classname)) {
+  if (!(length(intersect(class, class)) == 1 & class[1] == classname)) {
     stop("Not all models are 'lm' objects")
   }
   env <- new.env(hash = TRUE)

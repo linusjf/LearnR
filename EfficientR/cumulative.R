@@ -23,19 +23,9 @@ main <- function(argv) {
   x <- 1:100
 
   # Method 3: cumsum (1 line, not shown)
-  print(microbenchmark(
-    cs_for(x),
-    cs_apply(x),
-    cumsum(x)
-  ))
+  print(microbenchmark(cs_for(x), cs_apply(x), cumsum(x)))
   x <- 1:50000
-  print(microbenchmark(
-    cs_for(x),
-    cs_apply(x),
-    cumsum(x),
-    times = 1,
-    unit = "s"
-  ))
+  print(microbenchmark(cs_for(x), cs_apply(x), cumsum(x), times = 1, unit = "s"))
 
   return(0)
 }

@@ -7,8 +7,7 @@ suppressMessages(library(TH.data))
 data("GlaucomaM")
 
 main <- function(argv) {
-  # CLASSIFICATION
-  # fitting
+  # CLASSIFICATION fitting
   glau <- TH.data::GlaucomaM
   print(head(glau))
   levels(glau$Class) <- c("glau", "norm")

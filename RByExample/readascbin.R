@@ -1,11 +1,11 @@
 #!/usr/bin/env Rscript
-# Goal: Reading and writing ascii files, reading and writing binary files.
-#       And, to measure how much faster it is working with binary files.
+# Goal: Reading and writing ascii files, reading and writing binary files.  And,
+# to measure how much faster it is working with binary files.
 
-# First manufacture a tall data frame:
-# FYI -- runif(10) yields 10 U(0,1) random numbers.
+# First manufacture a tall data frame: FYI -- runif(10) yields 10 U(0,1) random
+# numbers.
 main <- function(argv) {
-  b <- data.frame(x1 = runif(100000), x2 = runif(100000), x3 = runif(100000))
+  b <- data.frame(x1 = runif(1e+05), x2 = runif(1e+05), x3 = runif(1e+05))
   print(summary(b))
 
   # Write out ascii file:
@@ -19,27 +19,20 @@ main <- function(argv) {
   # Restore from foo.binary:
   load("./foo.binary")
   print(summary(c))
-  # should yield the same results
-  # as summary(b) above.
+  # should yield the same results as summary(b) above.
 
   # Now we time all these operations --
   cat("Time creation of dataset:\n")
   print(system.time({
-    b <- data.frame(x1 = runif(100000), x2 = runif(100000), x3 = runif(100000))
+    b <- data.frame(x1 = runif(1e+05), x2 = runif(1e+05), x3 = runif(1e+05))
   }))
 
   cat("Time writing an ascii file out of dataset b:\n")
-  print(system.time(
-    write.table(b, file = "./foo.csv", sep = ",", col.names = NA)
-  ))
+  print(system.time(write.table(b, file = "./foo.csv", sep = ",", col.names = NA)))
 
   cat("Time reading an ascii file into dataset c:\n")
   print(system.time({
-    c <- read.table("./foo.csv",
-      header = TRUE,
-      sep = ",",
-      row.names = 1
-    )
+    c <- read.table("./foo.csv", header = TRUE, sep = ",", row.names = 1)
   }))
 
   cat("Time writing a binary file out of dataset c:\n")

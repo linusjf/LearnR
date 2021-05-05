@@ -6,10 +6,7 @@ mult_three_n <- function(x, y, z) {
 }
 
 main <- function(argv) {
-  mult_by_15 <- purrr::partial(mult_three_n,
-    x = 3,
-    y = 5
-  )
+  mult_by_15 <- purrr::partial(mult_three_n, x = 3, y = 5)
 
   print(mult_by_15(z = 4))
 }

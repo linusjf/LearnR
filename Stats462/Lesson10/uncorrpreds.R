@@ -1,18 +1,12 @@
 #!/usr/bin/env Rscript
 uncorrpreds.txt <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/uncorrpreds.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/uncorrpreds.txt")
 }
 
 lib_path <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }
 
 library(skimr)
@@ -46,9 +40,7 @@ analysis <- function(data) {
 
 main <- function(argv) {
   cairo_pdf(onefile = TRUE)
-  data <- read.table(uncorrpreds.txt(),
-    header = TRUE, as.is = TRUE
-  )
+  data <- read.table(uncorrpreds.txt(), header = TRUE, as.is = TRUE)
   print(head(data))
   print(skimr::skim(data))
 

@@ -4,10 +4,7 @@ library(readr)
 
 check_for_logfile <- function(date) {
   year <- substr(date, 1, 4)
-  src <- sprintf(
-    "http://cran-logs.rstudio.com/%s/%s.csv.gz",
-    year, date
-  )
+  src <- sprintf("http://cran-logs.rstudio.com/%s/%s.csv.gz", year, date)
   dest <- file.path(".", basename(src))
   if (!file.exists(dest)) {
     val <- download.file(src, dest, quiet = TRUE)
@@ -18,9 +15,8 @@ check_for_logfile <- function(date) {
   return(dest)
 }
 
-## pkgname: package name (character)
-## date: YYYY-MM-DD format (character)
-## 'pkgname' can now be a character vector of names
+## pkgname: package name (character) date: YYYY-MM-DD format (character) 'pkgname'
+## can now be a character vector of names
 num_download <- function(pkgname, date = "2016-07-20") {
   check_pkg_deps()
 
@@ -36,10 +32,7 @@ num_download <- function(pkgname, date = "2016-07-20") {
   }
 
   dest <- check_for_logfile(date)
-  count_vector <- read_csv(dest,
-    col_types = "ccicccccci", progress =
-      FALSE
-  ) %>%
+  count_vector <- read_csv(dest, col_types = "ccicccccci", progress = FALSE) %>%
     filter(package %in% pkgname) %>%
     group_by(package) %>%
     summarize(n = n())
@@ -61,10 +54,7 @@ main <- function(argv) {
   print(num_download("filehash", "2016-07-20"))
   print(num_download("Rcpp", "2016-07-19"))
   print(num_download("Rcpp"))
-  print(num_download(c(
-    "filehash",
-    "weathermetrics"
-  )))
+  print(num_download(c("filehash", "weathermetrics")))
   print(num_download("filehash", c("2016-07-20", "2016-0-21")))
   return(0)
 }

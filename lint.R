@@ -4,19 +4,12 @@ library(parallel)
 
 process_folder <- function(folder) {
   violations <- as.list(c())
-  if (folder == ".git" ||
-    folder == "./.git") {
+  if (folder == ".git" || folder == "./.git") {
     return(violations)
   }
-  cat(
-    folder,
-    "\n"
-  )
+  cat(folder, "\n")
   if (folder == ".") {
-    for (file in list.files(
-      pattern = "\\.[Rr]{1}(profile)?$",
-      all.files = TRUE
-    )) {
+    for (file in list.files(pattern = "\\.[Rr]{1}(profile)?$", all.files = TRUE)) {
       cat(file, "\n")
       violations <- append(violations, lintr::lint(file))
     }

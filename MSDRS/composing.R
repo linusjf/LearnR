@@ -4,12 +4,8 @@ library(purrr)
 main <- function(argv) {
   n_unique <- purrr::compose(length, unique)
 
-  # nolint start
-  # The composition above is the same as:
-  # n_unique <- function(x) {
-  #   length(unique(x))
-  # }
-  # nolint end
+  # nolint start The composition above is the same as: n_unique <- function(x) {
+  # length(unique(x)) } nolint end
 
   print(rep(1:5, 1:5))
 

@@ -1,17 +1,12 @@
 #!/usr/bin/env Rscript
 houseprice() <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/houseprice.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/houseprice.txt")
 }
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table(houseprice(),
-    header = TRUE
-  )
+  data <- read.table(houseprice(), header = TRUE)
   print(head(data))
   print(skimr::skim(data))
   data <- data[["Price"]]
@@ -21,23 +16,17 @@ main <- function(argv) {
 }
 
 twosided_tail_test <- function(data) {
-  test_value <- t.test(data,
-    alternative = "two.sided",
-    mu = 255, conf.level = 0.95
-  )
+  test_value <- t.test(data, alternative = "two.sided", mu = 255, conf.level = 0.95)
   print(test_value)
   df <- test_value$parameter
   p_value <- test_value$p.value
   los_stat <- qt(c(0.025, 0.975), df)
-  p_stat <- qt(c(p_value / 2, 1 - (p_value / 2)), df)
+  p_stat <- qt(c(p_value/2, 1 - (p_value/2)), df)
   plot_twosided_tail_test(los_stat, p_stat, df)
 }
 
 upper_tail_test <- function(data) {
-  test_value <- t.test(data,
-    mu = 255, conf.level = 0.95,
-    alternative = "greater"
-  )
+  test_value <- t.test(data, mu = 255, conf.level = 0.95, alternative = "greater")
   print(test_value)
   df <- test_value$parameter
   statistic <- test_value$statistic
@@ -46,31 +35,14 @@ upper_tail_test <- function(data) {
 }
 
 plot_upper_tail_test <- function(los_stat, statistic, df) {
-  t_values <- seq(-4, 4, .1)
-  par(
-    mar = c(10, 4, 6, 2), cex = 0.8,
-    mex = 0.8
-  )
-  plot(
-    main = "Upper tail test: Reject Null",
-    x = t_values,
-    y = dt(t_values, df),
-    type = "l",
-    lty = "dotted",
-    xlab = "t",
-    ylab = "f(t)",
-    xaxt = "n"
-  )
+  t_values <- seq(-4, 4, 0.1)
+  par(mar = c(10, 4, 6, 2), cex = 0.8, mex = 0.8)
+  plot(main = "Upper tail test: Reject Null", x = t_values, y = dt(t_values, df), 
+    type = "l", lty = "dotted", xlab = "t", ylab = "f(t)", xaxt = "n")
   ticks <- c(0, los_stat, statistic)
   labels <- formatC(ticks, format = "f", digits = 8)
-  labels[2] <- paste0(
-    labels[2],
-    "\ncritical value"
-  )
-  labels[3] <- paste0(
-    labels[3],
-    "\ntest statistic"
-  )
+  labels[2] <- paste0(labels[2], "\ncritical value")
+  labels[3] <- paste0(labels[3], "\ntest statistic")
   axis(side = 1, at = ticks, labels = labels, las = 2)
   x <- seq(los_stat, 4, length = 200)
   y <- dt(x, df = df)
@@ -78,60 +50,31 @@ plot_upper_tail_test <- function(los_stat, statistic, df) {
   x <- seq(statistic, 4, length = 200)
   y <- dt(x, df = df)
   polygon(c(statistic, x, 4), c(0, y, 0), col = "gray25")
-  x0 <- (los_stat + statistic) / 2
+  x0 <- (los_stat + statistic)/2
   y0 <- dt(x0, df = df) - 0.02
   x1 <- x0 + 0.2
   y1 <- y0 + 0.05
-  arrows(x1, y1,
-    x1 = x0, y1 = y0, angle = 30,
-    code = 2
-  )
+  arrows(x1, y1, x1 = x0, y1 = y0, angle = 30, code = 2)
   text(x1, y1, "significance level")
-  x0 <- (statistic + 4) / 2 - 0.2
+  x0 <- (statistic + 4)/2 - 0.2
   y0 <- dt(x0, df = df)
   x1 <- x0 + 0.2
   y1 <- y0 + 0.05
-  arrows(x1, y1,
-    x1 = x0, y1 = y0, angle = 30,
-    code = 2
-  )
+  arrows(x1, y1, x1 = x0, y1 = y0, angle = 30, code = 2)
   text(x1, y1, "p-value")
 }
 
 plot_twosided_tail_test <- function(los_stat, statistic, df) {
-  t_values <- seq(-4, 4, .1)
-  par(
-    mar = c(10, 4, 6, 2), cex = 0.7,
-    mex = 0.8
-  )
-  plot(
-    main = "Two tailed test: Reject Null",
-    x = t_values,
-    y = dt(t_values, df),
-    type = "l",
-    lty = "dotted",
-    xlab = "t",
-    ylab = "f(t)",
-    xaxt = "n"
-  )
+  t_values <- seq(-4, 4, 0.1)
+  par(mar = c(10, 4, 6, 2), cex = 0.7, mex = 0.8)
+  plot(main = "Two tailed test: Reject Null", x = t_values, y = dt(t_values, df), 
+    type = "l", lty = "dotted", xlab = "t", ylab = "f(t)", xaxt = "n")
   ticks <- c(0, los_stat, statistic)
   labels <- formatC(ticks, format = "f", digits = 8)
-  labels[2] <- paste0(
-    labels[2],
-    "\ncritical value"
-  )
-  labels[3] <- paste0(
-    labels[3],
-    "\ncritical value"
-  )
-  labels[4] <- paste0(
-    labels[4],
-    "\ntest statistic"
-  )
-  labels[5] <- paste0(
-    labels[5],
-    "\ntest statistic"
-  )
+  labels[2] <- paste0(labels[2], "\ncritical value")
+  labels[3] <- paste0(labels[3], "\ncritical value")
+  labels[4] <- paste0(labels[4], "\ntest statistic")
+  labels[5] <- paste0(labels[5], "\ntest statistic")
   axis(side = 1, at = ticks, labels = labels, las = 2)
   x <- seq(-4, los_stat[1], length = 200)
   y <- dt(x, df = df)
@@ -145,23 +88,17 @@ plot_twosided_tail_test <- function(los_stat, statistic, df) {
   x <- seq(statistic[2], 4, length = 200)
   y <- dt(x, df = df)
   polygon(c(statistic[2], x, 4), c(0, y, 0), col = "gray25")
-  x0 <- (los_stat + statistic) / 2
+  x0 <- (los_stat + statistic)/2
   y0 <- dt(x0, df = df) - 0.02
   x1 <- x0 + c(-0.2, 0.2)
   y1 <- y0 + 0.05
-  arrows(x1, y1,
-    x1 = x0, y1 = y0, angle = 30,
-    code = 2
-  )
+  arrows(x1, y1, x1 = x0, y1 = y0, angle = 30, code = 2)
   text(x1, y1, "significance level")
-  x0 <- (statistic + c(-4, 4)) / 2 - 0.2
+  x0 <- (statistic + c(-4, 4))/2 - 0.2
   y0 <- dt(x0, df = df)
   x1 <- x0 + c(-0.2, 0.2)
   y1 <- y0 + 0.05
-  arrows(x1, y1,
-    x1 = x0, y1 = y0, angle = 30,
-    code = 2
-  )
+  arrows(x1, y1, x1 = x0, y1 = y0, angle = 30, code = 2)
   text(x1, y1, "p-value")
 }
 

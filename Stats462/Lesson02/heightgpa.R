@@ -1,26 +1,19 @@
 #!/usr/bin/env Rscript
 heightgpa <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/heightgpa.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/heightgpa.txt")
 }
 library(skimr)
 library(Metrics)
 suppressMessages(library(dvmisc))
 
 main <- function(argv) {
-  data <- read.table(heightgpa(),
-    header = TRUE
-  )
+  data <- read.table(heightgpa(), header = TRUE)
   print(head(data))
   print(skimr::skim(data))
   reg <- lm(gpa ~ height, data = data)
   print(summary(reg))
-  new_data <- data.frame(
-    height = c(66, 67, 68, 69, 70, 71)
-  )
+  new_data <- data.frame(height = c(66, 67, 68, 69, 70, 71))
   values <- predict(reg, newdata = new_data)
   print(diff(values))
   predicted <- predict(reg)
@@ -37,7 +30,7 @@ main <- function(argv) {
   print(paste("Squared Sum of Residuals: ", SSR))
   SSE <- sum(resid(reg)^2)
   print(paste("Squared Sum of Errors: ", SSE))
-  print(c(SSR / SST, summary(reg)$r.squared))
+  print(c(SSR/SST, summary(reg)$r.squared))
   # nolint end
 
   print(cor(data$gpa, data$height))
@@ -47,25 +40,16 @@ main <- function(argv) {
 
 plot_heightgpa <- function(data, reg) {
   par(mar = c(4, 7, 4, 1))
-  plot(data$height, data$gpa,
-    main = "Height versus gpa",
-    xlab = "Height", ylab = "GPA",
-    pch = 19, frame = FALSE
-  )
+  plot(data$height, data$gpa, main = "Height versus gpa", xlab = "Height", ylab = "GPA", 
+    pch = 19, frame = FALSE)
   abline(reg, col = "blue")
   x0 <- mean(data$height)
   y0 <- mean(data$gpa)
   x1 <- x0 + 2
-  y1 <- y0 + .5
-  arrows(x1, y1, x0, y0,
-    angle = 30, code = 2, col = "black", lwd = 4
-  )
+  y1 <- y0 + 0.5
+  arrows(x1, y1, x0, y0, angle = 30, code = 2, col = "black", lwd = 4)
   coefs <- reg$coefficients
-  text(x1, y1 + 0.1, paste(
-    coefs["(Intercept)"],
-    "\n",
-    coefs["height"], "height"
-  ))
+  text(x1, y1 + 0.1, paste(coefs["(Intercept)"], "\n", coefs["height"], "height"))
 }
 
 if (identical(environment(), globalenv())) {

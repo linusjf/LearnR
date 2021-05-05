@@ -7,7 +7,7 @@ main <- function(argv) {
   return(0)
 }
 
-options("getSymbols.warning4.0" = FALSE)
+options(getSymbols.warning4.0 = FALSE)
 if (identical(environment(), globalenv())) {
   quit(status = main(commandArgs(trailingOnly = TRUE)))
 }

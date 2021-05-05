@@ -48,14 +48,7 @@ main <- function(argv) {
   print(grepl("^[ab]+$", c("bab", "aab", "abc")))
   print(grepl("^[ab].+$", c("bab", "aab", "abc")))
   print(grepl("a|b", c("abc", "bcd", "cde")))
-  print(grepl(
-    "North|South",
-    c(
-      "South Dakota",
-      "North Carolina",
-      "West Virginia"
-    )
-  ))
+  print(grepl("North|South", c("South Dakota", "North Carolina", "West Virginia")))
 
   start_end_vowel <- "^[AEIOU]{1}.+[aeiou]{1}$"
   vowel_state_lgl <- grepl(start_end_vowel, state.name)

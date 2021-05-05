@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
-# Goal: To show amazing R indexing notation, and the use of is.na()
+# Goal: To show amazing R indexing n
+ation, and the use of is.na()
 
 # An example vector to play with.
 main <- function(argv) {

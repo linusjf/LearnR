@@ -5,9 +5,7 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 
 main <- function(argv) {
-  data <- read.table("../Data/peru.txt",
-    header = TRUE
-  )
+  data <- read.table("../Data/peru.txt", header = TRUE)
   data %<>%
     mutate(logyears = log(Years)) %>%
     mutate(logage = log(Age))
@@ -26,10 +24,8 @@ main <- function(argv) {
   fullanovalog <- anova(reglog)
   print(fullanovalog)
 
-  partreg <-
-    lm(Systol ~ . - Height - Chin - Forearm - Calf - Pulse - Diastol,
-      data = data
-    )
+  partreg <- lm(Systol ~ . - Height - Chin - Forearm - Calf - Pulse - Diastol, 
+    data = data)
   print(partreg)
   print(summary(partreg))
   partanova <- anova(partreg)

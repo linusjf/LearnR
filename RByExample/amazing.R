@@ -8,15 +8,15 @@ beta0 <- function(b0, b1, b2, tau, t) {
 }
 
 beta1 <- function(b0, b1, b2, tau, t) {
-  tmp <- t / tau
+  tmp <- t/tau
   tmp2 <- exp(-tmp)
-  return(b1 * (1 - tmp2) / (tmp))
+  return(b1 * (1 - tmp2)/(tmp))
 }
 
 beta2 <- function(b0, b1, b2, tau, t) {
-  tmp <- t / tau
+  tmp <- t/tau
   tmp2 <- exp(-tmp)
-  return((b2 * (1 - tmp2) / tmp) - (b2 * tmp2))
+  return((b2 * (1 - tmp2)/tmp) - (b2 * tmp2))
 }
 
 main <- function(argv) {
@@ -35,31 +35,30 @@ main <- function(argv) {
 
 
   cat("\n\nEXAMPLE 2: Compute the mean of every row of a matrix --\n")
-  # Here's another example.  It isn't really about R;
-  # it's about thinking in matrix
+  # Here's another example.  It isn't really about R; it's about thinking in matrix
   # notation. But still.  Let me setup a matrix --
   n <- 4
   m <- 100
   r <- matrix(runif(n * m), n, m)
 
-  # So I face a nxm matrix [r11 r12 ... r1n] [r21 r22 ... r2n] [r32 r32 ... r3n]
-  # My goal: each column needs to be reduced to a mean.
+  # So I face a nxm matrix [r11 r12 ... r1n] [r21 r22 ... r2n] [r32 r32 ... r3n] My
+  # goal: each column needs to be reduced to a mean.
 
   # method 1 uses loops:
   mean1 <- numeric(m)
   for (i in 1:m) mean1[i] <- mean(r[, i])
 
   # Alternatively, just say:
-  print(rep(1 / n, n))
-  mean2 <- rep(1 / n, n) %*% r
+  print(rep(1/n, n))
+  mean2 <- rep(1/n, n) %*% r
   # Pretty!
 
   # The two answers are the same --
   print(all.equal(mean1, mean2[, ]))
   print(all.equal(mean1, rowMeans(t(r))))
-  # As an aside, I should say that you can do this directly by using the
-  # rowMeans() function. But the above is more about pedagogy rather
-  # than showing you how to get rowmeans.
+  # As an aside, I should say that you can do this directly by using the rowMeans()
+  # function. But the above is more about pedagogy rather than showing you how to
+  # get rowmeans.
 
   print("Displaying row sums")
   print(rowSums(r))
@@ -73,10 +72,8 @@ main <- function(argv) {
   cat("\n\nEXAMPLE 3: Nelson-Siegel yield curve\n")
   # Write this as if you're dealing with scalars -- Nelson Siegel function
   nsz <- function(b0, b1, b2, tau, t) {
-    return(beta0(b0, b1, b2, tau, t) + beta1(b0, b1, b2, tau, t) + beta2(
-      b0,
-      b1, b2, tau, t
-    ))
+    return(beta0(b0, b1, b2, tau, t) + beta1(b0, b1, b2, tau, t) + beta2(b0, 
+      b1, b2, tau, t))
   }
 
 
@@ -94,9 +91,8 @@ main <- function(argv) {
 
 
   cat("\n\nEXAMPLE 3: Making the NPV of a bond--\n")
-  # You know the bad way -
-  # sum over all cashflows, NPVing each.
-  # Now look at the R way.
+  # You know the bad way - sum over all cashflows, NPVing each.  Now look at the R
+  # way.
   c <- rep(100, 6)
   # Print interest rates
   intrates <- nsz(14.084, -3.4107, 0.0015, 1.8832, timepoints)
@@ -109,28 +105,19 @@ main <- function(argv) {
   print("Interest rates...")
   print(intrates)
   # Print cashflows discounted @ 5%
-  discounted <- c / ((1.05)^timepoints)
+  discounted <- c/((1.05)^timepoints)
   print("Discounted cfs at 5%...")
   print(discounted)
   # Using NS instead of 5%
-  cfs <- c / ((1 + (0.01 * nsz(
-    14.084, -3.4107, 0.0015, 1.8832,
-    timepoints
-  ))^timepoints))
+  cfs <- c/((1 + (0.01 * nsz(14.084, -3.4107, 0.0015, 1.8832, timepoints))^timepoints))
   print("Cashflows at Nelson-Siegel rates...")
   print(cfs)
 
   print("Net Present Value...")
   # NPV in two different ways --
-  npv1 <- c %*% (1 + (0.01 * nsz(
-    14.084, -3.4107, 0.0015, 1.8832,
-    timepoints
-  )))^-timepoints
+  npv1 <- c %*% (1 + (0.01 * nsz(14.084, -3.4107, 0.0015, 1.8832, timepoints)))^-timepoints
   print(npv1)
-  npv2 <- sum(c * (1 + (0.01 * nsz(
-    14.084, -3.4107, 0.0015, 1.8832,
-    timepoints
-  )))^-timepoints)
+  npv2 <- sum(c * (1 + (0.01 * nsz(14.084, -3.4107, 0.0015, 1.8832, timepoints)))^-timepoints)
   print(npv2)
   print(all.equal(npv1[1, 1], npv2))
   # You can drop back to a flat yield curve at 5% easily --
@@ -220,7 +207,7 @@ perform <- function() {
   print(s1)
   print(s2)
   all.equal(ans1, ans2)
-  print(s1 / s2)
+  print(s1/s2)
 
   s1 <- system.time(ans1 <- method1lt(x, y))
   s2 <- system.time(ans2 <- method2lt(x, y))
@@ -228,7 +215,7 @@ perform <- function() {
   print(s1)
   print(s2)
   all.equal(ans1, ans2)
-  print(s1 / s2)
+  print(s1/s2)
   if (l1 == l2) {
     cat("\nNo zeroes generated\n\n")
   }
@@ -243,7 +230,7 @@ perform <- function() {
   print(s1)
   print(s2)
   all.equal(ans1, ans2)
-  print(s1 / s2)
+  print(s1/s2)
 
   s1 <- system.time(ans1 <- method1lt(x, y))
   s2 <- system.time(ans2 <- method2lt(x, y))
@@ -251,7 +238,7 @@ perform <- function() {
   print(s1)
   print(s2)
   all.equal(ans1, ans2)
-  print(s1 / s2)
+  print(s1/s2)
   # On my phone it's 5000x faster
   if (l1 == l2) {
     cat("\nNo zeroes generated\n\n")

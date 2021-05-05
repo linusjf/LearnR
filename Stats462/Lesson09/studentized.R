@@ -1,18 +1,12 @@
 #!/usr/bin/env Rscript
 influence2.txt <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/influence2.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/influence2.txt")
 }
 
 lib_path <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }
 
 library(skimr)
@@ -27,18 +21,11 @@ main <- function(argv) {
 }
 
 studentize <- function(path) {
-  data <- read.table(path,
-    header = TRUE
-  )
+  data <- read.table(path, header = TRUE)
   print(head(data))
   print(skimr::skim(data))
-  plot(data$x, data$y,
-    xlab = "X", ylab = "Y",
-    main = "Scatter plot of y versus x",
-    sub = path,
-    xlim = c(min(data$x), max(data$x)),
-    ylim = c(min(data$y), max(data$y))
-  )
+  plot(data$x, data$y, xlab = "X", ylab = "Y", main = "Scatter plot of y versus x", 
+    sub = path, xlim = c(min(data$x), max(data$x)), ylim = c(min(data$y), max(data$y)))
   lm <- lm(y ~ x, data)
   data %<>%
     mutate(studres = studres(lm))
@@ -49,17 +36,11 @@ studentize <- function(path) {
   print(data2)
   points(data2$x, data2$y, col = "red", pch = 4)
   abline(v = mean(data$x))
-  boxplot(data$studres,
-    main = path,
-    xlab = "Studentized residuals",
-    col = "pink",
-    border = "blue",
-    horizontal = TRUE,
-    notch = FALSE
-  )
+  boxplot(data$studres, main = path, xlab = "Studentized residuals", col = "pink", 
+    border = "blue", horizontal = TRUE, notch = FALSE)
 
-  # Display the Student's t distributions with various
-  # degrees of freedom and compare to the normal distribution
+  # Display the Student's t distributions with various degrees of freedom and
+  # compare to the normal distribution
 
   x <- seq(-7, 7, length = 300)
 
@@ -70,20 +51,11 @@ studentize <- function(path) {
   colors <- "darkgreen"
   labels <- paste0("df=", degf)
 
-  plot(x, dt(x, degf),
-    type = "l", lty = 2,
-    xlab = "x value",
-    ylab = "Density",
-    main = "t Distribution plot",
-    lwd = 2, col = colors
-  )
+  plot(x, dt(x, degf), type = "l", lty = 2, xlab = "x value", ylab = "Density", 
+    main = "t Distribution plot", lwd = 2, col = colors)
 
-  legend("topright",
-    inset = .05,
-    title = "t Distribution",
-    labels, lwd = 2, lty = 1,
-    col = colors
-  )
+  legend("topright", inset = 0.05, title = "t Distribution", labels, lwd = 2, lty = 1, 
+    col = colors)
   points(data2$studres, dt(data2$studres, degf), col = "red", pch = 4)
 }
 

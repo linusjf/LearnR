@@ -2,9 +2,7 @@
 library(readr)
 
 main <- function(argv) {
-  teams <- readr::read_csv("team_standings.csv",
-    col_types = "ic"
-  )
+  teams <- readr::read_csv("team_standings.csv", col_types = "ic")
   print(teams)
   return(0)
 }

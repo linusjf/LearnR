@@ -5,11 +5,9 @@ suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(magrittr))
 
 main <- function(argv) {
-  data <- read.table("../Data/peru.txt",
-    header = TRUE
-  )
+  data <- read.table("../Data/peru.txt", header = TRUE)
   data %<>%
-    mutate(FracLife = Years / Age)
+    mutate(FracLife = Years/Age)
   print(head(data))
   print(skimr::skim(data))
 
@@ -25,10 +23,8 @@ main <- function(argv) {
   fullanovaratio <- anova(regratio)
   print(fullanovaratio)
 
-  partreg <-
-    lm(Systol ~ . - Height - Chin - Forearm - Calf - Pulse - Diastol,
-      data = data
-    )
+  partreg <- lm(Systol ~ . - Height - Chin - Forearm - Calf - Pulse - Diastol, 
+    data = data)
   print(partreg)
   print(summary(partreg))
   partanova <- anova(partreg)

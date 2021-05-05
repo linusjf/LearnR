@@ -1,18 +1,12 @@
 #!/usr/bin/env Rscript
 earthquakes.txt <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/earthquakes.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/earthquakes.txt")
 }
 
 lib_path <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }
 
 library(skimr)
@@ -21,19 +15,13 @@ suppressPackageStartupMessages(library(forecast))
 suppressPackageStartupMessages(library(Hmisc))
 
 main <- function(argv) {
-  data <- read.table(earthquakes.txt(),
-    header = TRUE, as.is = TRUE
-  )
+  data <- read.table(earthquakes.txt(), header = TRUE, as.is = TRUE)
   print(head(data))
   print(skimr::skim(data))
 
   attach(data)
-  plot(
-    x = Year, y = Quakes, col = "blue",
-    pch = 15, type = "b",
-    main = "Time series plot of quakes",
-    xlab = "Year", ylab = "Quakes"
-  )
+  plot(x = Year, y = Quakes, col = "blue", pch = 15, type = "b", main = "Time series plot of quakes", 
+    xlab = "Year", ylab = "Quakes")
   Pacf(Quakes)
   detach(data)
 

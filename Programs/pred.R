@@ -2,7 +2,7 @@
 
 preda <- function(x, k) {
   n <- length(x)
-  k2 <- k / 2
+  k2 <- k/2
   # the vector pred will contain our predicted values
   pred <- vector(length = n - k)
   for (i in 1:(n - k)) {
@@ -17,7 +17,7 @@ preda <- function(x, k) {
 
 predb <- function(x, k) {
   n <- length(x)
-  k2 <- k / 2
+  k2 <- k/2
   pred <- vector(length = n - k)
   sm <- sum(x[1:k])
   if (sm >= k2) {
@@ -40,7 +40,7 @@ predb <- function(x, k) {
 
 predc <- function(x, k) {
   n <- length(x)
-  k2 <- k / 2
+  k2 <- k/2
   # the vector red will contain our predicted values
   pred <- vector(length = n - k)
   csx <- c(0, cumsum(x))

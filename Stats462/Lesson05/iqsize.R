@@ -1,10 +1,7 @@
 #!/usr/bin/env Rscript
 lib_path <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }
 
 library(skimr)
@@ -16,9 +13,7 @@ suppressPackageStartupMessages(library(purrr))
 suppressPackageStartupMessages(library(stringr))
 
 main <- function(argv) {
-  data <- read.table("../Data/iqsize.txt",
-    header = TRUE
-  )
+  data <- read.table("../Data/iqsize.txt", header = TRUE)
   print(head(data))
   print(skimr::skim(data))
   reg <- lm(PIQ ~ Brain, data = data)
@@ -36,23 +31,10 @@ main <- function(argv) {
   model_df <- model_fit_stats(reg)
   coeff_df <- model_coeffs(reg)
   df <- dplyr::bind_rows(df, cbind(coeff_df, model_df))
-  df %<>% select(
-    "(Intercept)",
-    "(Intercept).p",
-    "Brain",
-    "Brain.p",
-    "Height",
-    "Height.p",
-    "Weight",
-    "Weight.p",
-    "Sigma",
-    "R.squared",
-    "Adj.R.squared",
-    "Ratio.Adj.R2.to.R2",
-    "Pred.R.squared",
-    "PRESS",
-    "p.value"
-  )
+  df %<>%
+    select("(Intercept)", "(Intercept).p", "Brain", "Brain.p", "Height", "Height.p", 
+      "Weight", "Weight.p", "Sigma", "R.squared", "Adj.R.squared", "Ratio.Adj.R2.to.R2", 
+      "Pred.R.squared", "PRESS", "p.value")
   print(df)
   print(anova_df)
 

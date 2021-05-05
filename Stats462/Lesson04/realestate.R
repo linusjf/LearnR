@@ -1,17 +1,12 @@
 #!/usr/bin/env Rscript
 realestate.txt <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/realestate.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/realestate.txt")
 }
 library(skimr)
 
 main <- function(argv) {
-  data <- read.table(realestate.txt(),
-    header = TRUE
-  )
+  data <- read.table(realestate.txt(), header = TRUE)
   print(head(data))
   print(skimr::skim(data))
 
@@ -31,23 +26,16 @@ process_realestate <- function(data) {
   plot_stdresid(reg)
   plot_stdresid_predictor(data, reg)
   hist(resid(reg))
-  plot(reg,
-    which = c(2),
-    caption = list("Normal Q-Q"),
-    qqline = TRUE
-  )
+  plot(reg, which = c(2), caption = list("Normal Q-Q"), qqline = TRUE)
 }
 
 plot_stdresid_predictor <- function(data, reg) {
   par(mar = c(4, 4, 4, 1))
   residuals <- resid(reg)
-  std_residuals <- residuals / sd(residuals)
+  std_residuals <- residuals/sd(residuals)
   main_label <- "Predictor versus standardized residuals"
-  plot(data$SqFeet, std_residuals,
-    main = main_label,
-    xlab = "SqFeet", ylab = "Standardized Residuals",
-    pch = 19, frame = TRUE
-  )
+  plot(data$SqFeet, std_residuals, main = main_label, xlab = "SqFeet", ylab = "Standardized Residuals", 
+    pch = 19, frame = TRUE)
   abline(h = mean(std_residuals), col = "black", lty = "dashed")
 }
 
@@ -55,13 +43,10 @@ plot_stdresid <- function(reg) {
   par(mar = c(4, 4, 4, 1))
   predicted <- predict(reg)
   residuals <- resid(reg)
-  std_residuals <- residuals / sd(residuals)
+  std_residuals <- residuals/sd(residuals)
   main_label <- "Fitted values versus standardized residuals"
-  plot(predicted, std_residuals,
-    main = main_label,
-    xlab = "Fitted value", ylab = "Standardized Residuals",
-    pch = 19, frame = TRUE
-  )
+  plot(predicted, std_residuals, main = main_label, xlab = "Fitted value", ylab = "Standardized Residuals", 
+    pch = 19, frame = TRUE)
   abline(h = mean(std_residuals), col = "black", lty = "dashed")
 }
 
@@ -70,11 +55,8 @@ plot_fitted <- function(reg) {
   predicted <- predict(reg)
   residuals <- resid(reg)
   main_label <- "Fitted values versus residuals"
-  plot(predicted, residuals,
-    main = main_label,
-    xlab = "Fitted value", ylab = "Residuals",
-    pch = 19, frame = TRUE
-  )
+  plot(predicted, residuals, main = main_label, xlab = "Fitted value", ylab = "Residuals", 
+    pch = 19, frame = TRUE)
   abline(h = mean(residuals), col = "black", lty = "dashed")
 }
 
@@ -83,39 +65,27 @@ plot_predictor <- function(data, reg) {
   par(mar = c(4, 4, 4, 1))
   residuals <- resid(reg)
   main_label <- "Predictor versus residuals"
-  plot(data$SqFeet, residuals,
-    main = main_label,
-    xlab = "x", ylab = "Residuals",
-    pch = 19, frame = TRUE
-  )
+  plot(data$SqFeet, residuals, main = main_label, xlab = "x", ylab = "Residuals", 
+    pch = 19, frame = TRUE)
   abline(h = mean(residuals), col = "black", lty = "dashed")
 }
 
 plot_realestate <- function(data, reg) {
   par(mar = c(4, 4, 5, 1))
   coefs <- reg$coefficients
-  main_label <- paste(
-    "Square Feet versus Sale Price\n",
-    coefs["(Intercept)"],
+  main_label <- paste("Square Feet versus Sale Price\n", coefs["(Intercept)"], 
     x <- if (sign(coefs["SqFeet"]) == 1) {
       "+"
     } else {
       "-"
-    },
-    abs(coefs["SqFeet"]), "SqFeet"
-  )
-  plot(data$SqFeet, data$SalePrice,
-    main = main_label,
-    xlab = "SqFeet", ylab = "SalePrice",
-    pch = 19, frame = TRUE
-  )
+    }, abs(coefs["SqFeet"]), "SqFeet")
+  plot(data$SqFeet, data$SalePrice, main = main_label, xlab = "SqFeet", ylab = "SalePrice", 
+    pch = 19, frame = TRUE)
   abline(reg, col = "blue")
   summ <- summary(reg)
-  legends <- c(
-    paste0("S - ", format(summ$sigma, digits = 4)),
-    paste0("Rsq - ", format(summ$r.squared, digits = 4)),
-    paste0("Rsq(adj) - ", format(summ$adj.r.squared, digits = 4))
-  )
+  legends <- c(paste0("S - ", format(summ$sigma, digits = 4)), paste0("Rsq - ", 
+    format(summ$r.squared, digits = 4)), paste0("Rsq(adj) - ", format(summ$adj.r.squared, 
+    digits = 4)))
   legend("topleft", legends)
   abline(h = mean(data$SqFeet), col = "black", lty = "dashed")
 }

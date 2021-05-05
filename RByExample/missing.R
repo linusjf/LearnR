@@ -19,8 +19,8 @@ main <- function(argv) {
   print(e2)
   print(cbind(e1, e2))
 
-  # Now how do we reconstruct a time-series that tries to utilise both?  Do use
-  # the more liquid exchange here.
+  # Now how do we reconstruct a time-series that tries to utilise both?  Do use the
+  # more liquid exchange here.
   combined <- e1
   missing <- is.na(combined)
   # if it's also missing, I don't care.

@@ -2,7 +2,7 @@
 # Goal: Special cases in reading files
 
 main <- function(argv) {
-  b <- data.frame(x1 = runif(100000), x2 = runif(100000), x3 = runif(100000))
+  b <- data.frame(x1 = runif(1e+05), x2 = runif(1e+05), x3 = runif(1e+05))
 
   # Write out ascii file:
   write.table(b, file = "./foo.csv", sep = ",", col.names = NA)
@@ -10,10 +10,7 @@ main <- function(argv) {
   system("rm foo.csv.bz2; tar -cjf foo.csv.bz2 foo.csv")
   # Reading in a .bz2 file --
   cat("Printing head of bz2 file:\n")
-  print(head(read.table("./foo.csv.bz2",
-    row.names = NULL,
-    header = TRUE
-  )))
+  print(head(read.table("./foo.csv.bz2", row.names = NULL, header = TRUE)))
   # Requires you have ./foo.csv.bz2
 
   # Reading in a .gz file --

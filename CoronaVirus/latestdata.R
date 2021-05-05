@@ -1,8 +1,6 @@
 #!/usr/bin/env Rscript
 #--------------- Setup--------------------
-devtools::install_github("GuangchuangYu/nCov2019",
-  destdir = .libPaths()[1]
-)
+devtools::install_github("GuangchuangYu/nCov2019", destdir = .libPaths()[1])
 library(nCov2019)
 
 main <- function(argv) {

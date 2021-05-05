@@ -1,26 +1,17 @@
 #!/usr/bin/env Rscript
 bloodpress.txt <- do.call(function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/bloodpress.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/bloodpress.txt")
 }, list())
 
 lib_path <- do.call(function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }, list())
 
 lib_step <- do.call(function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libstep.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libstep.R")
 }, list())
 
 library(skimr)
@@ -30,16 +21,11 @@ suppressPackageStartupMessages(library(PerformanceAnalytics))
 suppressPackageStartupMessages(library(nortest))
 
 main <- function(argv) {
-  datum <- read.table(bloodpress.txt,
-    header = TRUE, as.is = TRUE
-  )
+  datum <- read.table(bloodpress.txt, header = TRUE, as.is = TRUE)
   print(head(datum))
   print(skimr::skim(datum))
 
-  chart.Correlation(datum,
-    histogram = TRUE,
-    pch = 15
-  )
+  chart.Correlation(datum, histogram = TRUE, pch = 15)
   model <- lm(BP ~ ., data = datum)
   best <- ols_step_all_possible(model)
   print(str(best))
@@ -51,9 +37,7 @@ main <- function(argv) {
   k <- ncol(datum) - 1
   p <- 2 * pt(-abs(t), df = N - k - 1)
   best_p <- step_wise_regression(datum, "BP")
-  best_p2 <- step_wise_regression(datum, "BP",
-    alpha_entry = p, alpha_removal = p
-  )
+  best_p2 <- step_wise_regression(datum, "BP", alpha_entry = p, alpha_removal = p)
   best_rsq <- best_model_rsquare(best, model)
   best_adjr <- best_model_adjrsquare(best, model)
   best_cp <- best_model_cp(best, model, "mincp")
@@ -71,14 +55,7 @@ main <- function(argv) {
   print("Computed cp(s)")
   print(compute_cp(model, best_cp))
   print(compute_cp(model, best_cp2))
-  best <- unique_models(list(
-    best_p,
-    best_p2,
-    best_rsq,
-    best_adjr,
-    best_cp,
-    best_cp2
-  ))
+  best <- unique_models(list(best_p, best_p2, best_rsq, best_adjr, best_cp, best_cp2))
   print("Best subset using p, rsquare, adjr and cp")
   print(best)
   lapply(best, checkfit)
@@ -93,11 +70,8 @@ main <- function(argv) {
 checkfit <- function(model) {
   eqn <- model_equation(model, digits = 4)
   frm <- format(formula(model))
-  plot(model,
-    which = c(1, 2),
-    caption = list("Residuals vs Fitted", "Normal Q-Q"),
-    sub.caption = list(frm, frm)
-  )
+  plot(model, which = c(1, 2), caption = list("Residuals vs Fitted", "Normal Q-Q"), 
+    sub.caption = list(frm, frm))
   ad <- ad.test(resid(model))
   print(eqn)
   print(ad)

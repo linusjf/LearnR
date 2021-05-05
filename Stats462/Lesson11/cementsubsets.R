@@ -1,26 +1,17 @@
 #!/usr/bin/env Rscript
 cement.txt <- do.call(function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/cement.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/cement.txt")
 }, list())
 
 lib_path <- do.call(function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }, list())
 
 lib_step <- do.call(function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libstep.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libstep.R")
 }, list())
 
 library(skimr)
@@ -30,16 +21,11 @@ suppressPackageStartupMessages(library(PerformanceAnalytics))
 suppressPackageStartupMessages(library(nortest))
 
 main <- function(argv) {
-  cement <- read.table(cement.txt,
-    header = TRUE, as.is = TRUE
-  )
+  cement <- read.table(cement.txt, header = TRUE, as.is = TRUE)
   print(head(cement))
   print(skimr::skim(cement))
 
-  chart.Correlation(cement,
-    histogram = TRUE,
-    pch = 15
-  )
+  chart.Correlation(cement, histogram = TRUE, pch = 15)
   model <- lm(y ~ ., data = cement)
   best <- ols_step_best_subset(model)
   print(str(best))
@@ -55,12 +41,7 @@ main <- function(argv) {
   print(best_cp2)
   print(compute_cp(model, best_cp))
   print(compute_cp(model, best_cp2))
-  best <- unique(list(
-    best_rsq,
-    best_adjr,
-    best_cp,
-    best_cp2
-  ))
+  best <- unique(list(best_rsq, best_adjr, best_cp, best_cp2))
   print(best_vif(best))
   models <- best_vif(lmset)
   print(models)
@@ -70,8 +51,7 @@ main <- function(argv) {
 }
 
 checkfit <- function(model) {
-  plot(model, which = c(1, 2),
-  caption = list("Residuals vs Fitted", "Normal Q-Q"))
+  plot(model, which = c(1, 2), caption = list("Residuals vs Fitted", "Normal Q-Q"))
   print(ad.test(resid(model)))
 }
 

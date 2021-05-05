@@ -11,9 +11,8 @@ main <- function(argv) {
   print(end_time)
   start_time2 <- proc.time()
 
-  # 3: Find the median of each column using many cores xxx: Change to function
-  # from package
-  # runs in serial on Windows
+  # 3: Find the median of each column using many cores xxx: Change to function from
+  # package runs in serial on Windows
   parallel::mclapply(x, median)
   end_time2 <- proc.time() - start_time2
   print(end_time2)

@@ -180,9 +180,7 @@ install_stats462 <- function() {
     install.packages("MASS", .libPaths()[1])
   }
   remotes::install_github("rsquaredacademy/olsrr", ref = "develop")
-  #if (!require(olsrr)) {
-   # install.packages("olsrr", .libPaths()[1])
-  #}
+  # if (!require(olsrr)) { install.packages('olsrr', .libPaths()[1]) }
   if (!require(qualityTools)) {
     install.packages("qualityTools", .libPaths()[1])
   }
@@ -483,7 +481,7 @@ main <- function(argv) {
   install_rbloggers()
   install_stats462()
   install_efficientr()
-  install_DSForEngineers() 
+  install_DSForEngineers()
   install_msdrs()
   if (!is.null(warnings())) 
     summary(warnings())
@@ -491,5 +489,4 @@ main <- function(argv) {
 }
 # nolint end
 
-if (identical(environment(), globalenv())) 
-  suppressWarnings(quit(status = main(commandArgs(trailingOnly = TRUE))))
+if (identical(environment(), globalenv())) suppressWarnings(quit(status = main(commandArgs(trailingOnly = TRUE))))

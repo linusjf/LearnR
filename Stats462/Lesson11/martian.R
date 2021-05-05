@@ -1,18 +1,12 @@
 #!/usr/bin/env Rscript
 martian.txt <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/martian.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/martian.txt")
 }
 
 lib_path <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }
 
 library(skimr)
@@ -20,9 +14,7 @@ source(lib_path())
 
 main <- function(argv) {
   cairo_pdf(onefile = TRUE)
-  data <- read.table(martian.txt(),
-    header = TRUE, as.is = TRUE
-  )
+  data <- read.table(martian.txt(), header = TRUE, as.is = TRUE)
   print(head(data))
   print(skimr::skim(data))
 
@@ -41,27 +33,19 @@ main <- function(argv) {
   print(eqn2)
 
   with(data, {
-  plot(height, weight, pch = 15,
-  col = "blue", main = eqn1, col.sub = "grey",
-  sub = eqn2)
-  abline(model, col = "grey")
-  }
-  )
+    plot(height, weight, pch = 15, col = "blue", main = eqn1, col.sub = "grey", 
+      sub = eqn2)
+    abline(model, col = "grey")
+  })
   data %<>%
     mutate(fitted = fitted(model_full))
-  with(subset(data, data$water == 0),
-  lines(height, fitted, lty = 6))
-  with(subset(data, data$water == 10),
-  lines(height, fitted, lty = 5))
-  with(subset(data, data$water == 20),
-  lines(height, fitted, lty = 4))
+  with(subset(data, data$water == 0), lines(height, fitted, lty = 6))
+  with(subset(data, data$water == 10), lines(height, fitted, lty = 5))
+  with(subset(data, data$water == 20), lines(height, fitted, lty = 4))
   labels <- c("0", "10", "20")
   title <- "Water"
   lty <- c(6, 5, 4)
-  legend("bottomright",
-  title = title,
-  lty = lty,
-  legend = labels)
+  legend("bottomright", title = title, lty = lty, legend = labels)
   return(0)
 }
 

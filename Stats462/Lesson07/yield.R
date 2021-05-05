@@ -1,18 +1,13 @@
 #!/usr/bin/env Rscript
 yield.txt <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/yield.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/yield.txt")
 }
 library(scatterplot3d)
 suppressPackageStartupMessages(library(e1071))
 
 main <- function(argv) {
-  data <- read.table(yield.txt(),
-    header = TRUE
-  )
+  data <- read.table(yield.txt(), header = TRUE)
 
   print(head(data))
   print(skimr::skim(data))
@@ -26,31 +21,16 @@ main <- function(argv) {
   coefficients <- lm$coefficients
   intercept <- coefficients["(Intercept)"]
   tempcoeff <- coefficients["Temp"]
-  eqn <- paste(
-    sprintf("%0.4f", intercept),
-    sprintf("%+0.4f", tempcoeff),
-    "Temp"
-  )
-  labels <- c(
-    paste("Sigma: ", sprintf("%+0.4f", sigma)),
-    paste("R Squared: ", sprintf("%+0.4f", r_squared)),
-    paste("Adj R Squared: ", sprintf("%+0.4f", adj_r_squared))
-  )
+  eqn <- paste(sprintf("%0.4f", intercept), sprintf("%+0.4f", tempcoeff), "Temp")
+  labels <- c(paste("Sigma: ", sprintf("%+0.4f", sigma)), paste("R Squared: ", 
+    sprintf("%+0.4f", r_squared)), paste("Adj R Squared: ", sprintf("%+0.4f", 
+    adj_r_squared)))
 
   # scatter plot
-  plot(data$Temp, data$Yield,
-    type = "p",
-    pch = 16,
-    main = "Fitted Line Plot",
-    sub = eqn,
-    xlab = "Temp",
-    ylab = "Yield"
-  )
+  plot(data$Temp, data$Yield, type = "p", pch = 16, main = "Fitted Line Plot", 
+    sub = eqn, xlab = "Temp", ylab = "Yield")
   print("Curve....")
-  curve(intercept + tempcoeff * x,
-    add = TRUE,
-    col = "red"
-  )
+  curve(intercept + tempcoeff * x, add = TRUE, col = "red")
   legend("bottomright", legend = labels)
 
   lm <- lm(Yield ~ Temp + I(Temp^2), data)
@@ -64,32 +44,16 @@ main <- function(argv) {
   intercept <- coefficients["(Intercept)"]
   tempcoeff <- coefficients["Temp"]
   tempsqcoeff <- coefficients["I(Temp^2)"]
-  eqn <- paste(
-    sprintf("%0.4f", intercept),
-    sprintf("%+0.4f", tempcoeff),
-    "Temp",
-    sprintf("%+0.4f", tempsqcoeff),
-    "Temp^2"
-  )
-  labels <- c(
-    paste("Sigma: ", sprintf("%+0.4f", sigma)),
-    paste("R Squared: ", sprintf("%+0.4f", r_squared)),
-    paste("Adj R Squared: ", sprintf("%+0.4f", adj_r_squared))
-  )
+  eqn <- paste(sprintf("%0.4f", intercept), sprintf("%+0.4f", tempcoeff), "Temp", 
+    sprintf("%+0.4f", tempsqcoeff), "Temp^2")
+  labels <- c(paste("Sigma: ", sprintf("%+0.4f", sigma)), paste("R Squared: ", 
+    sprintf("%+0.4f", r_squared)), paste("Adj R Squared: ", sprintf("%+0.4f", 
+    adj_r_squared)))
   # scatter plot
-  plot(data$Temp, data$Yield,
-    type = "p",
-    pch = 16,
-    main = "Fitted Line Plot",
-    sub = eqn,
-    xlab = "Temp",
-    ylab = "Yield"
-  )
+  plot(data$Temp, data$Yield, type = "p", pch = 16, main = "Fitted Line Plot", 
+    sub = eqn, xlab = "Temp", ylab = "Yield")
   print("Curve....")
-  curve(intercept + tempcoeff * x + tempsqcoeff * (x^2),
-    add = TRUE,
-    col = "red"
-  )
+  curve(intercept + tempcoeff * x + tempsqcoeff * (x^2), add = TRUE, col = "red")
 
   legend("bottomright", legend = labels)
   print(anova(lm))

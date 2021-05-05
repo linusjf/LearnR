@@ -1,33 +1,23 @@
 #!/usr/bin/env Rscript
 birthsmokers.txt <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/birthsmokers.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/birthsmokers.txt")
 }
 
 lib_path <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }
 
 library(skimr)
 source(lib_path())
 library(scatterplot3d)
 library(plot3D)
-suppressPackageStartupMessages(
-  library(dplyr)
-)
+suppressPackageStartupMessages(library(dplyr))
 library(magrittr)
 
 main <- function(argv) {
-  data <- read.table(birthsmokers.txt(),
-    header = TRUE
-  )
+  data <- read.table(birthsmokers.txt(), header = TRUE)
   print(head(data))
   print(skimr::skim(data))
   scatterplot_matrix(data, "Birth Smokers Scatterplot Matrix")
@@ -37,46 +27,21 @@ main <- function(argv) {
   s <- subset(data, data$Smoke == 1)
   lm <- lm(Wgt ~ Gest + Smoke, s)
   # 3D scatter plot
-  s3d <- scatterplot3d(data,
-    type = "p", color = "blue",
-    angle = 55, pch = 16
-  )
-  s3d$points3d(lm$fitted.values,
-    s$Gest, s$Smoke,
-    type = "l"
-  )
+  s3d <- scatterplot3d(data, type = "p", color = "blue", angle = 55, pch = 16)
+  s3d$points3d(lm$fitted.values, s$Gest, s$Smoke, type = "l")
   ns <- subset(data, data$Smoke == 0)
   lm <- lm(Wgt ~ Gest, ns)
-  s3d$points3d(lm$fitted.values,
-    ns$Gest, ns$Smoke,
-    type = "l"
-  )
-  plot3D::scatter3D(data$Wgt,
-    data$Gest,
-    data$Smoke,
-    xlab = "Wgt", ylab = "Gest",
-    zlab = "Smoke",
-    zlim = c(0, 1),
-    type = "p", bty = "f", colkey = FALSE,
-    ticktype = "detailed"
-  )
+  s3d$points3d(lm$fitted.values, ns$Gest, ns$Smoke, type = "l")
+  plot3D::scatter3D(data$Wgt, data$Gest, data$Smoke, xlab = "Wgt", ylab = "Gest", 
+    zlab = "Smoke", zlim = c(0, 1), type = "p", bty = "f", colkey = FALSE, ticktype = "detailed")
   s <- subset(data, data$Smoke == 1)
   lm <- lm(Wgt ~ Gest + Smoke, s)
-  plot3D::lines3D(lm$fitted.values,
-    s$Gest,
-    s$Smoke,
-    zlim = c(0, 1),
-    type = "l",
-    add = TRUE, colkey = FALSE
-  )
+  plot3D::lines3D(lm$fitted.values, s$Gest, s$Smoke, zlim = c(0, 1), type = "l", 
+    add = TRUE, colkey = FALSE)
   ns <- subset(data, data$Smoke == 0)
   lm <- lm(Wgt ~ Gest, ns)
-  plot3D::lines3D(lm$fitted.values,
-    ns$Gest,
-    ns$Smoke,
-    zlim = c(0, 1),
-    type = "l", add = TRUE, colkey = FALSE
-  )
+  plot3D::lines3D(lm$fitted.values, ns$Gest, ns$Smoke, zlim = c(0, 1), type = "l", 
+    add = TRUE, colkey = FALSE)
 
   lm <- lm(Wgt ~ Gest + Smoke, data)
   print(complete_anova(lm))

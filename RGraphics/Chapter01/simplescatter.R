@@ -5,10 +5,7 @@ main <- function(argv) {
   print(head(pressure))
   pdf("simplescatter.pdf")
   plot(pressure)
-  text(
-    150, 600,
-    "Pressure (mm Hg)\nversus\nTemperature (Celsius)"
-  )
+  text(150, 600, "Pressure (mm Hg)\nversus\nTemperature (Celsius)")
   print(dev.cur())
   graphics.off()
   return(0)

@@ -6,12 +6,9 @@ main <- function(argv) {
   print(pryr::mem_used())
   print(ls())
   print(pryr::object_size(argv))
-  print(sapply(
-    ls(),
-    function(x) {
-      object.size(get(x))
-    }
-  ) %>%
+  print(sapply(ls(), function(x) {
+    object.size(get(x))
+  }) %>%
     sort() %>%
     tail(5))
   print(pryr::mem_used())

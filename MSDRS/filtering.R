@@ -3,16 +3,16 @@ library(purrr)
 
 main <- function(argv) {
   print(keep(1:20, function(x) {
-    x %% 2 == 0
+    x%%2 == 0
   }))
   print(discard(1:20, function(x) {
-    x %% 2 == 0
+    x%%2 == 0
   }))
   print(every(1:20, function(x) {
-    x %% 2 == 0
+    x%%2 == 0
   }))
   print(some(1:20, function(x) {
-    x %% 2 == 0
+    x%%2 == 0
   }))
   return(0)
 }

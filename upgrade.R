@@ -5,51 +5,42 @@ main <- function(argv) {
   print(Sys.info())
   sess <- sessionInfo()
   print(sess)
-  platform <- ifelse(is.null(sess$running), 
-                     "termux",
-                     sess$running) 
+  platform <- ifelse(is.null(sess$running), "termux", sess$running)
 
   if (!is.null(argv) & length(argv) > 0) {
     option <- argv[1]
     file <- NULL
 
-    switch (platform, "termux"
-    = {
+    switch(platform, termux = {
       file <- "installed_old.rda"
-    }, "Arch Linux ARM" 
-    = {
+    }, `Arch Linux ARM` = {
       file <- "installed_old_arch.rda"
-    }
-    )
-    switch(option, "save"
-      = {
-        tmp <- installed.packages()
-        installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
-        save(installedpkgs, file = file)
-      },
-      "upgrade" = {
-        old <- options(verbose = TRUE)
-        load(file = file)
-        tmp <- installed.packages()
-        installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
-        print("Installed packages...")
-        print(installedpkgs)
-        installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
-        missing <- setdiff(installedpkgs, installedpkgs.new)
-        install.packages(missing)
-        update.packages(checkBuilt=TRUE)
+    })
+    switch(option, save = {
+      tmp <- installed.packages()
+      installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
+      save(installedpkgs, file = file)
+    }, upgrade = {
+      old <- options(verbose = TRUE)
+      load(file = file)
+      tmp <- installed.packages()
+      installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
+      print("Installed packages...")
+      print(installedpkgs)
+      installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
+      missing <- setdiff(installedpkgs, installedpkgs.new)
+      install.packages(missing)
+      update.packages(checkBuilt = TRUE)
 
-        load(file)
-        tmp <- installed.packages()
-        installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
-        missing <- setdiff(installedpkgs, installedpkgs.new)
-        for (i in seq_len(length(missing))) {
-          BiocManager::install(missing[i], verbose = TRUE)
-        }
-        options(old)
-      },
-      print("usage: upgrade.R save|upgrade")
-    )
+      load(file)
+      tmp <- installed.packages()
+      installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
+      missing <- setdiff(installedpkgs, installedpkgs.new)
+      for (i in seq_len(length(missing))) {
+        BiocManager::install(missing[i], verbose = TRUE)
+      }
+      options(old)
+    }, print("usage: upgrade.R save|upgrade"))
   } else {
     print("usage: upgrade.R save|upgrade")
   }

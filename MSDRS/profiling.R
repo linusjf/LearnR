@@ -8,8 +8,7 @@ f <- function() {
   record_temp <- c()
   for (i in seq_len(nrow(datafr))) {
     highest_temp <- max(highest_temp, datafr$temp[i])
-    record_temp[i] <- datafr$temp[i] >= threshold &
-      datafr$temp[i] >= highest_temp
+    record_temp[i] <- datafr$temp[i] >= threshold & datafr$temp[i] >= highest_temp
   }
   datafr <- cbind(datafr, record_temp)
 }

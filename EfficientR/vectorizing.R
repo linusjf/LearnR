@@ -38,30 +38,21 @@ monte_carlo <- function(n) {
       hits <- hits + 1
     }
   }
-  return(hits / n)
+  return(hits/n)
 }
 
 monte_carlo_vec <- function(n) {
-  sum(runif(n)^2 > runif(n)) / n
+  sum(runif(n)^2 > runif(n))/n
 }
 
 main <- function(argv) {
-  n <- 1e+4
-  print(microbenchmark(
-    times = 100, unit = "s",
-    method1(n), method2(n), method3(n)
-  ))
+  n <- 10000
+  print(microbenchmark(times = 100, unit = "s", method1(n), method2(n), method3(n)))
   x <- runif(n)
-  print(microbenchmark(
-    times = 100, unit = "s",
-    log_sum_for_loop(x), log_sum(x)
-  ))
+  print(microbenchmark(times = 100, unit = "s", log_sum_for_loop(x), log_sum(x)))
   x <- numeric()
-  print(microbenchmark(
-    times = 100, unit = "s",
-    log_sum_for_loop(x), log_sum(x)
-  ))
-  n <- 5e+5
+  print(microbenchmark(times = 100, unit = "s", log_sum_for_loop(x), log_sum(x)))
+  n <- 5e+05
   print(system.time(monte_carlo(n)))
   print(system.time(monte_carlo_vec(n)))
   return(0)

@@ -6,9 +6,7 @@ library(rprojroot)
 create_package <- function(folder) {
   path <- file.path(".", folder)
   if (dir.exists(path)) {
-    stop("Folder", path, "already exists.",
-      call = TRUE
-    )
+    stop("Folder", path, "already exists.", call = TRUE)
   }
   setwd("..")
   devtools::create(path)

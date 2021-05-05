@@ -1,18 +1,12 @@
 #!/usr/bin/env Rscript
 bloodpress.txt <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/bloodpress.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/bloodpress.txt")
 }
 
 lib_path <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }
 
 library(skimr)
@@ -24,9 +18,7 @@ suppressPackageStartupMessages(library(PerformanceAnalytics))
 
 main <- function(argv) {
   cairo_pdf(onefile = TRUE)
-  data <- read.table(bloodpress.txt(),
-    header = TRUE, as.is = TRUE
-  )
+  data <- read.table(bloodpress.txt(), header = TRUE, as.is = TRUE)
   print(head(data))
   print(skimr::skim(data))
 
@@ -54,33 +46,20 @@ analysis_uncorrelated <- function(data) {
   complete <- complete_anova(model)
   print(complete)
 
-  with(
-    data,
-    scatterplot3d(BP, BSA, Stress,
-      pch = 15,
-      type = "h",
-      color = "steelblue"
-    )
-  )
+  with(data, scatterplot3d(BP, BSA, Stress, pch = 15, type = "h", color = "steelblue"))
 }
 
 analysis_vif <- function(data) {
   model <- lm(BP ~ BSA + Stress + Age + Weight + Pulse + Dur, data)
   coeffs <- model_coeffs(model)
-  vifs <- coeffs[
-    ,
-    grepl(
-      "[.]vif",
-      names(coeffs)
-    )
-  ]
+  vifs <- coeffs[, grepl("[.]vif", names(coeffs))]
   vifs <- vifs[, (vifs[1, ]) > 4]
   print(vifs)
 
   wt_model <- lm(Weight ~ BSA + Age + Dur + Pulse + Stress, data)
   stats <- model_fit_stats(wt_model)
   r.squared <- stats$R.squared
-  vif.weight <- 1 / (1 - r.squared)
+  vif.weight <- 1/(1 - r.squared)
   names(vif.weight) <- "vif.Weight"
   print(vif.weight)
 
@@ -133,16 +112,9 @@ analysis_correlated <- function(data) {
   print(complete)
 
   with(data, {
-    scatterplot3d(BP, BSA, Weight,
-      pch = 15,
-      color = "steelblue",
-      type = "h"
-    )
+    scatterplot3d(BP, BSA, Weight, pch = 15, color = "steelblue", type = "h")
     par(mar = c(5, 6, 4, 4))
-    plot(BSA, Weight,
-      main = "Weight versus BSA",
-      col = "blue", pch = 15
-    )
+    plot(BSA, Weight, main = "Weight versus BSA", col = "blue", pch = 15)
   })
 }
 

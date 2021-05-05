@@ -1,18 +1,12 @@
 #!/usr/bin/env Rscript
 employee.txt <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/employee.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/employee.txt")
 }
 
 lib_path <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }
 
 library(skimr)
@@ -30,23 +24,14 @@ ols_analysis <- function(data) {
 
   print(model_coeffs(model))
   print(model_fit_stats(model))
-  eqn <- model_equation(
-    model,
-    digits = 4
-  )
+  eqn <- model_equation(model, digits = 4)
   print(eqn)
 
   coeffs <- summary(model)$coefficients
   intercept <- coeffs[1, 1]
   slope <- coeffs[2, 1]
-  with(
-    data,
-    plot(vendor, metal,
-      pch = 15,
-      col = "blue", main = eqn,
-      col.main = "red", sub = "Ordinary Least Squares"
-    )
-  )
+  with(data, plot(vendor, metal, pch = 15, col = "blue", main = eqn, col.main = "red", 
+    sub = "Ordinary Least Squares"))
   abline(model, col = "red")
   return(model)
 }
@@ -72,9 +57,9 @@ cochrane_orcutt <- function(model, data) {
   print(dwtest(lagmodel))
 
   coeffs <- summary(lagmodel)$coefficients
-  intercept <- coeffs[1, 1] / (1 - rho)
+  intercept <- coeffs[1, 1]/(1 - rho)
   print(intercept)
-  intercept.se <- coeffs[1, 2] / (1 - rho)
+  intercept.se <- coeffs[1, 2]/(1 - rho)
   print(intercept.se)
   slope <- coeffs[2, 1]
 
@@ -82,19 +67,9 @@ cochrane_orcutt <- function(model, data) {
     mutate(fitted.cochrane1 = intercept + slope * vendor) %>%
     mutate(e.cochrane1 = metal - fitted.cochrane1) %>%
     mutate(forecast.cochrane1 = fitted.cochrane1 + rho * Lag(e.cochrane1))
-  eqn <- paste0(
-    "metal = ",
-    round(intercept, 4), " + ",
-    round(slope, 4), " * vendor"
-  )
-  with(
-    data,
-    plot(vendor, metal,
-      pch = 15,
-      col = "blue", main = eqn,
-      col.main = "red", sub = "Cochrane Orcutt 1 iteration"
-    )
-  )
+  eqn <- paste0("metal = ", round(intercept, 4), " + ", round(slope, 4), " * vendor")
+  with(data, plot(vendor, metal, pch = 15, col = "blue", main = eqn, col.main = "red", 
+    sub = "Cochrane Orcutt 1 iteration"))
   with(data, {
     lo <- lm(forecast.cochrane1 ~ vendor)
     abline(lo, col = "red")
@@ -103,9 +78,7 @@ cochrane_orcutt <- function(model, data) {
 
 main <- function(argv) {
   cairo_pdf(onefile = TRUE)
-  data <- read.table(employee.txt(),
-    header = TRUE, as.is = TRUE
-  )
+  data <- read.table(employee.txt(), header = TRUE, as.is = TRUE)
   print(head(data))
   print(skimr::skim(data))
 
@@ -119,17 +92,10 @@ test_autocorrelations <- function(model, data) {
   data %<>%
     mutate(residuals = resid(model))
   with(data, {
-    plot(time, residuals,
-      main = "Residuals",
-      xlab = "Order (time)",
-      ylab = "Residuals"
-    )
+    plot(time, residuals, main = "Residuals", xlab = "Order (time)", ylab = "Residuals")
     abline(h = 0)
   })
-  with(
-    data,
-    Pacf(residuals)
-  )
+  with(data, Pacf(residuals))
   print(dwtest(model))
 }
 

@@ -35,15 +35,12 @@ main <- function(argv) {
     rev() %>%
     reduce(c))
   # }
-  reduce(letters[1:4],
-    .dir = "backward",
-    function(x, y) {
-      message("x is ", x)
-      message("y is ", y)
-      message("")
-      paste0(x, y)
-    }
-  )
+  reduce(letters[1:4], .dir = "backward", function(x, y) {
+    message("x is ", x)
+    message("y is ", y)
+    message("")
+    paste0(x, y)
+  })
   return(0)
 }
 

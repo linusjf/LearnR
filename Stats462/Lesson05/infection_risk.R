@@ -5,9 +5,7 @@ suppressPackageStartupMessages(library(rsq))
 suppressPackageStartupMessages(library(scatterplot3d))
 
 main <- function(argv) {
-  data <- read.table("../Data/infection_risk.txt",
-    header = TRUE
-  )
+  data <- read.table("../Data/infection_risk.txt", header = TRUE)
   print(head(data))
   print(skimr::skim(data))
 

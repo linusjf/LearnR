@@ -26,11 +26,7 @@ num.emp <- 4
 emp.list <- list(ID, emp.name, num.emp)
 print(emp.list)
 
-emp.list <- list(
-  "Id" = ID,
-  "Names" = emp.name,
-  "Total staff" = num.emp
-)
+emp.list <- list(Id = ID, Names = emp.name, `Total staff` = num.emp)
 print(emp.list$Names)
 
 print(emp.list[[1]])
@@ -43,9 +39,6 @@ emp.list[[2]][5] <- "Nir"
 emp.list[[1]][5] <- 5
 print(emp.list)
 
-emp.ages <- list(
-  "ages" =
-    c(23, 48, 54, 30, 32)
-)
+emp.ages <- list(ages = c(23, 48, 54, 30, 32))
 emp.list <- c(emp.list, emp.ages)
 print(emp.list)

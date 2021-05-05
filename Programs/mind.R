@@ -1,6 +1,5 @@
-# returns the minimum value of d[ i, j], i != j, and the row/ col attainings
-# that minimum, for square symmetric matrix d;
-# no special policy on ties
+# returns the minimum value of d[ i, j], i != j, and the row/ col attainings that
+# minimum, for square symmetric matrix d; no special policy on ties
 mind <- function(d) {
   n <- nrow(d)
   # add a column to identify row number for apply()
@@ -23,10 +22,8 @@ imin <- function(x) {
 }
 
 main <- function(argv) {
-  q <- cbind(c(0, 12, 13, 8, 20), c(12, 0, 15, 28, 88), c(13, 15, 0, 26, 9), c(
-    8, 28,
-    26, 0, 33
-  ), c(20, 88, 9, 33, 0))
+  q <- cbind(c(0, 12, 13, 8, 20), c(12, 0, 15, 28, 88), c(13, 15, 0, 26, 9), c(8, 
+    28, 26, 0, 33), c(20, 88, 9, 33, 0))
   print(q)
   mind(q)
   return(0)

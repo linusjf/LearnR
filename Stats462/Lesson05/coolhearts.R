@@ -8,9 +8,7 @@ suppressPackageStartupMessages(library(rsq))
 
 
 main <- function(argv) {
-  data <- read.table("../Data/coolhearts.txt",
-    header = TRUE
-  )
+  data <- read.table("../Data/coolhearts.txt", header = TRUE)
   print(head(data))
   print(skimr::skim(data))
   reg <- lm(Infarc ~ Area + X2 + X3, data = data)
@@ -30,29 +28,18 @@ main <- function(argv) {
   print(anova(areaonly, reg))
   print(rsq.partial(objR = areaonly, reg))
 
-  # save predictions of the model in the new data frame
-  # together with variable you want to plot against
-  predicted_df <- data.frame(
-    Infarc = predict(reg, data),
-    Area = data$Area, Group = data$Group
-  )
-  labels <- c(
-    "Early cooling",
-    "Late cooling",
-    "No cooling"
-  )
+  # save predictions of the model in the new data frame together with variable you
+  # want to plot against
+  predicted_df <- data.frame(Infarc = predict(reg, data), Area = data$Area, Group = data$Group)
+  labels <- c("Early cooling", "Late cooling", "No cooling")
 
   plot <- data %>%
-    ggplot(aes(x = Area, y = Infarc, color = factor(Group, labels = labels))) +
-    ggtitle("Scatter plot of infarction versus area") +
-    theme(plot.title = element_text(hjust = 0.5)) +
-    xlab("Size of area at risk (grams)") +
-    ylab("Size of Infarcted area (grams)") +
-    labs(color = "Group") +
-    geom_point(size = 3) +
-    geom_line(color = "red", data = subset(predicted_df, Group == 1)) +
-    geom_line(color = "green", data = subset(predicted_df, Group == 2)) +
-    geom_line(color = "blue", data = subset(predicted_df, Group == 3))
+    ggplot(aes(x = Area, y = Infarc, color = factor(Group, labels = labels))) + 
+    ggtitle("Scatter plot of infarction versus area") + theme(plot.title = element_text(hjust = 0.5)) + 
+    xlab("Size of area at risk (grams)") + ylab("Size of Infarcted area (grams)") + 
+    labs(color = "Group") + geom_point(size = 3) + geom_line(color = "red", data = subset(predicted_df, 
+    Group == 1)) + geom_line(color = "green", data = subset(predicted_df, Group == 
+    2)) + geom_line(color = "blue", data = subset(predicted_df, Group == 3))
   print(plot)
   return(0)
 }

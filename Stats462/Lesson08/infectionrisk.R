@@ -1,18 +1,12 @@
 #!/usr/bin/env Rscript
 infectionrisk.txt <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Data/infection_risk.txt"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Data/infection_risk.txt")
 }
 
 lib_path <- function() {
   library(rprojroot)
-  paste0(
-    find_root(has_file(".Rprofile")),
-    "/Stats462/Lib/libfunc.R"
-  )
+  paste0(find_root(has_file(".Rprofile")), "/Stats462/Lib/libfunc.R")
 }
 
 library(skimr)
@@ -22,9 +16,7 @@ library(magrittr)
 library(e1071)
 
 main <- function(argv) {
-  data <- read.table(infectionrisk.txt(),
-    header = TRUE
-  )
+  data <- read.table(infectionrisk.txt(), header = TRUE)
   data %<>%
     mutate(I2 = ifelse(Region == 2, 1, 0)) %>%
     mutate(I3 = ifelse(Region == 3, 1, 0)) %>%

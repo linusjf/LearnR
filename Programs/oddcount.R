@@ -1,10 +1,10 @@
 #!/usr/bin/env Rscript
 # counts the number of odd integers in x
 oddcount <- function(x) {
-  k <- 0 # assign 0 to k
+  k <- 0  # assign 0 to k
   for (n in x) {
     # %% is the modulo operator
-    if (n %% 2 == 1) {
+    if (n%%2 == 1) {
       k <- k + 1
     }
   }

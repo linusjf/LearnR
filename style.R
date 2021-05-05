@@ -5,8 +5,7 @@ library(parallel)
 process_folder <- function(folder) {
   exit_code <- 0
 
-  if (folder == "./.git" ||
-    folder == ".git") {
+  if (folder == "./.git" || folder == ".git") {
     return(exit_code)
   }
   cat(folder, "\n")
