@@ -10,7 +10,7 @@ main <- function(argv) {
 
     switch(option, "save"
       = {
-        tmp <- installed.packages()
+        tmp <- installed.packages(.Library,fields="Version")
         installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
         save(installedpkgs, file = "installed_old.rda")
       },
@@ -18,10 +18,13 @@ main <- function(argv) {
         old <- options(verbose = TRUE)
         load(file = "installed_old.rda")
         tmp <- installed.packages()
+        installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
+        print("Installed packages...")
+        print(installedpkgs)
         installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
         missing <- setdiff(installedpkgs, installedpkgs.new)
         install.packages(missing)
-        update.packages()
+        update.packages(checkBuilt=TRUE)
 
         load("installed_old.rda")
         tmp <- installed.packages()
