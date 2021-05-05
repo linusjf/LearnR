@@ -5,18 +5,28 @@ main <- function(argv) {
   print(Sys.info())
   print(sessionInfo())
 
-  if (!is.null(argv) & length(argv) > 0) {
+  if (!is.null(argv) & length(argv) == 2) {
     option <- argv[1]
+    platform <- argv[2]
+    file <- ''
 
+    switch (platform, "termux"
+    = {
+      file <- "installed_old.rda"
+    }, "archlinux" 
+    = {
+      file <- "installed_old_arch.rda"
+    }
+    )
     switch(option, "save"
       = {
-        tmp <- installed.packages(.Library,fields="Version")
+        tmp <- installed.packages()
         installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
-        save(installedpkgs, file = "installed_old.rda")
+        save(installedpkgs, file = file)
       },
       "upgrade" = {
         old <- options(verbose = TRUE)
-        load(file = "installed_old.rda")
+        load(file = file)
         tmp <- installed.packages()
         installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
         print("Installed packages...")
@@ -26,7 +36,7 @@ main <- function(argv) {
         install.packages(missing)
         update.packages(checkBuilt=TRUE)
 
-        load("installed_old.rda")
+        load(file)
         tmp <- installed.packages()
         installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
         missing <- setdiff(installedpkgs, installedpkgs.new)
@@ -35,10 +45,10 @@ main <- function(argv) {
         }
         options(old)
       },
-      print("usage: upgrade.R save|upgrade")
+      print("usage: upgrade.R save|upgrade termux|archlinux")
     )
   } else {
-    print("usage: upgrade.R save|upgrade")
+    print("usage: upgrade.R save|upgrade termux|archlinux")
   }
   return(0)
 }
