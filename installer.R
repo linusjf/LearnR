@@ -472,7 +472,17 @@ install_msdrs <- function() {
 
 main <- function(argv) {
   print(Sys.info())
-  print(sessionInfo())
+  sess <- sessionInfo()
+  print(sess)
+  platform <- ifelse(is.null(sess$running), "termux", sess$running)
+  switch(platform,
+    "termux" = {
+      Sys.setenv(R_LIBS_USER = "/data/data/com.termux/files/usr/lib/R/library")
+    },
+    `Arch Linux ARM` = {
+      Sys.setenv(R_LIBS_USER = "/usr/lib/R/library")
+    }
+  )
   install_tools()
   install_programs()
   install_rbyexample()
@@ -483,8 +493,9 @@ main <- function(argv) {
   install_efficientr()
   install_DSForEngineers()
   install_msdrs()
-  if (!is.null(warnings())) 
+  if (!is.null(warnings())) {
     summary(warnings())
+  }
   return(0)
 }
 # nolint end

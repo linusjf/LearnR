@@ -11,36 +11,48 @@ main <- function(argv) {
     option <- argv[1]
     file <- NULL
 
-    switch(platform, termux = {
-      file <- "installed_old.rda"
-    }, `Arch Linux ARM` = {
-      file <- "installed_old_arch.rda"
-    })
-    switch(option, save = {
-      tmp <- installed.packages()
-      installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
-      save(installedpkgs, file = file)
-    }, upgrade = {
-      old <- options(verbose = TRUE)
-      load(file = file)
-      tmp <- installed.packages()
-      installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
-      print("Installed packages...")
-      print(installedpkgs)
-      installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
-      missing <- setdiff(installedpkgs, installedpkgs.new)
-      install.packages(missing)
-      update.packages(checkBuilt = TRUE)
-
-      load(file)
-      tmp <- installed.packages()
-      installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
-      missing <- setdiff(installedpkgs, installedpkgs.new)
-      for (i in seq_len(length(missing))) {
-        BiocManager::install(missing[i], verbose = TRUE)
+    switch(platform,
+      "termux" = {
+        file <- "installed_old.rda"
+        Sys.setenv(R_LIBS_USER = "/data/data/com.termux/files/usr/lib/R/library")
+      },
+      `Arch Linux ARM` = {
+        file <- "installed_old_arch.rda"
+        Sys.setenv(R_LIBS_USER = "/usr/lib/R/library")
       }
-      options(old)
-    }, print("usage: upgrade.R save|upgrade"))
+    )
+    switch(option,
+      save = {
+        tmp <- installed.packages()
+        installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
+        save(installedpkgs, file = file)
+      },
+      upgrade = {
+        old <- options(verbose = TRUE)
+        load(file = file)
+        tmp <- installed.packages()
+        installedpkgs <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
+        print("Installed packages...")
+        print(installedpkgs)
+        installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
+        missing <- setdiff(installedpkgs, installedpkgs.new)
+        install.packages(missing)
+        update.packages(
+          checkBuilt = TRUE,
+          oldPkgs = old.packages()
+        )
+
+        load(file)
+        tmp <- installed.packages()
+        installedpkgs.new <- as.vector(tmp[is.na(tmp[, "Priority"]), 1])
+        missing <- setdiff(installedpkgs, installedpkgs.new)
+        for (i in seq_len(length(missing))) {
+          BiocManager::install(missing[i], verbose = TRUE)
+        }
+        options(old)
+      },
+      print("usage: upgrade.R save|upgrade")
+    )
   } else {
     print("usage: upgrade.R save|upgrade")
   }
