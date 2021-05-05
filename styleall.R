@@ -19,7 +19,7 @@ main <- function(argv) {
   ]
   print(folders)
   exit_codes <- parallel::mclapply(folders, process_folder)
-  return(sum(unlist(exit_codes)))
+  return(sum(as.numeric(unlist(exit_codes))))
 }
 
 if (identical(environment(), globalenv())) {

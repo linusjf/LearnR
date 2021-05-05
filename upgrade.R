@@ -3,17 +3,20 @@
 
 main <- function(argv) {
   print(Sys.info())
-  print(sessionInfo())
+  sess <- sessionInfo()
+  print(sess)
+  platform <- ifelse(is.null(sess$running), 
+                     "termux",
+                     sess$running) 
 
-  if (!is.null(argv) & length(argv) == 2) {
+  if (!is.null(argv) & length(argv) > 0) {
     option <- argv[1]
-    platform <- argv[2]
-    file <- ''
+    file <- NULL
 
     switch (platform, "termux"
     = {
       file <- "installed_old.rda"
-    }, "archlinux" 
+    }, "Arch Linux ARM" 
     = {
       file <- "installed_old_arch.rda"
     }
@@ -45,10 +48,10 @@ main <- function(argv) {
         }
         options(old)
       },
-      print("usage: upgrade.R save|upgrade termux|archlinux")
+      print("usage: upgrade.R save|upgrade")
     )
   } else {
-    print("usage: upgrade.R save|upgrade termux|archlinux")
+    print("usage: upgrade.R save|upgrade")
   }
   return(0)
 }
