@@ -2,9 +2,9 @@
 # LOAD DATA & INITIAL CHECKS
 require("datasets")
 # Areas (in 1k sq mi) of landmasses > 10k sq mi (n = 48)
-data(islands) 
+data(islands)
 # Many high outliers.
-boxplot(islands, horizontal = TRUE) 
+boxplot(islands, horizontal = TRUE)
 # Numbers for the boxplot.
 boxplot.stats(islands)
 
@@ -15,6 +15,6 @@ boxplot(islands.low, horizontal = TRUE)
 boxplot.stats(islands.low)
 # CLEAN UP
 # Unloads data sets package.
-detach("package:datasets", unload = TRUE) 
+detach("package:datasets", unload = TRUE)
 # Remove all objects from the workspace.
-rm(list = ls()) 
+rm(list = ls())
