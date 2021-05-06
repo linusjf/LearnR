@@ -39,6 +39,12 @@ install_tools <- function() {
   }
 }
 
+install_rsuccinctly <- function() {
+  if (!require(psych)) {
+    install.packages("psych", .libPaths()[1])
+  }
+}
+
 install_rbloggers <- function() {
   if (!require(corrplot)) {
     install.packages("corrplot", .libPaths()[1])
@@ -484,6 +490,7 @@ main <- function(argv) {
     }
   )
   install_tools()
+  install_rsuccinctly()
   install_programs()
   install_rbyexample()
   install_coronavirus()
