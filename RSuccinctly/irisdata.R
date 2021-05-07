@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 # LOAD DATA
-require("datasets")
+library("datasets")
 # Load the data sets package.
 # PREVIEW DATA
 # Show first three rows, all variables.

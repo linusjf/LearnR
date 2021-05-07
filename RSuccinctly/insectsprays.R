@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-require(stats)
-require(graphics)
+library(stats)
+library(graphics)
 boxplot(count ~ spray,
   data = InsectSprays,
   xlab = "Type of spray",

@@ -2,7 +2,7 @@
 # Sample: sample_2_5.R
 # LOAD DATA SET
 # Load datasets package.
-require("datasets")
+library("datasets")
 # Annual Canadian Lynx trappings 1821-1934.
 data(lynx)
 # BOXPLOT WITH DEFAULTS

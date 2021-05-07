@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-require(stats)
-require(graphics)
+library(stats)
+library(graphics)
 
 boxplot(weight ~ feed,
   data = chickwts, col = "lightgray",

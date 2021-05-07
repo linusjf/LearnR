@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # LOAD DATA
 # Load the data sets package.
-require("datasets")
+library("datasets")
 # DISPLAY DATA
 # Display the first three rows, all variables.
 longley[1:3, ]

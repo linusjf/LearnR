@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-require(graphics)
+library(graphics)
 ## Full mosaic
 mosaicplot(HairEyeColor)
 ## Aggregate over sex (as in Snee's original data)

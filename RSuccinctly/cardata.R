@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 # LOAD DATA
-require("datasets")
+library("datasets")
 # Load datasets package.
 # 1974 road test data from Motor Trend.
 data(mtcars)

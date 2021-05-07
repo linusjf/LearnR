@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-require(stats)
-require(graphics)
+library(stats)
+library(graphics)
 f.tit <- "faithful data: Eruptions of Old Faithful"
 ne60 <- round(e60 <- 60 * faithful$eruptions)
 all.equal(e60, ne60)

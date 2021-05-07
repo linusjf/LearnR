@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # LOAD DATA
 # Loads data sets package
-require("datasets")
+library("datasets")
 
 # DEFAULT CHART WITH PLOT()
 # Default method to plot the variable feed from chickwts

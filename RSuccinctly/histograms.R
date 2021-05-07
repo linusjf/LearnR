@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 # LOAD DATA SET
-require("datasets")
+library("datasets")
 # Annual Canadian Lynx trappings 1821-1934
 data(lynx)
 # HISTOGRAM WITH DEFAULTS

@@ -1,8 +1,8 @@
 #!/usr/bin/env Rscript
 # LOAD DATA SET
 # Load the data sets package
-require("datasets")
-require("psych")
+library("datasets")
+library("psych")
 # Print the cars data structure to the console
 str(cars)
 # Load the data into the workspace

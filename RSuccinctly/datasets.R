@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 # LOAD DATA Load datasets package
-require("datasets")
+library("datasets")
 # Tabular data in 3 dimensions; N = 4526.
 str(UCBAdmissions)
 # Prints six tables; one for each department.

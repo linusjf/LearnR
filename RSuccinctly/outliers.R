@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 # LOAD DATA & INITIAL CHECKS
-require("datasets")
+library("datasets")
 # Areas (in 1k sq mi) of landmasses > 10k sq mi (n = 48)
 data(islands)
 # Many high outliers.

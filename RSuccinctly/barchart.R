@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # LOAD DATA
 # Load the datasets package.
-require("datasets") 
+library("datasets") 
 # Load data with shorter name.
 spray <- InsectSprays 
 # GET GROUP MEANS

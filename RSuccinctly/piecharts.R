@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # LOAD DATA SET & CREATE TABLE
 # Loads data sets package.
-require("datasets")
+library("datasets")
 
 # Create a table of feed, place in “feeds”
 feeds <- table(chickwts$feed)

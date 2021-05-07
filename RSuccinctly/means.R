@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 # LOAD DATA & EXAMINE
-require("datasets")
+library("datasets")
 # Loads data sets package.
 # Loads just the magnitude variable.
 mag <- quakes$mag
