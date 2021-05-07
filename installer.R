@@ -46,6 +46,9 @@ install_rsuccinctly <- function() {
   if (!require(RColorBrewer)) {
     install.packages("RColorBrewer", .libPaths()[1])
   }
+  if (!require(car)) {
+    install.packages("car", .libPaths()[1])
+  }
 }
 
 install_rbloggers <- function() {
