@@ -41,9 +41,9 @@ all.data <- rbind(a.1.2, b)
 all.data[12:16, ]
 # CLEAN DATA
 # Reset row names.
-row.names(all.data) <- NULL 
+row.names(all.data) <- NULL
 # Check last four rows, all variables.
-all.data[13:16, ] 
+all.data[13:16, ]
 
 # CLEAN UP
 # Unloads data sets package.

@@ -4,6 +4,8 @@ require(graphics)
 ## give the data set in the form it is used in S-PLUS:
 longley.x <- data.matrix(longley[, 1:6])
 longley.y <- longley[, "Employed"]
+longley$RealGNP <- with(longley, GNP * 100 / GNP.deflator)
+longley[1:8, ]
 pairs(longley, main = "longley data")
 summary(fm1 <- lm(Employed ~ ., data = longley))
 opar <- par(
