@@ -49,6 +49,9 @@ install_rsuccinctly <- function() {
   if (!require(car)) {
     install.packages("car", .libPaths()[1])
   }
+  if (!require(Hmisc)) {
+    install.packages("Hmisc", .libPaths()[1])
+  }
 }
 
 install_rbloggers <- function() {
