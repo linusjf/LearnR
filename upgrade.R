@@ -14,7 +14,8 @@ main <- function(argv) {
     switch(platform,
       "termux" = {
         file <- "installed_old.rda"
-        Sys.setenv(R_LIBS_USER = "/data/data/com.termux/files/usr/lib/R/library")
+        libPath <- "/data/data/com.termux/files/usr/lib/R/library"
+        Sys.setenv(R_LIBS_USER = libPath)
       },
       `Arch Linux ARM` = {
         file <- "installed_old_arch.rda"

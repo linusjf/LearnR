@@ -60,7 +60,7 @@ install_rbloggers <- function() {
   }
 }
 
-install_DSForEngineers <- function() {
+install_dsforengineers <- function() {
   if (!require(reshape2)) {
     install.packages("reshape2", .libPaths()[1])
   }
@@ -507,7 +507,7 @@ main <- function(argv) {
   install_rbloggers()
   install_stats462()
   install_efficientr()
-  install_DSForEngineers()
+  install_dsforengineers()
   install_msdrs()
   if (!is.null(warnings())) {
     summary(warnings())
@@ -516,4 +516,6 @@ main <- function(argv) {
 }
 # nolint end
 
-if (identical(environment(), globalenv())) suppressWarnings(quit(status = main(commandArgs(trailingOnly = TRUE))))
+if (identical(environment(), globalenv())) {
+  suppressWarnings(quit(status = main(commandArgs(trailingOnly = TRUE))))
+}

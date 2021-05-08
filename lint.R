@@ -9,7 +9,8 @@ process_folder <- function(folder) {
   }
   cat(folder, "\n")
   if (folder == ".") {
-    for (file in list.files(pattern = "\\.[Rr]{1}(profile)?$", all.files = TRUE)) {
+    pattern <- "\\.[Rr]{1}(profile)?$"
+    for (file in list.files(pattern = pattern, all.files = TRUE)) {
       print(file)
       cat(file, "\n")
       violations <- append(violations, lintr::lint(file))
