@@ -17,8 +17,8 @@ rcorr(as.matrix(swiss))
 
 # CLEAN UP
 # Unload the package.
-detach("package:datasets", unload=TRUE) 
+detach("package:datasets", unload = TRUE)
 # Unload the package.
-detach("package:Hmisc", unload=TRUE) 
+detach("package:Hmisc", unload = TRUE)
 # Remove the objects.
-rm(list = ls()) 
+rm(list = ls())
