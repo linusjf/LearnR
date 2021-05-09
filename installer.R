@@ -43,6 +43,9 @@ install_similarity <- function() {
   if (!require(stringdist)) {
     install.packages("stringdist", .libPaths()[1])
   }
+  if (!require(qdap)) {
+    install.packages("qdap", .libPaths()[1])
+  }
 }
 
 install_rsuccinctly <- function() {
