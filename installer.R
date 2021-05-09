@@ -39,6 +39,12 @@ install_tools <- function() {
   }
 }
 
+install_similarity <- function() {
+  if (!require(stringdist)) {
+    install.packages("stringdist", .libPaths()[1])
+  }
+}
+
 install_rsuccinctly <- function() {
   if (!require(psych)) {
     install.packages("psych", .libPaths()[1])
@@ -499,6 +505,7 @@ main <- function(argv) {
     }
   )
   install_tools()
+  install_similarity()
   install_rsuccinctly()
   install_programs()
   install_rbyexample()
