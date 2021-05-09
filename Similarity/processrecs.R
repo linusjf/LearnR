@@ -32,7 +32,6 @@ metrics <- c(
 )
 
 colnames <- c("Master","Record",metrics)
-print(colnames)
   
 # Create empty data frame
 data <- data.frame(matrix(NA,
@@ -58,5 +57,9 @@ for (rec in master_recs) {
     data[nrow(data) + 1,] <- c(rec,datum,scores)
   }
 }
-
-print(data)
+df <- data[, 3: 11]
+df <- as.data.frame(lapply(df, as.numeric))
+df <- as.data.frame(df)
+means <- rowMeans(df[1:nrow(df), ])
+data$MeanScore <- means
+print(data[, c("Master","Record","MeanScore")])
