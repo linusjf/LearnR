@@ -28,14 +28,10 @@ stopwords <- c("only",
 "use",
 "-",
 "acct",
-"84719482-A"
-)
-
-text_corpus <- rm_stop(text_corpus, 
-                       stopwords, 
-                       separate = FALSE,
-                       ignore.case = TRUE,
-                       apostrophe.remove = TRUE)
+"84719482-A",
+"(",
+")",
+"a")
 
 metrics <- c(
   "osa",
@@ -49,6 +45,12 @@ metrics <- c(
   "jw"
 )
 
+text_corpus <- rm_stopwords(text_corpus,stopwords = stopwords,
+separate = FALSE,strip = TRUE,
+ignore.case = TRUE,
+apostrophe.remove = TRUE)
+
+text_corpus
 colnames <- c("Master","Record",metrics)
   
 # Create empty data frame
@@ -64,7 +66,7 @@ for (rec in master_recs) {
     scores <- c()
     for (method in metrics) {
       score <- stringsim(
-        rec,
+        tolower(rec),
         datum,
         method = method,
         useBytes = FALSE,
