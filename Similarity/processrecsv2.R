@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-library(stringdist)
-library(qdap)
+suppressMessages(library(stringdist))
+suppressMessages(library(qdap))
 
 master_recs <- c(
   "Lumiere Technologies",
@@ -82,4 +82,6 @@ df <- as.data.frame(lapply(df, as.numeric))
 df <- as.data.frame(df)
 means <- rowMeans(df[1:nrow(df), ])
 data$MeanScore <- means
-print(data[, c("Master","Record","MeanScore")])
+result <- subset(data, MeanScore > 0.5, select = c("Master","Record","MeanScore"))
+result <- as.data.frame(t(as.matrix(result)))
+print(format(result))
