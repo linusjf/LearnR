@@ -6,16 +6,19 @@ require("datasets")
 data(warpbreaks)
 # RESTRUCTURE DATA
 wbdata <- tapply(warpbreaks$breaks, # Outcome
- list(warpbreaks$wool, warpbreaks$tension), # Factors
- FUN = mean) # Summary function
+  list(warpbreaks$wool, warpbreaks$tension), # Factors
+  FUN = mean
+) # Summary function
 # CREATE BARPLOT
 barplot(wbdata, # Use a new summary table.
- beside = TRUE, # Bars side-by-side vs. stacked
- col = c("steelblue3", "thistle3"), # Colors
- main = "Mean Number of Warp Breaks\nby Tension and Wool",
- xlab = "Tension",
- ylab = "Mean Number of Breaks")
+  beside = TRUE, # Bars side-by-side vs. stacked
+  col = c("steelblue3", "thistle3"), # Colors
+  main = "Mean Number of Warp Breaks\nby Tension and Wool",
+  xlab = "Tension",
+  ylab = "Mean Number of Breaks"
+)
 # ADD LEGEND
-legend("topright", 
- rownames(wbdata), # Use matrix row names (A & B)
- fill = c("steelblue3", "thistle3")) # Colors
+legend("topright",
+  rownames(wbdata), # Use matrix row names (A & B)
+  fill = c("steelblue3", "thistle3")
+) # Colors
