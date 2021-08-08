@@ -494,10 +494,9 @@ install_msdrs <- function() {
   }
 }
 
-
 install_pa <- function() {
   # install peopleanalyticsdata package
-  if (!require(peopleanalytics)) {
+  if (!require(peopleanalyticsdata)) {
     install.packages("peopleanalyticsdata", .libPaths()[1])
   }
 }
