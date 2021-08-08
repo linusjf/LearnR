@@ -494,6 +494,14 @@ install_msdrs <- function() {
   }
 }
 
+
+install_pa <- function() {
+  # install peopleanalyticsdata package
+  if (!require(peopleanalytics)) {
+    install.packages("peopleanalyticsdata", .libPaths()[1])
+  }
+}
+
 main <- function(argv) {
   print(Sys.info())
   sess <- sessionInfo()
@@ -519,6 +527,7 @@ main <- function(argv) {
   install_efficientr()
   install_dsforengineers()
   install_msdrs()
+  install_pa()
   if (!is.null(warnings())) {
     summary(warnings())
   }
