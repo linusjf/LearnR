@@ -48,6 +48,12 @@ install_similarity <- function() {
   }
 }
 
+install_dsprob <- function() {
+  if (!require(gtools)) {
+    install.packages("gtools", .libPaths()[1])
+  }
+}
+
 install_rsuccinctly <- function() {
   if (!require(psych)) {
     install.packages("psych", .libPaths()[1])
@@ -515,6 +521,7 @@ main <- function(argv) {
     }
   )
   install_tools()
+  install_dsprob()
   install_similarity()
   install_rsuccinctly()
   install_programs()
