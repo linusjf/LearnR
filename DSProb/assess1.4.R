@@ -42,36 +42,31 @@ results <- replicate(B, {
 })
 mean(results)
 
-####### QUESTION 2a #######
-# A restaurant manager wants to advertise that his lunch special offers
-#  enough choices to eat different meals every day of the year. He doesn't
-#  think his current special actually allows that number of choices, but wants
-#  to change his special if needed to allow at least 365 choices.
-# A meal at the restaurant includes 1 entree, 2 sides, and 1 drink. He
-#  currently offers a choice of 1 entree from a list of 6 options, a choice of
-#  2 different sides from a list of 6 options, and a choice of 1 drink from a
-#  list of 2 options.
-# How many meal combinations are possible with the current menu?
+print("####### QUESTION 2 #######")
+print("A restaurant manager wants to advertise that his lunch special offers enough choices to eat different meals every day of the year. He doesn't think his current special actually allows that number of choices, but wants to change his special if needed to allow at least 365 choices. A meal at the restaurant includes 1 entree, 2 sides, and 1 drink. He currently offers a choice of 1 entree from a list of 6 options, a choice of 2 different sides from a list of 6 options, and a choice of 1 drink from a list of 2 options.")
+print("####### QUESTION 2a #######")
+print("How many meal combinations are possible with the current menu?")
 
-# Different meals = 6
-# Different sides = 15
-combinations(6,2)
-# Different drink = 2
-6*15*2
+print("Different meals = ⁶C₁")
+print("Different sides = ⁶C₂")
+print("Different drinks = ²C₁")
+6*nrow(combinations(6,2))*2
 
-####### QUESTION 2b #######
-# The manager has one additional drink he could add to the special.
-# How many combinations are possible if he expands his original special
-#  to 3 drink options?
+print("####### QUESTION 2b #######")
+print("The manager has one additional drink he could add to the special. How many combinations are possible if he expands his original special to 3 drink options?")
+print("Different meals = ⁶C₁")
+print("Different sides = ⁶C₂")
+print("Different drinks = ³C₁")
 
-6*15*3
+6*nrow(combinations(6,2))*3
 
-####### QUESTION 2c #######
-# How many meal combinations are there if customers can choose from
-#  6 entrees, 3 drinks, and select 3 sides from the current 6 options?
+print("####### QUESTION 2c #######")
+print("How many meal combinations are there if customers can choose from 6 entrees, 3 drinks, and select 3 sides from the current 6 options?")
 
-combinations(6,3)
-6*3*20
+print("Different meals = ⁶C₁")
+print("Different sides = ⁶C₃")
+print("Different drinks = ³C₁")
+6*3*nrow(combinations(6,3))
 
 ####### QUESTION 2d #######
 # The manager is concerned that customers may not want 3 sides with their meal.
