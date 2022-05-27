@@ -68,43 +68,35 @@ print("Different sides = ⁶C₃")
 print("Different drinks = ³C₁")
 6*3*nrow(combinations(6,3))
 
-####### QUESTION 2d #######
-# The manager is concerned that customers may not want 3 sides with their meal.
-#  He is willing to increase the number of entree choices instead, but if he
-#  adds too many expensive options it could eat into profits. He wants to know
-#  how many entree choices he would have to offer in order to meet his goal.
+print("####### QUESTION 2d #######")
+print("The manager is concerned that customers may not want 3 sides with their meal. He is willing to increase the number of entree choices instead, but if he adds too many expensive options it could eat into profits. He wants to know how many entree choices he would have to offer in order to meet his goal.")
+print("Write a function that takes a number of entree choices and returns the number of meal combinations possible given that number of entree options, 3 drink choices, and a selection of 2 sides from 6 options.")
 
-# Write a function that takes a number of entree choices and returns the number
-#  of meal combinations possible given that number of entree options, 3 drink
-#  choices, and a selection of 2 sides from 6 options.
 f <- function(entree){
-  print(3*15*entree)
+  3*15*entree
 }
 
-# Use sapply to apply the function to entree option counts ranging from 1 to 12.
-# What is the minimum number of entree options required in order to generate more
-#  than 365 combinations?
+print("Use sapply to apply the function to entree option counts ranging from 1 to 12.")
+print("What is the minimum number of entree options required in order to generate more than 365 combinations?")
 options <- seq(1:12)
-sapply(options, f)
+sel <- sapply(options, f)
+which(sel >= 365)[1]
 
+print("####### QUESTION 2e #######")
+print("Write a function that takes a number of side choices and returns the number of meal combinations possible given 6 entree choices, 3 drink choices, and a selection of 2 sides from the specified number of side choices.")
 
-####### QUESTION 2e #######
-# Write a function that takes a number of side choices and returns the number of
-#  meal combinations possible given 6 entree choices, 3 drink choices, and a selection
-#  of 2 sides from the specified number of side choices.
-ff <- function(sides){
+ff <- function(sides) {
   3*6*nrow(combinations(sides,2))
 }
 
-# Use sapply to apply the function to side counts ranging from 2 to 12.
-# What is the minimum number of side options required in order to generate
-#  more than 365 combinations?
+print("Use sapply to apply the function to side counts ranging from 2 to 12.")
+print("What is the minimum number of side options required in order to generate more than 365 combinations?")
 options <- 2:12
-sapply(options, ff)
+sel <- sapply(options, ff)
+which(sel >= 365)[1] + 1
 
-
-####### QUESTION 3a/b/c #######
-# How many groups are in the study?
+print("####### QUESTION 3a/b/c #######")
+print("How many groups are in the study?")
 nrow(esoph)
 
 # How many cases are there?
