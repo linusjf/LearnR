@@ -45,3 +45,31 @@ print("What ACT score value corresponds to 2 standard deviations above the mean 
 
 print("What is the 97.5th percentile of act_scores?")
 qnorm(0.975,mean(act.scores),sd(act.scores))
+
+F <- function(a) mean(act.scores <= a)
+
+x <- seq(1,32)
+
+cdf <- sapply(x,F)
+
+print("What is the minimum integer score such that the probability of that score or lower is at least .95?")
+
+min(which(cdf >= 0.95))
+
+print("Use qnorm() to determine the expected 95th percentile, the value for which the probability of receiving that score or lower is 0.95, given a mean score of 20.9 and standard deviation of 5.7.")
+print("What is the expected 95th percentile of ACT scores?")
+
+qnorm(0.95,20.9,5.7)
+
+print("Make a vector containing the quantiles for p <- seq(0.01, 0.99, 0.01), the 1st through 99th percentiles of the act_scores data. Save these as sample_quantiles.")
+print("In what percentile is a score of 26?")
+
+p <- seq(0.01,0.99,0.01)
+
+sample.quantiles <- quantile(act.scores,p)
+
+names(sample.quantiles[max(which(sample.quantiles < 26))])
+
+theoretical.quantiles <- qnorm(p,20.9,5.7)
+
+qplot(theoretical.quantiles, sample.quantiles) + geom_abline()
