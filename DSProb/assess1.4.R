@@ -107,6 +107,15 @@ print("How many controls are there?")
 all.controls <- sum(esoph$ncontrols)
 print(all.controls)
 
+print("List the age groups:")
+esoph %>% distinct(agegp)
+print("List the alcohol groups:")
+esoph %>% distinct(alcgp)
+print("List the tobacco groups:")
+esoph %>% distinct(tobgp)
+print("List all the groups:")
+esoph %>% distinct(agegp,alcgp,tobgp)
+
 print("####### QUESTION 4a/b/c/d #######")
 print("What is the probability that a subject in the highest alcohol consumption group is a cancer case?")
 esoph %>% filter(alcgp == "120+") %>%
@@ -122,35 +131,32 @@ smoking10_cases <- esoph %>% filter(tobgp != "0-9g/day") %>%
   summarize(smoking10_cases = sum(ncases))
 smoking10_cases[["smoking10_cases"]]/tot_cases[["tot_cases"]]
 
-# Given that a person is a control, what is the probability that they smoke 10g or
-#  more a day?
-esoph %>% summarize(tot_cases = sum(ncontrols))
-esoph %>% filter(tobgp != "0-9g/day") %>%
+print("Given that a person is a control, what is the probability that they smoke 10g or more a day?")
+tot_cases <- esoph %>% summarize(tot_cases = sum(ncontrols))
+smoking10_cases <- esoph %>% filter(tobgp != "0-9g/day") %>%
   summarize(smoking10_cases = sum(ncontrols))
-450/975
+smoking10_cases[["smoking10_cases"]]/tot_cases[["tot_cases"]]
 
-####### QUESTION 5a/b/c/d #######
-# For cases, what is the probability of being in the highest alcohol group?
-esoph %>% filter(alcgp == "120+") %>%
+print("####### QUESTION 5a/b/c/d #######")
+print("For cases, what is the probability of being in the highest alcohol group?")
+sum_cases <- esoph %>% filter(alcgp == "120+") %>%
   summarize(sum_cases=sum(ncases))
-45/all.cases
+sum_cases[["sum_cases"]]/all.cases
 
-# For cases, what is the probability of being in the highest tobacco group?
-esoph %>% filter(tobgp == "30+") %>%
+print("For cases, what is the probability of being in the highest tobacco group?")
+sum_cases <- esoph %>% filter(tobgp == "30+") %>%
   summarize(sum_cases=sum(ncases))
-31/all.cases
+sum_cases[["sum_cases"]]/all.cases
 
-# For cases, what is the probability of being in the highest alcohol group and
-#  the highest tobacco group?
-esoph %>% filter(alcgp == "120+" & tobgp =="30+") %>%
+print("For cases, what is the probability of being in the highest alcohol group and the highest tobacco group?")
+sum_cases <- esoph %>% filter(alcgp == "120+" & tobgp =="30+") %>%
   summarize(sum_cases = sum(ncases))
-10/all.cases
+sum_cases[["sum_cases"]]/all.cases
 
-# For cases, what is the probability of being in the highest alcohol group or
-#  the highest tobacco group?
-esoph %>% filter(alcgp == "120+" | tobgp =="30+") %>%
+print("For cases, what is the probability of being in the highest alcohol group or the highest tobacco group?")
+sum_cases <- esoph %>% filter(alcgp == "120+" | tobgp =="30+") %>%
   summarize(sum_cases = sum(ncases))
-66/all.cases
+sum_cases[["sum_cases"]]/all.cases
 
 ####### QUESTION 6a/b/c/d/e/f #######
 # For controls, what is the probability of being in the highest alcohol group?
