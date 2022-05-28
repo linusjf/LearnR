@@ -24,4 +24,9 @@ tallest <- replicate(B, {
     max(simulated_data)    
 })
 print("proportion of 7 footers")
-mean(tallest >= 7*12)    
+mean(tallest >= 7*12)   
+
+x <- seq(-4, 4, length.out = 100)
+data.frame(x, f = dnorm(x)) %>%
+    ggplot(aes(x,f)) +
+    geom_line()
