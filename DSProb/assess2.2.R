@@ -34,3 +34,11 @@ fx <- dnorm(x,20.9,5.7)
 data.frame(x, fx) %>%
     ggplot(aes(x,fx)) +
     geom_line()
+
+zscores <- 
+  (act.scores - mean(act.scores))/sd(act.scores)
+print("What is the probability of a Z-score greater than 2 (2 standard deviations above the mean)?")
+sum(zscores > 2)/n
+
+print("What ACT score value corresponds to 2 standard deviations above the mean (Z = 2)?")
+2 * sd(act.scores) + mean(act.scores)
