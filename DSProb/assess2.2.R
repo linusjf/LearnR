@@ -42,3 +42,6 @@ sum(zscores > 2)/n
 
 print("What ACT score value corresponds to 2 standard deviations above the mean (Z = 2)?")
 2 * sd(act.scores) + mean(act.scores)
+
+print("What is the 97.5th percentile of act_scores?")
+qnorm(0.975,mean(act.scores),sd(act.scores))
