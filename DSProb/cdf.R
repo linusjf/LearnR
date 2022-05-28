@@ -25,3 +25,7 @@ print("probabilities in normal approximation match well")
 pnorm(68.5, mean(x), sd(x)) - pnorm(67.5, mean(x), sd(x))
 pnorm(69.5, mean(x), sd(x)) - pnorm(68.5, mean(x), sd(x))
 pnorm(70.5, mean(x), sd(x)) - pnorm(69.5, mean(x), sd(x))
+
+print("probabilities in actual data over other ranges don't match normal approx as well")
+mean(x <= 70.9) - mean(x <= 70.1)
+pnorm(70.9, mean(x), sd(x)) - pnorm(70.1,sd(x))
