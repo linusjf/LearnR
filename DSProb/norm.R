@@ -23,5 +23,5 @@ tallest <- replicate(B, {
     # determine the tallest height
     max(simulated_data)    
 })
-# proportion of 7 footers
+print("proportion of 7 footers")
 mean(tallest >= 7*12)    
