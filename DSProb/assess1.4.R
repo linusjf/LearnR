@@ -158,35 +158,30 @@ sum_cases <- esoph %>% filter(alcgp == "120+" | tobgp =="30+") %>%
   summarize(sum_cases = sum(ncases))
 sum_cases[["sum_cases"]]/all.cases
 
-####### QUESTION 6a/b/c/d/e/f #######
-# For controls, what is the probability of being in the highest alcohol group?
-esoph %>% filter(alcgp == "120+") %>%
-  summarize(contr_sum = sum(ncontrols), probability = contr_sum/all.controls)
+print("####### QUESTION 6a/b/c/d/e/f #######")
+print("For controls, what is the probability of being in the highest alcohol group?")
+contr_sum <- esoph %>% filter(alcgp == "120+") %>%
+  summarize(contr_sum = sum(ncontrols))
+contr_sum[["contr_sum"]]/all.controls
 
-# How many times more likely are cases than controls to be in the highest alcohol
-#  group?
+print("How many times more likely are cases than controls to be in the highest alcohol group?")
 esoph %>% filter(alcgp == "120+") %>%
-  summarize(contr_sum = sum(ncontrols), case_sum = sum(ncases),
-            co_prob = contr_sum/all.controls, ca_prob = case_sum/all.cases,
+  summarize(co_prob = sum(ncontrols)/all.controls, ca_prob = sum(ncases)/all.cases,
             ratio = ca_prob/co_prob)
 
-# For controls, what is the probability of being in the highest tobacco group?
+print("For controls, what is the probability of being in the highest tobacco group?")
 esoph %>% filter(tobgp == "30+") %>%
-  summarize(contr_sum = sum(ncontrols), probability = contr_sum/all.controls)
+  summarize(probability = sum(ncontrols)/all.controls)
 
-# For controls, what is the probability of being in the highest alcohol group and
-#  the highest tobacco group?
+print("For controls, what is the probability of being in the highest alcohol group and the highest tobacco group?")
 esoph %>% filter(tobgp == "30+" & alcgp == "120+") %>%
-  summarize(contr_sum = sum(ncontrols), probability = contr_sum/all.controls)
+  summarize(probability = sum(ncontrols)/all.controls)
 
-# For controls, what is the probability of being in the highest alcohol group or
-#  the highest tobacco group?
+print("For controls, what is the probability of being in the highest alcohol group or the highest tobacco group?")
 esoph %>% filter(tobgp == "30+" | alcgp == "120+") %>%
-  summarize(contr_sum = sum(ncontrols), probability = contr_sum/all.controls)
+  summarize(probability = sum(ncontrols)/all.controls)
 
-# How many times more likely are cases than controls to be in the highest alcohol
-#  group or the highest tobacco group?
+print("How many times more likely are cases than controls to be in the highest alcohol group or the highest tobacco group?")
 esoph %>% filter(alcgp == "120+" | tobgp == "30+") %>%
-  summarize(contr_sum = sum(ncontrols), case_sum = sum(ncases),
-            co_prob = contr_sum/all.controls, ca_prob = case_sum/all.cases,
+  summarize(co_prob = sum(ncontrols)/all.controls, ca_prob = sum(ncases)/all.cases,
             ratio = ca_prob/co_prob)
