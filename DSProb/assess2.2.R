@@ -28,3 +28,9 @@ sum(act.scores > 30)/n
 
 print("In act_scores, what is the probability of an ACT score less than or equal to 10?")
 sum(act.scores <= 10)/n
+
+x <- seq(1:36)
+fx <- dnorm(x,20.9,5.7)
+data.frame(x, fx) %>%
+    ggplot(aes(x,fx)) +
+    geom_line()
