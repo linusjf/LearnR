@@ -15,3 +15,20 @@ print("What is the standard error of guessing on all 44 questions?")
 sigma <- abs(b - a) * sqrt(p * q)
 se <- sqrt(n) * sigma
 se
+print("Use the Central Limit Theorem to determine the probability that a guessing student scores 8 points or higher on the test.")
+1 - pnorm(8, mu, se)
+
+print("Set the seed to 21, then run a Monte Carlo simulation of 10,000 students guessing on the test.")
+print("What is the probability that a guessing student scores 8 points or higher?")
+## Warning in set.seed(21, sample.kind = "Rounding"): non-uniform 'Rounding'
+defaultW <- getOption("warn")
+options(warn = -1)
+set.seed(21, sample.kind = "Rounding")
+options(warn = defaultW)
+## sampler used
+B <- 10000
+S <- replicate(B, {
+  Results <- sample(c(a, b), n, replace = TRUE, prob = c(p, q))
+  sum(Results)
+})
+mean(S > 8)
