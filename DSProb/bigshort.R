@@ -1,4 +1,6 @@
 #!/usr/bin/env Rscript
+suppressPackageStartupMessages(library(tidyverse))
+
 p <- .04
 loss_per_foreclosure <- -200000
 r <- 0.05
@@ -28,7 +30,30 @@ profit <- replicate(B, {
     draws <- sample(c(x, loss_per_foreclosure), n, prob=c(1-p, p), replace = TRUE)
     sum(draws)
 })
+print("Expected profit with probability 0.04")
 mean(profit)
+print("probability of losing money")
+mean(profit < 0)    
+
+p <- 0.03
+profit <- replicate(B, {
+    draws <- sample(c(x, loss_per_foreclosure), n, prob=c(1-p, p), replace = TRUE)
+    sum(draws)
+})
+print("Expected profit with probability 0.03")
+mean(profit)
+print("probability of losing money")
+mean(profit < 0)    
+
+p <- 0.05
+profit <- replicate(B, {
+    draws <- sample(c(x, loss_per_foreclosure), n, prob=c(1-p, p), replace = TRUE)
+    sum(draws)
+})
+print("Expected profit with probability 0.05")
+mean(profit)
+print("probability of losing money")
+mean(profit < 0)    
 
 print("Monte Carlo simulation with unknown default probability")
 print("This Monte Carlo simulation estimates the expected profit given an unknown probability of default , modeling the situation where an event changes the probability of default for all borrowers simultaneously.")
@@ -46,4 +71,8 @@ mean(profit)
 print("probability of losing money")
 mean(profit < 0)    
 print("probability of losing more than 10 million")
-mean(profit < -10000000)    
+mean(profit < -10000000)   
+
+data.frame(profit_in_millions=profit/10^6) %>% 
+  ggplot(aes(profit_in_millions)) + 
+  geom_histogram(color="black", binwidth = 5)
