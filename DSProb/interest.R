@@ -47,3 +47,14 @@ print("expected value of the profit per loan")
 loss_per_foreclosure * p + x * (1-p)    
 print("expected value of the profit over n loans")
 n * (loss_per_foreclosure * p + x * (1-p))
+
+B <- 100000
+profit <- replicate(B, {
+    draws <- sample( c(x, loss_per_foreclosure), n, 
+                        prob=c(1-p, p), replace = TRUE) 
+    sum(draws)
+})
+print("expected value of the profit over n loans")
+mean(profit)    
+print("probability of loss from loans to bank:")
+mean(profit<0)   
