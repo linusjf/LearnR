@@ -1,6 +1,5 @@
 #!/usr/bin/env Rscript
 suppressPackageStartupMessages(library(tidyverse))
-set.seed(1)
 print("Create a random variable S with the earnings of your bank if you give out 10,000 loans, the default rate is 0.3, and you lose $200,000 in each foreclosure.")
 n <- 10000
 loss_per_foreclosure <- -200000
@@ -9,7 +8,7 @@ p <- 0.3
 loan.amt <- 180000
 defaults <- sample( c(0,1), n, prob=c(1-p, p), replace = TRUE)
 S <- sum(defaults * loss_per_foreclosure)
-S
+S / 10^6
 
 print("Run a Monte Carlo simulation with 10,000 outcomes for S. Make a histogram of the results.")
 B <- 10000
@@ -21,9 +20,13 @@ data.frame(losses_in_millions=losses/10^6) %>%
   ggplot(aes(losses_in_millions)) + 
   geom_histogram(color="black", binwidth = 5)
 
-print("What is the expected value of S?")
+print("What is the expected value of S (in millions)?")
+mu <- n * (loss_per_foreclosure * p + 0 * (1-p))
+mu / 10^6
 
-print("What is the standard error of S?")
+print("What is the standard error of S (in millions)?")
+se <- sqrt(n * p * (1 - p)) * abs(loss_per_foreclosure)
+se / 10^6
 
 print("Suppose we give out loans for $180,000. What should the interest rate be so that our expected value is 0?")
 
