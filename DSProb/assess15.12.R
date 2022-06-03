@@ -12,6 +12,14 @@ S <- sum(defaults * loss_per_foreclosure)
 S
 
 print("Run a Monte Carlo simulation with 10,000 outcomes for S. Make a histogram of the results.")
+B <- 10000
+losses <- replicate(B, {
+    defaults <- sample( c(0,1), n, prob=c(1-p, p), replace = TRUE) 
+  sum(defaults * loss_per_foreclosure)
+})
+data.frame(losses_in_millions=losses/10^6) %>% 
+  ggplot(aes(losses_in_millions)) + 
+  geom_histogram(color="black", binwidth = 5)
 
 print("What is the expected value of S?")
 
