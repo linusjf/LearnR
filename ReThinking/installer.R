@@ -19,6 +19,11 @@ install_rethinking <- function() {
   if (!require(dagitty)) {
   install.packages("dagitty", .libPaths()[1])
   }
+  # we recommend running this is a fresh R session or restarting your current session
+  if (!require(cmdstanr)) {
+  install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")),
+.libPaths()[1])
+  }
   devtools::install_github("rmcelreath/rethinking")
 }
 
