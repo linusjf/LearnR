@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-libpath="/data/data/com.termux/files/usr/lib/R/library/**/libs/*.so"
-if [[ $OSTYPE == 'linux-gnu' ]]
-then
+libpath="${PREFIX}/lib/R/library/**/libs/*.so"
+if [[ $OSTYPE == 'linux-gnu' ]]; then
   libpath="/usr/lib/R/library/**/libs/*.so"
 fi
-strip --strip-debug $libpath
-du -csh $libpath
+strip --strip-debug "$libpath"
+du -csh "$libpath"
