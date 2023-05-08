@@ -32,9 +32,11 @@ main <- function(argv) {
   coeff_df <- model_coeffs(reg)
   df <- dplyr::bind_rows(df, cbind(coeff_df, model_df))
   df %<>%
-    select("(Intercept)", "(Intercept).p", "Brain", "Brain.p", "Height", "Height.p", 
-      "Weight", "Weight.p", "Sigma", "R.squared", "Adj.R.squared", "Ratio.Adj.R2.to.R2", 
-      "Pred.R.squared", "PRESS", "p.value")
+    select(
+      "(Intercept)", "(Intercept).p", "Brain", "Brain.p", "Height", "Height.p",
+      "Weight", "Weight.p", "Sigma", "R.squared", "Adj.R.squared", "Ratio.Adj.R2.to.R2",
+      "Pred.R.squared", "PRESS", "p.value"
+    )
   print(df)
   print(anova_df)
 

@@ -31,15 +31,16 @@ metrics <- c(
   "jw"
 )
 
-colnames <- c("Master","Record",metrics)
-  
+colnames <- c("Master", "Record", metrics)
+
 # Create empty data frame
 data <- data.frame(matrix(NA,
-                          nrow = 0,
-                          ncol = 2 + length(metrics)))
+  nrow = 0,
+  ncol = 2 + length(metrics)
+))
 names(data) <- colnames
-data[,1] <- as.numeric(data[,1])
-data[,2] <- as.numeric(data[,2])
+data[, 1] <- as.numeric(data[, 1])
+data[, 2] <- as.numeric(data[, 2])
 
 for (rec in master_recs) {
   for (datum in text_corpus) {
@@ -52,14 +53,14 @@ for (rec in master_recs) {
         useBytes = FALSE,
         q = 1
       )
-      scores <- append(scores,score)
+      scores <- append(scores, score)
     }
-    data[nrow(data) + 1,] <- c(rec,datum,scores)
+    data[nrow(data) + 1, ] <- c(rec, datum, scores)
   }
 }
-df <- data[, 3: 11]
+df <- data[, 3:11]
 df <- as.data.frame(lapply(df, as.numeric))
 df <- as.data.frame(df)
 means <- rowMeans(df[1:nrow(df), ])
 data$MeanScore <- means
-print(data[, c("Master","Record","MeanScore")])
+print(data[, c("Master", "Record", "MeanScore")])

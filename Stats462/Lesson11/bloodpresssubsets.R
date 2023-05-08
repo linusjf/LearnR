@@ -70,8 +70,10 @@ main <- function(argv) {
 checkfit <- function(model) {
   eqn <- model_equation(model, digits = 4)
   frm <- format(formula(model))
-  plot(model, which = c(1, 2), caption = list("Residuals vs Fitted", "Normal Q-Q"), 
-    sub.caption = list(frm, frm))
+  plot(model,
+    which = c(1, 2), caption = list("Residuals vs Fitted", "Normal Q-Q"),
+    sub.caption = list(frm, frm)
+  )
   ad <- ad.test(resid(model))
   print(eqn)
   print(ad)

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<checkstyle version="4.3">
+  <file name="MSDRS/fibonacci.R">
+    <error line="59" column="6" severity="warning" message="Indentation is not multiple of 2" source="WhitespaceCheck.WSC003"/>
+  </file>
+</checkstyle>

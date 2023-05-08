@@ -10,9 +10,9 @@ main <- function(argv) {
   print(skimr::skim(data))
 
   print(cor(data))
-  print(cor.test(~momheight + dadheight, data))
-  print(cor.test(~momheight + Height, data))
-  print(cor.test(~dadheight + Height, data))
+  print(cor.test(~ momheight + dadheight, data))
+  print(cor.test(~ momheight + Height, data))
+  print(cor.test(~ dadheight + Height, data))
 
 
   reg <- lm(Height ~ momheight, data = data)
@@ -27,8 +27,10 @@ main <- function(argv) {
   print(reg)
   print(anova(reg))
 
-  scatterplot3d(data, main = "Height versus momheight,dadheight", axis = TRUE, 
-    grid = TRUE, highlight.3d = TRUE, type = "p", angle = 45)
+  scatterplot3d(data,
+    main = "Height versus momheight,dadheight", axis = TRUE,
+    grid = TRUE, highlight.3d = TRUE, type = "p", angle = 45
+  )
 
   plot(reg)
 

@@ -43,14 +43,18 @@ main <- function(argv) {
 
 print.shape_S3 <- function(x) {
   if (length(x$side_lengths) == 3) {
-    print(paste("A triangle with side lengths of", x$side_lengths[1], ",", x$side_lengths[2], 
-      "and", x$side_lengths[3]))
+    print(paste(
+      "A triangle with side lengths of", x$side_lengths[1], ",", x$side_lengths[2],
+      "and", x$side_lengths[3]
+    ))
   } else if (length(x$side_lengths) == 4) {
     if (is_square(x)) {
       print(paste("A square with length size", x$side_lengths[1]))
     } else {
-      print(paste("A quadrilateral with side lengths of", x$side_lengths[1], 
-        ",", x$side_lengths[2], ",", x$side_lengths[3], "and", x$side_lengths[4]))
+      print(paste(
+        "A quadrilateral with side lengths of", x$side_lengths[1],
+        ",", x$side_lengths[2], ",", x$side_lengths[3], "and", x$side_lengths[4]
+      ))
     }
   } else {
     print(paste("A shape with", length(x$side_lengths), "sides."))
@@ -64,7 +68,7 @@ is_square.default <- function(x) {
 is_square <- function(x) UseMethod("is_square")
 
 is_square.shape_S3 <- function(x) {
-  length(x$side_lengths) == 4 && x$side_lengths[1] == x$side_lengths[2] && x$side_lengths[2] == 
+  length(x$side_lengths) == 4 && x$side_lengths[1] == x$side_lengths[2] && x$side_lengths[2] ==
     x$side_lengths[3] && x$side_lengths[3] == x$side_lengths[4]
 }
 

@@ -21,10 +21,11 @@ plot(faithful[, -3],
   xlab = "Eruption time (min)",
   ylab = "Waiting time to next eruption (min)"
 )
-lines(lowess(faithful$eruptions,
-  faithful$waiting,
-  f = 2 / 3,
-  iter = 3
-),
-col = "red"
+lines(
+  lowess(faithful$eruptions,
+    faithful$waiting,
+    f = 2 / 3,
+    iter = 3
+  ),
+  col = "red"
 )

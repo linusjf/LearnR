@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<checkstyle version="4.3">
+  <file name="Stats462/Lesson09/infectionrisk.R">
+    <error line="32" column="8" severity="warning" message="Indentation is not multiple of 2" source="WhitespaceCheck.WSC003"/>
+  </file>
+</checkstyle>

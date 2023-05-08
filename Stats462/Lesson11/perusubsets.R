@@ -23,7 +23,7 @@ suppressPackageStartupMessages(library(nortest))
 main <- function(argv) {
   data <- read.table(peru.txt, header = TRUE, as.is = TRUE)
   data %<>%
-    mutate(fraclife = Years/Age) %>%
+    mutate(fraclife = Years / Age) %>%
     select(Age, Years, fraclife, Weight, Height, Chin, Forearm, Pulse, Systol)
   print(head(data))
   print(skimr::skim(data))
@@ -65,8 +65,10 @@ main <- function(argv) {
   print("Computed cp(s)")
   print(compute_cp(model, best_cp))
   print(compute_cp(model, best_cp2))
-  best <- unique_models(list(best_p, best_p2, best_rsq, best_adjr, best_cp, best_cp2, 
-    best_aic, best_sbc))
+  best <- unique_models(list(
+    best_p, best_p2, best_rsq, best_adjr, best_cp, best_cp2,
+    best_aic, best_sbc
+  ))
   print("Best subset using p, rsquare, adjr ,cp, aic, sbc")
   print(best)
   lapply(best, checkfit)
@@ -81,8 +83,10 @@ main <- function(argv) {
 checkfit <- function(model) {
   eqn <- model_equation(model, digits = 4)
   frm <- format(formula(model))
-  plot(model, which = c(1, 2), caption = list("Residuals vs Fitted", "Normal Q-Q"), 
-    sub.caption = list(frm, frm))
+  plot(model,
+    which = c(1, 2), caption = list("Residuals vs Fitted", "Normal Q-Q"),
+    sub.caption = list(frm, frm)
+  )
   ad <- ad.test(resid(model))
   print(eqn)
   print(ad)

@@ -47,7 +47,7 @@ process_new <- function(data) {
   SSLF <- anova_single[2, 4]
   print(paste("Lack of Fit Sum of Squares: ", SSLF))
   print("SSLF / SSE :")
-  print(SSLF/SSE)
+  print(SSLF / SSE)
   # nolint end
 
   plot_accounts(data, reg)
@@ -83,7 +83,7 @@ process_new1 <- function(data) {
   SSLF <- anova_single[2, 4]
   print(paste("Lack of Fit Sum of Squares: ", SSLF))
   print("SSLF / SSE :")
-  print(SSLF/SSE)
+  print(SSLF / SSE)
   # nolint end
 
   plot_accounts_new2(data, reg)
@@ -92,16 +92,23 @@ process_new1 <- function(data) {
 plot_accounts_new2 <- function(data, reg) {
   par(mar = c(4, 4, 7, 1))
   coefs <- reg$coefficients
-  main_label <- paste("Size of minimum deposit versus number of new accounts\n", 
-    coefs["(Intercept)"], "+", coefs["Size"], "Size")
-  plot(data$Size, data$New2, main = main_label, xlab = "Size of minimum deposit", 
-    ylab = "New Accounts", pch = 19, frame = FALSE)
+  main_label <- paste(
+    "Size of minimum deposit versus number of new accounts\n",
+    coefs["(Intercept)"], "+", coefs["Size"], "Size"
+  )
+  plot(data$Size, data$New2,
+    main = main_label, xlab = "Size of minimum deposit",
+    ylab = "New Accounts", pch = 19, frame = FALSE
+  )
   abline(reg, col = "blue")
   box(which = "plot", lty = "solid")
   summ <- summary(reg)
-  legends <- c(paste0("S - ", format(summ$sigma, digits = 4)), paste0("Rsq - ", 
-    format(summ$r.squared, digits = 4)), paste0("Rsq(adj) - ", format(summ$adj.r.squared, 
-    digits = 4)))
+  legends <- c(paste0("S - ", format(summ$sigma, digits = 4)), paste0(
+    "Rsq - ",
+    format(summ$r.squared, digits = 4)
+  ), paste0("Rsq(adj) - ", format(summ$adj.r.squared,
+    digits = 4
+  )))
   legend("bottomright", legends)
   abline(h = mean(data$New), col = "black", lty = "dashed")
 }
@@ -109,16 +116,23 @@ plot_accounts_new2 <- function(data, reg) {
 plot_accounts <- function(data, reg) {
   par(mar = c(4, 4, 7, 1))
   coefs <- reg$coefficients
-  main_label <- paste("Size of minimum deposit versus number of new accounts\n", 
-    coefs["(Intercept)"], "+", coefs["Size"], "Size")
-  plot(data$Size, data$New, main = main_label, xlab = "Size of minimum deposit", 
-    ylab = "New Accounts", pch = 19, frame = FALSE)
+  main_label <- paste(
+    "Size of minimum deposit versus number of new accounts\n",
+    coefs["(Intercept)"], "+", coefs["Size"], "Size"
+  )
+  plot(data$Size, data$New,
+    main = main_label, xlab = "Size of minimum deposit",
+    ylab = "New Accounts", pch = 19, frame = FALSE
+  )
   abline(reg, col = "blue")
   box(which = "plot", lty = "solid")
   summ <- summary(reg)
-  legends <- c(paste0("S - ", format(summ$sigma, digits = 4)), paste0("Rsq - ", 
-    format(summ$r.squared, digits = 4)), paste0("Rsq(adj) - ", format(summ$adj.r.squared, 
-    digits = 4)))
+  legends <- c(paste0("S - ", format(summ$sigma, digits = 4)), paste0(
+    "Rsq - ",
+    format(summ$r.squared, digits = 4)
+  ), paste0("Rsq(adj) - ", format(summ$adj.r.squared,
+    digits = 4
+  )))
   legend("bottomright", legends)
   abline(h = mean(data$New), col = "black", lty = "dashed")
 }

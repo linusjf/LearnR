@@ -19,10 +19,12 @@ main <- function(argv) {
 
 plot_skin_cancer <- function(data, reg) {
   par(mar = c(4, 7, 4, 1))
-  plot(data$Lat, data$Mort, main = "Skin cancer mortality versus state latitude", 
+  plot(data$Lat, data$Mort,
+    main = "Skin cancer mortality versus state latitude",
     xlab = "Latitude (at centre of state)", ylab = "Mortality (Deaths per 10
-     million)", 
-    pch = 19, frame = FALSE)
+     million)",
+    pch = 19, frame = FALSE
+  )
   abline(reg, col = "blue")
   x0 <- mean(data$Lat)
   y0 <- mean(data$Mort)

@@ -24,8 +24,9 @@ main <- function(argv) {
   fullanovalog <- anova(reglog)
   print(fullanovalog)
 
-  partreg <- lm(Systol ~ . - Height - Chin - Forearm - Calf - Pulse - Diastol, 
-    data = data)
+  partreg <- lm(Systol ~ . - Height - Chin - Forearm - Calf - Pulse - Diastol,
+    data = data
+  )
   print(partreg)
   print(summary(partreg))
   partanova <- anova(partreg)

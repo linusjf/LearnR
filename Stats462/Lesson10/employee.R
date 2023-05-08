@@ -30,8 +30,10 @@ ols_analysis <- function(data) {
   coeffs <- summary(model)$coefficients
   intercept <- coeffs[1, 1]
   slope <- coeffs[2, 1]
-  with(data, plot(vendor, metal, pch = 15, col = "blue", main = eqn, col.main = "red", 
-    sub = "Ordinary Least Squares"))
+  with(data, plot(vendor, metal,
+    pch = 15, col = "blue", main = eqn, col.main = "red",
+    sub = "Ordinary Least Squares"
+  ))
   abline(model, col = "red")
   return(model)
 }
@@ -57,9 +59,9 @@ cochrane_orcutt <- function(model, data) {
   print(dwtest(lagmodel))
 
   coeffs <- summary(lagmodel)$coefficients
-  intercept <- coeffs[1, 1]/(1 - rho)
+  intercept <- coeffs[1, 1] / (1 - rho)
   print(intercept)
-  intercept.se <- coeffs[1, 2]/(1 - rho)
+  intercept.se <- coeffs[1, 2] / (1 - rho)
   print(intercept.se)
   slope <- coeffs[2, 1]
 
@@ -68,8 +70,10 @@ cochrane_orcutt <- function(model, data) {
     mutate(e.cochrane1 = metal - fitted.cochrane1) %>%
     mutate(forecast.cochrane1 = fitted.cochrane1 + rho * Lag(e.cochrane1))
   eqn <- paste0("metal = ", round(intercept, 4), " + ", round(slope, 4), " * vendor")
-  with(data, plot(vendor, metal, pch = 15, col = "blue", main = eqn, col.main = "red", 
-    sub = "Cochrane Orcutt 1 iteration"))
+  with(data, plot(vendor, metal,
+    pch = 15, col = "blue", main = eqn, col.main = "red",
+    sub = "Cochrane Orcutt 1 iteration"
+  ))
   with(data, {
     lo <- lm(forecast.cochrane1 ~ vendor)
     abline(lo, col = "red")

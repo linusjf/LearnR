@@ -20,8 +20,10 @@ main <- function(argv) {
 
 plot_fev <- function(data, reg) {
   par(mar = c(4, 7, 4, 1))
-  plot(data$age, data$FEV, main = "Age versus Forced Exhalation Volume", xlab = "Age", 
-    ylab = "Forced Exhalation Volume (FEV)", pch = 19, frame = FALSE)
+  plot(data$age, data$FEV,
+    main = "Age versus Forced Exhalation Volume", xlab = "Age",
+    ylab = "Forced Exhalation Volume (FEV)", pch = 19, frame = FALSE
+  )
   abline(reg, col = "blue")
   box(which = "plot", lty = "solid")
 }

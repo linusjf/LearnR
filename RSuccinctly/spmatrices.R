@@ -37,13 +37,14 @@ pairs(iris[1:4], # Reads the data.
 )
 
 # SCATTERPLOT MATRIX WITH "CAR" PACKAGE
-scatterplotMatrix(~ Petal.Length + Petal.Width +
-  Sepal.Length + Sepal.Width | Species,
-data = iris,
-main = paste(
-  "Scatterplot Matrix for Iris Data",
-  "Using the \"car\" Package"
-)
+scatterplotMatrix(
+  ~ Petal.Length + Petal.Width +
+    Sepal.Length + Sepal.Width | Species,
+  data = iris,
+  main = paste(
+    "Scatterplot Matrix for Iris Data",
+    "Using the \"car\" Package"
+  )
 )
 
 # CLEAN UP

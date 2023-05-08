@@ -33,8 +33,10 @@ main <- function(argv) {
   print(eqn2)
 
   with(data, {
-    plot(height, weight, pch = 15, col = "blue", main = eqn1, col.sub = "grey", 
-      sub = eqn2)
+    plot(height, weight,
+      pch = 15, col = "blue", main = eqn1, col.sub = "grey",
+      sub = eqn2
+    )
     abline(model, col = "grey")
   })
   data %<>%

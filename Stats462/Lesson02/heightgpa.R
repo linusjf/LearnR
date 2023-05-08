@@ -30,7 +30,7 @@ main <- function(argv) {
   print(paste("Squared Sum of Residuals: ", SSR))
   SSE <- sum(resid(reg)^2)
   print(paste("Squared Sum of Errors: ", SSE))
-  print(c(SSR/SST, summary(reg)$r.squared))
+  print(c(SSR / SST, summary(reg)$r.squared))
   # nolint end
 
   print(cor(data$gpa, data$height))
@@ -40,8 +40,10 @@ main <- function(argv) {
 
 plot_heightgpa <- function(data, reg) {
   par(mar = c(4, 7, 4, 1))
-  plot(data$height, data$gpa, main = "Height versus gpa", xlab = "Height", ylab = "GPA", 
-    pch = 19, frame = FALSE)
+  plot(data$height, data$gpa,
+    main = "Height versus gpa", xlab = "Height", ylab = "GPA",
+    pch = 19, frame = FALSE
+  )
   abline(reg, col = "blue")
   x0 <- mean(data$height)
   y0 <- mean(data$gpa)

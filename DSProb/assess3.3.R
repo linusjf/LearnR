@@ -35,12 +35,12 @@ mean(S > 8)
 
 print("Suppose that the number of multiple choice options is 4 and that there is no penalty for guessing - that is, an incorrect question gives a score of 0.")
 print("What is the expected value of the score when guessing on this new test?")
-p <- 1/4
+p <- 1 / 4
 q <- 1 - p
 a <- 1
 b <- 0
 n <- 44
-mu <- n * (a*p + b*q)
+mu <- n * (a * p + b * q)
 mu
 
 print("Consider a range of correct answer probabilities p <- seq(0.25, 0.95, 0.05) representing a range of student skills.")
@@ -48,10 +48,10 @@ print("What is the lowest p such that the probability of scoring over 35 exceeds
 p <- seq(0.25, 0.95, 0.05)
 
 prob <- function(p) {
-  e_points <- (a * p) + (b * (1-p))
+  e_points <- (a * p) + (b * (1 - p))
   m <- n * e_points
-  se <- sqrt(n) * abs(a-b) * sqrt(p*(1-p))
-  1-pnorm (35, m, se)
+  se <- sqrt(n) * abs(a - b) * sqrt(p * (1 - p))
+  1 - pnorm(35, m, se)
 }
 
 score <- sapply(p, prob)
@@ -59,23 +59,23 @@ min(p[which(score > 0.8)])
 
 print("A casino offers a House Special bet on roulette, which is a bet on five pockets (00, 0, 1, 2, 3) out of 38 total pockets. The bet pays out 6 to 1. In other words, a losing bet yields -$1 and a successful bet yields $6. A gambler wants to know the chance of losing money if he places 500 bets on the roulette House Special.")
 print("What is the expected value of the payout for one bet?")
-p <- 5/38
+p <- 5 / 38
 a <- 6
 b <- -1
-mu <- a*p + b*(1-p)
+mu <- a * p + b * (1 - p)
 mu
 
 n <- 500
 
 print("What is the standard error of the payout for one bet?")
-sigma <- abs(b-a) * sqrt(p*(1-p))
+sigma <- abs(b - a) * sqrt(p * (1 - p))
 sigma
 
 print("What is the expected value of the average payout over 500 bets?")
 mu
 
 print("What is the standard error of the average payout over 500 bets?")
-sigma/sqrt(n)
+sigma / sqrt(n)
 
 print("What is the expected value of the sum of 500 bets?")
 n * mu
@@ -84,4 +84,4 @@ print("What is the standard error of the sum of 500 bets?")
 sqrt(n) * sigma
 
 print("Use pnorm() with the expected value of the sum and standard error of the sum to calculate the probability of losing money over 500 bets?")
-pnorm(0,n*mu,sqrt(n)*sigma)
+pnorm(0, n * mu, sqrt(n) * sigma)

@@ -33,21 +33,27 @@ main <- function(argv) {
   qqnorm(residuals)
   qqline(residuals)
   normal_sample <- rnorm(length(residuals), 0, sd(residuals))
-  q1 <- quantile(residuals, probs = seq(0, 1, 1/length(residuals)))
-  q2 <- quantile(normal_sample, probs = seq(0, 1, 1/length(residuals)))
+  q1 <- quantile(residuals, probs = seq(0, 1, 1 / length(residuals)))
+  q2 <- quantile(normal_sample, probs = seq(0, 1, 1 / length(residuals)))
   plot(q1, q2, xlab = "Residual Quantiles", ylab = "Theoretical Quantiles", main = "QQ plot")
   abline(a = 0, b = 1)
   plot(data$Weight, residuals, xlab = "Weight", main = "Residuals versus Weight")
   abline(h = mean(residuals))
 
-  probplot(residuals, probs = c(0.1, 0.25, 0.5, 0.75, 0.9, 0.99), xlab = "Residuals", 
-    ylab = "Probabilities (Percent)")
+  probplot(residuals,
+    probs = c(0.1, 0.25, 0.5, 0.75, 0.9, 0.99), xlab = "Residuals",
+    ylab = "Probabilities (Percent)"
+  )
 
   ad <- ad.test(residuals)
   print(ad)
-  labels <- c(paste0("Mean: ", round(mean(residuals), 4)), paste0("Stdev: ", round(sd(residuals), 
-    2)), paste0("Count: ", round(length(residuals), 2)), paste0("AD: ", round(ad$statistic, 
-    4)), paste0("p-value: ", round(ad$p.value, 4)))
+  labels <- c(paste0("Mean: ", round(mean(residuals), 4)), paste0("Stdev: ", round(
+    sd(residuals),
+    2
+  )), paste0("Count: ", round(length(residuals), 2)), paste0("AD: ", round(
+    ad$statistic,
+    4
+  )), paste0("p-value: ", round(ad$p.value, 4)))
   legend("bottomright", legend = labels)
 
   shapiro <- shapiro.test(residuals)
@@ -56,14 +62,14 @@ main <- function(argv) {
   ks <- ks.test(residuals, "pnorm", mean(residuals), sd(residuals))
   print(ks)
 
-  firstsample <- residuals[seq_len(length(residuals)/2)]
-  secondsample <- residuals[seq(length(residuals)/2 + 1, length(residuals))]
+  firstsample <- residuals[seq_len(length(residuals) / 2)]
+  secondsample <- residuals[seq(length(residuals) / 2 + 1, length(residuals))]
   vartest <- var.test(firstsample, secondsample)
   print(vartest)
 
   data %<>%
     cbind(residuals) %>%
-    mutate(Group = ifelse(row_number() > n()/2, "Highest", "Lowest"))
+    mutate(Group = ifelse(row_number() > n() / 2, "Highest", "Lowest"))
   levene <- levene.test(residuals, data[["Group"]])
   print(levene)
 

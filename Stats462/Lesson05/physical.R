@@ -32,7 +32,7 @@ main <- function(argv) {
 
   sse_leftarm <- sum(leftarmreg$residuals^2)
   sse_reduced <- sum(reducedreg$residuals^2)
-  Rsquaredleftarmgivenleftfoot <- (sse_leftarm - sse_reduced)/sse_leftarm
+  Rsquaredleftarmgivenleftfoot <- (sse_leftarm - sse_reduced) / sse_leftarm
   print(Rsquaredleftarmgivenleftfoot)
   return(0)
 }

@@ -12,11 +12,11 @@ beera <- function(expr) {
 }
 
 is_even_check <- function(n) {
-  return(is.numeric(n) && n%%2 == 0)
+  return(is.numeric(n) && n %% 2 == 0)
 }
 
 is_even_error <- function(n) {
-  tryCatch(n%%2 == 0, error = function(e) {
+  tryCatch(n %% 2 == 0, error = function(e) {
     FALSE
   })
 }

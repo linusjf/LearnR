@@ -20,8 +20,10 @@ main <- function(argv) {
   print(skimr::skim(data))
 
   attach(data)
-  plot(x = Year, y = Quakes, col = "blue", pch = 15, type = "b", main = "Time series plot of quakes", 
-    xlab = "Year", ylab = "Quakes")
+  plot(
+    x = Year, y = Quakes, col = "blue", pch = 15, type = "b", main = "Time series plot of quakes",
+    xlab = "Year", ylab = "Quakes"
+  )
   Pacf(Quakes)
   detach(data)
 

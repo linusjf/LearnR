@@ -2,8 +2,10 @@
 suppressMessages(library(zoo))
 # Goal: Make a time-series object using the 'zoo' package
 main <- function(argv) {
-  a <- data.frame(date = c("1995-01-01", "1995-01-02", "1995-01-03", "1995-01-06"), 
-    x = runif(4), y = runif(4))
+  a <- data.frame(
+    date = c("1995-01-01", "1995-01-02", "1995-01-03", "1995-01-06"),
+    x = runif(4), y = runif(4)
+  )
   a$date <- as.Date(a$date)
   # yyyy-mm-dd is the default format So far there's nothing new - it's just a data
   # frame. I have hand- constructed a but you could equally have obtained it using

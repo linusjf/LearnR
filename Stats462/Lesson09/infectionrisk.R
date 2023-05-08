@@ -27,13 +27,17 @@ main <- function(argv) {
 scatter_plot <- function(data) {
   model <- lm(InfctRsk ~ Stay, data)
   eqn <- model_equation(model, digits = 4)
-  plot(data$Stay, data$InfctRsk, xlab = "Hospital Stay", ylab = "Infection
-       Risk", 
-    sub = eqn, col.sub = "red", main = "Scatter plot of Infection Risk versus Hospital Stay")
+  plot(data$Stay, data$InfctRsk,
+    xlab = "Hospital Stay", ylab = "Infection
+       Risk",
+    sub = eqn, col.sub = "red", main = "Scatter plot of Infection Risk versus Hospital Stay"
+  )
   abline(model, col = "red")
   stats <- model_fit_stats(model)
-  labels <- c(paste0("S : ", stats$Sigma), paste0("R squared: ", stats$R.squared), 
-    paste0("Adj R squared: ", stats$Adj.R.squared))
+  labels <- c(
+    paste0("S : ", stats$Sigma), paste0("R squared: ", stats$R.squared),
+    paste0("Adj R squared: ", stats$Adj.R.squared)
+  )
   legend("topright", legend = labels)
 }
 
@@ -51,8 +55,10 @@ analyze_for_cooks <- function(data, model) {
     mutate(cooksdistance = cooks.distance(model))
   range <- c(min(data$cooksdistance), max(data$cooksdistance))
   index <- seq_len(nrow(data))
-  plot(data$cooksdistance, index, main = "Dot plot for Infection Risk versus Hospital Stay", 
-    xlab = "Cook's distance", ylab = "Index", xlim = range)
+  plot(data$cooksdistance, index,
+    main = "Dot plot for Infection Risk versus Hospital Stay",
+    xlab = "Cook's distance", ylab = "Index", xlim = range
+  )
 }
 
 analyze_for_dffits <- function(data, outliers, orig_model) {

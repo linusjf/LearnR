@@ -10,12 +10,13 @@ aggregate(iris$Petal.Width ~ iris$Species,
   FUN = mean
 )
 # COMPARE GROUPS ON TWO VARIABLES
-aggregate(cbind(
-  iris$Petal.Width,
-  iris$Petal.Length
-)
-~ iris$Species,
-FUN = mean
+aggregate(
+  cbind(
+    iris$Petal.Width,
+    iris$Petal.Length
+  )
+  ~ iris$Species,
+  FUN = mean
 )
 # CLEAN UP
 # Unloads data sets package.

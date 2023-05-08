@@ -27,7 +27,7 @@ main <- function(argv) {
   print(paste("Squared Sum of Residuals: ", SSR))
   SSE <- sum(resid(reg)^2)
   print(paste("Squared Sum of Errors: ", SSE))
-  print(c(SSR/SST, summary(reg)$r.squared))
+  print(c(SSR / SST, summary(reg)$r.squared))
   # nolint end
 
   print(cor(data$PovPct, data$Brth15to17))
@@ -38,17 +38,24 @@ main <- function(argv) {
 plot_poverty <- function(data, reg) {
   par(mar = c(4, 4, 4, 1))
   coefs <- reg$coefficients
-  main_label <- paste("PovPct versus Brth15to17\n", coefs["(Intercept)"], " + ", 
-    coefs["PovPct"], "PovPct")
-  plot(data$PovPct, data$Brth15to17, main = main_label, xlab = "PovPct", ylab = "Brth15to17", 
-    pch = 19, frame = FALSE)
+  main_label <- paste(
+    "PovPct versus Brth15to17\n", coefs["(Intercept)"], " + ",
+    coefs["PovPct"], "PovPct"
+  )
+  plot(data$PovPct, data$Brth15to17,
+    main = main_label, xlab = "PovPct", ylab = "Brth15to17",
+    pch = 19, frame = FALSE
+  )
   abline(reg, col = "blue")
   box(which = "plot", lty = "solid")
   summ <- summary(reg)
-  legends <- c(paste("S", format(summ$sigma, digits = 6)), paste("R-squared", format(summ$r.squared, 
-    digits = 6)))
-  legend("top", inset = c(0, 0), legends, horiz = TRUE, col = rainbow(3), xpd = TRUE, 
-    x.intersp = 0)
+  legends <- c(paste("S", format(summ$sigma, digits = 6)), paste("R-squared", format(summ$r.squared,
+    digits = 6
+  )))
+  legend("top",
+    inset = c(0, 0), legends, horiz = TRUE, col = rainbow(3), xpd = TRUE,
+    x.intersp = 0
+  )
 }
 
 if (identical(environment(), globalenv())) {

@@ -10,10 +10,11 @@
 # vector fonts.
 
 main <- function(argv) {
-
   # TOP: music
-  par(yaxt = "n", xaxt = "n", ann = F, fig = c(0, 1, 0, 1), mar = c(0, 0, 0, 0), 
-    cex = 0.5)
+  par(
+    yaxt = "n", xaxt = "n", ann = F, fig = c(0, 1, 0, 1), mar = c(0, 0, 0, 0),
+    cex = 0.5
+  )
   plot(1:10, type = "n", xlab = "", ylab = "")
   title(main = "A Little Culture", line = -1)
   e <- 5
@@ -31,16 +32,17 @@ main <- function(argv) {
   }
 
   # Hershey characters (treble clef, crotchet rest, sharp)
-  s1 <- list(x = 1.2, y = g)  # place clef on G
-  text(list(x = c(s1$x, s1$x + 8.5, s1$x + 0.5), y = c(s1$y, s1$y + 0.4, f2)), 
-    vfont = c("serif", "plain"), labels = c("\\#H2330", "\\#H2378", "\\#H2323"), 
-    cex = 2)
+  s1 <- list(x = 1.2, y = g) # place clef on G
+  text(list(x = c(s1$x, s1$x + 8.5, s1$x + 0.5), y = c(s1$y, s1$y + 0.4, f2)),
+    vfont = c("serif", "plain"), labels = c("\\#H2330", "\\#H2378", "\\#H2323"),
+    cex = 2
+  )
 
   # time signature
   text(x = rep(s1$x + 0.3, 2), y = c(s1$y, s1$y + 0.8), labels = c("4", "4"), cex = 0.8)
 
   # notes
-  points(list(y = c(f, a, g, a, b, b, b), x = c(s1$x + 1, s1$x + 2, s1$x + 3, s1$x + 
+  points(list(y = c(f, a, g, a, b, b, b), x = c(s1$x + 1, s1$x + 2, s1$x + 3, s1$x +
     4, s1$x + 5.5, s1$x + 6.5, s1$x + 7.5)), pch = 16, cex = 1.2)
 
   # note tails
@@ -63,9 +65,11 @@ main <- function(argv) {
   lines(x = rep(10, 2), y = c(e, f2), lwd = 2)
 
   # lyrics
-  text(x = seq(s1$x + 1, s1$x + 8.5, by = 0.5), y = rep(4, 16), labels = c("Ma-", 
-    "", "ry", "", "had", "", "a", "", "", "lit-", "", "tle", "", "lamb", "", 
-    ""), cex = 1, font = 4)
+  text(x = seq(s1$x + 1, s1$x + 8.5, by = 0.5), y = rep(4, 16), labels = c(
+    "Ma-",
+    "", "ry", "", "had", "", "a", "", "", "lit-", "", "tle", "", "lamb", "",
+    ""
+  ), cex = 1, font = 4)
   return(0)
 }
 

@@ -33,15 +33,19 @@ main <- function(argv) {
   ns <- subset(data, data$Smoke == -1)
   lm <- lm(Wgt ~ Gest, ns)
   s3d$points3d(lm$fitted.values, ns$Gest, ns$Smoke, type = "l")
-  plot3D::scatter3D(data$Wgt, data$Gest, data$Smoke, xlab = "Wgt", ylab = "Gest", 
-    zlab = "Smoke", zlim = c(-1, 1), type = "p", bty = "f", colkey = FALSE, ticktype = "detailed")
+  plot3D::scatter3D(data$Wgt, data$Gest, data$Smoke,
+    xlab = "Wgt", ylab = "Gest",
+    zlab = "Smoke", zlim = c(-1, 1), type = "p", bty = "f", colkey = FALSE, ticktype = "detailed"
+  )
   s <- subset(data, data$Smoke == 1)
   lm <- lm(Wgt ~ Gest + Smoke, s)
   plot3D::lines3D(lm$fitted.values, s$Gest, s$Smoke, type = "l", add = TRUE, colkey = FALSE)
   ns <- subset(data, data$Smoke == -1)
   lm <- lm(Wgt ~ Gest, ns)
-  plot3D::lines3D(lm$fitted.values, ns$Gest, ns$Smoke, type = "l", add = TRUE, 
-    colkey = FALSE)
+  plot3D::lines3D(lm$fitted.values, ns$Gest, ns$Smoke,
+    type = "l", add = TRUE,
+    colkey = FALSE
+  )
 
   lm <- lm(Wgt ~ Gest + Smoke, data)
   complete <- complete_anova(lm)

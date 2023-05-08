@@ -26,8 +26,10 @@ plot_alcoholarm <- function(data, reg, onlyintercept) {
   p_value <- paste("p-value:", p_value)
   heading <- attr(anova, "heading")[2]
   par(mar = c(4, 7, 4, 1))
-  plot(data$alcohol, data$strength, main = paste0("Alcohol versus Strength\n", 
-    heading), xlab = "Alcohol", ylab = "Strength", pch = 19)
+  plot(data$alcohol, data$strength, main = paste0(
+    "Alcohol versus Strength\n",
+    heading
+  ), xlab = "Alcohol", ylab = "Strength", pch = 19)
   abline(reg, col = "blue")
   abline(h = mean(data$strength), col = "red", lty = "dashed")
   x0 <- mean(data$alcohol)
@@ -36,8 +38,10 @@ plot_alcoholarm <- function(data, reg, onlyintercept) {
   y1 <- y0 + 2.5
   arrows(x1, y1, x0, y0, angle = 30, code = 2, col = "black", lwd = 4)
   coefs <- reg$coefficients
-  text(x1, y1 + 1, paste(round(coefs["(Intercept)"], 4), "\n", round(coefs["alcohol"], 
-    4), "Alcohol"))
+  text(x1, y1 + 1, paste(round(coefs["(Intercept)"], 4), "\n", round(
+    coefs["alcohol"],
+    4
+  ), "Alcohol"))
   legend("bottomleft", legend = c(rss, p_value), cex = 0.8)
 }
 

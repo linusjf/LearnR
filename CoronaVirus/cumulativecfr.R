@@ -27,14 +27,17 @@ main <- function(argv) {
     filter(country %in% top_countries)
 
   data %>%
-    ggplot(aes(x = date, y = rate.upper, color = factor(country), linetype = factor(country))) + 
-    geom_line() + labs(caption = the_caption, x = "", y = "Observed case fatality rate", 
-    title = "Steadily increasing case fatality rate of COVID-19 in early
-      2020", 
-    subtitle = "Increase probably reflects move of the disease into older
+    ggplot(aes(x = date, y = rate.upper, color = factor(country), linetype = factor(country))) +
+    geom_line() +
+    labs(
+      caption = the_caption, x = "", y = "Observed case fatality rate",
+      title = "Steadily increasing case fatality rate of COVID-19 in early
+      2020",
+      subtitle = "Increase probably reflects move of the disease into older
       populations.
 Note that actual case fatality is likely to be much lower due to undiagnosed
-surviving cases.")
+surviving cases."
+    )
   ggplot2::ggsave("cumcfr.pdf")
   return(0)
 }

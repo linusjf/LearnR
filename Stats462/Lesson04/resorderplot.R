@@ -18,23 +18,31 @@ plot_trends <- function() {
 
 plot_order <- function() {
   tmp <- lm(mpg ~ disp, data = mtcars)
-  plot(tmp$residuals, pch = 20, xlab = "Order", ylab = "Residuals", main = "Good: No Trend", 
-    cex.main = 0.95, xaxt = "n", yaxt = "n")
+  plot(tmp$residuals,
+    pch = 20, xlab = "Order", ylab = "Residuals", main = "Good: No Trend",
+    cex.main = 0.95, xaxt = "n", yaxt = "n"
+  )
   lines(tmp$residuals)
 
   tmp <- lm(height ~ age, data = Loblolly)
-  plot(tmp$residuals, pch = 20, xlab = "Order", ylab = "Residuals", main = "Questionable: General Trend", 
-    cex.main = 0.95, xaxt = "n", yaxt = "n")
+  plot(tmp$residuals,
+    pch = 20, xlab = "Order", ylab = "Residuals", main = "Questionable: General Trend",
+    cex.main = 0.95, xaxt = "n", yaxt = "n"
+  )
   lines(tmp$residuals)
 
   tmp <- lm(hp ~ qsec, data = mtcars)
-  plot(tmp$residuals, pch = 20, xlab = "Order", ylab = "Residuals", main = "Questionable: Interesting Patterns", 
-    cex.main = 0.95, xaxt = "n", yaxt = "n")
+  plot(tmp$residuals,
+    pch = 20, xlab = "Order", ylab = "Residuals", main = "Questionable: Interesting Patterns",
+    cex.main = 0.95, xaxt = "n", yaxt = "n"
+  )
   lines(tmp$residuals)
 
   tmp <- lm(hp ~ drat, data = mtcars[order(mtcars$cyl), ])
-  plot(tmp$residuals, pch = 20, xlab = "Order", ylab = "Residuals", main = "Bad: Obvious Trend", 
-    cex.main = 0.95, xaxt = "n", yaxt = "n")
+  plot(tmp$residuals,
+    pch = 20, xlab = "Order", ylab = "Residuals", main = "Bad: Obvious Trend",
+    cex.main = 0.95, xaxt = "n", yaxt = "n"
+  )
   lines(tmp$residuals)
 }
 

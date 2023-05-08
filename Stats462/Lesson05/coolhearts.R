@@ -34,12 +34,20 @@ main <- function(argv) {
   labels <- c("Early cooling", "Late cooling", "No cooling")
 
   plot <- data %>%
-    ggplot(aes(x = Area, y = Infarc, color = factor(Group, labels = labels))) + 
-    ggtitle("Scatter plot of infarction versus area") + theme(plot.title = element_text(hjust = 0.5)) + 
-    xlab("Size of area at risk (grams)") + ylab("Size of Infarcted area (grams)") + 
-    labs(color = "Group") + geom_point(size = 3) + geom_line(color = "red", data = subset(predicted_df, 
-    Group == 1)) + geom_line(color = "green", data = subset(predicted_df, Group == 
-    2)) + geom_line(color = "blue", data = subset(predicted_df, Group == 3))
+    ggplot(aes(x = Area, y = Infarc, color = factor(Group, labels = labels))) +
+    ggtitle("Scatter plot of infarction versus area") +
+    theme(plot.title = element_text(hjust = 0.5)) +
+    xlab("Size of area at risk (grams)") +
+    ylab("Size of Infarcted area (grams)") +
+    labs(color = "Group") +
+    geom_point(size = 3) +
+    geom_line(color = "red", data = subset(
+      predicted_df,
+      Group == 1
+    )) +
+    geom_line(color = "green", data = subset(predicted_df, Group ==
+      2)) +
+    geom_line(color = "blue", data = subset(predicted_df, Group == 3))
   print(plot)
   return(0)
 }

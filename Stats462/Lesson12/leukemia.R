@@ -75,13 +75,14 @@ main <- function(argv) {
         eqn
       )
     )
-    curve(predict(
-      model,
-      newdata =
-        data.frame(LI = LI),
-      type = "response"
-    ),
-    add = TRUE, xname = "LI"
+    curve(
+      predict(
+        model,
+        newdata =
+          data.frame(LI = LI),
+        type = "response"
+      ),
+      add = TRUE, xname = "LI"
     )
     points(LI, REMISS, pch = 15, col = "blue")
   })
@@ -91,12 +92,13 @@ main <- function(argv) {
       xlab = "LI", ylab = "Odds", col = "red",
       main = "Odds Plot"
     )
-    curve(exp(predict(
-      model,
-      newdata =
-        data.frame(LI = LI)
-    )),
-    add = TRUE, xname = "LI"
+    curve(
+      exp(predict(
+        model,
+        newdata =
+          data.frame(LI = LI)
+      )),
+      add = TRUE, xname = "LI"
     )
   })
   with(data, {
@@ -104,12 +106,13 @@ main <- function(argv) {
       xlab = "LI", ylab = "Odds", col = "red",
       main = "Log Odds Plot"
     )
-    curve(predict(
-      model,
-      newdata =
-        data.frame(LI = LI)
-    ),
-    add = TRUE, xname = "LI"
+    curve(
+      predict(
+        model,
+        newdata =
+          data.frame(LI = LI)
+      ),
+      add = TRUE, xname = "LI"
     )
   })
   explanatory <- c("LI")

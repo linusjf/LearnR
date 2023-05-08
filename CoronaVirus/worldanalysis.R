@@ -78,15 +78,23 @@ plot_world_cases <- function(data, ready_data) {
       factor(levels = c(top_countries)))
   plot1 <- df %>%
     filter(country != "World") %>%
-    ggplot(aes(x = date, y = count, fill = country), na.rm = TRUE) + geom_area() + 
-    xlab("Date") + ylab("Count") + labs(title = "Cases around the World") + theme(legend.title = element_blank()) + 
+    ggplot(aes(x = date, y = count, fill = country), na.rm = TRUE) +
+    geom_area() +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Cases around the World") +
+    theme(legend.title = element_blank()) +
     facet_wrap(~type, ncol = 2, scales = "free_y")
   ## excluding Mainland China
   plot2 <- df %>%
     filter(!(country %in% c("World", "Mainland China", "China"))) %>%
-    ggplot(aes(x = date, y = count, fill = country), na.rm = TRUE) + geom_area() + 
-    xlab("Date") + ylab("Count") + labs(title = "Cases around the World (excl. China)") + 
-    theme(legend.title = element_blank()) + facet_wrap(~type, ncol = 2, scales = "free_y")
+    ggplot(aes(x = date, y = count, fill = country), na.rm = TRUE) +
+    geom_area() +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Cases around the World (excl. China)") +
+    theme(legend.title = element_blank()) +
+    facet_wrap(~type, ncol = 2, scales = "free_y")
   ## if India in not in top 10, add it in and remove 'Others'
   if (!("India" %in% top_countries)) {
     top_countries %<>%
@@ -100,18 +108,28 @@ plot_world_cases <- function(data, ready_data) {
   ## cases by country
   plot3 <- df %>%
     filter(type != "confirmed") %>%
-    ggplot(aes(x = date, y = count, fill = type), na.rm = TRUE) + geom_area(alpha = 0.5) + 
-    xlab("Date") + ylab("Count") + labs(title = paste0("COVID-19 Cases by Country (", 
-    max_date, ")")) + scale_fill_manual(values = c("red", "green", "black")) + 
-    theme(legend.title = element_blank(), legend.position = "bottom") + facet_wrap(~country, 
-    ncol = 3, scales = "free_y")
+    ggplot(aes(x = date, y = count, fill = type), na.rm = TRUE) +
+    geom_area(alpha = 0.5) +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = paste0(
+      "COVID-19 Cases by Country (",
+      max_date, ")"
+    )) +
+    scale_fill_manual(values = c("red", "green", "black")) +
+    theme(legend.title = element_blank(), legend.position = "bottom") +
+    facet_wrap(~country,
+      ncol = 3, scales = "free_y"
+    )
   return(list(plot1, plot2, plot3))
 }
 
 main <- function(argv) {
   # source data files
-  filenames <- c("time_series_19-covid-Confirmed.csv", "time_series_19-covid-Deaths.csv", 
-    "time_series_19-covid-Recovered.csv")
+  filenames <- c(
+    "time_series_19-covid-Confirmed.csv", "time_series_19-covid-Deaths.csv",
+    "time_series_19-covid-Recovered.csv"
+  )
   lapply(filenames, download_csv)
   ## load data into R
   data_confirmed <- read.csv(filenames[1])
@@ -146,8 +164,10 @@ main <- function(argv) {
   ## counts for the whole world
   data_world <- data %>%
     group_by(date) %>%
-    summarise(country = "World", confirmed = sum(confirmed), deaths = sum(deaths), 
-      recovered = sum(recovered))
+    summarise(
+      country = "World", confirmed = sum(confirmed), deaths = sum(deaths),
+      recovered = sum(recovered)
+    )
   data %<>%
     rbind(data_world)
   ## active cases
@@ -212,18 +232,30 @@ print_chart <- function(plot) {
 
 plot_deaths_recovered <- function(data, title) {
   ## a scatter plot with a smoothed line and vertical x-axis labels
-  plot1 <- ggplot(data = subset(data, !is.na(deaths)), aes(x = date, y = deaths)) + 
-    geom_point() + geom_smooth(method = "loess", formula = y ~ x) + xlab("Date") + 
-    ylab("Count") + labs(title = "Deaths")
-  plot2 <- ggplot(data = subset(data, !is.na(recovered)), aes(x = date, y = recovered)) + 
-    geom_point() + geom_smooth(formula = y ~ x, method = "loess") + xlab("Date") + 
-    ylab("Count") + labs(title = "Recovered Cases")
-  plot3 <- ggplot(data = subset(data, !is.na(deaths.inc)), aes(x = date, y = deaths.inc)) + 
-    geom_point() + geom_smooth(formula = y ~ x, method = "loess") + xlab("Date") + 
-    ylab("Count") + labs(title = "Increase in Deaths")
-  plot4 <- ggplot(data = subset(data, !is.na(recovered.inc)), aes(x = date, y = recovered.inc)) + 
-    geom_point() + geom_smooth(formula = y ~ x, method = "loess") + xlab("Date") + 
-    ylab("Count") + labs(title = "Increase in Recovered Cases")
+  plot1 <- ggplot(data = subset(data, !is.na(deaths)), aes(x = date, y = deaths)) +
+    geom_point() +
+    geom_smooth(method = "loess", formula = y ~ x) +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Deaths")
+  plot2 <- ggplot(data = subset(data, !is.na(recovered)), aes(x = date, y = recovered)) +
+    geom_point() +
+    geom_smooth(formula = y ~ x, method = "loess") +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Recovered Cases")
+  plot3 <- ggplot(data = subset(data, !is.na(deaths.inc)), aes(x = date, y = deaths.inc)) +
+    geom_point() +
+    geom_smooth(formula = y ~ x, method = "loess") +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Increase in Deaths")
+  plot4 <- ggplot(data = subset(data, !is.na(recovered.inc)), aes(x = date, y = recovered.inc)) +
+    geom_point() +
+    geom_smooth(formula = y ~ x, method = "loess") +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Increase in Recovered Cases")
   ## show four plots together, with 2 plots in each row
   grob <- gridExtra::arrangeGrob(plot1, plot2, plot3, plot4, nrow = 2, top = title)
   return(grob)
@@ -234,16 +266,30 @@ plot_death_rates <- function(data, title) {
   n <- nrow(data)
   print("No. of records")
   print(n)
-  plot1 <- ggplot(data, aes(x = date), na.rm = TRUE) + geom_line(aes(y = rate.upper, 
-    colour = "Upper bound")) + geom_line(aes(y = rate.lower, colour = "Lower bound")) + 
-    geom_line(aes(y = rate.daily, colour = "Daily")) + xlab("Date") + ylab("Death Rate (%)") + 
-    labs(title = "Overall") + theme(legend.position = "bottom", legend.title = element_blank()) + 
+  plot1 <- ggplot(data, aes(x = date), na.rm = TRUE) +
+    geom_line(aes(
+      y = rate.upper,
+      colour = "Upper bound"
+    )) +
+    geom_line(aes(y = rate.lower, colour = "Lower bound")) +
+    geom_line(aes(y = rate.daily, colour = "Daily")) +
+    xlab("Date") +
+    ylab("Death Rate (%)") +
+    labs(title = "Overall") +
+    theme(legend.position = "bottom", legend.title = element_blank()) +
     ylim(0, 100)
   ## focusing on last 2 weeks
-  plot2 <- ggplot(data[n - (14:0), ], aes(x = date), na.rm = TRUE) + geom_line(aes(y = rate.upper, 
-    colour = "Upper bound")) + geom_line(aes(y = rate.lower, colour = "Lower bound")) + 
-    geom_line(aes(y = rate.daily, colour = "Daily")) + xlab("Date") + ylab("Death Rate (%)") + 
-    labs(title = "Last two weeks") + theme(legend.position = "bottom", legend.title = element_blank()) + 
+  plot2 <- ggplot(data[n - (14:0), ], aes(x = date), na.rm = TRUE) +
+    geom_line(aes(
+      y = rate.upper,
+      colour = "Upper bound"
+    )) +
+    geom_line(aes(y = rate.lower, colour = "Lower bound")) +
+    geom_line(aes(y = rate.daily, colour = "Daily")) +
+    xlab("Date") +
+    ylab("Death Rate (%)") +
+    labs(title = "Last two weeks") +
+    theme(legend.position = "bottom", legend.title = element_blank()) +
     ylim(0, 100)
   grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2, top = title)
   return(grob)
@@ -252,12 +298,24 @@ plot_death_rates <- function(data, title) {
 plot_current_confirmed <- function(data, title) {
   ## current confirmed and its increase
 
-  plot1 <- ggplot(data = subset(data, !is.na(data$active.cases)), aes(x = date, 
-    y = active.cases)) + geom_point() + geom_smooth(formula = y ~ x, method = "loess") + 
-    xlab("Date") + ylab("Count") + labs(title = "Current Confirmed Cases")
-  plot2 <- ggplot(data = subset(data, !is.na(data$confirmed.inc)), aes(x = date, 
-    y = confirmed.inc)) + geom_point() + geom_smooth(formula = y ~ x, method = "loess") + 
-    xlab("Date") + ylab("Count") + labs(title = "Increase in Current Confirmed")
+  plot1 <- ggplot(data = subset(data, !is.na(data$active.cases)), aes(
+    x = date,
+    y = active.cases
+  )) +
+    geom_point() +
+    geom_smooth(formula = y ~ x, method = "loess") +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Current Confirmed Cases")
+  plot2 <- ggplot(data = subset(data, !is.na(data$confirmed.inc)), aes(
+    x = date,
+    y = confirmed.inc
+  )) +
+    geom_point() +
+    geom_smooth(formula = y ~ x, method = "loess") +
+    xlab("Date") +
+    ylab("Count") +
+    labs(title = "Increase in Current Confirmed")
   grob <- gridExtra::arrangeGrob(plot1, plot2, ncol = 2, top = title)
   return(grob)
 }
@@ -269,25 +327,30 @@ add_rates <- function(data) {
   ## daily increases of deaths and cured cases set NA to the increases on day1
   day1 <- min(data$date)
   data %<>%
-    mutate(confirmed.inc = ifelse(date == day1, NA, confirmed - lag(confirmed, 
-      n = 1)), deaths.inc = ifelse(date == day1, NA, deaths - lag(deaths, n = 1)), 
-      recovered.inc = ifelse(date == day1, NA, recovered - lag(recovered, n = 1)), 
-      confirmed.rt = ifelse(date == day1, NA, (confirmed - lag(confirmed, n = 1))/lag(confirmed, 
-        n = 1)) %>%
-        round(4))
+    mutate(
+      confirmed.inc = ifelse(date == day1, NA, confirmed - lag(confirmed,
+        n = 1
+      )), deaths.inc = ifelse(date == day1, NA, deaths - lag(deaths, n = 1)),
+      recovered.inc = ifelse(date == day1, NA, recovered - lag(recovered, n = 1)),
+      confirmed.rt = ifelse(date == day1, NA, (confirmed - lag(confirmed, n = 1)) / lag(confirmed,
+        n = 1
+      )) %>%
+        round(4)
+    )
   ## death rate based on total deaths and cured cases
   data %<>%
-    mutate(rate.upper = ifelse(is.nan(100 * deaths/(deaths + recovered)), 0, 
-      100 * deaths/(deaths + recovered)) %>%
+    mutate(rate.upper = ifelse(is.nan(100 * deaths / (deaths + recovered)), 0,
+      100 * deaths / (deaths + recovered)
+    ) %>%
       round(1))
   ## lower bound: death rate based on total confirmed cases
   data %<>%
-    mutate(rate.lower = ifelse(is.nan(100 * deaths/confirmed), 0, 100 * deaths/confirmed) %>%
+    mutate(rate.lower = ifelse(is.nan(100 * deaths / confirmed), 0, 100 * deaths / confirmed) %>%
       round(1))
   ## death rate based on the number of death/cured on every single day
   data %<>%
-    mutate(rate.daily = ifelse((is.nan(100 * deaths.inc/(deaths.inc + recovered.inc)) | 
-      is.na(100 * deaths.inc/(deaths.inc + recovered.inc))), 0, 100 * deaths.inc/(deaths.inc + 
+    mutate(rate.daily = ifelse((is.nan(100 * deaths.inc / (deaths.inc + recovered.inc)) |
+      is.na(100 * deaths.inc / (deaths.inc + recovered.inc))), 0, 100 * deaths.inc / (deaths.inc +
       recovered.inc)) %>%
       round(1))
   return(data)
@@ -332,14 +395,21 @@ plot_top10_confirmed <- function(ready_data) {
     summarise(confirmed = sum(confirmed))
   ## percentage and label
   df %<>%
-    mutate(per = (100 * confirmed/sum(confirmed)) %>%
+    mutate(per = (100 * confirmed / sum(confirmed)) %>%
       round(1)) %>%
     mutate(txt = paste0(country, ": ", confirmed, " (", per, "%)"))
 
   plot <- df %>%
-    ggplot(aes(fill = country)) + geom_bar(aes(x = "", y = per), stat = "identity") + 
-    coord_polar("y", start = 0) + xlab("") + ylab("Percentage (%)") + labs(title = paste0("Top 10 Countries with Most Confirmed Cases (", 
-    max_date, ")")) + scale_fill_discrete(name = "Country", labels = df$txt)
+    ggplot(aes(fill = country)) +
+    geom_bar(aes(x = "", y = per), stat = "identity") +
+    coord_polar("y", start = 0) +
+    xlab("") +
+    ylab("Percentage (%)") +
+    labs(title = paste0(
+      "Top 10 Countries with Most Confirmed Cases (",
+      max_date, ")"
+    )) +
+    scale_fill_discrete(name = "Country", labels = df$txt)
   return(plot)
 }
 
@@ -364,8 +434,10 @@ print_sample_data <- function(data, name) {
   data[, 1:10] %>%
     sample_n(10) %>%
     kable("latex", booktabs = TRUE, caption = paste("Raw Data (", name, "First 10 Columns only)")) %>%
-    kable_styling(font_size = 6, latex_options = c("striped", "hold_position", 
-      "repeat_header")) %>%
+    kable_styling(font_size = 6, latex_options = c(
+      "striped", "hold_position",
+      "repeat_header"
+    )) %>%
     landscape() %>%
     save_kable(file = paste0(name, ".pdf"), keep_tex = TRUE)
 }
@@ -376,27 +448,37 @@ latest_to_pdf <- function(data, filename) {
     select(c(country, confirmed, deaths, recovered, active.cases))
   ## output as a table
   data %>%
-    kable("latex", booktabs = TRUE, longtable = TRUE, caption = paste("Latest World Report", 
-      date), format.args = list(big.mark = ",")) %>%
-    kable_styling(font_size = 5, full_width = TRUE, latex_options = c("striped", 
-      "hold_position", "repeat_header")) %>%
+    kable("latex", booktabs = TRUE, longtable = TRUE, caption = paste(
+      "Latest World Report",
+      date
+    ), format.args = list(big.mark = ",")) %>%
+    kable_styling(font_size = 5, full_width = TRUE, latex_options = c(
+      "striped",
+      "hold_position", "repeat_header"
+    )) %>%
     save_kable(filename, keep_tex = TRUE)
 }
 
 output_to_pdf <- function(data, filename) {
   ## re-order columns deadIncr, curedIncr,
   data %<>%
-    select(c(date, confirmed, deaths, recovered, active.cases, confirmed.rt, 
-      confirmed.inc, deaths.inc, recovered.inc, rate.upper, rate.daily, rate.lower))
+    select(c(
+      date, confirmed, deaths, recovered, active.cases, confirmed.rt,
+      confirmed.inc, deaths.inc, recovered.inc, rate.upper, rate.daily, rate.lower
+    ))
   ## to make column names shorter for output purpose only
   names(data) %<>%
     gsub(pattern = "Count", replacement = "")
   ## output as a table
   data %>%
-    kable("latex", booktabs = T, longtable = T, caption = paste("Cases in", filename), 
-      format.args = list(big.mark = ",")) %>%
-    kable_styling(font_size = 5, latex_options = c("striped", "hold_position", 
-      "repeat_header")) %>%
+    kable("latex",
+      booktabs = T, longtable = T, caption = paste("Cases in", filename),
+      format.args = list(big.mark = ",")
+    ) %>%
+    kable_styling(font_size = 5, latex_options = c(
+      "striped", "hold_position",
+      "repeat_header"
+    )) %>%
     landscape() %>%
     save_kable(filename, keep_tex = TRUE)
 }

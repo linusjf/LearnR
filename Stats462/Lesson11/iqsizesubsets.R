@@ -62,8 +62,9 @@ checkfit <- function(model) {
   ad <- ad.test(resid(model))
   print(model_equation(model, digits = 4))
   print(ad)
-  if (ad$p.value < 0.05) 
+  if (ad$p.value < 0.05) {
     print("Model rejected: Residuals are non-normal")
+  }
 }
 
 if (identical(environment(), globalenv())) {

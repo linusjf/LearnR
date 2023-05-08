@@ -52,13 +52,19 @@ evaluate_model <- function(lm) {
   plot(lm, which = 1, caption = "Standardised Residuals versus Fitted", main = "Residuals plot with interaction terms")
 
   residuals <- resid(lm)
-  probplot(residuals, probs = c(0.1, 0.25, 0.5, 0.75, 0.9, 0.99, 0.999), xlab = "Residuals", 
-    ylab = "Probabilities (Percent)")
+  probplot(residuals,
+    probs = c(0.1, 0.25, 0.5, 0.75, 0.9, 0.99, 0.999), xlab = "Residuals",
+    ylab = "Probabilities (Percent)"
+  )
 
   ad <- nortest::ad.test(residuals)
-  labels <- c(paste0("Mean: ", round(mean(residuals), 4)), paste0("Stdev: ", round(sd(residuals), 
-    2)), paste0("Count: ", round(length(residuals), 2)), paste0("AD: ", round(ad$statistic, 
-    4)), paste0("p-value: ", round(ad$p.value, 4)))
+  labels <- c(paste0("Mean: ", round(mean(residuals), 4)), paste0("Stdev: ", round(
+    sd(residuals),
+    2
+  )), paste0("Count: ", round(length(residuals), 2)), paste0("AD: ", round(
+    ad$statistic,
+    4
+  )), paste0("p-value: ", round(ad$p.value, 4)))
   legend("bottomright", legend = labels)
 }
 
@@ -103,15 +109,21 @@ scatter <- function(data) {
   a <- subset(data, data$TRT == "A")
   b <- subset(data, data$TRT == "B")
   c <- subset(data, data$TRT == "C")
-  plot(a$age, a$y, main = "y against age scatterplot", xlab = "Age", ylab = "Y", 
-    pch = 19, frame = FALSE, ylim = c(min(data$y), max(data$y)), xlim = c(min(data$age), 
-      max(data$age)))
+  plot(a$age, a$y,
+    main = "y against age scatterplot", xlab = "Age", ylab = "Y",
+    pch = 19, frame = FALSE, ylim = c(min(data$y), max(data$y)), xlim = c(
+      min(data$age),
+      max(data$age)
+    )
+  )
   points(b$age, b$y, col = "blue", pch = 19)
   points(c$age, c$y, col = "red", pch = 19)
   box(which = "plot", lty = "solid")
   labels <- c("A", "B", "C")
-  legend("bottomright", col = c("black", "blue", "red"), title = "Treatment", legend = labels, 
-    lty = 1:3, text.col = c("black", "blue", "red"))
+  legend("bottomright",
+    col = c("black", "blue", "red"), title = "Treatment", legend = labels,
+    lty = 1:3, text.col = c("black", "blue", "red")
+  )
 }
 
 if (identical(environment(), globalenv())) {

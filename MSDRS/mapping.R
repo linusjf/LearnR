@@ -11,7 +11,7 @@ main <- function(argv) {
   }))
 
   print(map_if(1:5, function(x) {
-    x%%2 == 0
+    x %% 2 == 0
   }, function(y) {
     y^2
   }) %>%
@@ -24,8 +24,10 @@ main <- function(argv) {
 
   print(purrr::map2_chr(letters, 1:26, paste))
 
-  print(pmap_chr(list(list(1, 2, 3), list("one", "two", "three"), list("uno", "dos", 
-    "tres")), paste))
+  print(pmap_chr(list(list(1, 2, 3), list("one", "two", "three"), list(
+    "uno", "dos",
+    "tres"
+  )), paste))
 
   return(0)
 }

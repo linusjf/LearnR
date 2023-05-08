@@ -26,8 +26,10 @@ plot_skincancer <- function(data, reg, onlyintercept) {
   p_value <- paste("p-value:", p_value)
   heading <- attr(anova, "heading")[2]
   par(mar = c(4, 7, 4, 1))
-  plot(data$Lat, data$Mort, main = paste0("Latitude versus Mortality\n", heading), 
-    xlab = "Latitude", ylab = "Mortality", pch = 19)
+  plot(data$Lat, data$Mort,
+    main = paste0("Latitude versus Mortality\n", heading),
+    xlab = "Latitude", ylab = "Mortality", pch = 19
+  )
   abline(reg, col = "blue")
   abline(h = mean(data$Mort), col = "red", lty = "dashed")
   x0 <- mean(data$Lat)
@@ -36,8 +38,10 @@ plot_skincancer <- function(data, reg, onlyintercept) {
   y1 <- y0 + 10
   arrows(x1, y1, x0, y0, angle = 30, code = 2, col = "black", lwd = 4)
   coefs <- reg$coefficients
-  text(x1, y1 + 5, paste(round(coefs["(Intercept)"], 4), "\n", round(coefs["Lat"], 
-    4), "Latitude"))
+  text(x1, y1 + 5, paste(round(coefs["(Intercept)"], 4), "\n", round(
+    coefs["Lat"],
+    4
+  ), "Latitude"))
   legend("bottomleft", legend = c(rss, p_value), cex = 0.8)
 }
 

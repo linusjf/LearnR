@@ -31,17 +31,21 @@ main <- function(argv) {
 
 plot_skin_cancer <- function(data, reg, ci, predi) {
   par(mar = c(4, 7, 4, 1))
-  plot(data$Lat, data$Mort, main = "Skin cancer mortality versus state latitude", 
+  plot(data$Lat, data$Mort,
+    main = "Skin cancer mortality versus state latitude",
     xlab = "Latitude (at centre of state)", ylab = "Mortality (Deaths per 10
-     million)", 
-    pch = 19, frame = FALSE)
+     million)",
+    pch = 19, frame = FALSE
+  )
   abline(reg, col = "blue")
   matlines(data$Lat, ci[, c("lwr", "upr")], col = "red", lty = 1, type = "l")
   matlines(data$Lat, predi[, c("lwr", "upr")], col = "blue", lty = 1, type = "l")
-  polygon(c(data$Lat, rev(data$Lat)), c(predi[, "upr"], rev(predi[, "lwr"])), col = adjustcolor("orangered", 
-    alpha.f = 0.7), border = NA)
-  polygon(c(data$Lat, rev(data$Lat)), c(ci[, "upr"], rev(ci[, "lwr"])), col = adjustcolor("wheat", 
-    alpha.f = 0.7), border = NA)
+  polygon(c(data$Lat, rev(data$Lat)), c(predi[, "upr"], rev(predi[, "lwr"])), col = adjustcolor("orangered",
+    alpha.f = 0.7
+  ), border = NA)
+  polygon(c(data$Lat, rev(data$Lat)), c(ci[, "upr"], rev(ci[, "lwr"])), col = adjustcolor("wheat",
+    alpha.f = 0.7
+  ), border = NA)
   x0 <- mean(data$Lat)
   y0 <- mean(data$Mort)
   x1 <- x0 + 5

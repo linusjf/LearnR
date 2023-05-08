@@ -41,8 +41,10 @@ analyze_for_cooks <- function(data, model) {
   data %<>%
     mutate(cooksdistance = cooks.distance(model))
   old <- par(mar = c(6, 6, 4, 4))
-  dotchart(data$cooksdistance, main = "Dot plot for Height versus foot", xlab = "Cook's distance", 
-    ylab = "Index", pch = 19)
+  dotchart(data$cooksdistance,
+    main = "Dot plot for Height versus foot", xlab = "Cook's distance",
+    ylab = "Index", pch = 19
+  )
   par(old)
 }
 

@@ -23,13 +23,17 @@ main <- function(argv) {
   coefs <- linear_model$coefficients
   theta0 <- exp(coefs[1])
   theta1 <- coefs[2]
-  nl_model <- nls(prog ~ I(theta0 * exp(theta1 * days)), data = data, start = list(theta0 = theta0, 
-    theta1 = theta1), trace = TRUE)
+  nl_model <- nls(prog ~ I(theta0 * exp(theta1 * days)), data = data, start = list(
+    theta0 = theta0,
+    theta1 = theta1
+  ), trace = TRUE)
   print(summary(nl_model))
   eqn <- exp_model_equation(nl_model, digits = 4)
   with(data, {
-    plot(days, prog, xlab = "Days", ylab = "Prog", main = "Fitted line plot", 
-      sub = eqn)
+    plot(days, prog,
+      xlab = "Days", ylab = "Prog", main = "Fitted line plot",
+      sub = eqn
+    )
     curve(predict(nl_model, newdata = data.frame(days = days)), add = TRUE, xname = "days")
   })
   return(0)

@@ -40,19 +40,26 @@ main <- function(argv) {
   print(stats)
   eqn <- model_equation(model, digits = 4)
   print(eqn)
-  with(data, plot(oxygen, igg, pch = 15, col = "blue", main = "Fitted line plot", 
-    sub = eqn))
-  curve(predict(model, newdata = data.frame(oxygen = oxygen, oxygensq = oxygen^2)), 
-    add = TRUE, xname = "oxygen")
-  labels <- c(paste0("Sigma: ", stats$Sigma), paste0("R squared: ", stats$R.squared), 
-    paste0("Adj R squared: ", stats$Adj.R.squared))
+  with(data, plot(oxygen, igg,
+    pch = 15, col = "blue", main = "Fitted line plot",
+    sub = eqn
+  ))
+  curve(predict(model, newdata = data.frame(oxygen = oxygen, oxygensq = oxygen^2)),
+    add = TRUE, xname = "oxygen"
+  )
+  labels <- c(
+    paste0("Sigma: ", stats$Sigma), paste0("R squared: ", stats$R.squared),
+    paste0("Adj R squared: ", stats$Adj.R.squared)
+  )
   legend("bottomright", legend = labels)
 
   data %<>%
     mutate(oxygencent = c(scale(oxygen))) %>%
     mutate(oxygencentsq = oxygencent^2)
-  with(data, plot(oxygencent, oxygencentsq, pch = 15, col = "blue", main = "Scatterplot of oxygencent versus oxygencentsq", 
-    sub = paste0("Correlation = ", round(cor(oxygencent, oxygencentsq), 4))))
+  with(data, plot(oxygencent, oxygencentsq,
+    pch = 15, col = "blue", main = "Scatterplot of oxygencent versus oxygencentsq",
+    sub = paste0("Correlation = ", round(cor(oxygencent, oxygencentsq), 4))
+  ))
 
   model <- lm(igg ~ oxygencent + oxygencentsq, data)
   print(anova(model))
@@ -61,27 +68,38 @@ main <- function(argv) {
   print(stats)
   eqn <- model_equation(model, digits = 4)
   print(eqn)
-  with(data, plot(x = oxygencent, y = igg, pch = 15, col = "blue", main = "Fitted line plot", 
-    sub = eqn))
-  curve(predict(model, newdata = data.frame(oxygencent = oxygencent, oxygencentsq = oxygencent^2)), 
-    add = TRUE, xname = "oxygencent")
-  labels <- c(paste0("Sigma: ", stats$Sigma), paste0("R squared: ", stats$R.squared), 
-    paste0("Adj R squared: ", stats$Adj.R.squared))
+  with(data, plot(
+    x = oxygencent, y = igg, pch = 15, col = "blue", main = "Fitted line plot",
+    sub = eqn
+  ))
+  curve(predict(model, newdata = data.frame(oxygencent = oxygencent, oxygencentsq = oxygencent^2)),
+    add = TRUE, xname = "oxygencent"
+  )
+  labels <- c(
+    paste0("Sigma: ", stats$Sigma), paste0("R squared: ", stats$R.squared),
+    paste0("Adj R squared: ", stats$Adj.R.squared)
+  )
   legend("bottomright", legend = labels)
-  plot(model, which = c(1, 2), caption = c("Residuals vs Fitted", "Normal Q-Q"), 
-    main = "LINE conditions met?")
+  plot(model,
+    which = c(1, 2), caption = c("Residuals vs Fitted", "Normal Q-Q"),
+    main = "LINE conditions met?"
+  )
 
   # predict values
   oxygencent <- scale(data$oxygen)
-  scaleList <- list(scale = attr(oxygencent, "scaled:scale"), center = attr(oxygencent, 
-    "scaled:center"))
+  scaleList <- list(scale = attr(oxygencent, "scaled:scale"), center = attr(
+    oxygencent,
+    "scaled:center"
+  ))
   oxygen <- 70
-  oxygencent <- (oxygen - scaleList$center)/scaleList$scale
+  oxygencent <- (oxygen - scaleList$center) / scaleList$scale
 
   oxygencentsq <- oxygencent^2
   newdata <- data.frame(oxygencent = oxygencent, oxygencentsq = oxygencentsq)
-  prediction <- rbind(predict(model, newdata, se.fit = TRUE, interval = c("prediction"))$fit, 
-    predict(model, newdata, se.fit = TRUE, interval = c("confidence"))$fit)
+  prediction <- rbind(
+    predict(model, newdata, se.fit = TRUE, interval = c("prediction"))$fit,
+    predict(model, newdata, se.fit = TRUE, interval = c("confidence"))$fit
+  )
   rownames(prediction) <- c("prediction", "confidence")
   print(prediction)
 
@@ -92,12 +110,18 @@ main <- function(argv) {
   print(stats)
   eqn <- model_equation(model, digits = 4)
   print(eqn)
-  with(data, plot(x = oxygencent, y = igg, pch = 15, col = "blue", main = "Fitted line plot", 
-    sub = eqn))
-  curve(predict(model, newdata = data.frame(oxygencent = oxygencent)), add = TRUE, 
-    xname = "oxygencent")
-  labels <- c(paste0("Sigma: ", stats$Sigma), paste0("R squared: ", stats$R.squared), 
-    paste0("Adj R squared: ", stats$Adj.R.squared))
+  with(data, plot(
+    x = oxygencent, y = igg, pch = 15, col = "blue", main = "Fitted line plot",
+    sub = eqn
+  ))
+  curve(predict(model, newdata = data.frame(oxygencent = oxygencent)),
+    add = TRUE,
+    xname = "oxygencent"
+  )
+  labels <- c(
+    paste0("Sigma: ", stats$Sigma), paste0("R squared: ", stats$R.squared),
+    paste0("Adj R squared: ", stats$Adj.R.squared)
+  )
   legend("bottomright", legend = labels)
 
   return(0)

@@ -26,8 +26,10 @@ plot_heightgpa <- function(data, reg, onlyintercept) {
   p_value <- paste("p-value:", p_value)
   heading <- attr(anova, "heading")[2]
   par(mar = c(4, 7, 4, 1))
-  plot(data$height, data$gpa, main = paste0("Height versus gpa\n", heading), xlab = "Height", 
-    ylab = "GPA", pch = 19)
+  plot(data$height, data$gpa,
+    main = paste0("Height versus gpa\n", heading), xlab = "Height",
+    ylab = "GPA", pch = 19
+  )
   abline(reg, col = "blue")
   abline(h = mean(data$gpa), col = "red", lty = "dashed")
   x0 <- mean(data$height)

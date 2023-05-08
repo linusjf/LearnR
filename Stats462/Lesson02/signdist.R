@@ -30,7 +30,7 @@ main <- function(argv) {
   print(paste("Squared Sum of Residuals: ", SSR))
   SSE <- sum(resid(reg)^2)
   print(paste("Squared Sum of Errors: ", SSE))
-  print(c(SSR/SST, summary(reg)$r.squared))
+  print(c(SSR / SST, summary(reg)$r.squared))
   # nolint end
 
   print(cor(data$Age, data$Distance))
@@ -40,8 +40,10 @@ main <- function(argv) {
 
 plot_signdist <- function(data, reg) {
   par(mar = c(4, 7, 4, 1))
-  plot(data$Age, data$Distance, main = "Age versus distance", xlab = "Age", ylab = "Distance", 
-    pch = 19, frame = FALSE)
+  plot(data$Age, data$Distance,
+    main = "Age versus distance", xlab = "Age", ylab = "Distance",
+    pch = 19, frame = FALSE
+  )
   abline(reg, col = "blue")
   x0 <- mean(data$Age)
   y0 <- mean(data$Distance)

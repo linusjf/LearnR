@@ -8,7 +8,7 @@ install_dsforengineers <- function() {
 }
 
 main <- function(argv) {
-  options(timeout=60)
+  options(timeout = 60)
   print(Sys.info())
   sess <- sessionInfo()
   print(sess)

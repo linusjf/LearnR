@@ -23,13 +23,15 @@ main <- function(argv) {
 }
 
 deterministic <- function() {
-  param <- param.dcm(inf.prob = 0.8, act.rate = 5/14, rec.rate = 1/14, a.rate = 4.67532468e-05, 
-    ds.rate = 1.94805195e-05, di.rate = 1.94805195e-05/(1 - 0.03), dr.rate = 1.94805195e-05, 
-    dt.rate = 0.03)
+  param <- param.dcm(
+    inf.prob = 0.8, act.rate = 5 / 14, rec.rate = 1 / 14, a.rate = 4.67532468e-05,
+    ds.rate = 1.94805195e-05, di.rate = 1.94805195e-05 / (1 - 0.03), dr.rate = 1.94805195e-05,
+    dt.rate = 0.03
+  )
 
   r0 <- NULL
   with(param, {
-    r0 <<- inf.prob * act.rate/rec.rate
+    r0 <<- inf.prob * act.rate / rec.rate
     names(r0) <<- "R0"
   })
   print(r0)
@@ -42,8 +44,10 @@ deterministic <- function() {
 
   par(mar = c(3.2, 3, 2, 1), mgp = c(2, 1, 0), mfrow = c(1, 2))
   plot(mod, popfrac = FALSE, alpha = 0.5, lwd = 4, main = "Compartment Sizes")
-  plot(mod, y = "si.flow", lwd = 4, col = "firebrick", main = "Disease Incidence", 
-    legend = "n")
+  plot(mod,
+    y = "si.flow", lwd = 4, col = "firebrick", main = "Disease Incidence",
+    legend = "n"
+  )
 
   par(mfrow = c(1, 1))
   EpiModel::comp_plot(mod, at = 90, digits = 1)

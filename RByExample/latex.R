@@ -13,8 +13,10 @@ main <- function(argv) {
   xtable::xtable(m, digits = rep(3, 5))
 
   # Production latex code that goes into a paper or a book --
-  print(xtable::xtable(m, caption = "String", label = "t:"), type = "latex", file = "blah.gen", 
-    table.placement = "tp", latex.environments = c("center", "footnotesize"))
+  print(xtable::xtable(m, caption = "String", label = "t:"),
+    type = "latex", file = "blah.gen",
+    table.placement = "tp", latex.environments = c("center", "footnotesize")
+  )
   # Now you do \input{blah.gen} in your latex file.
 
   # You're lazy, and want to use R to generate latex tables for you?

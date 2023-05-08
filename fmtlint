@@ -4,8 +4,8 @@ USAGE="Usage: $0 {-r} dir1 {-r} dir2 {-r} dir3 ...
 r - recurse over directory parameter"
 
 usage() {
-    echo "$USAGE"
-    exit 1
+  echo "$USAGE"
+  exit 1
 }
 
 if [ "$#" == "0" ]; then
@@ -17,51 +17,51 @@ declare -a dirs
 
 while getopts ":r:" opt; do
   case "$opt" in
-    r)
-      if [[ -d "$OPTARG" ]]; then
-        dirs+="$OPTARG"
-      else
-        echo "$OPTARG is not a directory"
-        usage
-      fi
-      ;;
-    \?)
-      echo "Invalid option: -$OPTARG" >&2
+  r)
+    if [[ -d "$OPTARG" ]]; then
+      dirs+=("$OPTARG")
+    else
+      echo "$OPTARG is not a directory"
       usage
-      ;;
-    :)
-      echo "Option -$OPTARG requires an argument." >&2
-      usage
-      ;;
+    fi
+    ;;
+  \?)
+    echo "Invalid option: -$OPTARG" >&2
+    usage
+    ;;
+  :)
+    echo "Option -$OPTARG requires an argument." >&2
+    usage
+    ;;
   esac
 done
 
 if [[ ${#dirs[@]} == 0 ]]; then
-  IFS=' ' read -ra dirs <<< "$@"
+  IFS=' ' read -ra dirs <<<"$@"
   declare -i errcount=0
-  for i in "${!dirs[@]}"; do 
+  for i in "${!dirs[@]}"; do
     if [[ ! -d ${dirs[$i]} ]]; then
       echo "${dirs[$i]}"
       echo "${dirs[$i]} is not a directory"
-      let "errcount++"
+      ((errcount++))
     fi
   done
-  if (( errcount > 0 )); then
+  if ((errcount > 0)); then
     usage
   fi
 else
   declare -a expanded
-  for i in "${!dirs[@]}"; do 
+  for i in "${!dirs[@]}"; do
     readarray -t a \
       < <(find "${dirs[$i]}" -type d -not -wholename "**/.git/**" -not -name ".git")
-    expanded+="${a[@]}"
+    expanded+=("${a[@]}")
   done
-  dirs="${expanded[@]}"
+  dirs=("${expanded[@]}")
 fi
 
 echo "${dirs[@]}"
-./style.R ${dirs[@]} | tee styler.out
+./style.R "${dirs[@]}" | tee styler.out
 exit_code="${PIPESTATUS[0]}"+"$exit_code"
-./lint.R ${dirs[@]} | tee linter.out
+./lint.R "${dirs[@]}" | tee linter.out
 exit_code="${PIPESTATUS[0]}"+"$exit_code"
 exit "$exit_code"

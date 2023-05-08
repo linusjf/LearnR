@@ -27,8 +27,10 @@ main <- function(argv) {
   width <- fit[, 3] - fit[, 2]
   names(width) <- c("NS", "S")
 
-  summary <- data.frame(`Model estimated using…` = c("all 32 data points"), `SE(Gest)` = c(segest), 
-    `Width of CI for μY` = paste(toString(names(width)), toString(width)))
+  summary <- data.frame(
+    `Model estimated using…` = c("all 32 data points"), `SE(Gest)` = c(segest),
+    `Width of CI for μY` = paste(toString(names(width)), toString(width))
+  )
   lm <- lm(Wgt_0 ~ Gest_0, data)
   summ <- summary(lm)
   coefficients <- summ$coefficients
@@ -38,8 +40,10 @@ main <- function(argv) {
   prediction <- predict(lm, newdata, se.fit = TRUE, interval = "confidence")
   fit <- prediction$fit
   width <- fit[, 3] - fit[, 2]
-  summ0 <- data.frame(`Model estimated using…` = c("16 non-smokers"), `SE(Gest)` = c(segest), 
-    `Width of CI for μY` = c(paste(width, collapse = " ")))
+  summ0 <- data.frame(
+    `Model estimated using…` = c("16 non-smokers"), `SE(Gest)` = c(segest),
+    `Width of CI for μY` = c(paste(width, collapse = " "))
+  )
 
 
   lm <- lm(Wgt_1 ~ Gest_1, data)
@@ -51,8 +55,10 @@ main <- function(argv) {
   prediction <- predict(lm, newdata, se.fit = TRUE, interval = "confidence")
   fit <- prediction$fit
   width <- fit[, 3] - fit[, 2]
-  summ1 <- data.frame(`Model estimated using…` = c("16 smokers"), `SE(Gest)` = c(segest), 
-    `Width of CI for μY` = c(paste(width, collapse = " ")))
+  summ1 <- data.frame(
+    `Model estimated using…` = c("16 smokers"), `SE(Gest)` = c(segest),
+    `Width of CI for μY` = c(paste(width, collapse = " "))
+  )
   summary <- rbind(summary, summ0)
   summary <- rbind(summary, summ1)
   print(summary)

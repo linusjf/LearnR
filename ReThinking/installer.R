@@ -5,24 +5,26 @@ install_rethinking <- function() {
     install.packages("rstan", .libPaths()[1])
   }
   if (!require(coda)) {
-  install.packages("coda", .libPaths()[1])
+    install.packages("coda", .libPaths()[1])
   }
   if (!require(mvtnorm)) {
-  install.packages("mvtnorm", .libPaths()[1])
+    install.packages("mvtnorm", .libPaths()[1])
   }
   if (!require(devtools)) {
-  install.packages("devtools", .libPaths()[1])
+    install.packages("devtools", .libPaths()[1])
   }
   if (!require(loo)) {
-  install.packages("loo", .libPaths()[1])
+    install.packages("loo", .libPaths()[1])
   }
   if (!require(dagitty)) {
-  install.packages("dagitty", .libPaths()[1])
+    install.packages("dagitty", .libPaths()[1])
   }
   # we recommend running this is a fresh R session or restarting your current session
   if (!require(cmdstanr)) {
-  install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")),
-.libPaths()[1])
+    install.packages("cmdstanr",
+      repos = c("https://mc-stan.org/r-packages/", getOption("repos")),
+      .libPaths()[1]
+    )
   }
   devtools::install_github("rmcelreath/rethinking")
 }

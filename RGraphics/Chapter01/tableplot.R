@@ -190,12 +190,13 @@ draw_normal_ci <- function(ll, or, ul, size) {
     )
   } else {
     # Draw line white if totally inside rect
-    line_col <- if ((convertX(grid::unit(or, "native") + grid::unit(
-      0.5 * size,
-      "lines"
-    ),
-    "native",
-    valueOnly = TRUE
+    line_col <- if ((convertX(
+      grid::unit(or, "native") + grid::unit(
+        0.5 * size,
+        "lines"
+      ),
+      "native",
+      valueOnly = TRUE
     ) > ul) &&
       (convertX(grid::unit(or, "native") - grid::unit(0.5 * size, "lines"),
         "native",

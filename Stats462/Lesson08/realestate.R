@@ -45,12 +45,16 @@ main <- function(argv) {
 }
 
 evaluate_model <- function(lm, data) {
-  plot(lm, which = c(1, 3), caption = list("Standardised Residuals versus Fitted", 
-    "Scale-Location"), )
+  plot(lm, which = c(1, 3), caption = list(
+    "Standardised Residuals versus Fitted",
+    "Scale-Location"
+  ), )
 
   residuals <- resid(lm)
-  probplot(residuals, probs = c(0.1, 0.25, 0.5, 0.75, 0.9, 0.99, 0.999), xlab = "Residuals", 
-    ylab = "Probabilities (Percent)")
+  probplot(residuals,
+    probs = c(0.1, 0.25, 0.5, 0.75, 0.9, 0.99, 0.999), xlab = "Residuals",
+    ylab = "Probabilities (Percent)"
+  )
 }
 
 plot_fitted_lines_log <- function(data) {
@@ -67,8 +71,10 @@ plot_fitted_lines_log <- function(data) {
   suppressWarnings(abline(lm, col = "blue", lty = 3))
 
   labels <- c(paste0("No A/C - ", eqnNoAC), paste0("A/C - ", eqnAC))
-  legend("topleft", cex = 0.8, col = c("red", "blue"), legend = labels, lty = 1:3, 
-    text.col = c("red", "blue"))
+  legend("topleft",
+    cex = 0.8, col = c("red", "blue"), legend = labels, lty = 1:3,
+    text.col = c("red", "blue")
+  )
 }
 
 plot_fitted_lines <- function(data) {
@@ -85,8 +91,10 @@ plot_fitted_lines <- function(data) {
   suppressWarnings(abline(lm, col = "blue", lty = 3))
 
   labels <- c(paste0("No A/C - ", eqnNoAC), paste0("A/C - ", eqnAC))
-  legend("topleft", cex = 0.8, col = c("red", "blue"), legend = labels, lty = 1:3, 
-    text.col = c("red", "blue"))
+  legend("topleft",
+    cex = 0.8, col = c("red", "blue"), legend = labels, lty = 1:3,
+    text.col = c("red", "blue")
+  )
 }
 
 fit_interactions <- function(data) {
@@ -119,10 +127,14 @@ fit_log <- function(data) {
 scatter_log <- function(data) {
   NoAC <- subset(data, data$Air == 0)
   AC <- subset(data, data$Air == 1)
-  plot(NoAC$lnSqFeet, NoAC$lnSalePrice, main = "log(Sale Price) against log(area) scatterplot", 
-    xlab = "log[Square Feet (Area)]", ylab = "log(Sale Price)", pch = 19, frame = FALSE, 
-    col = "red", ylim = c(min(data$lnSalePrice), max(data$lnSalePrice)), xlim = c(min(data$lnSqFeet), 
-      max(data$lnSqFeet)))
+  plot(NoAC$lnSqFeet, NoAC$lnSalePrice,
+    main = "log(Sale Price) against log(area) scatterplot",
+    xlab = "log[Square Feet (Area)]", ylab = "log(Sale Price)", pch = 19, frame = FALSE,
+    col = "red", ylim = c(min(data$lnSalePrice), max(data$lnSalePrice)), xlim = c(
+      min(data$lnSqFeet),
+      max(data$lnSqFeet)
+    )
+  )
   points(AC$lnSqFeet, AC$lnSalePrice, col = "blue", pch = 19)
   box(which = "plot", lty = "solid")
 }
@@ -130,10 +142,14 @@ scatter_log <- function(data) {
 scatter <- function(data) {
   NoAC <- subset(data, data$Air == 0)
   AC <- subset(data, data$Air == 1)
-  plot(NoAC$SqFeet, NoAC$SalePrice, main = "Sale Price against area scatterplot", 
-    xlab = "Square Feet (Area)", ylab = "Sale Price", pch = 19, frame = FALSE, 
-    col = "red", ylim = c(min(data$SalePrice), max(data$SalePrice)), xlim = c(min(data$SqFeet), 
-      max(data$SqFeet)))
+  plot(NoAC$SqFeet, NoAC$SalePrice,
+    main = "Sale Price against area scatterplot",
+    xlab = "Square Feet (Area)", ylab = "Sale Price", pch = 19, frame = FALSE,
+    col = "red", ylim = c(min(data$SalePrice), max(data$SalePrice)), xlim = c(
+      min(data$SqFeet),
+      max(data$SqFeet)
+    )
+  )
   points(AC$SqFeet, AC$SalePrice, col = "blue", pch = 19)
   box(which = "plot", lty = "solid")
 }

@@ -59,7 +59,7 @@ analysis_vif <- function(data) {
   wt_model <- lm(Weight ~ BSA + Age + Dur + Pulse + Stress, data)
   stats <- model_fit_stats(wt_model)
   r.squared <- stats$R.squared
-  vif.weight <- 1/(1 - r.squared)
+  vif.weight <- 1 / (1 - r.squared)
   names(vif.weight) <- "vif.Weight"
   print(vif.weight)
 

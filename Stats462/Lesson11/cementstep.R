@@ -22,8 +22,10 @@ main <- function(argv) {
   chart.Correlation(data, histogram = TRUE, pch = 15)
 
   model <- lm(y ~ ., data)
-  final <- step(model, trace = 10, k = log(nrow(data)), direction = "both", pent = 0.15, 
-    prem = 0.15)
+  final <- step(model,
+    trace = 10, k = log(nrow(data)), direction = "both", pent = 0.15,
+    prem = 0.15
+  )
   print(final)
   return(0)
 }

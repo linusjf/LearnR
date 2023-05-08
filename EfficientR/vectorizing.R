@@ -38,11 +38,11 @@ monte_carlo <- function(n) {
       hits <- hits + 1
     }
   }
-  return(hits/n)
+  return(hits / n)
 }
 
 monte_carlo_vec <- function(n) {
-  sum(runif(n)^2 > runif(n))/n
+  sum(runif(n)^2 > runif(n)) / n
 }
 
 main <- function(argv) {

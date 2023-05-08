@@ -11,9 +11,13 @@ main <- function(argv) {
     filter(Team %in% c("Spain", "Netherlands", "Uruguay", "Germany")) %>%
     select(Team, Position, Passes) %>%
     group_by(Team, Position) %>%
-    summarize(ave_passes = mean(Passes), min_passes = min(Passes), max_passes = max(Passes), 
-      pass_summary = paste0(round(ave_passes), " (", min_passes, ", ", max_passes, 
-        ")")) %>%
+    summarize(
+      ave_passes = mean(Passes), min_passes = min(Passes), max_passes = max(Passes),
+      pass_summary = paste0(
+        round(ave_passes), " (", min_passes, ", ", max_passes,
+        ")"
+      )
+    ) %>%
     select(Team, Position, pass_summary)
   # What the data looks like before using `spread`
   print(wc_table)

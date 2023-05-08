@@ -35,37 +35,48 @@ main <- function(argv) {
   y[y < -3.5 | y > 3.5] <- NA
   x <- seq(-3.5, 3.5, 0.1)
   dn <- dnorm(x)
-  hist(y, breaks = seq(-3.5, 3.5), ylim = c(0, 0.5), mar = c(5.1, 4.1, 4.1, 2.1), 
-    col = "gray80", freq = FALSE)
+  hist(y,
+    breaks = seq(-3.5, 3.5), ylim = c(0, 0.5), mar = c(5.1, 4.1, 4.1, 2.1),
+    col = "gray80", freq = FALSE
+  )
   lines(x, dn, lwd = 2)
 
   # Barplot Modified from example(barplot)
-  midpts <- barplot(VADeaths, col = gray(0.5 + 1:5/12), names = rep("", 4), mar = c(2, 
-    3.1, 2, 2.1))
-  mtext(sub(" ", "\n", colnames(VADeaths)), at = midpts, side = 1, line = 0.5, 
-    cex = 0.5, mar = c(2, 3.1, 2, 2.1))
-  text(rep(midpts, each = 5), apply(VADeaths, 2, cumsum) - VADeaths/2, VADeaths, 
-    col = rep(c("white", "black"), times = 2:3), cex = 0.8, mar = c(2, 3.1, 2, 
-      2.1))
+  midpts <- barplot(VADeaths, col = gray(0.5 + 1:5 / 12), names = rep("", 4), mar = c(
+    2,
+    3.1, 2, 2.1
+  ))
+  mtext(sub(" ", "\n", colnames(VADeaths)),
+    at = midpts, side = 1, line = 0.5,
+    cex = 0.5, mar = c(2, 3.1, 2, 2.1)
+  )
+  text(rep(midpts, each = 5), apply(VADeaths, 2, cumsum) - VADeaths / 2, VADeaths,
+    col = rep(c("white", "black"), times = 2:3), cex = 0.8, mar = c(
+      2, 3.1, 2,
+      2.1
+    )
+  )
 
   # Boxplot Modified example(boxplot) - itself from suggestion by Roger Bivand
   print(head(subset(ToothGrowth, ToothGrowth$supp == "VC")))
   print(levels(ToothGrowth$supp))
-  boxplot(len ~ dose, data = ToothGrowth, boxwex = 0.25, at = 1:3 - 0.2, subset = supp == 
+  boxplot(len ~ dose, data = ToothGrowth, boxwex = 0.25, at = 1:3 - 0.2, subset = supp ==
     "VC", col = "gray90", xlab = "", ylab = "tooth length", ylim = c(0, 35))
   mtext("Vitamin C dose (mg)", side = 1, line = 2.5, cex = 0.8)
   print(head(subset(ToothGrowth, ToothGrowth$supp == "OJ")))
-  boxplot(len ~ dose, data = ToothGrowth, add = TRUE, boxwex = 0.25, at = 1:3 + 
+  boxplot(len ~ dose, data = ToothGrowth, add = TRUE, boxwex = 0.25, at = 1:3 +
     0.2, subset = supp == "OJ")
-  legend(1.5, 9, c("Ascorbic acid", "Orange juice"), fill = c("gray90", "gray70"), 
-    bty = "n")
+  legend(1.5, 9, c("Ascorbic acid", "Orange juice"),
+    fill = c("gray90", "gray70"),
+    bty = "n"
+  )
 
   # Persp Almost exactly example(persp)
   x <- seq(-10, 10, length = 30)
   y <- x
   f <- function(x, y) {
     r <- sqrt(x^2 + y^2)
-    10 * sin(r)/r
+    10 * sin(r) / r
   }
   z <- outer(x, y, f)
   z[is.na(z)] <- 1
@@ -74,8 +85,10 @@ main <- function(argv) {
 
   # Piechart Example 4 from help(pie)
   pie_sales <- c(0.12, 0.3, 0.26, 0.16, 0.04, 0.12)
-  names(pie_sales) <- c("Blueberry", "Cherry", "Apple", "Boston Cream", "Other", 
-    "Vanilla")
+  names(pie_sales) <- c(
+    "Blueberry", "Cherry", "Apple", "Boston Cream", "Other",
+    "Vanilla"
+  )
   pie(pie_sales, col = gray(seq(0.4, 1, length = 6)))
   return(0)
 }

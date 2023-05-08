@@ -25,8 +25,10 @@ main <- function(argv) {
   print(skimr::skim(data))
 
   attach(data)
-  plot(x = date, y = price, col = "blue", pch = 15, type = "b", main = "Time series plot of price", 
-    xlab = "Date", ylab = "Price", xaxt = "n")
+  plot(
+    x = date, y = price, col = "blue", pch = 15, type = "b", main = "Time series plot of price",
+    xlab = "Date", ylab = "Price", xaxt = "n"
+  )
   at <- date[c(1, 16, 31, 46, 61, 76, 91, 105)]
   labels <- format(at, format = "%m/%d/%Y")
   axis(1, at = at, labels = labels, tick = TRUE)
@@ -36,8 +38,10 @@ main <- function(argv) {
   data %<>%
     mutate(lag_1_price = Lag(price, 1))
   attach(data)
-  plot(y = price, x = lag_1_price, col = "blue", pch = 15, main = "Scatter plot of Price versus Lagged Price", 
-    ylab = "Price", xlab = "Lag 1 Price")
+  plot(
+    y = price, x = lag_1_price, col = "blue", pch = 15, main = "Scatter plot of Price versus Lagged Price",
+    ylab = "Price", xlab = "Lag 1 Price"
+  )
   detach(data)
   return(0)
 }
