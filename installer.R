@@ -37,6 +37,12 @@ install_tools <- function() {
   if (!require(drat)) {
     install.packages("drat", .libPaths()[1])
   }
+  if (!require(rmarkdown)) {
+    install.packages("rmarkdown", .libPaths()[1])
+  }
+  if (!require(quarto)) {
+    install.packages("quarto", .libPaths()[1])
+  }
 }
 
 main <- function(argv) {
