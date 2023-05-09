@@ -1,11 +1,11 @@
 #!/usr/bin/env Rscript
 
 install_inferences <- function() {
-  if (!require(kableExtra)) {
-    install.packages("kableExtra", .libPaths()[1])
-  }
   if (!require(ggplot2)) {
     install.packages("ggplot2", .libPaths()[1])
+  }
+  if (!require(tidyr)) {
+    install.packages("tidyr", .libPaths()[1])
   }
 }
 
@@ -16,7 +16,7 @@ main <- function(argv) {
   platform <- ifelse(is.null(sess$running), "termux", sess$running)
   switch(platform,
     "termux" = {
-      Sys.setenv(R_LIBS_USER = "/data/data/com.termux/files/usr/lib/R/library")
+      Sys.setenv(R_LIBS_USER = paste(Sys.getenv("PREFIX"),"lib/R/library"))
     },
     `Arch Linux ARM` = {
       Sys.setenv(R_LIBS_USER = "/usr/lib/R/library")
