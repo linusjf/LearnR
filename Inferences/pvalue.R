@@ -19,7 +19,8 @@ ggplot(df_long, aes(x = rating, fill = `Friend Group`)) +
   theme(panel.background = element_rect(fill = backgroundcolor))
 
 
-t.test(df_long$rating ~ df_long$`Friend Group`, var.equal = TRUE)
+tstat <- t.test(df_long$rating ~ df_long$`Friend Group`, var.equal = TRUE)
+se <- tstat$stderr
 
 par(bg = backgroundcolor)
 x <- seq(-5, 5, length = 100)
@@ -35,6 +36,17 @@ p <- numeric(100000) # store all simulated *p*-values
 for (i in 1:100000) { # for each simulated experiment
   x <- rnorm(n = 71, mean = 100, sd = 15) # Simulate data
   y <- rnorm(n = 71, mean = 105, sd = 15) # Simulate data
+  p[i] <- t.test(x, y)$p.value # store the *p*-value
+}
+power <- sum(p < 0.05) / 100000 # compute power
+print(power)
+hist(p, breaks = 20) # plot a histogram
+
+# plot histogram for friends data
+p <- numeric(100000) # store all simulated *p*-values
+for (i in 1:100000) { # for each simulated experiment
+  x <- rnorm(n = 10, mean = 7.7, sd = se) # Simulate data
+  y <- rnorm(n = 10, mean = 8.7, sd = se) # Simulate data
   p[i] <- t.test(x, y)$p.value # store the *p*-value
 }
 power <- sum(p < 0.05) / 100000 # compute power
