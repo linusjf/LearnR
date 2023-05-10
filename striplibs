@@ -3,5 +3,7 @@ libpath="${PREFIX}/lib/R/library/**/libs/*.so"
 if [[ $OSTYPE == 'linux-gnu' ]]; then
   libpath="/usr/lib/R/library/**/libs/*.so"
 fi
-strip --strip-debug "$libpath"
-du -csh "$libpath"
+stripcmd="strip --strip-debug ${libpath}"
+eval "$stripcmd"
+ducmd="du -csh ${libpath}"
+eval "$ducmd"
