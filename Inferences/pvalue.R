@@ -32,16 +32,6 @@ x <- seq(-5, -2.5175, length = 100)
 z <- (dt(x, df = 18))
 polygon(c(-8, x, -2.5175), c(0, z, 0), col = rgb(1, 0, 0, 0.5))
 
-p <- numeric(100000) # store all simulated *p*-values
-for (i in 1:100000) { # for each simulated experiment
-  x <- rnorm(n = 71, mean = 100, sd = 15) # Simulate data
-  y <- rnorm(n = 71, mean = 105, sd = 15) # Simulate data
-  p[i] <- t.test(x, y)$p.value # store the *p*-value
-}
-power <- sum(p < 0.05) / 100000 # compute power
-print(power)
-hist(p, breaks = 20) # plot a histogram
-
 # plot histogram for friends data
 p <- numeric(100000) # store all simulated *p*-values
 for (i in 1:100000) { # for each simulated experiment
@@ -52,3 +42,27 @@ for (i in 1:100000) { # for each simulated experiment
 power <- sum(p < 0.05) / 100000 # compute power
 print(power)
 hist(p, breaks = 20) # plot a histogram
+
+
+#Set number of simulations
+nSims <- 100000 # number of simulated experiments
+p <- numeric(nSims) # set up empty variable to store all simulated *p*-values
+bars <- 20
+
+for (i in 1:nSims) { # for each simulated experiment
+  x <- rnorm(n = 71, mean = 100, sd = 15) # Simulate data
+  y <- rnorm(n = 71, mean = 105, sd = 15) # Simulate data
+  p[i] <- t.test(x, y)$p.value # store the *p*-value
+}
+
+#Plot figure
+par(bg = backgroundcolor)
+op <- par(mar = c(5,7,4,4)) #change white-space around graph
+hist(p, breaks=bars, xlab="P-values", ylab="number of p-values\n", axes=FALSE,
+    main=paste("P-value Distribution with 50% power"),
+    col="grey", xlim=c(0,1), ylim=c(0, nSims))
+axis(side=1, at=seq(0,1, 0.1), labels=seq(0,1,0.1))
+axis(side=2, at=seq(0,nSims, nSims/4), labels=seq(0,nSims, nSims/4), las=2)
+abline(h=nSims/bars, col = "red", lty=3)
+power <- sum(p < 0.05) / 100000 # compute power
+print(power)
