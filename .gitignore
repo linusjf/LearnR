@@ -11,3 +11,5 @@ Rplots.pdf
 **/demo.csv
 *.gz
 commit.txt
+*.out
+*.wsout
