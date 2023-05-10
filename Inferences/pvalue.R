@@ -144,3 +144,129 @@ d <- 0.5
 se <- sqrt(2 / n) # standard error
 ncp <- (d * sqrt(n / 2)) # Calculate non-centrality parameter d
 curve(pdf2_t, 0, 1, n = 1000, col = "black", lwd = 3, lty = 3, add = TRUE)
+
+add_type1_error <- function(N,
+                            side = "right",
+                            col = rgb(1, 0, 0, 0.5)) {
+  mult <- ifelse(side == "right", 1, -1)
+  crit_d <- mult * abs(qt(0.05 / 2, (N * 2) - 2)) / sqrt(N / 2)
+
+  if (side == "right") {
+    y <- seq(crit_d, 10, length = 10000)
+  } else {
+    y <- seq(-10, crit_d, length = 10000)
+  }
+
+  # determine upperbounds polygon
+  suppressWarnings({
+    z <- (dt(y * sqrt(N / 2), df = (N * 2) - 2) * sqrt(N / 2))
+  })
+
+  if (side == "right") {
+    polygon(c(crit_d, y, 10), c(0, z, 0), col = col)
+  } else {
+    polygon(c(y, crit_d, crit_d), c(z, 0, 0), col = col)
+  }
+}
+
+# calculate distribution of d based on t-distribution
+calc_d_dist <- function(x, N, ncp = 0) {
+  suppressWarnings({
+    # generates a lot of warnings sometimes
+    dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = ncp) * sqrt(N / 2)
+  })
+}
+
+#| fig-cap: "Distribution of observed Cohen's *d* effect sizes when collecting 50 observations per group in an independent *t*-test."# Figure 1 & 2 (set to N <- 5000 for Figure 2)
+# Set x-axis upper and lower scale points
+low_x <- -1
+high_x <- 1
+y_max <- 2
+
+# Set sample size per group and effect size d (assumes equal sample sizes per group)
+N <- 50 # sample size per group for independent t-test
+d <- 0.5 # please enter positive d only
+# Calculate non-centrality parameter - equals t-value from sample
+ncp <- d * sqrt(N / 2)
+
+# # or Cumming, page 305
+# ncp <- d / (sqrt((1 / N) + (1 / N)))
+
+# calc d-distribution
+x <- seq(low_x, high_x, length = 10000) # create x values
+d_dist <- calc_d_dist(x, N, ncp)
+
+# Set max Y
+y_max <- max(d_dist) + 0.5
+
+# create plot
+par(bg = backgroundcolor)
+plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = "Difference", ylab = "", main = paste("null hypothesis for N = ", N))
+
+d_dist <- dt(x * sqrt(N / 2), df = (N * 2) - 2, ncp = 0) * sqrt(N / 2)
+lines(x, d_dist, col = "black", type = "l", lwd = 2)
+
+# Add type 1 error rate
+add_type1_error(N, "right")
+add_type1_error(N, "left")
+
+#| fig-cap: "Distribution of observed Cohen's *d* effect sizes when collecting 5000 observations per group in an independent *t*-test when *d* = 0."
+
+low_x <- -1
+high_x <- 1
+y_max <- 2
+
+# Set sample size per group and effect size d (assumes equal sample sizes per group)
+N <- 5000 # sample size per group for independent t-test
+d <- 0.5 # please enter positive d only
+# Calculate non-centrality parameter - equals t-value from sample
+ncp <- d * sqrt(N / 2)
+
+# calc d-distribution
+x <- seq(low_x, high_x, length = 10000) # create x values
+d_dist <- calc_d_dist(x, N, ncp)
+
+# Set max Y
+y_max <- max(d_dist) + 0.5
+
+# create plot
+par(bg = backgroundcolor)
+plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = "Difference", ylab = "", main = paste("null hypothesis for N = ", N))
+
+d_dist <- calc_d_dist(x, N, 0)
+lines(x, d_dist, col = "black", type = "l", lwd = 2)
+
+# Add type 1 error rate
+add_type1_error(N, "right")
+add_type1_error(N, "left")
+
+low_x <- -1
+high_x <- 1.5
+y_max <- 2
+
+# Set sample size per group and effect size d (assumes equal sample sizes per group)
+N <- 50 # sample size per group for independent t-test
+d <- 1.5 # please enter positive d only
+# Calculate non-centrality parameter - equals t-value from sample
+ncp <- d * sqrt(N / 2)
+
+# # or Cumming, page 305
+# ncp <- d / (sqrt((1 / N) + (1 / N)))
+
+# calc d-distribution
+x <- seq(low_x, high_x, length = 10000) # create x values
+d_dist <- calc_d_dist(x, N, ncp)
+
+# Set max Y
+y_max <- max(d_dist) + 0.5
+
+par(bg = backgroundcolor)
+plot(-10, xlim = c(low_x, high_x), ylim = c(0, y_max), xlab = "Difference", ylab = "", main = paste("Null and alternative hypothesis for N = ", N))
+lines(x, d_dist, col = "black", type = "l", lwd = 2)
+# add d = 0 line
+d_dist <- calc_d_dist(x, N, ncp=0)
+lines(x, d_dist, col = "darkgrey", type = "l", lwd = 2)
+
+# Add type 1 error rate
+add_type1_error(N, "right")
+add_type1_error(N, "left")
