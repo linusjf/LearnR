@@ -270,3 +270,84 @@ lines(x, d_dist, col = "darkgrey", type = "l", lwd = 2)
 # Add type 1 error rate
 add_type1_error(N, "right")
 add_type1_error(N, "left")
+
+nsims <- 100000 # number of simulations
+
+m <- 106 # mean sample
+n <- 26 # set sample size
+sd <- 15 # SD of the simulated data
+
+p <- numeric(nsims) # set up empty vector
+bars <- 20
+
+for (i in 1:nsims) { # for each simulated experiment
+  x <- rnorm(n = n, mean = m, sd = sd)
+  z <- t.test(x, mu = 100) # perform the t-test
+  p[i] <- z$p.value # get the p-value
+}
+power <- round((sum(p < 0.05) / nsims), 2) # power
+
+# Plot figure
+hist(p,
+  breaks = bars, xlab = "P-values", ylab = "number of p-values\n",
+  axes = FALSE, main = paste("P-value Distribution with",
+                            round(power * 100, digits = 1), "% Power"),
+  col = "grey", xlim = c(0, 1), ylim = c(0, nsims))
+axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
+axis(side = 2, at = seq(0, nsims, nsims / 4),
+    labels = seq(0, nsims, nsims / 4), las = 2)
+abline(h = nsims / bars, col = "red", lty = 3)
+
+nsims <- 100000 # number of simulations
+
+m <- 106 # mean sample
+n <- 51 # set sample size
+sd <- 15 # SD of the simulated data
+
+p <- numeric(nsims) # set up empty vector
+bars <- 20
+
+for (i in 1:nsims) { # for each simulated experiment
+  x <- rnorm(n = n, mean = m, sd = sd)
+  z <- t.test(x, mu = 100) # perform the t-test
+  p[i] <- z$p.value # get the p-value
+}
+power <- round((sum(p < 0.05) / nsims), 2) # power
+
+# Plot figure
+hist(p,
+  breaks = bars, xlab = "P-values", ylab = "number of p-values\n",
+  axes = FALSE, main = paste("P-value Distribution with",
+                            round(power * 100, digits = 1), "% Power"),
+  col = "grey", xlim = c(0, 1), ylim = c(0, nsims))
+axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
+axis(side = 2, at = seq(0, nsims, nsims / 4),
+    labels = seq(0, nsims, nsims / 4), las = 2)
+abline(h = nsims / bars, col = "red", lty = 3)
+
+nsims <- 100000 # number of simulations
+
+m <- 100 # mean sample
+n <- 51 # set sample size
+sd <- 15 # SD of the simulated data
+
+p <- numeric(nsims) # set up empty vector
+bars <- 20
+
+for (i in 1:nsims) { # for each simulated experiment
+  x <- rnorm(n = n, mean = m, sd = sd)
+  z <- t.test(x, mu = 100) # perform the t-test
+  p[i] <- z$p.value # get the p-value
+}
+power <- round((sum(p < 0.05) / nsims), 2) # power
+
+# Plot figure
+hist(p,
+  breaks = bars, xlab = "P-values", ylab = "number of p-values\n",
+  axes = FALSE, main = paste("P-value Distribution with",
+                            round(power * 100, digits = 1), "% Power"),
+  col = "grey", xlim = c(0, 1), ylim = c(0, nsims))
+axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
+axis(side = 2, at = seq(0, nsims, nsims / 4),
+    labels = seq(0, nsims, nsims / 4), las = 2)
+abline(h = nsims / bars, col = "red", lty = 3)
