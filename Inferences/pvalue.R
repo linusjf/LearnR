@@ -351,3 +351,98 @@ axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
 axis(side = 2, at = seq(0, nsims, nsims / 4),
     labels = seq(0, nsims, nsims / 4), las = 2)
 abline(h = nsims / bars, col = "red", lty = 3)
+
+bars <- 100
+
+for (i in 1:nsims) { # for each simulated experiment
+  x <- rnorm(n = n, mean = m, sd = sd)
+  z <- t.test(x, mu = 100) # perform the t-test
+  p[i] <- z$p.value # get the p-value
+}
+power <- round((sum(p < 0.05) / nsims), 2) # power
+
+# Plot figure
+hist(p,
+  breaks = bars, xlab = "P-values", ylab = "number of p-values\n",
+  axes = FALSE, main = paste("P-value Distribution with",
+                            round(power * 100, digits = 1), "% Power"),
+  col = "grey", xlim = c(0, 0.05), ylim = c(0, nsims))
+axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
+axis(side = 2, at = seq(0, nsims, nsims / 4),
+    labels = seq(0, nsims, nsims / 4), las = 2)
+abline(h = nsims / bars, col = "red", lty = 3)
+
+m <- 107 # mean sample
+for (i in 1:nsims) { # for each simulated experiment
+  x <- rnorm(n = n, mean = m, sd = sd)
+  z <- t.test(x, mu = 100) # perform the t-test
+  p[i] <- z$p.value # get the p-value
+}
+power <- round((sum(p < 0.05) / nsims), 2) # power
+
+# Plot figure
+hist(p,
+  breaks = bars, xlab = "P-values", ylab = "number of p-values\n",
+  axes = FALSE, main = paste("P-value Distribution with",
+                            round(power * 100, digits = 1), "% Power"),
+  col = "grey", xlim = c(0, 0.05), ylim = c(0, nsims))
+axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
+axis(side = 2, at = seq(0, nsims, nsims / 4),
+    labels = seq(0, nsims, nsims / 4), las = 2)
+abline(h = nsims / bars, col = "red", lty = 3)
+
+for (i in 1:nsims) { # for each simulated experiment
+  x <- rnorm(n = n, mean = m, sd = sd)
+  z <- t.test(x, mu = 100) # perform the t-test
+  p[i] <- z$p.value # get the p-value
+}
+power <- round((sum(p < 0.01) / nsims), 2) # power
+
+# Plot figure
+hist(p,
+  breaks = bars, xlab = "P-values", ylab = "number of p-values\n",
+  axes = FALSE, main = paste("P-value Distribution with",
+                            round(power * 100, digits = 1), "% Power"),
+  col = "grey", xlim = c(0, 0.05), ylim = c(0, nsims))
+axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
+axis(side = 2, at = seq(0, nsims, nsims / 4),
+    labels = seq(0, nsims, nsims / 4), las = 2)
+abline(h = nsims / bars, col = "red", lty = 3)
+
+for (i in 1:nsims) { # for each simulated experiment
+  x <- rnorm(n = n, mean = m, sd = sd)
+  z <- t.test(x, mu = 100) # perform the t-test
+  p[i] <- z$p.value # get the p-value
+}
+power <- round((sum(p < 0.01) / nsims), 2) # power
+
+# Plot figure
+hist(p,
+  breaks = bars, xlab = "P-values", ylab = "number of p-values\n",
+  axes = FALSE, main = paste("P-value Distribution with",
+                            round(power * 100, digits = 1), "% Power"),
+  col = "grey", xlim = c(0, 0.05), ylim = c(0, 10000))
+axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
+axis(side = 2, at = seq(0, nsims, nsims / 4),
+    labels = seq(0, nsims, nsims / 4), las = 2)
+abline(h = nsims / bars, col = "red", lty = 3)
+
+n <- 51 # set sample size
+m <- 108 # mean sample
+for (i in 1:nsims) { # for each simulated experiment
+  x <- rnorm(n = n, mean = m, sd = sd)
+  z <- t.test(x, mu = 100) # perform the t-test
+  p[i] <- z$p.value # get the p-value
+}
+power <- round((sum(p < 0.01) / nsims), 2) # power
+
+# Plot figure
+hist(p,
+  breaks = bars, xlab = "P-values", ylab = "number of p-values\n",
+  axes = FALSE, main = paste("P-value Distribution with",
+                            round(power * 100, digits = 1), "% Power"),
+  col = "grey", xlim = c(0, 0.05), ylim = c(0, 10000))
+axis(side = 1, at = seq(0, 1, 0.1), labels = seq(0, 1, 0.1))
+axis(side = 2, at = seq(0, nsims, nsims / 4),
+    labels = seq(0, nsims, nsims / 4), las = 2)
+abline(h = nsims / bars, col = "red", lty = 3)
