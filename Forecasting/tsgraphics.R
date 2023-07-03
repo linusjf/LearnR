@@ -35,3 +35,24 @@ options(pillar.width = NULL)
 PBS
 PBS |>
   filter(ATC2 == "A10")
+PBS |>
+  filter(ATC2 == "A10") |>
+  select(Month, Concession, Type, Cost)
+PBS |>
+  filter(ATC2 == "A10") |>
+  select(Cost)
+PBS |>
+  filter(ATC2 == "A10") |>
+  select(Month, Concession, Type, Cost) |>
+  summarise(TotalC = sum(Cost))
+PBS |>
+  filter(ATC2 == "A10") |>
+  select(Month, Concession, Type, Cost) |>
+  summarise(TotalC = sum(Cost)) |>
+  mutate(Cost = TotalC/1e6)
+PBS |>
+  filter(ATC2 == "A10") |>
+  select(Month, Concession, Type, Cost) |>
+  summarise(TotalC = sum(Cost)) |>
+  mutate(Cost = TotalC / 1e6) -> a10
+a10
