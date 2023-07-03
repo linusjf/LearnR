@@ -10,6 +10,8 @@
 suppressMessages(library(dplyr))
 suppressMessages(library(tsibble))
 suppressMessages(library(tsibbledata))
+suppressMessages(library(readr))
+suppressMessages(library(utils))
 y <- tsibble(
   Year = 2015:2019,
   Observation = c(123, 39, 78, 52, 110),
@@ -56,3 +58,18 @@ PBS |>
   summarise(TotalC = sum(Cost)) |>
   mutate(Cost = TotalC / 1e6) -> a10
 a10
+
+prisonfileurl <- "https://OTexts.com/fpp3/extrafiles/prison_population.csv"
+prisonfile <- "prison_population.csv"
+
+if (!file.exists(prisonfile)) {
+utils::download.file(prisonfileurl, prisonfile)
+}
+
+prison <- readr::read_csv(prisonfile, show_col_types = FALSE)
+spec(prison)
+prison <- prison |>
+  mutate(Quarter = yearquarter(Date)) |>
+  select(-Date) |>
+  as_tsibble(key = c(State, Gender, Legal, Indigenous),index = Quarter)
+prison

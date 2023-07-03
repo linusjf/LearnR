@@ -7,6 +7,12 @@ install_programs <- function() {
   if (!require(tsibbledata)) {
     install.packages("tsibbledata", .libPaths()[1])
   }
+  if (!require(readr)) {
+    install.packages("readr", .libPaths()[1])
+  }
+  if (!require(utils)) {
+    install.packages("utils", .libPaths()[1])
+  }
 }
 
 main <- function(argv) {
