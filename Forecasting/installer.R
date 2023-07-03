@@ -4,6 +4,9 @@ install_programs <- function() {
   if (!require(tsibble)) {
     install.packages("tsibble", .libPaths()[1])
   }
+  if (!require(tsibbledata)) {
+    install.packages("tsibbledata", .libPaths()[1])
+  }
 }
 
 main <- function(argv) {
