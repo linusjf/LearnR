@@ -71,6 +71,14 @@ a10 |>
   labs(y = "$ (millions)",
       title = "Seasonal plot: Antidiabetic drug sales")
 
+# Separate mini time plots
+a10 |>
+  gg_subseries(Cost) +
+  labs(
+    y = "$ (millions)",
+    title = "Australian antidiabetic drug sales"
+  )
+
 prisonfileurl <- "https://OTexts.com/fpp3/extrafiles/prison_population.csv"
 prisonfile <- "prison_population.csv"
 
