@@ -13,6 +13,9 @@ install_programs <- function() {
   if (!require(utils)) {
     install.packages("utils", .libPaths()[1])
   }
+  if (!require(feasts)) {
+    install.packages("feasts", .libPaths()[1])
+  }
 }
 
 main <- function(argv) {
