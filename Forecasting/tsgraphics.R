@@ -65,6 +65,11 @@ autoplot(a10, Cost) +
   labs(y = "$ (millions)",
       title = "Australian antidiabetic drug sales")
 
+# Seasonal plot
+a10 |>
+  gg_season(Cost, labels = "both") +
+  labs(y = "$ (millions)",
+      title = "Seasonal plot: Antidiabetic drug sales")
 
 prisonfileurl <- "https://OTexts.com/fpp3/extrafiles/prison_population.csv"
 prisonfile <- "prison_population.csv"
@@ -90,3 +95,8 @@ autoplot(melsyd_economy, Passengers) +
   labs(title = "Ansett airlines economy class",
       subtitle = "Melbourne-Sydney",
       y = "Passengers ('000)")
+
+vic_elec
+vic_elec |> gg_season(Demand, period = "day") +
+  theme(legend.position = "none") +
+  labs(y="MWh", title="Electricity demand: Victoria")
