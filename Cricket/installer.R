@@ -1,6 +1,12 @@
 #!/usr/bin/env Rscript
 
 install_programs <- function() {
+  if (!require(stringi)) {
+    install.packages("stringi", .libPaths()[1])
+  }
+  if (!require(cricketdata)) {
+    install.packages("cricketdata", .libPaths()[1])
+  }
   if (!require(forecast)) {
     install.packages("forecast", .libPaths()[1])
   }
