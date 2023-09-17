@@ -8,7 +8,7 @@
 # @description :
 ######################################################################
 library(cricketr)
-source("./findplayerid.R")
+library(cricketdata)
 # Retrieve the file path of a data file installed with cricketr
 pathToFile <- system.file("data", "tendulkar.csv", package = "cricketr")
 tend_id = find_player_id("Sachin Tendulkar")$ID
@@ -27,3 +27,11 @@ batsmanPerfBoxHist("./tendulkar.csv","Sachin Tendulkar")
 batsmanPerfBoxHist("./kallis.csv","Jacques Kallis")
 batsmanPerfBoxHist("./ponting.csv","Ricky Ponting")
 batsmanPerfBoxHist("./sangakkara.csv","Kumar Sangakkara")
+tendulkarsp <- getPlayerDataSp(tend_id,tdir=".",tfile="tendulkarsp.csv",ttype="batting")
+kallissp <- getPlayerDataSp(kallis_id,tdir=".",tfile="kallissp.csv",ttype="batting")
+pontingsp <- getPlayerDataSp(ponting_id,tdir=".",tfile="pontingsp.csv",ttype="batting")
+sangakkarasp <- getPlayerDataSp(sangakkara_id,tdir=".",tfile="sangakkarasp.csv",ttype="batting")
+batsmanContributionWonLost("tendulkarsp.csv","Tendulkar")
+batsmanContributionWonLost("kallissp.csv","Kallis")
+batsmanContributionWonLost("pontingsp.csv","Ponting")
+batsmanContributionWonLost("sangakkarasp.csv","Sangakkara")
