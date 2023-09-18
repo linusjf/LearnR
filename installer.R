@@ -43,6 +43,9 @@ install_tools <- function() {
   if (!require(quarto)) {
     install.packages("quarto", .libPaths()[1])
   }
+  if (!require(rprofile)) {
+    install.packages("rprofile", .libPaths()[1])
+  }
 }
 
 main <- function(argv) {
