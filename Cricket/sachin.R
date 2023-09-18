@@ -8,9 +8,11 @@
 # @description :
 ######################################################################
 library(cricketr)
+library(cricketdata)
+tendulkar_id <- find_player_id("Sachin Tendulkar")$ID
 # Retrieve the file path of a data file installed with cricketr
 pathToFile <- system.file("data", "tendulkar.csv", package = "cricketr")
-tendulkar <- getPlayerData(35320,dir=".",file="tendulkar.csv",type="batting",homeOrAway=c(1,2), result=c(1,2,4))
+tendulkar <- getPlayerData(tendulkar_id,dir=".",file="tendulkar.csv",type="batting",homeOrAway=c(1,2), result=c(1,2,4))
 batsmanRunsFreqPerf("./tendulkar.csv","Sachin Tendulkar")
 batsmanMeanStrikeRate("./tendulkar.csv","Sachin Tendulkar")
 batsmanRunsRanges("./tendulkar.csv","Sachin Tendulkar")
