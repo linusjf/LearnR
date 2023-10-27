@@ -5,6 +5,9 @@ install_na <- function() {
   if (!require(igraph)) {
     install.packages("igraph", .libPaths()[1])
   }
+  if (!require(reshape2)) {
+    install.packages("reshape2", .libPaths()[1])
+  }
 }
 
 main <- function(argv) {
