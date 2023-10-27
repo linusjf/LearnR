@@ -70,3 +70,8 @@ head(ego_nets)
 random_ego_net <- ego_nets[[1021]]
 print(random_ego_net)
 plot(random_ego_net, main="Respondent 1021")
+
+network_sizes <- lapply(ego_nets, vcount)
+network_edge_counts <- lapply(ego_nets, ecount)
+
+print(head(network_sizes))
