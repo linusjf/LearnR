@@ -8,6 +8,9 @@ install_na <- function() {
   if (!require(reshape2)) {
     install.packages("reshape2", .libPaths()[1])
   }
+  if (!require(nberwp)) {
+    install.packages("nberwp", .libPaths()[1])
+  }
 }
 
 main <- function(argv) {
