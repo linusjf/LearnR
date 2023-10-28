@@ -15,12 +15,17 @@ print(classes_data)
 classes_data <- subset(classes_data, select = c("name", "classes"))
 print(classes_data)
 classesMatrix = table(classes_data)
-class(classesMatrix) <- "matrix"
 # And we convert it from a table to a matrix
+class(classesMatrix) <- "matrix"
 print(classesMatrix)
 classesNet <- graph.incidence(classesMatrix, mode = c("all"))
+print(classesNet)
 plot(classesNet, vertex.label.cex = .6, vertex.label.color = "black")
+print(vertex_attr_names(classesNet))
+print(vertex_attr(classesNet))
 V(classesNet)$shape <- ifelse(V(classesNet)$type == FALSE, "circle", "square")
+print(classesNet)
+print(vertex_attr(classesNet))
 plot(classesNet,
 vertex.label.cex = .6,
 vertex.label.color = "black")
