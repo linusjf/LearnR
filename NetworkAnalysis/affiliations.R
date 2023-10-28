@@ -20,3 +20,7 @@ class(classesMatrix) <- "matrix"
 print(classesMatrix)
 classesNet <- graph.incidence(classesMatrix, mode = c("all"))
 plot(classesNet, vertex.label.cex = .6, vertex.label.color = "black")
+V(classesNet)$shape <- ifelse(V(classesNet)$type == FALSE, "circle", "square")
+plot(classesNet,
+vertex.label.cex = .6,
+vertex.label.color = "black")
