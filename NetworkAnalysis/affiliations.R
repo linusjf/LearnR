@@ -46,3 +46,12 @@ personNet <- graph.adjacency(personMatrix, mode = "undirected")
 groupNet <- graph.adjacency(groupMatrix, mode = "undirected")
 plot(personNet, vertex.label.cex = .6, vertex.label.color = "black")
 plot(groupNet, vertex.size = betweenness(groupNet)/max(betweenness(groupNet)) * 10, vertex.label.cex = .6, vertex.label.color = "black")
+
+# tripartite network
+classes_to_departments <- data.frame(class = c("Biostatistics","Islamic Civ", "Calc 1", "Linear Algebra", "Chemistry", "The Modern World-System", "Calc 2", "Social Networks", "Exile and Diaspora"), department = c("Math", "History", "Math", "Math", "Chemistry", "Sociology", "Math", "Sociology", "History"), stringsAsFactors = F)
+classes_to_departments_matrix <- table(classes_to_departments)
+class(classes_to_departments_matrix) <- "matrix"
+people_to_departments <- t(classes_to_departments_matrix) %*% t(classesMatrix)
+print(people_to_departments)
+people_to_departments_net <- graph.incidence(people_to_departments)
+plot(people_to_departments_net, vertex.label.cex = .6, vertex.label.color = "black")
