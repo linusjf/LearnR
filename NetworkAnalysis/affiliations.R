@@ -29,3 +29,20 @@ print(vertex_attr(classesNet))
 plot(classesNet,
 vertex.label.cex = .6,
 vertex.label.color = "black")
+personMatrix = classesMatrix %*% t(classesMatrix)
+print(personMatrix)
+number_of_classes_taken = diag(personMatrix)
+diag(personMatrix) <- 0
+print(personMatrix)
+personNet <- graph.adjacency(personMatrix, mode = "undirected")
+plot(personNet, vertex.size = 8, vertex.label.cex = .8, vertex.label.color = "black")
+groupMatrix = t(classesMatrix) %*% classesMatrix
+# The diagonal details the number of people in each class
+print(groupMatrix)
+number_of_students <- diag(groupMatrix)
+# we again set it to 0
+diag(groupMatrix) <- 0
+personNet <- graph.adjacency(personMatrix, mode = "undirected")
+groupNet <- graph.adjacency(groupMatrix, mode = "undirected")
+plot(personNet, vertex.label.cex = .6, vertex.label.color = "black")
+plot(groupNet, vertex.size = betweenness(groupNet)/max(betweenness(groupNet)) * 10, vertex.label.cex = .6, vertex.label.color = "black")
