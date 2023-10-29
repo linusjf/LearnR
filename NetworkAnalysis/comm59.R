@@ -1,5 +1,4 @@
 #!/usr/bin/env Rscript
-
 ######################################################################
 # @author      : Linus Fernandes (linusfernandes at gmail dot com)
 # @file        : comm59
@@ -30,15 +29,18 @@ el_no_weight[,2] <- as.character(el_no_weight[,2])
 
 # Graph the network
 net59 <- graph.edgelist(el_no_weight, directed = T)
-
 # Finally, add attributes
 # First link vertex names to their place in the attribute dataset
 linked_ids <- match(V(net59)$name, attributes$ID)
-
 # Then we can use that to assign a variable to each user in the network
+print(gorder(net59))
+print(length(attributes$race[linked_ids]))
 V(net59)$race <- attributes$race[linked_ids]
 V(net59)$sex <- attributes$sex[linked_ids]
 V(net59)$grade <- attributes$grade[linked_ids]
 V(net59)$school <- attributes$school[linked_ids]
-# Great!
 print(net59)
+print("Graph density: ")
+print(graph.density(net59))
+print("Graph reciprocity: ")
+print(reciprocity(net59))
