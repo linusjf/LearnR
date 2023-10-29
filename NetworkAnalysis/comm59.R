@@ -44,3 +44,17 @@ print("Graph density: ")
 print(graph.density(net59))
 print("Graph reciprocity: ")
 print(reciprocity(net59))
+net59_n <- gorder(net59)
+net59_density <- graph.density(net59)
+# where n is the number of nodes, p.or.m is the probability of drawing an edge, directed is whether the network is directed or not
+random_graph <- erdos.renyi.game(n = net59_n, p.or.m = net59_density, directed = TRUE)
+plot(random_graph,
+    vertex.size = 2,
+    vertex.label = NA,
+    edge.curved = .1,
+    vertex.color = "tomato",
+    edge.arrow.size = .1,
+    edge.width = .5,
+    edge.color = "grey60")
+print("Random Graph reciprocity: ")
+print(reciprocity(random_graph))
