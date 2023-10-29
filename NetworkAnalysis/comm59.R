@@ -11,14 +11,18 @@
 library(igraph)
 # read in the edge list from our github
 el <- read.table("comm59.csv", header = T)
+print(str(el))
 # Read in attributes from our github
 attributes <- read.table("comm59_att.csv", header = T)
+print(str(attributes))
 # add an ID column
 attributes$ID <- 1:nrow(attributes)
 
 # Indexing data so that you only put in certain columns
-el_no_weight <- el[,1:2] # We will ignore the ranking variable for now.
-el_no_weight <- as.matrix(el_no_weight) # igraph requires a matrix
+# We will ignore the ranking variable for now.
+el_no_weight <- el[,1:2]
+# igraph requires a matrix
+el_no_weight <- as.matrix(el_no_weight)
 
 # convert ids to characters so they are preserved as names
 el_no_weight[,1] <- as.character(el_no_weight[,1])
@@ -37,4 +41,4 @@ V(net59)$sex <- attributes$sex[linked_ids]
 V(net59)$grade <- attributes$grade[linked_ids]
 V(net59)$school <- attributes$school[linked_ids]
 # Great!
-net59
+print(net59)
