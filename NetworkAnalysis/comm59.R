@@ -102,3 +102,7 @@ ggplot(summarized_stats) +
     geom_errorbar(aes(x = TriadType, ymin=LowerCI, ymax=UpperCI, colour=TriadType), width=.1) +
     geom_point(aes(x=TriadType, y=Observed, colour="Observed")) +
     coord_flip()
+
+# producing a tau statistic
+weighting_scheme <- c(0,0,0,1,1,-1,0,0,1,0,0,1,1,0,0,0)
+sum(triad.census(net59) * weighting_scheme)
