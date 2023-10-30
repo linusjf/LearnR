@@ -118,7 +118,7 @@ banning_triads_game = function(n = 100, porm = .05, banned = c(2), sim_max = 100
 
   # calculates the desired number of edges according to the N and Porm parameters
   num_edges = round(n*(n-1)*porm, 2)
-
+  print(sprintf("num edges = %.2f", num_edges))
   net = make_empty_graph(n = n, directed = TRUE) # initializes an empty network
 
   edge_count = 0
@@ -128,15 +128,19 @@ banning_triads_game = function(n = 100, porm = .05, banned = c(2), sim_max = 100
   while(edge_count < num_edges){
 
     # This part samples two nodes, checks whether the two sampled nodes are the same node, and whether an edge is already present in the network between these nodes
-
     uniq = TRUE
     edge_present = TRUE
-    while(uniq == TRUE | edge_present == TRUE){
+    while(uniq == TRUE | edge_present == TRUE) {
+      # get 2 ids from sample with replacement allowed
       edge_id = sample(1:n, 2, replace = T)
+      # check if it's the same node
       uniq = edge_id[1] == edge_id[2]
+      # get reciprocated value by sampling as per the pdf provided
       reciprocated = sample(c(FALSE, TRUE), 1, prob = c(1-probrecip, probrecip))
+      # check if edge is already present
       edge_present_1 = are.connected(net, edge_id[1], edge_id[2])
-      if (reciprocated){
+      if (reciprocated) {
+        # check if reciprocated edge present
         edge_present_2 = are.connected(net, edge_id[2], edge_id[1])
         edge_present = edge_present_1|edge_present_2
       } else {
@@ -157,7 +161,7 @@ banning_triads_game = function(n = 100, porm = .05, banned = c(2), sim_max = 100
     # Checks to see how much the triad census changed
     triad_diff = after - before
 
-    if(all(triad_diff[banned] == 0)){
+    if (all(triad_diff[banned] == 0)) {
       # If the banned triads still aren't observed, then the new network is accepted.
       net = net_new
     }
