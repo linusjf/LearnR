@@ -106,3 +106,76 @@ ggplot(summarized_stats) +
 # producing a tau statistic
 weighting_scheme <- c(0,0,0,1,1,-1,0,0,1,0,0,1,1,0,0,0)
 sum(triad.census(net59) * weighting_scheme)
+
+# banning tryads
+# A basic function which prevents the formation of specified triads in a random graph simulation
+banning_triads_game = function(n = 100, porm = .05, banned = c(2), sim_max = 1000000, probrecip = .5){
+
+  if(any(c(1) %in% banned)){
+    # Stops the simulation if the user tried to bad 003 or 012 triads
+    stop("Can't ban 003s")
+  }
+
+  # calculates the desired number of edges according to the N and Porm parameters
+  num_edges = round(n*(n-1)*porm, 2)
+
+  net = make_empty_graph(n = n, directed = TRUE) # initializes an empty network
+
+  edge_count = 0
+  sim_count = 0
+
+  # Begins a loop, which ends once the requisite number of edges is reached.
+  while(edge_count < num_edges){
+
+    # This part samples two nodes, checks whether the two sampled nodes are the same node, and whether an edge is already present in the network between these nodes
+
+    uniq = TRUE
+    edge_present = TRUE
+    while(uniq == TRUE | edge_present == TRUE){
+      edge_id = sample(1:n, 2, replace = T)
+      uniq = edge_id[1] == edge_id[2]
+      reciprocated = sample(c(FALSE, TRUE), 1, prob = c(1-probrecip, probrecip))
+      edge_present_1 = are.connected(net, edge_id[1], edge_id[2])
+      if (reciprocated){
+        edge_present_2 = are.connected(net, edge_id[2], edge_id[1])
+        edge_present = edge_present_1|edge_present_2
+      } else {
+        edge_present = edge_present_1
+      }
+    }
+
+    # Calculates the traid census for the network before adding an edge
+    before = triad.census(net)
+    # Adds in the edge
+    net_new = net + edge(edge_id)
+    if(reciprocated){
+      edge_id_rev = edge_id[2:1]
+      net_new = net_new + edge(edge_id_rev) # Adds in the edge
+    }
+    # Calculates the triad census again
+    after = triad.census(net_new)
+    # Checks to see how much the triad census changed
+    triad_diff = after - before
+
+    if(all(triad_diff[banned] == 0)){
+      # If the banned triads still aren't observed, then the new network is accepted.
+      net = net_new
+    }
+
+    # number of edges updated
+    edge_count = ecount(net)
+    # Simulation count updated
+    sim_count = sim_count + 1
+    if(sim_count > sim_max){
+      print("Warning: Failed to converge, banned triads may be incompatible") # exits simulation if simulation max count is exceeded
+      return(net)
+    }
+  }
+  # Returns the simulated network
+  return(net)
+}
+
+no_cycles = banning_triads_game(banned = c(4,5,7))
+triad_census(no_cycles)
+
+plot(no_cycles, vertex.size = 2, vertex.label = NA, vertex.color = "tomato", edge.arrow.size = .2)
