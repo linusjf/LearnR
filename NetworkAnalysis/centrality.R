@@ -36,3 +36,18 @@ V(marriageNet)$Wealth <- ifelse(is.na(V(marriageNet)$Wealth), mean(V(marriageNet
 V(marriageNet)$Priorates <- florentine_attributes$Npriors[match(V(marriageNet)$name, florentine_attributes$Family)]
 
 plot(marriageNet, vertex.size = 8, vertex.label.cex = .4, vertex.label.color = "black", vertex.color = "tomato", edge.arrow.size = 0.4)
+
+print(str(degree(marriageNet)))
+degrees <- sort(degree(marriageNet), decreasing = T)
+families = names(degrees)
+names(degrees) <- c()
+df <- data.frame(Family = families, Degree = degrees)
+print(df)
+# assignment
+V(marriageNet)$degree <- degree(marriageNet)
+# sized by degree
+plot(marriageNet, vertex.label.cex = .6, vertex.label.color = "black", vertex.size = V(marriageNet)$degree, vertex.label.cex = .2)
+plot(marriageNet,
+      vertex.label.cex = .6,
+      vertex.label.color = "black",
+      vertex.size = V(marriageNet)$degree*3)
