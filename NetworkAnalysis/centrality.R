@@ -51,3 +51,22 @@ plot(marriageNet,
       vertex.label.cex = .6,
       vertex.label.color = "black",
       vertex.size = V(marriageNet)$degree*3)
+
+btws = betweenness(marriageNet, directed = FALSE)
+btws <- sort(btws, decreasing = T)
+families = names(btws)
+names(btws) <- c()
+df <- data.frame(Family = families, Betweenness = btws)
+print(df)
+# assignment
+V(marriageNet)$betweenness <- betweenness(marriageNet, directed = F)
+# sized by betweenness
+plot(marriageNet,
+      vertex.label.cex = .6,
+      vertex.label.color = "black",
+      vertex.size = V(marriageNet)$betweenness)
+# normalize betweenness and scale by 20 (some scalar)
+plot(marriageNet,
+      vertex.label.cex = .6,
+      vertex.label.color = "black",
+      vertex.size = V(marriageNet)$betweenness/max(V(marriageNet)$betweenness) * 20)
