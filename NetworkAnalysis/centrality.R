@@ -70,3 +70,16 @@ plot(marriageNet,
       vertex.label.cex = .6,
       vertex.label.color = "black",
       vertex.size = V(marriageNet)$betweenness/max(V(marriageNet)$betweenness) * 20)
+
+clseness = closeness(marriageNet, normalized = F)
+clseness <- sort(clseness, decreasing = T)
+families = names(clseness)
+names(clseness) <- c()
+df <- data.frame(Family = families, Closeness = clseness)
+print(df)
+# assignment
+V(marriageNet)$closeness <- closeness(marriageNet, normalized = F)
+plot(marriageNet,
+      vertex.label.cex = .6,
+      vertex.label.color = "black",
+      vertex.size = V(marriageNet)$closeness/max(V(marriageNet)$closeness) * 20)
