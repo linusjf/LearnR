@@ -12,3 +12,27 @@ library(igraph)
 library(tidyverse)
 library(reshape2)
 conflict_scout()
+# prepare the marriage adjacency matrix
+florentine_edj <- read.csv("florentine_marriage_edgelist.csv")
+print(str(florentine_edj))
+florentine_edj <- florentine_edj[,2:3]
+
+# prepare the attributes file
+florentine_attributes <- read.csv("florentine_attributes.csv")
+print(str(florentine_attributes))
+
+# graph the marriage network
+marriageNet <- graph.edgelist(as.matrix(florentine_edj), directed = T)
+# add wealth and priorates attributes to family vertices
+V(marriageNet)$Wealth <- florentine_attributes$Gwealth[match(V(marriageNet)$name, florentine_attributes$Family)]
+
+# Gross wealth (Florins), for 87 (92) families
+# simple mean imputation of wealth (alternatively, we might think that those with NA were too poor to show up in historical records?)
+# in other words, atrribute mean wealth to na families
+V(marriageNet)$Wealth <- ifelse(is.na(V(marriageNet)$Wealth), mean(V(marriageNet)$Wealth, na.rm = T), V(marriageNet)$Wealth)
+
+# Number of Priors, The Priorate (or city council), first created in 1282, was Florence's governing body. Count of how many seats a family had on that city council from 1282-1344
+# measure of the aggregate political influence of the family over a long period of time
+V(marriageNet)$Priorates <- florentine_attributes$Npriors[match(V(marriageNet)$name, florentine_attributes$Family)]
+
+plot(marriageNet, vertex.size = 8, vertex.label.cex = .4, vertex.label.color = "black", vertex.color = "tomato", edge.arrow.size = 0.4)
