@@ -100,3 +100,54 @@ plot(marriageNet,
      vertex.label.color = "black", 
      vertex.size = V(marriageNet)$eigenvector/max(V(marriageNet)$eigenvector) * 20)
 
+# Bonacich Centrality
+# Perhaps marrying your daughters off to weaker families is a good way to ensure their loyalty? 
+# We could evaluate this using bonacich centrality. 
+# From igraph: “Interpretively, the Bonacich power measure corresponds to the notion that the power of a vertex is recursively
+# defined by the sum of the power of its alters. The nature of the recursion involved is then controlled by the power exponent: positive values imply that vertices become more powerful as their alters become more powerful (as occurs in cooperative relations), while negative 
+# values imply that vertices become more powerful only as their alters become weaker (as occurs in competitive or antagonistic relations).”
+
+bonacich <- power_centrality(marriageNet, exponent = -2, rescale = T)
+bonacich <- ifelse(bonacich < 0, 0, bonacich)
+bonacich <- sort(bonacich, decreasing = T)
+families = names(bonacich)
+names(bonacich) <- c()
+df <- data.frame(Family = families, Bonacich = bonacich)
+print(df)
+
+V(marriageNet)$bonacich <- power_centrality(marriageNet, exponent = -2, rescale = T)
+V(marriageNet)$bonacich <- ifelse(V(marriageNet)$bonacich < 0, 0, V(marriageNet)$bonacich)
+
+plot(marriageNet,
+     vertex.label.cex = .6, 
+     vertex.label.color = "black", 
+     vertex.size = V(marriageNet)$bonacich/max(V(marriageNet)$bonacich) * 20)
+
+bonacich <- power_centrality(marriageNet, exponent = 2, rescale = T)
+bonacich <- ifelse(bonacich > 0, bonacich, 0)
+bonacich <- sort(bonacich, decreasing = T)
+families = names(bonacich)
+names(bonacich) <- c()
+df <- data.frame(Family = families, Bonacich = bonacich)
+print(df)
+V(marriageNet)$bonacich <- power_centrality(marriageNet, exponent = 2, rescale = T)
+V(marriageNet)$bonacich <- ifelse(V(marriageNet)$bonacich > 0, V(marriageNet)$bonacich, 0)
+
+plot(marriageNet,
+     vertex.label.cex = .6, 
+     vertex.label.color = "black", 
+     vertex.size = V(marriageNet)$bonacich/max(V(marriageNet)$bonacich) * 20)
+
+# pagerank
+pagerank <- page_rank(marriageNet, directed = T)$vector
+pagerank <- sort(pagerank, decreasing = T)
+families = names(pagerank)
+names(pagerank) <- c()
+df <- data.frame(Family = families, PageRank = pagerank)
+print(df)
+V(marriageNet)$page_rank <- page_rank(marriageNet, directed = T)$vector
+
+plot(marriageNet,
+     vertex.label.cex = .6, 
+     vertex.label.color = "black", 
+     vertex.size = V(marriageNet)$page_rank/max(V(marriageNet)$page_rank) * 20)
