@@ -176,10 +176,7 @@ ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) +
 # degree distribution
 # fitting a degree distribution on the log-log scale
 alter_hist = degree(marriageNet)
-print(alter_hist)
 alter_hist = table(alter_hist)
-print(alter_hist)
-print(names(alter_hist))
 vals = as.numeric(names(alter_hist))
 vals = vals[2:length(vals)]
 alter_hist = alter_hist[2:length(alter_hist)]
@@ -194,8 +191,65 @@ neighbor_degrees <- knn(marriageNet)$knn
 degrees <- degree(marriageNet)
 
 mean(neighbor_degrees, na.rm = T)
-
 mean(degrees)
 # plot neighbor degrees vs. ego degress
 hist(neighbor_degrees)
 hist(degrees)
+
+degcent <- centralization.degree(marriageNet)$centralization
+degcent
+centralization.betweenness(marriageNet)$centralization
+centralization.evcent(marriageNet)$centralization
+centralization.closeness(marriageNet)$centralization
+
+N <- vcount(marriageNet)
+degcent <- centralization.degree(marriageNet)$centralization
+
+centralizations = c()
+powers <- seq(from = 0.1, to = 3, by = 0.1)
+for(e in powers){
+  net <- barabasi.game(N, directed = F, power=e)
+  centralizations <- c(centralizations, centralization.degree(net)$centralization)
+}
+
+power_df <- data.frame(Centralization = centralizations, Power = powers)
+power_df
+ggplot(power_df, aes(x = Power, y = Centralization)) + 
+  geom_point() + 
+  geom_hline(yintercept = degcent, linetype="dashed", color = "red") +
+  theme_bw()
+
+reach_n =function(x, n = 2){
+  vert_cnt = vcount(x)
+  r=vector(length=vert_cnt)
+  for (i in 1:vert_cnt){
+    neighb =neighborhood(x, n, nodes=i)
+    ni=unlist(neighb)
+    len=length(ni)
+    r[i]=len/vert_cnt
+  }
+  return(r)
+}
+two_reach = reach_n(marriageNet, 2)
+plot(marriageNet, vertex.size = two_reach * 10, vertex.label.cex = .4, vertex.label.color = "black", vertex.color = "tomato")
+three_reach = reach_n(marriageNet, 3)
+plot(marriageNet, vertex.size = three_reach * 10, vertex.label.cex = .4, vertex.label.color = "black", vertex.color = "tomato")
+four_reach = reach_n(marriageNet, 4)
+plot(marriageNet, vertex.size = four_reach * 10, vertex.label.cex = .4, vertex.label.color = "black", vertex.color = "tomato")
+five_reach = reach_n(marriageNet, 5)
+plot(marriageNet, vertex.size = five_reach * 10, vertex.label.cex = .4, vertex.label.color = "black", vertex.color = "tomato")
+
+distance_weighted_reach=function(x){
+  # create matrix of geodesic distances
+  distances=shortest.paths(x)
+  # replace the diagonal with 1s
+  diag(distances)=1 
+  # take the reciprocal of distances
+  weights=1/distances 
+  # sum for each node (row)
+  return(apply(weights,1,sum)) 
+}
+
+dw_reach = distance_weighted_reach(marriageNet) 
+dw_reach = dw_reach/max(dw_reach)
+plot(marriageNet, vertex.size = dw_reach * 10, vertex.label.cex = .4, vertex.label.color = "black", vertex.color = "tomato")
