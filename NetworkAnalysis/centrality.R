@@ -172,3 +172,30 @@ ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) +
   scale_fill_distiller(palette = "Spectral", direction=-2) +
   xlab("") +
   ylab("")
+
+# degree distribution
+# fitting a degree distribution on the log-log scale
+alter_hist = degree(marriageNet)
+print(alter_hist)
+alter_hist = table(alter_hist)
+print(alter_hist)
+print(names(alter_hist))
+vals = as.numeric(names(alter_hist))
+vals = vals[2:length(vals)]
+alter_hist = alter_hist[2:length(alter_hist)]
+df = data.frame(Vals = log(vals), Hist = log(as.numeric(alter_hist)), stringsAsFactors = F)
+# plot log-log degree distribution
+plot(Hist ~ Vals, data = df)
+# regression line
+abline(lm(Hist ~ Vals, data = df))
+
+# degrees of your friends
+neighbor_degrees <- knn(marriageNet)$knn
+degrees <- degree(marriageNet)
+
+mean(neighbor_degrees, na.rm = T)
+
+mean(degrees)
+# plot neighbor degrees vs. ego degress
+hist(neighbor_degrees)
+hist(degrees)
