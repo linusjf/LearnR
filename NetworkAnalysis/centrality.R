@@ -83,3 +83,20 @@ plot(marriageNet,
       vertex.label.cex = .6,
       vertex.label.color = "black",
       vertex.size = V(marriageNet)$closeness/max(V(marriageNet)$closeness) * 20)
+
+# Eigenvector centrality takes into account alters’ power. 
+# It is calculated a little bit differently in igraph. It produces a list object
+# and we need to extract only the vector of centrality values.
+power = evcent(marriageNet)$vector
+power <- sort(power, decreasing = T)
+families = names(power)
+names(power) <- c()
+df <- data.frame(Family = families, Power = power)
+print(df)
+V(marriageNet)$eigenvector <- evcent(marriageNet)$vector
+
+plot(marriageNet,
+     vertex.label.cex = .6, 
+     vertex.label.color = "black", 
+     vertex.size = V(marriageNet)$eigenvector/max(V(marriageNet)$eigenvector) * 20)
+
