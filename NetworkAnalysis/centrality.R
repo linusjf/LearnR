@@ -241,15 +241,18 @@ plot(marriageNet, vertex.size = five_reach * 10, vertex.label.cex = .4, vertex.l
 
 distance_weighted_reach=function(x){
   # create matrix of geodesic distances
-  distances=shortest.paths(x)
+  distances = shortest.paths(x)
   # replace the diagonal with 1s
-  diag(distances)=1 
+  diag(distances) = 1 
   # take the reciprocal of distances
-  weights=1/distances 
+  weights = 1/distances 
   # sum for each node (row)
-  return(apply(weights,1,sum)) 
+  wr = apply(weights,1,sum)
+  return (wr) 
 }
 
 dw_reach = distance_weighted_reach(marriageNet) 
+print(dw_reach)
 dw_reach = dw_reach/max(dw_reach)
+print(dw_reach)
 plot(marriageNet, vertex.size = dw_reach * 10, vertex.label.cex = .4, vertex.label.color = "black", vertex.color = "tomato")
