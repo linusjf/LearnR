@@ -75,3 +75,49 @@ E(caveman_net)$color<-"grey70"
 E(caveman_net)[edges_incident]$color<-"green"
 
 plot(caveman_net, layout = layout.kamada.kawai(caveman_net), vertex.size = 2, vertex.label = NA)
+
+caveman_net_rewired <- rewire(caveman_net, keeping_degseq(niter = 1000))
+E(caveman_net_rewired)$color <- "grey80"
+V(caveman_net_rewired)$color <- "grey60"
+plot(caveman_net_rewired, layout = layout.kamada.kawai(caveman_net), vertex.size = 2, vertex.label=NA)
+plot(caveman_net_rewired, layout = layout.kamada.kawai(caveman_net_rewired), vertex.size = 2, vertex.label = NA)
+
+graph.density(caveman_net_rewired)
+transitivity(caveman_net_rewired)
+average.path.length(caveman_net_rewired)
+
+caveman_net_rewired <- simulate_caveman(n = 100, clique_size = 10)
+avgpathlength <- average.path.length(caveman_net_rewired) # These are the first observation
+clusteringcoefficient <- transitivity(caveman_net_rewired)
+
+iter = 100
+for ( i in 2:iter){
+  caveman_net_rewired <- caveman_net_rewired %>% rewire(keeping_degseq(niter = 1))
+  avgpathlength <- c(avgpathlength, average.path.length(caveman_net_rewired)) # We are just appending the result to a vector
+  clusteringcoefficient <- c(clusteringcoefficient, transitivity(caveman_net_rewired))
+}
+
+par(mar = c(5, 4, 4, 2) + 0.1)
+plot(1:100, avgpathlength, xlab = "Number of Rewirings", ylab = "Average Path Length", main = "Caveman", type = "l")
+lines(1:100, clusteringcoefficient)
+plot(1:100, clusteringcoefficient, xlab = "Number of Rewirings", ylab = "Clustering Coefficient", main = "Caveman", type = "l", ylim = c(0,1))
+
+# Measuring connectivity of networks
+bridges <- function(net){
+  # empty vector to store bridge names in
+  bridges <- c()
+  number_components <- length(decompose.graph(net)) # grab the number of components in the original raph
+  for (i in 1:length(E(net))) {
+    # begin a loop through all of the edges
+    net_sub <- delete.edges(net, i)
+    # delete the edge in question
+    if(length(decompose.graph(net_sub) ) > number_components){ # if the number of components has increased
+      # save this edge as a bridge
+      bridges <- c(i, bridges)
+    }
+  }
+  # return the set of bridges
+  return(bridges)
+}
+
+bridges(caveman_net_rewired)
