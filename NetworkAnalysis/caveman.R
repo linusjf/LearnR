@@ -7,6 +7,7 @@
 #
 # @description :
 ######################################################################
+library(conflicted)
 library(igraph)
 
 simulate_caveman <- function(n = 25, clique_size = 5){
@@ -25,7 +26,6 @@ simulate_caveman <- function(n = 25, clique_size = 5){
   for (i in 1:groups){
     group_vector <- c(group_vector, rep(i, clique_size))
   }
-
   el$Group <- group_vector
 
   # I use the table function to turn the person to group edgelist into an incidence matrix
@@ -35,10 +35,11 @@ simulate_caveman <- function(n = 25, clique_size = 5){
   adj <- inc %*% t(inc)
 
   diag(adj) <- 0
+  # I graph this matrix
+  g <- graph.adjacency(adj, mode = "undirected")
 
-  g <- graph.adjacency(adj, mode = "undirected") # I graph this matrix
-
-  group_connect <- seq(from = 1, to = n, by = clique_size) # I determine the points of connection using a sequence function
+  # I determine the points of connection using a sequence function
+  group_connect <- seq(from = 1, to = n, by = clique_size)
 
   for( i in 1:(length(group_connect)-1)){
     p1 <- group_connect[i] + 1
@@ -46,11 +47,31 @@ simulate_caveman <- function(n = 25, clique_size = 5){
     # And I connect the points of connection using add.edges
     g <- add.edges(g, c(p1,p2))
   }
-    g <- add.edges(g, c(group_connect[1],(group_connect[groups]+1))) # finally I connect the ends of the structure so that it forms a circle
-
+    # finally I connect the ends of the structure so that it forms a circle
+    g <- add.edges(g, c(group_connect[1],(group_connect[groups]+1)))
     return(g)
 }
 
 caveman_net <- simulate_caveman(n = 100, clique_size = 5)
+print_all(caveman_net)
 par(mar = c(2,2,2,2))
 plot(caveman_net, layout = layout.kamada.kawai(caveman_net), vertex.size = 2, vertex.label = NA, vertex.color = "grey80")
+print(graph.density(caveman_net))
+# transitivity() measures clustering coefficient, which essentially says, how clustered is the network overall
+print(transitivity(caveman_net))
+average.path.length(caveman_net)
+
+nodes_diameter<-get.diameter(caveman_net)
+edges_incident <- get.edge.ids(caveman_net, nodes_diameter)
+
+# Set default color for nodes
+V(caveman_net)$color<-"grey60"
+# Set the nodes on the diameter to be green
+V(caveman_net)[nodes_diameter]$color<-"green"
+
+# Set default edge color
+E(caveman_net)$color<-"grey70"
+# Set the edges on the diameter to be green
+E(caveman_net)[edges_incident]$color<-"green"
+
+plot(caveman_net, layout = layout.kamada.kawai(caveman_net), vertex.size = 2, vertex.label = NA)
