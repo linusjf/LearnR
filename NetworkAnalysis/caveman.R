@@ -102,6 +102,8 @@ plot(1:100, avgpathlength, xlab = "Number of Rewirings", ylab = "Average Path Le
 lines(1:100, clusteringcoefficient)
 plot(1:100, clusteringcoefficient, xlab = "Number of Rewirings", ylab = "Clustering Coefficient", main = "Caveman", type = "l", ylim = c(0,1))
 
+caveman_net_rewired <-  rewire(caveman_net, keeping_degseq(niter = 10))
+
 # Measuring connectivity of networks
 bridges <- function(net){
   # empty vector to store bridge names in
@@ -121,3 +123,34 @@ bridges <- function(net){
 }
 
 bridges(caveman_net_rewired)
+
+tie_range <- function(net){
+  # empty vector to save ranges
+  tie_ranges <- c()
+  # loop through edges
+  for (i in 1:length(E(net))) {
+    # which nodes are incident to the edge in quetion
+    incident_vertices <- ends(net, i)
+    # delete the edge
+    net_sub <- delete.edges(net, i)
+    # evaluate the distance for the previously connected nodes
+    updated_distance <- distances(net_sub, v = incident_vertices[1,1], to = incident_vertices[1,2], mode = "all")
+    # save the result
+    tie_ranges <- c(tie_ranges, updated_distance)
+  }
+  # return the resulting tie ranges
+  return(tie_ranges)
+}
+
+tie_range(caveman_net_rewired)
+
+E(caveman_net_rewired)$color <- "grey80"
+V(caveman_net_rewired)$color <- "grey60"
+
+E(caveman_net_rewired)$range <- tie_range(caveman_net_rewired)
+
+plot(caveman_net_rewired,
+    layout = layout.kamada.kawai(caveman_net_rewired),
+    vertex.size = 2,
+    vertex.label=NA,
+    edge.width = E(caveman_net_rewired)$range/2)
